@@ -1,0 +1,55 @@
+name: 예비후보자 일일 스냅샷
+
+on:
+  schedule:
+    - cron: '0 18 * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 컷오프 일자 확인
+        id: cutoff
+        run: |
+          today=$(date +%Y%m%d)
+          if [ "$today" -ge "20260514" ]; then
+            echo "5/14 이후이므로 예비후보자 정보는 OpenAPI에서 조회되지 않습니다."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 예비후보자 수집
+        if: steps.cutoff.outputs.skip != 'true'
+        env:
+          NEC_API_KEY: ${{ secrets.NEC_API_KEY }}
+        run: python scripts/fetch_preliminary.py
+
+      - name: 변경사항 커밋·푸시
+        if: steps.cutoff.outputs.skip != 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+          else
+            git commit -m "data: 예비후보자 스냅샷 $(date -u +%Y-%m-%d)"
+            git push
+          fi
