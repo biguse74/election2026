@@ -1,0 +1,1346 @@
+[
+  {
+    "num": "1",
+    "sgId": "19871216",
+    "sgName": "제13대 대통령선거",
+    "sgTypecode": "0",
+    "sgVotedate": "19871216"
+  },
+  {
+    "num": "2",
+    "sgId": "19871216",
+    "sgName": "대통령선거",
+    "sgTypecode": "1",
+    "sgVotedate": "19871216"
+  },
+  {
+    "num": "3",
+    "sgId": "19920324",
+    "sgName": "제14대 국회의원선거",
+    "sgTypecode": "0",
+    "sgVotedate": "19920324"
+  },
+  {
+    "num": "4",
+    "sgId": "19920324",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "19920324"
+  },
+  {
+    "num": "5",
+    "sgId": "19921218",
+    "sgName": "제14대 대통령선거",
+    "sgTypecode": "0",
+    "sgVotedate": "19921218"
+  },
+  {
+    "num": "6",
+    "sgId": "19921218",
+    "sgName": "대통령선거",
+    "sgTypecode": "1",
+    "sgVotedate": "19921218"
+  },
+  {
+    "num": "7",
+    "sgId": "19960411",
+    "sgName": "제15대 국회의원선거",
+    "sgTypecode": "0",
+    "sgVotedate": "19960411"
+  },
+  {
+    "num": "8",
+    "sgId": "19960411",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "19960411"
+  },
+  {
+    "num": "9",
+    "sgId": "19971218",
+    "sgName": "제15대 대통령선거",
+    "sgTypecode": "0",
+    "sgVotedate": "19971218"
+  },
+  {
+    "num": "10",
+    "sgId": "19971218",
+    "sgName": "대통령선거",
+    "sgTypecode": "1",
+    "sgVotedate": "19971218"
+  },
+  {
+    "num": "11",
+    "sgId": "20000413",
+    "sgName": "제16대 국회의원선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20000413"
+  },
+  {
+    "num": "12",
+    "sgId": "20000413",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20000413"
+  },
+  {
+    "num": "13",
+    "sgId": "20000413",
+    "sgName": "비례대표국회의원선거",
+    "sgTypecode": "7",
+    "sgVotedate": "20000413"
+  },
+  {
+    "num": "14",
+    "sgId": "20020613",
+    "sgName": "제3회 전국동시지방선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20020613"
+  },
+  {
+    "num": "15",
+    "sgId": "20020613",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20020613"
+  },
+  {
+    "num": "16",
+    "sgId": "20020613",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20020613"
+  },
+  {
+    "num": "17",
+    "sgId": "20020613",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20020613"
+  },
+  {
+    "num": "18",
+    "sgId": "20020613",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20020613"
+  },
+  {
+    "num": "19",
+    "sgId": "20020613",
+    "sgName": "광역의원비례대표선거",
+    "sgTypecode": "8",
+    "sgVotedate": "20020613"
+  },
+  {
+    "num": "20",
+    "sgId": "20021219",
+    "sgName": "제16대 대통령선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20021219"
+  },
+  {
+    "num": "21",
+    "sgId": "20021219",
+    "sgName": "대통령선거",
+    "sgTypecode": "1",
+    "sgVotedate": "20021219"
+  },
+  {
+    "num": "22",
+    "sgId": "20040415",
+    "sgName": "제17대 국회의원선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20040415"
+  },
+  {
+    "num": "23",
+    "sgId": "20040415",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20040415"
+  },
+  {
+    "num": "24",
+    "sgId": "20040415",
+    "sgName": "비례대표국회의원선거",
+    "sgTypecode": "7",
+    "sgVotedate": "20040415"
+  },
+  {
+    "num": "25",
+    "sgId": "20060531",
+    "sgName": "제4회 전국동시지방선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20060531"
+  },
+  {
+    "num": "26",
+    "sgId": "20060531",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20060531"
+  },
+  {
+    "num": "27",
+    "sgId": "20060531",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20060531"
+  },
+  {
+    "num": "28",
+    "sgId": "20060531",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20060531"
+  },
+  {
+    "num": "29",
+    "sgId": "20060531",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20060531"
+  },
+  {
+    "num": "30",
+    "sgId": "20060531",
+    "sgName": "광역의원비례대표선거",
+    "sgTypecode": "8",
+    "sgVotedate": "20060531"
+  },
+  {
+    "num": "31",
+    "sgId": "20060531",
+    "sgName": "기초의원비례대표선거",
+    "sgTypecode": "9",
+    "sgVotedate": "20060531"
+  },
+  {
+    "num": "32",
+    "sgId": "20060531",
+    "sgName": "교육의원선거",
+    "sgTypecode": "10",
+    "sgVotedate": "20060531"
+  },
+  {
+    "num": "33",
+    "sgId": "20071219",
+    "sgName": "제17대 대통령선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20071219"
+  },
+  {
+    "num": "34",
+    "sgId": "20071219",
+    "sgName": "대통령선거",
+    "sgTypecode": "1",
+    "sgVotedate": "20071219"
+  },
+  {
+    "num": "35",
+    "sgId": "20080409",
+    "sgName": "제18대 국회의원선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20080409"
+  },
+  {
+    "num": "36",
+    "sgId": "20080409",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20080409"
+  },
+  {
+    "num": "37",
+    "sgId": "20080409",
+    "sgName": "비례대표국회의원선거",
+    "sgTypecode": "7",
+    "sgVotedate": "20080409"
+  },
+  {
+    "num": "38",
+    "sgId": "20100602",
+    "sgName": "제5회 전국동시지방선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20100602"
+  },
+  {
+    "num": "39",
+    "sgId": "20100602",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20100602"
+  },
+  {
+    "num": "40",
+    "sgId": "20100602",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20100602"
+  },
+  {
+    "num": "41",
+    "sgId": "20100602",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20100602"
+  },
+  {
+    "num": "42",
+    "sgId": "20100602",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20100602"
+  },
+  {
+    "num": "43",
+    "sgId": "20100602",
+    "sgName": "광역의원비례대표선거",
+    "sgTypecode": "8",
+    "sgVotedate": "20100602"
+  },
+  {
+    "num": "44",
+    "sgId": "20100602",
+    "sgName": "기초의원비례대표선거",
+    "sgTypecode": "9",
+    "sgVotedate": "20100602"
+  },
+  {
+    "num": "45",
+    "sgId": "20100602",
+    "sgName": "교육의원선거",
+    "sgTypecode": "10",
+    "sgVotedate": "20100602"
+  },
+  {
+    "num": "46",
+    "sgId": "20100602",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20100602"
+  },
+  {
+    "num": "47",
+    "sgId": "20100728",
+    "sgName": "2010년 상반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20100728"
+  },
+  {
+    "num": "48",
+    "sgId": "20100728",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20100728"
+  },
+  {
+    "num": "49",
+    "sgId": "20101027",
+    "sgName": "2010년 하반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20101027"
+  },
+  {
+    "num": "50",
+    "sgId": "20101027",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20101027"
+  },
+  {
+    "num": "51",
+    "sgId": "20101027",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20101027"
+  },
+  {
+    "num": "52",
+    "sgId": "20101027",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20101027"
+  },
+  {
+    "num": "53",
+    "sgId": "20110427",
+    "sgName": "2011년 상반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20110427"
+  },
+  {
+    "num": "54",
+    "sgId": "20110427",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20110427"
+  },
+  {
+    "num": "55",
+    "sgId": "20110427",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20110427"
+  },
+  {
+    "num": "56",
+    "sgId": "20110427",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20110427"
+  },
+  {
+    "num": "57",
+    "sgId": "20110427",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20110427"
+  },
+  {
+    "num": "58",
+    "sgId": "20110427",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20110427"
+  },
+  {
+    "num": "59",
+    "sgId": "20111026",
+    "sgName": "2011년 하반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20111026"
+  },
+  {
+    "num": "60",
+    "sgId": "20111026",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20111026"
+  },
+  {
+    "num": "61",
+    "sgId": "20111026",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20111026"
+  },
+  {
+    "num": "62",
+    "sgId": "20111026",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20111026"
+  },
+  {
+    "num": "63",
+    "sgId": "20111026",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20111026"
+  },
+  {
+    "num": "64",
+    "sgId": "20120411",
+    "sgName": "제19대 국회의원선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20120411"
+  },
+  {
+    "num": "65",
+    "sgId": "20120411",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20120411"
+  },
+  {
+    "num": "66",
+    "sgId": "20120411",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20120411"
+  },
+  {
+    "num": "67",
+    "sgId": "20120411",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20120411"
+  },
+  {
+    "num": "68",
+    "sgId": "20120411",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20120411"
+  },
+  {
+    "num": "69",
+    "sgId": "20120411",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20120411"
+  },
+  {
+    "num": "70",
+    "sgId": "20120411",
+    "sgName": "비례대표국회의원선거",
+    "sgTypecode": "7",
+    "sgVotedate": "20120411"
+  },
+  {
+    "num": "71",
+    "sgId": "20120411",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20120411"
+  },
+  {
+    "num": "72",
+    "sgId": "20121219",
+    "sgName": "제18대 대통령선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20121219"
+  },
+  {
+    "num": "73",
+    "sgId": "20121219",
+    "sgName": "대통령선거",
+    "sgTypecode": "1",
+    "sgVotedate": "20121219"
+  },
+  {
+    "num": "74",
+    "sgId": "20121219",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20121219"
+  },
+  {
+    "num": "75",
+    "sgId": "20121219",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20121219"
+  },
+  {
+    "num": "76",
+    "sgId": "20121219",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20121219"
+  },
+  {
+    "num": "77",
+    "sgId": "20121219",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20121219"
+  },
+  {
+    "num": "78",
+    "sgId": "20121219",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20121219"
+  },
+  {
+    "num": "79",
+    "sgId": "20130424",
+    "sgName": "2013년 상반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20130424"
+  },
+  {
+    "num": "80",
+    "sgId": "20130424",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20130424"
+  },
+  {
+    "num": "81",
+    "sgId": "20130424",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20130424"
+  },
+  {
+    "num": "82",
+    "sgId": "20130424",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20130424"
+  },
+  {
+    "num": "83",
+    "sgId": "20130424",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20130424"
+  },
+  {
+    "num": "84",
+    "sgId": "20131030",
+    "sgName": "2013년 하반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20131030"
+  },
+  {
+    "num": "85",
+    "sgId": "20131030",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20131030"
+  },
+  {
+    "num": "86",
+    "sgId": "20140604",
+    "sgName": "제6회 전국동시지방선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20140604"
+  },
+  {
+    "num": "87",
+    "sgId": "20140604",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20140604"
+  },
+  {
+    "num": "88",
+    "sgId": "20140604",
+    "sgName": "구·시·군의 장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20140604"
+  },
+  {
+    "num": "89",
+    "sgId": "20140604",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20140604"
+  },
+  {
+    "num": "90",
+    "sgId": "20140604",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20140604"
+  },
+  {
+    "num": "91",
+    "sgId": "20140604",
+    "sgName": "광역의원비례대표선거",
+    "sgTypecode": "8",
+    "sgVotedate": "20140604"
+  },
+  {
+    "num": "92",
+    "sgId": "20140604",
+    "sgName": "기초의원비례대표선거",
+    "sgTypecode": "9",
+    "sgVotedate": "20140604"
+  },
+  {
+    "num": "93",
+    "sgId": "20140604",
+    "sgName": "교육의원선거",
+    "sgTypecode": "10",
+    "sgVotedate": "20140604"
+  },
+  {
+    "num": "94",
+    "sgId": "20140604",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20140604"
+  },
+  {
+    "num": "95",
+    "sgId": "20140730",
+    "sgName": "2014년 상반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20140730"
+  },
+  {
+    "num": "96",
+    "sgId": "20140730",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20140730"
+  },
+  {
+    "num": "97",
+    "sgId": "20140730",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20140730"
+  },
+  {
+    "num": "98",
+    "sgId": "20141029",
+    "sgName": "2014년 하반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20141029"
+  },
+  {
+    "num": "99",
+    "sgId": "20141029",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20141029"
+  },
+  {
+    "num": "100",
+    "sgId": "20150429",
+    "sgName": "2015년 상반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20150429"
+  },
+  {
+    "num": "101",
+    "sgId": "20150429",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20150429"
+  },
+  {
+    "num": "102",
+    "sgId": "20150429",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20150429"
+  },
+  {
+    "num": "103",
+    "sgId": "20150429",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20150429"
+  },
+  {
+    "num": "104",
+    "sgId": "20151028",
+    "sgName": "2015년 하반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20151028"
+  },
+  {
+    "num": "105",
+    "sgId": "20151028",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20151028"
+  },
+  {
+    "num": "106",
+    "sgId": "20151028",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20151028"
+  },
+  {
+    "num": "107",
+    "sgId": "20151028",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20151028"
+  },
+  {
+    "num": "108",
+    "sgId": "20160413",
+    "sgName": "제20대 국회의원선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20160413"
+  },
+  {
+    "num": "109",
+    "sgId": "20160413",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20160413"
+  },
+  {
+    "num": "110",
+    "sgId": "20160413",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20160413"
+  },
+  {
+    "num": "111",
+    "sgId": "20160413",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20160413"
+  },
+  {
+    "num": "112",
+    "sgId": "20160413",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20160413"
+  },
+  {
+    "num": "113",
+    "sgId": "20160413",
+    "sgName": "비례대표국회의원선거",
+    "sgTypecode": "7",
+    "sgVotedate": "20160413"
+  },
+  {
+    "num": "114",
+    "sgId": "20170412",
+    "sgName": "2017년도 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20170412"
+  },
+  {
+    "num": "115",
+    "sgId": "20170412",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20170412"
+  },
+  {
+    "num": "116",
+    "sgId": "20170412",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20170412"
+  },
+  {
+    "num": "117",
+    "sgId": "20170412",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20170412"
+  },
+  {
+    "num": "118",
+    "sgId": "20170412",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20170412"
+  },
+  {
+    "num": "119",
+    "sgId": "20170509",
+    "sgName": "제19대 대통령선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20170509"
+  },
+  {
+    "num": "120",
+    "sgId": "20170509",
+    "sgName": "대통령선거",
+    "sgTypecode": "1",
+    "sgVotedate": "20170509"
+  },
+  {
+    "num": "121",
+    "sgId": "20170509",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20170509"
+  },
+  {
+    "num": "122",
+    "sgId": "20170509",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20170509"
+  },
+  {
+    "num": "123",
+    "sgId": "20180613",
+    "sgName": "제7회 전국동시지방선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "124",
+    "sgId": "20180613",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "125",
+    "sgId": "20180613",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "126",
+    "sgId": "20180613",
+    "sgName": "구·시·군의 장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "127",
+    "sgId": "20180613",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "128",
+    "sgId": "20180613",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "129",
+    "sgId": "20180613",
+    "sgName": "광역의원비례대표선거",
+    "sgTypecode": "8",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "130",
+    "sgId": "20180613",
+    "sgName": "기초의원비례대표선거",
+    "sgTypecode": "9",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "131",
+    "sgId": "20180613",
+    "sgName": "교육의원선거",
+    "sgTypecode": "10",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "132",
+    "sgId": "20180613",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20180613"
+  },
+  {
+    "num": "133",
+    "sgId": "20190403",
+    "sgName": "2019년 보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20190403"
+  },
+  {
+    "num": "134",
+    "sgId": "20190403",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20190403"
+  },
+  {
+    "num": "135",
+    "sgId": "20190403",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20190403"
+  },
+  {
+    "num": "136",
+    "sgId": "20200415",
+    "sgName": "제21대 국회의원선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20200415"
+  },
+  {
+    "num": "137",
+    "sgId": "20200415",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20200415"
+  },
+  {
+    "num": "138",
+    "sgId": "20200415",
+    "sgName": "구·시·군의 장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20200415"
+  },
+  {
+    "num": "139",
+    "sgId": "20200415",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20200415"
+  },
+  {
+    "num": "140",
+    "sgId": "20200415",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20200415"
+  },
+  {
+    "num": "141",
+    "sgId": "20200415",
+    "sgName": "비례대표국회의원선거",
+    "sgTypecode": "7",
+    "sgVotedate": "20200415"
+  },
+  {
+    "num": "142",
+    "sgId": "20210407",
+    "sgName": "2021년 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20210407"
+  },
+  {
+    "num": "143",
+    "sgId": "20210407",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20210407"
+  },
+  {
+    "num": "144",
+    "sgId": "20210407",
+    "sgName": "구·시·군의 장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20210407"
+  },
+  {
+    "num": "145",
+    "sgId": "20210407",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20210407"
+  },
+  {
+    "num": "146",
+    "sgId": "20210407",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20210407"
+  },
+  {
+    "num": "147",
+    "sgId": "20220309",
+    "sgName": "제20대 대통령선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20220309"
+  },
+  {
+    "num": "148",
+    "sgId": "20220309",
+    "sgName": "대통령선거",
+    "sgTypecode": "1",
+    "sgVotedate": "20220309"
+  },
+  {
+    "num": "149",
+    "sgId": "20220309",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20220309"
+  },
+  {
+    "num": "150",
+    "sgId": "20220601",
+    "sgName": "제8회 전국동시지방선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "151",
+    "sgId": "20220601",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "152",
+    "sgId": "20220601",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "153",
+    "sgId": "20220601",
+    "sgName": "구·시·군의 장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "154",
+    "sgId": "20220601",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "155",
+    "sgId": "20220601",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "156",
+    "sgId": "20220601",
+    "sgName": "광역의원비례대표선거",
+    "sgTypecode": "8",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "157",
+    "sgId": "20220601",
+    "sgName": "기초의원비례대표선거",
+    "sgTypecode": "9",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "158",
+    "sgId": "20220601",
+    "sgName": "교육의원선거",
+    "sgTypecode": "10",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "159",
+    "sgId": "20220601",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20220601"
+  },
+  {
+    "num": "160",
+    "sgId": "20230405",
+    "sgName": "2023년 상반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20230405"
+  },
+  {
+    "num": "161",
+    "sgId": "20230405",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20230405"
+  },
+  {
+    "num": "162",
+    "sgId": "20230405",
+    "sgName": "구·시·군의 장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20230405"
+  },
+  {
+    "num": "163",
+    "sgId": "20230405",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20230405"
+  },
+  {
+    "num": "164",
+    "sgId": "20230405",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20230405"
+  },
+  {
+    "num": "165",
+    "sgId": "20230405",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20230405"
+  },
+  {
+    "num": "166",
+    "sgId": "20231011",
+    "sgName": "2023년 하반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20231011"
+  },
+  {
+    "num": "167",
+    "sgId": "20231011",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20231011"
+  },
+  {
+    "num": "168",
+    "sgId": "20240410",
+    "sgName": "제22대 국회의원선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20240410"
+  },
+  {
+    "num": "169",
+    "sgId": "20240410",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20240410"
+  },
+  {
+    "num": "170",
+    "sgId": "20240410",
+    "sgName": "구·시·군의 장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20240410"
+  },
+  {
+    "num": "171",
+    "sgId": "20240410",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20240410"
+  },
+  {
+    "num": "172",
+    "sgId": "20240410",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20240410"
+  },
+  {
+    "num": "173",
+    "sgId": "20240410",
+    "sgName": "비례대표국회의원선거",
+    "sgTypecode": "7",
+    "sgVotedate": "20240410"
+  },
+  {
+    "num": "174",
+    "sgId": "20241016",
+    "sgName": "2024년 하반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20241016"
+  },
+  {
+    "num": "175",
+    "sgId": "20241016",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20241016"
+  },
+  {
+    "num": "176",
+    "sgId": "20241016",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20241016"
+  },
+  {
+    "num": "177",
+    "sgId": "20250402",
+    "sgName": "2025년 상반기 재·보궐선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20250402"
+  },
+  {
+    "num": "178",
+    "sgId": "20250402",
+    "sgName": "구·시·군의장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20250402"
+  },
+  {
+    "num": "179",
+    "sgId": "20250402",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20250402"
+  },
+  {
+    "num": "180",
+    "sgId": "20250402",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20250402"
+  },
+  {
+    "num": "181",
+    "sgId": "20250402",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20250402"
+  },
+  {
+    "num": "182",
+    "sgId": "20250603",
+    "sgName": "제21대 대통령선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20250603"
+  },
+  {
+    "num": "183",
+    "sgId": "20250603",
+    "sgName": "대통령선거",
+    "sgTypecode": "1",
+    "sgVotedate": "20250603"
+  },
+  {
+    "num": "184",
+    "sgId": "20260603",
+    "sgName": "제9회 전국동시지방선거",
+    "sgTypecode": "0",
+    "sgVotedate": "20260603"
+  },
+  {
+    "num": "185",
+    "sgId": "20260603",
+    "sgName": "국회의원선거",
+    "sgTypecode": "2",
+    "sgVotedate": "20260603"
+  },
+  {
+    "num": "186",
+    "sgId": "20260603",
+    "sgName": "시·도지사선거",
+    "sgTypecode": "3",
+    "sgVotedate": "20260603"
+  },
+  {
+    "num": "187",
+    "sgId": "20260603",
+    "sgName": "구·시·군의 장선거",
+    "sgTypecode": "4",
+    "sgVotedate": "20260603"
+  },
+  {
+    "num": "188",
+    "sgId": "20260603",
+    "sgName": "시·도의회의원선거",
+    "sgTypecode": "5",
+    "sgVotedate": "20260603"
+  },
+  {
+    "num": "189",
+    "sgId": "20260603",
+    "sgName": "구·시·군의회의원선거",
+    "sgTypecode": "6",
+    "sgVotedate": "20260603"
+  },
+  {
+    "num": "190",
+    "sgId": "20260603",
+    "sgName": "광역의원비례대표선거",
+    "sgTypecode": "8",
+    "sgVotedate": "20260603"
+  },
+  {
+    "num": "191",
+    "sgId": "20260603",
+    "sgName": "기초의원비례대표선거",
+    "sgTypecode": "9",
+    "sgVotedate": "20260603"
+  },
+  {
+    "num": "192",
+    "sgId": "20260603",
+    "sgName": "교육감선거",
+    "sgTypecode": "11",
+    "sgVotedate": "20260603"
+  }
+]

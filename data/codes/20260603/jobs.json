@@ -1,0 +1,163 @@
+[
+  {
+    "num": "1",
+    "sgId": "20260603",
+    "jobId": "72",
+    "jobName": "국회의원",
+    "jOrder": "1"
+  },
+  {
+    "num": "2",
+    "sgId": "20260603",
+    "jobId": "74",
+    "jobName": "지방의원",
+    "jOrder": "2"
+  },
+  {
+    "num": "3",
+    "sgId": "20260603",
+    "jobId": "226",
+    "jobName": "단체장·교육감",
+    "jOrder": "3"
+  },
+  {
+    "num": "4",
+    "sgId": "20260603",
+    "jobId": "227",
+    "jobName": "교육의원",
+    "jOrder": "4"
+  },
+  {
+    "num": "5",
+    "sgId": "20260603",
+    "jobId": "75",
+    "jobName": "정치인",
+    "jOrder": "6"
+  },
+  {
+    "num": "6",
+    "sgId": "20260603",
+    "jobId": "76",
+    "jobName": "농ㆍ축산업",
+    "jOrder": "7"
+  },
+  {
+    "num": "7",
+    "sgId": "20260603",
+    "jobId": "77",
+    "jobName": "상업",
+    "jOrder": "8"
+  },
+  {
+    "num": "8",
+    "sgId": "20260603",
+    "jobId": "78",
+    "jobName": "광공업",
+    "jOrder": "9"
+  },
+  {
+    "num": "9",
+    "sgId": "20260603",
+    "jobId": "79",
+    "jobName": "운수업",
+    "jOrder": "10"
+  },
+  {
+    "num": "10",
+    "sgId": "20260603",
+    "jobId": "80",
+    "jobName": "수산업",
+    "jOrder": "11"
+  },
+  {
+    "num": "11",
+    "sgId": "20260603",
+    "jobId": "81",
+    "jobName": "건설업",
+    "jOrder": "12"
+  },
+  {
+    "num": "12",
+    "sgId": "20260603",
+    "jobId": "82",
+    "jobName": "언론인",
+    "jOrder": "13"
+  },
+  {
+    "num": "13",
+    "sgId": "20260603",
+    "jobId": "83",
+    "jobName": "금융업",
+    "jOrder": "14"
+  },
+  {
+    "num": "14",
+    "sgId": "20260603",
+    "jobId": "84",
+    "jobName": "약사ㆍ의사",
+    "jOrder": "15"
+  },
+  {
+    "num": "15",
+    "sgId": "20260603",
+    "jobId": "85",
+    "jobName": "변호사",
+    "jOrder": "16"
+  },
+  {
+    "num": "16",
+    "sgId": "20260603",
+    "jobId": "86",
+    "jobName": "종교인",
+    "jOrder": "17"
+  },
+  {
+    "num": "17",
+    "sgId": "20260603",
+    "jobId": "87",
+    "jobName": "회사원",
+    "jOrder": "18"
+  },
+  {
+    "num": "18",
+    "sgId": "20260603",
+    "jobId": "88",
+    "jobName": "교육자",
+    "jOrder": "19"
+  },
+  {
+    "num": "19",
+    "sgId": "20260603",
+    "jobId": "222",
+    "jobName": "정보통신업",
+    "jOrder": "20"
+  },
+  {
+    "num": "20",
+    "sgId": "20260603",
+    "jobId": "223",
+    "jobName": "출판업",
+    "jOrder": "21"
+  },
+  {
+    "num": "21",
+    "sgId": "20260603",
+    "jobId": "73",
+    "jobName": "공무원",
+    "jOrder": "22"
+  },
+  {
+    "num": "22",
+    "sgId": "20260603",
+    "jobId": "224",
+    "jobName": "무직",
+    "jOrder": "23"
+  },
+  {
+    "num": "23",
+    "sgId": "20260603",
+    "jobId": "225",
+    "jobName": "기타",
+    "jOrder": "24"
+  }
+]

@@ -1,0 +1,1913 @@
+[
+  {
+    "num": "1",
+    "sgId": "20260603",
+    "wiwName": "서울특별시",
+    "wOrder": "2",
+    "sdName": ""
+  },
+  {
+    "num": "2",
+    "sgId": "20260603",
+    "wiwName": "종로구",
+    "wOrder": "3",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "3",
+    "sgId": "20260603",
+    "wiwName": "중구",
+    "wOrder": "4",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "4",
+    "sgId": "20260603",
+    "wiwName": "용산구",
+    "wOrder": "5",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "5",
+    "sgId": "20260603",
+    "wiwName": "성동구",
+    "wOrder": "6",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "6",
+    "sgId": "20260603",
+    "wiwName": "광진구",
+    "wOrder": "7",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "7",
+    "sgId": "20260603",
+    "wiwName": "동대문구",
+    "wOrder": "8",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "8",
+    "sgId": "20260603",
+    "wiwName": "중랑구",
+    "wOrder": "9",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "9",
+    "sgId": "20260603",
+    "wiwName": "성북구",
+    "wOrder": "10",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "10",
+    "sgId": "20260603",
+    "wiwName": "강북구",
+    "wOrder": "11",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "11",
+    "sgId": "20260603",
+    "wiwName": "도봉구",
+    "wOrder": "12",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "12",
+    "sgId": "20260603",
+    "wiwName": "노원구",
+    "wOrder": "13",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "13",
+    "sgId": "20260603",
+    "wiwName": "은평구",
+    "wOrder": "14",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "14",
+    "sgId": "20260603",
+    "wiwName": "서대문구",
+    "wOrder": "15",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "15",
+    "sgId": "20260603",
+    "wiwName": "마포구",
+    "wOrder": "16",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "16",
+    "sgId": "20260603",
+    "wiwName": "양천구",
+    "wOrder": "17",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "17",
+    "sgId": "20260603",
+    "wiwName": "강서구",
+    "wOrder": "18",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "18",
+    "sgId": "20260603",
+    "wiwName": "구로구",
+    "wOrder": "19",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "19",
+    "sgId": "20260603",
+    "wiwName": "금천구",
+    "wOrder": "20",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "20",
+    "sgId": "20260603",
+    "wiwName": "영등포구",
+    "wOrder": "21",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "21",
+    "sgId": "20260603",
+    "wiwName": "동작구",
+    "wOrder": "22",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "22",
+    "sgId": "20260603",
+    "wiwName": "관악구",
+    "wOrder": "23",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "23",
+    "sgId": "20260603",
+    "wiwName": "서초구",
+    "wOrder": "24",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "24",
+    "sgId": "20260603",
+    "wiwName": "강남구",
+    "wOrder": "25",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "25",
+    "sgId": "20260603",
+    "wiwName": "송파구",
+    "wOrder": "26",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "26",
+    "sgId": "20260603",
+    "wiwName": "강동구",
+    "wOrder": "27",
+    "sdName": "서울특별시"
+  },
+  {
+    "num": "27",
+    "sgId": "20260603",
+    "wiwName": "부산광역시",
+    "wOrder": "28",
+    "sdName": ""
+  },
+  {
+    "num": "28",
+    "sgId": "20260603",
+    "wiwName": "중구",
+    "wOrder": "29",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "29",
+    "sgId": "20260603",
+    "wiwName": "서구",
+    "wOrder": "30",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "30",
+    "sgId": "20260603",
+    "wiwName": "동구",
+    "wOrder": "31",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "31",
+    "sgId": "20260603",
+    "wiwName": "영도구",
+    "wOrder": "32",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "32",
+    "sgId": "20260603",
+    "wiwName": "부산진구",
+    "wOrder": "33",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "33",
+    "sgId": "20260603",
+    "wiwName": "동래구",
+    "wOrder": "34",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "34",
+    "sgId": "20260603",
+    "wiwName": "남구",
+    "wOrder": "35",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "35",
+    "sgId": "20260603",
+    "wiwName": "북구",
+    "wOrder": "36",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "36",
+    "sgId": "20260603",
+    "wiwName": "해운대구",
+    "wOrder": "37",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "37",
+    "sgId": "20260603",
+    "wiwName": "기장군",
+    "wOrder": "38",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "38",
+    "sgId": "20260603",
+    "wiwName": "사하구",
+    "wOrder": "39",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "39",
+    "sgId": "20260603",
+    "wiwName": "금정구",
+    "wOrder": "40",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "40",
+    "sgId": "20260603",
+    "wiwName": "강서구",
+    "wOrder": "41",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "41",
+    "sgId": "20260603",
+    "wiwName": "연제구",
+    "wOrder": "42",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "42",
+    "sgId": "20260603",
+    "wiwName": "수영구",
+    "wOrder": "43",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "43",
+    "sgId": "20260603",
+    "wiwName": "사상구",
+    "wOrder": "44",
+    "sdName": "부산광역시"
+  },
+  {
+    "num": "44",
+    "sgId": "20260603",
+    "wiwName": "대구광역시",
+    "wOrder": "45",
+    "sdName": ""
+  },
+  {
+    "num": "45",
+    "sgId": "20260603",
+    "wiwName": "중구",
+    "wOrder": "46",
+    "sdName": "대구광역시"
+  },
+  {
+    "num": "46",
+    "sgId": "20260603",
+    "wiwName": "동구",
+    "wOrder": "47",
+    "sdName": "대구광역시"
+  },
+  {
+    "num": "47",
+    "sgId": "20260603",
+    "wiwName": "서구",
+    "wOrder": "48",
+    "sdName": "대구광역시"
+  },
+  {
+    "num": "48",
+    "sgId": "20260603",
+    "wiwName": "남구",
+    "wOrder": "49",
+    "sdName": "대구광역시"
+  },
+  {
+    "num": "49",
+    "sgId": "20260603",
+    "wiwName": "북구",
+    "wOrder": "50",
+    "sdName": "대구광역시"
+  },
+  {
+    "num": "50",
+    "sgId": "20260603",
+    "wiwName": "수성구",
+    "wOrder": "51",
+    "sdName": "대구광역시"
+  },
+  {
+    "num": "51",
+    "sgId": "20260603",
+    "wiwName": "달서구",
+    "wOrder": "52",
+    "sdName": "대구광역시"
+  },
+  {
+    "num": "52",
+    "sgId": "20260603",
+    "wiwName": "달성군",
+    "wOrder": "53",
+    "sdName": "대구광역시"
+  },
+  {
+    "num": "53",
+    "sgId": "20260603",
+    "wiwName": "군위군",
+    "wOrder": "54",
+    "sdName": "대구광역시"
+  },
+  {
+    "num": "54",
+    "sgId": "20260603",
+    "wiwName": "인천광역시",
+    "wOrder": "55",
+    "sdName": ""
+  },
+  {
+    "num": "55",
+    "sgId": "20260603",
+    "wiwName": "영종구",
+    "wOrder": "56",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "56",
+    "sgId": "20260603",
+    "wiwName": "제물포구",
+    "wOrder": "57",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "57",
+    "sgId": "20260603",
+    "wiwName": "미추홀구",
+    "wOrder": "58",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "58",
+    "sgId": "20260603",
+    "wiwName": "연수구",
+    "wOrder": "59",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "59",
+    "sgId": "20260603",
+    "wiwName": "남동구",
+    "wOrder": "60",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "60",
+    "sgId": "20260603",
+    "wiwName": "부평구",
+    "wOrder": "61",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "61",
+    "sgId": "20260603",
+    "wiwName": "계양구",
+    "wOrder": "62",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "62",
+    "sgId": "20260603",
+    "wiwName": "서구",
+    "wOrder": "63",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "63",
+    "sgId": "20260603",
+    "wiwName": "검단구",
+    "wOrder": "64",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "64",
+    "sgId": "20260603",
+    "wiwName": "강화군",
+    "wOrder": "65",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "65",
+    "sgId": "20260603",
+    "wiwName": "옹진군",
+    "wOrder": "66",
+    "sdName": "인천광역시"
+  },
+  {
+    "num": "66",
+    "sgId": "20260603",
+    "wiwName": "광주광역시",
+    "wOrder": "67",
+    "sdName": ""
+  },
+  {
+    "num": "67",
+    "sgId": "20260603",
+    "wiwName": "동구",
+    "wOrder": "68",
+    "sdName": "광주광역시"
+  },
+  {
+    "num": "68",
+    "sgId": "20260603",
+    "wiwName": "서구",
+    "wOrder": "69",
+    "sdName": "광주광역시"
+  },
+  {
+    "num": "69",
+    "sgId": "20260603",
+    "wiwName": "남구",
+    "wOrder": "70",
+    "sdName": "광주광역시"
+  },
+  {
+    "num": "70",
+    "sgId": "20260603",
+    "wiwName": "북구",
+    "wOrder": "71",
+    "sdName": "광주광역시"
+  },
+  {
+    "num": "71",
+    "sgId": "20260603",
+    "wiwName": "광산구",
+    "wOrder": "72",
+    "sdName": "광주광역시"
+  },
+  {
+    "num": "72",
+    "sgId": "20260603",
+    "wiwName": "대전광역시",
+    "wOrder": "73",
+    "sdName": ""
+  },
+  {
+    "num": "73",
+    "sgId": "20260603",
+    "wiwName": "동구",
+    "wOrder": "74",
+    "sdName": "대전광역시"
+  },
+  {
+    "num": "74",
+    "sgId": "20260603",
+    "wiwName": "중구",
+    "wOrder": "75",
+    "sdName": "대전광역시"
+  },
+  {
+    "num": "75",
+    "sgId": "20260603",
+    "wiwName": "서구",
+    "wOrder": "76",
+    "sdName": "대전광역시"
+  },
+  {
+    "num": "76",
+    "sgId": "20260603",
+    "wiwName": "유성구",
+    "wOrder": "77",
+    "sdName": "대전광역시"
+  },
+  {
+    "num": "77",
+    "sgId": "20260603",
+    "wiwName": "대덕구",
+    "wOrder": "78",
+    "sdName": "대전광역시"
+  },
+  {
+    "num": "78",
+    "sgId": "20260603",
+    "wiwName": "울산광역시",
+    "wOrder": "79",
+    "sdName": ""
+  },
+  {
+    "num": "79",
+    "sgId": "20260603",
+    "wiwName": "중구",
+    "wOrder": "80",
+    "sdName": "울산광역시"
+  },
+  {
+    "num": "80",
+    "sgId": "20260603",
+    "wiwName": "남구",
+    "wOrder": "81",
+    "sdName": "울산광역시"
+  },
+  {
+    "num": "81",
+    "sgId": "20260603",
+    "wiwName": "동구",
+    "wOrder": "82",
+    "sdName": "울산광역시"
+  },
+  {
+    "num": "82",
+    "sgId": "20260603",
+    "wiwName": "북구",
+    "wOrder": "83",
+    "sdName": "울산광역시"
+  },
+  {
+    "num": "83",
+    "sgId": "20260603",
+    "wiwName": "울주군",
+    "wOrder": "84",
+    "sdName": "울산광역시"
+  },
+  {
+    "num": "84",
+    "sgId": "20260603",
+    "wiwName": "세종특별자치시",
+    "wOrder": "85",
+    "sdName": ""
+  },
+  {
+    "num": "85",
+    "sgId": "20260603",
+    "wiwName": "세종특별자치시",
+    "wOrder": "86",
+    "sdName": "세종특별자치시"
+  },
+  {
+    "num": "86",
+    "sgId": "20260603",
+    "wiwName": "경기도",
+    "wOrder": "87",
+    "sdName": ""
+  },
+  {
+    "num": "87",
+    "sgId": "20260603",
+    "wiwName": "수원시장안구",
+    "wOrder": "88",
+    "sdName": "경기도"
+  },
+  {
+    "num": "88",
+    "sgId": "20260603",
+    "wiwName": "수원시권선구",
+    "wOrder": "89",
+    "sdName": "경기도"
+  },
+  {
+    "num": "89",
+    "sgId": "20260603",
+    "wiwName": "수원시팔달구",
+    "wOrder": "90",
+    "sdName": "경기도"
+  },
+  {
+    "num": "90",
+    "sgId": "20260603",
+    "wiwName": "수원시영통구",
+    "wOrder": "91",
+    "sdName": "경기도"
+  },
+  {
+    "num": "91",
+    "sgId": "20260603",
+    "wiwName": "성남시수정구",
+    "wOrder": "92",
+    "sdName": "경기도"
+  },
+  {
+    "num": "92",
+    "sgId": "20260603",
+    "wiwName": "성남시중원구",
+    "wOrder": "93",
+    "sdName": "경기도"
+  },
+  {
+    "num": "93",
+    "sgId": "20260603",
+    "wiwName": "성남시분당구",
+    "wOrder": "94",
+    "sdName": "경기도"
+  },
+  {
+    "num": "94",
+    "sgId": "20260603",
+    "wiwName": "의정부시",
+    "wOrder": "95",
+    "sdName": "경기도"
+  },
+  {
+    "num": "95",
+    "sgId": "20260603",
+    "wiwName": "안양시만안구",
+    "wOrder": "96",
+    "sdName": "경기도"
+  },
+  {
+    "num": "96",
+    "sgId": "20260603",
+    "wiwName": "안양시동안구",
+    "wOrder": "97",
+    "sdName": "경기도"
+  },
+  {
+    "num": "97",
+    "sgId": "20260603",
+    "wiwName": "부천시원미구",
+    "wOrder": "98",
+    "sdName": "경기도"
+  },
+  {
+    "num": "98",
+    "sgId": "20260603",
+    "wiwName": "부천시소사구",
+    "wOrder": "99",
+    "sdName": "경기도"
+  },
+  {
+    "num": "99",
+    "sgId": "20260603",
+    "wiwName": "부천시오정구",
+    "wOrder": "100",
+    "sdName": "경기도"
+  },
+  {
+    "num": "100",
+    "sgId": "20260603",
+    "wiwName": "광명시",
+    "wOrder": "101",
+    "sdName": "경기도"
+  },
+  {
+    "num": "101",
+    "sgId": "20260603",
+    "wiwName": "평택시",
+    "wOrder": "102",
+    "sdName": "경기도"
+  },
+  {
+    "num": "102",
+    "sgId": "20260603",
+    "wiwName": "양주시",
+    "wOrder": "103",
+    "sdName": "경기도"
+  },
+  {
+    "num": "103",
+    "sgId": "20260603",
+    "wiwName": "동두천시",
+    "wOrder": "104",
+    "sdName": "경기도"
+  },
+  {
+    "num": "104",
+    "sgId": "20260603",
+    "wiwName": "안산시상록구",
+    "wOrder": "105",
+    "sdName": "경기도"
+  },
+  {
+    "num": "105",
+    "sgId": "20260603",
+    "wiwName": "안산시단원구",
+    "wOrder": "106",
+    "sdName": "경기도"
+  },
+  {
+    "num": "106",
+    "sgId": "20260603",
+    "wiwName": "고양시덕양구",
+    "wOrder": "107",
+    "sdName": "경기도"
+  },
+  {
+    "num": "107",
+    "sgId": "20260603",
+    "wiwName": "고양시일산동구",
+    "wOrder": "108",
+    "sdName": "경기도"
+  },
+  {
+    "num": "108",
+    "sgId": "20260603",
+    "wiwName": "고양시일산서구",
+    "wOrder": "109",
+    "sdName": "경기도"
+  },
+  {
+    "num": "109",
+    "sgId": "20260603",
+    "wiwName": "과천시",
+    "wOrder": "110",
+    "sdName": "경기도"
+  },
+  {
+    "num": "110",
+    "sgId": "20260603",
+    "wiwName": "의왕시",
+    "wOrder": "111",
+    "sdName": "경기도"
+  },
+  {
+    "num": "111",
+    "sgId": "20260603",
+    "wiwName": "구리시",
+    "wOrder": "112",
+    "sdName": "경기도"
+  },
+  {
+    "num": "112",
+    "sgId": "20260603",
+    "wiwName": "남양주시",
+    "wOrder": "113",
+    "sdName": "경기도"
+  },
+  {
+    "num": "113",
+    "sgId": "20260603",
+    "wiwName": "오산시",
+    "wOrder": "114",
+    "sdName": "경기도"
+  },
+  {
+    "num": "114",
+    "sgId": "20260603",
+    "wiwName": "화성시만세구",
+    "wOrder": "115",
+    "sdName": "경기도"
+  },
+  {
+    "num": "115",
+    "sgId": "20260603",
+    "wiwName": "화성시효행구",
+    "wOrder": "116",
+    "sdName": "경기도"
+  },
+  {
+    "num": "116",
+    "sgId": "20260603",
+    "wiwName": "화성시병점구",
+    "wOrder": "117",
+    "sdName": "경기도"
+  },
+  {
+    "num": "117",
+    "sgId": "20260603",
+    "wiwName": "화성시동탄구",
+    "wOrder": "118",
+    "sdName": "경기도"
+  },
+  {
+    "num": "118",
+    "sgId": "20260603",
+    "wiwName": "시흥시",
+    "wOrder": "119",
+    "sdName": "경기도"
+  },
+  {
+    "num": "119",
+    "sgId": "20260603",
+    "wiwName": "군포시",
+    "wOrder": "120",
+    "sdName": "경기도"
+  },
+  {
+    "num": "120",
+    "sgId": "20260603",
+    "wiwName": "하남시",
+    "wOrder": "121",
+    "sdName": "경기도"
+  },
+  {
+    "num": "121",
+    "sgId": "20260603",
+    "wiwName": "파주시",
+    "wOrder": "122",
+    "sdName": "경기도"
+  },
+  {
+    "num": "122",
+    "sgId": "20260603",
+    "wiwName": "여주시",
+    "wOrder": "123",
+    "sdName": "경기도"
+  },
+  {
+    "num": "123",
+    "sgId": "20260603",
+    "wiwName": "이천시",
+    "wOrder": "124",
+    "sdName": "경기도"
+  },
+  {
+    "num": "124",
+    "sgId": "20260603",
+    "wiwName": "용인시처인구",
+    "wOrder": "125",
+    "sdName": "경기도"
+  },
+  {
+    "num": "125",
+    "sgId": "20260603",
+    "wiwName": "용인시수지구",
+    "wOrder": "126",
+    "sdName": "경기도"
+  },
+  {
+    "num": "126",
+    "sgId": "20260603",
+    "wiwName": "용인시기흥구",
+    "wOrder": "127",
+    "sdName": "경기도"
+  },
+  {
+    "num": "127",
+    "sgId": "20260603",
+    "wiwName": "안성시",
+    "wOrder": "128",
+    "sdName": "경기도"
+  },
+  {
+    "num": "128",
+    "sgId": "20260603",
+    "wiwName": "김포시",
+    "wOrder": "129",
+    "sdName": "경기도"
+  },
+  {
+    "num": "129",
+    "sgId": "20260603",
+    "wiwName": "광주시",
+    "wOrder": "130",
+    "sdName": "경기도"
+  },
+  {
+    "num": "130",
+    "sgId": "20260603",
+    "wiwName": "포천시",
+    "wOrder": "131",
+    "sdName": "경기도"
+  },
+  {
+    "num": "131",
+    "sgId": "20260603",
+    "wiwName": "연천군",
+    "wOrder": "132",
+    "sdName": "경기도"
+  },
+  {
+    "num": "132",
+    "sgId": "20260603",
+    "wiwName": "양평군",
+    "wOrder": "133",
+    "sdName": "경기도"
+  },
+  {
+    "num": "133",
+    "sgId": "20260603",
+    "wiwName": "가평군",
+    "wOrder": "134",
+    "sdName": "경기도"
+  },
+  {
+    "num": "134",
+    "sgId": "20260603",
+    "wiwName": "강원특별자치도",
+    "wOrder": "135",
+    "sdName": ""
+  },
+  {
+    "num": "135",
+    "sgId": "20260603",
+    "wiwName": "춘천시",
+    "wOrder": "136",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "136",
+    "sgId": "20260603",
+    "wiwName": "원주시",
+    "wOrder": "137",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "137",
+    "sgId": "20260603",
+    "wiwName": "강릉시",
+    "wOrder": "138",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "138",
+    "sgId": "20260603",
+    "wiwName": "동해시",
+    "wOrder": "139",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "139",
+    "sgId": "20260603",
+    "wiwName": "삼척시",
+    "wOrder": "140",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "140",
+    "sgId": "20260603",
+    "wiwName": "태백시",
+    "wOrder": "141",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "141",
+    "sgId": "20260603",
+    "wiwName": "정선군",
+    "wOrder": "142",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "142",
+    "sgId": "20260603",
+    "wiwName": "속초시",
+    "wOrder": "143",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "143",
+    "sgId": "20260603",
+    "wiwName": "고성군",
+    "wOrder": "144",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "144",
+    "sgId": "20260603",
+    "wiwName": "양양군",
+    "wOrder": "145",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "145",
+    "sgId": "20260603",
+    "wiwName": "인제군",
+    "wOrder": "146",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "146",
+    "sgId": "20260603",
+    "wiwName": "홍천군",
+    "wOrder": "147",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "147",
+    "sgId": "20260603",
+    "wiwName": "횡성군",
+    "wOrder": "148",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "148",
+    "sgId": "20260603",
+    "wiwName": "영월군",
+    "wOrder": "149",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "149",
+    "sgId": "20260603",
+    "wiwName": "평창군",
+    "wOrder": "150",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "150",
+    "sgId": "20260603",
+    "wiwName": "화천군",
+    "wOrder": "151",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "151",
+    "sgId": "20260603",
+    "wiwName": "양구군",
+    "wOrder": "152",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "152",
+    "sgId": "20260603",
+    "wiwName": "철원군",
+    "wOrder": "153",
+    "sdName": "강원특별자치도"
+  },
+  {
+    "num": "153",
+    "sgId": "20260603",
+    "wiwName": "충청북도",
+    "wOrder": "154",
+    "sdName": ""
+  },
+  {
+    "num": "154",
+    "sgId": "20260603",
+    "wiwName": "청주시상당구",
+    "wOrder": "155",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "155",
+    "sgId": "20260603",
+    "wiwName": "청주시서원구",
+    "wOrder": "156",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "156",
+    "sgId": "20260603",
+    "wiwName": "청주시흥덕구",
+    "wOrder": "157",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "157",
+    "sgId": "20260603",
+    "wiwName": "청주시청원구",
+    "wOrder": "158",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "158",
+    "sgId": "20260603",
+    "wiwName": "충주시",
+    "wOrder": "159",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "159",
+    "sgId": "20260603",
+    "wiwName": "제천시",
+    "wOrder": "160",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "160",
+    "sgId": "20260603",
+    "wiwName": "단양군",
+    "wOrder": "161",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "161",
+    "sgId": "20260603",
+    "wiwName": "영동군",
+    "wOrder": "162",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "162",
+    "sgId": "20260603",
+    "wiwName": "보은군",
+    "wOrder": "163",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "163",
+    "sgId": "20260603",
+    "wiwName": "옥천군",
+    "wOrder": "164",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "164",
+    "sgId": "20260603",
+    "wiwName": "음성군",
+    "wOrder": "165",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "165",
+    "sgId": "20260603",
+    "wiwName": "진천군",
+    "wOrder": "166",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "166",
+    "sgId": "20260603",
+    "wiwName": "괴산군",
+    "wOrder": "167",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "167",
+    "sgId": "20260603",
+    "wiwName": "증평군",
+    "wOrder": "168",
+    "sdName": "충청북도"
+  },
+  {
+    "num": "168",
+    "sgId": "20260603",
+    "wiwName": "충청남도",
+    "wOrder": "169",
+    "sdName": ""
+  },
+  {
+    "num": "169",
+    "sgId": "20260603",
+    "wiwName": "천안시서북구",
+    "wOrder": "170",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "170",
+    "sgId": "20260603",
+    "wiwName": "천안시동남구",
+    "wOrder": "171",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "171",
+    "sgId": "20260603",
+    "wiwName": "공주시",
+    "wOrder": "172",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "172",
+    "sgId": "20260603",
+    "wiwName": "보령시",
+    "wOrder": "173",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "173",
+    "sgId": "20260603",
+    "wiwName": "아산시",
+    "wOrder": "174",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "174",
+    "sgId": "20260603",
+    "wiwName": "서산시",
+    "wOrder": "175",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "175",
+    "sgId": "20260603",
+    "wiwName": "태안군",
+    "wOrder": "176",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "176",
+    "sgId": "20260603",
+    "wiwName": "금산군",
+    "wOrder": "177",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "177",
+    "sgId": "20260603",
+    "wiwName": "논산시",
+    "wOrder": "178",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "178",
+    "sgId": "20260603",
+    "wiwName": "계룡시",
+    "wOrder": "179",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "179",
+    "sgId": "20260603",
+    "wiwName": "당진시",
+    "wOrder": "180",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "180",
+    "sgId": "20260603",
+    "wiwName": "부여군",
+    "wOrder": "181",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "181",
+    "sgId": "20260603",
+    "wiwName": "서천군",
+    "wOrder": "182",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "182",
+    "sgId": "20260603",
+    "wiwName": "홍성군",
+    "wOrder": "183",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "183",
+    "sgId": "20260603",
+    "wiwName": "청양군",
+    "wOrder": "184",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "184",
+    "sgId": "20260603",
+    "wiwName": "예산군",
+    "wOrder": "185",
+    "sdName": "충청남도"
+  },
+  {
+    "num": "185",
+    "sgId": "20260603",
+    "wiwName": "전북특별자치도",
+    "wOrder": "186",
+    "sdName": ""
+  },
+  {
+    "num": "186",
+    "sgId": "20260603",
+    "wiwName": "전주시완산구",
+    "wOrder": "187",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "187",
+    "sgId": "20260603",
+    "wiwName": "전주시덕진구",
+    "wOrder": "188",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "188",
+    "sgId": "20260603",
+    "wiwName": "군산시",
+    "wOrder": "189",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "189",
+    "sgId": "20260603",
+    "wiwName": "익산시",
+    "wOrder": "190",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "190",
+    "sgId": "20260603",
+    "wiwName": "정읍시",
+    "wOrder": "191",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "191",
+    "sgId": "20260603",
+    "wiwName": "남원시",
+    "wOrder": "192",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "192",
+    "sgId": "20260603",
+    "wiwName": "김제시",
+    "wOrder": "193",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "193",
+    "sgId": "20260603",
+    "wiwName": "완주군",
+    "wOrder": "194",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "194",
+    "sgId": "20260603",
+    "wiwName": "진안군",
+    "wOrder": "195",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "195",
+    "sgId": "20260603",
+    "wiwName": "무주군",
+    "wOrder": "196",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "196",
+    "sgId": "20260603",
+    "wiwName": "장수군",
+    "wOrder": "197",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "197",
+    "sgId": "20260603",
+    "wiwName": "임실군",
+    "wOrder": "198",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "198",
+    "sgId": "20260603",
+    "wiwName": "순창군",
+    "wOrder": "199",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "199",
+    "sgId": "20260603",
+    "wiwName": "고창군",
+    "wOrder": "200",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "200",
+    "sgId": "20260603",
+    "wiwName": "부안군",
+    "wOrder": "201",
+    "sdName": "전북특별자치도"
+  },
+  {
+    "num": "201",
+    "sgId": "20260603",
+    "wiwName": "전라남도",
+    "wOrder": "202",
+    "sdName": ""
+  },
+  {
+    "num": "202",
+    "sgId": "20260603",
+    "wiwName": "목포시",
+    "wOrder": "203",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "203",
+    "sgId": "20260603",
+    "wiwName": "여수시",
+    "wOrder": "204",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "204",
+    "sgId": "20260603",
+    "wiwName": "순천시",
+    "wOrder": "205",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "205",
+    "sgId": "20260603",
+    "wiwName": "나주시",
+    "wOrder": "206",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "206",
+    "sgId": "20260603",
+    "wiwName": "광양시",
+    "wOrder": "207",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "207",
+    "sgId": "20260603",
+    "wiwName": "담양군",
+    "wOrder": "208",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "208",
+    "sgId": "20260603",
+    "wiwName": "장성군",
+    "wOrder": "209",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "209",
+    "sgId": "20260603",
+    "wiwName": "곡성군",
+    "wOrder": "210",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "210",
+    "sgId": "20260603",
+    "wiwName": "구례군",
+    "wOrder": "211",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "211",
+    "sgId": "20260603",
+    "wiwName": "고흥군",
+    "wOrder": "212",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "212",
+    "sgId": "20260603",
+    "wiwName": "보성군",
+    "wOrder": "213",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "213",
+    "sgId": "20260603",
+    "wiwName": "화순군",
+    "wOrder": "214",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "214",
+    "sgId": "20260603",
+    "wiwName": "장흥군",
+    "wOrder": "215",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "215",
+    "sgId": "20260603",
+    "wiwName": "강진군",
+    "wOrder": "216",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "216",
+    "sgId": "20260603",
+    "wiwName": "완도군",
+    "wOrder": "217",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "217",
+    "sgId": "20260603",
+    "wiwName": "해남군",
+    "wOrder": "218",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "218",
+    "sgId": "20260603",
+    "wiwName": "진도군",
+    "wOrder": "219",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "219",
+    "sgId": "20260603",
+    "wiwName": "영암군",
+    "wOrder": "220",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "220",
+    "sgId": "20260603",
+    "wiwName": "무안군",
+    "wOrder": "221",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "221",
+    "sgId": "20260603",
+    "wiwName": "영광군",
+    "wOrder": "222",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "222",
+    "sgId": "20260603",
+    "wiwName": "함평군",
+    "wOrder": "223",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "223",
+    "sgId": "20260603",
+    "wiwName": "신안군",
+    "wOrder": "224",
+    "sdName": "전라남도"
+  },
+  {
+    "num": "224",
+    "sgId": "20260603",
+    "wiwName": "경상북도",
+    "wOrder": "225",
+    "sdName": ""
+  },
+  {
+    "num": "225",
+    "sgId": "20260603",
+    "wiwName": "포항시북구",
+    "wOrder": "226",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "226",
+    "sgId": "20260603",
+    "wiwName": "포항시남구",
+    "wOrder": "227",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "227",
+    "sgId": "20260603",
+    "wiwName": "울릉군",
+    "wOrder": "228",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "228",
+    "sgId": "20260603",
+    "wiwName": "경주시",
+    "wOrder": "229",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "229",
+    "sgId": "20260603",
+    "wiwName": "김천시",
+    "wOrder": "230",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "230",
+    "sgId": "20260603",
+    "wiwName": "안동시",
+    "wOrder": "231",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "231",
+    "sgId": "20260603",
+    "wiwName": "구미시",
+    "wOrder": "232",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "232",
+    "sgId": "20260603",
+    "wiwName": "영주시",
+    "wOrder": "233",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "233",
+    "sgId": "20260603",
+    "wiwName": "영천시",
+    "wOrder": "234",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "234",
+    "sgId": "20260603",
+    "wiwName": "상주시",
+    "wOrder": "235",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "235",
+    "sgId": "20260603",
+    "wiwName": "문경시",
+    "wOrder": "236",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "236",
+    "sgId": "20260603",
+    "wiwName": "예천군",
+    "wOrder": "237",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "237",
+    "sgId": "20260603",
+    "wiwName": "경산시",
+    "wOrder": "238",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "238",
+    "sgId": "20260603",
+    "wiwName": "청도군",
+    "wOrder": "239",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "239",
+    "sgId": "20260603",
+    "wiwName": "고령군",
+    "wOrder": "240",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "240",
+    "sgId": "20260603",
+    "wiwName": "성주군",
+    "wOrder": "241",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "241",
+    "sgId": "20260603",
+    "wiwName": "칠곡군",
+    "wOrder": "242",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "242",
+    "sgId": "20260603",
+    "wiwName": "의성군",
+    "wOrder": "243",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "243",
+    "sgId": "20260603",
+    "wiwName": "청송군",
+    "wOrder": "244",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "244",
+    "sgId": "20260603",
+    "wiwName": "영양군",
+    "wOrder": "245",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "245",
+    "sgId": "20260603",
+    "wiwName": "영덕군",
+    "wOrder": "246",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "246",
+    "sgId": "20260603",
+    "wiwName": "봉화군",
+    "wOrder": "247",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "247",
+    "sgId": "20260603",
+    "wiwName": "울진군",
+    "wOrder": "248",
+    "sdName": "경상북도"
+  },
+  {
+    "num": "248",
+    "sgId": "20260603",
+    "wiwName": "경상남도",
+    "wOrder": "249",
+    "sdName": ""
+  },
+  {
+    "num": "249",
+    "sgId": "20260603",
+    "wiwName": "창원시의창구",
+    "wOrder": "250",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "250",
+    "sgId": "20260603",
+    "wiwName": "창원시성산구",
+    "wOrder": "251",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "251",
+    "sgId": "20260603",
+    "wiwName": "창원시마산합포구",
+    "wOrder": "252",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "252",
+    "sgId": "20260603",
+    "wiwName": "창원시마산회원구",
+    "wOrder": "253",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "253",
+    "sgId": "20260603",
+    "wiwName": "창원시진해구",
+    "wOrder": "254",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "254",
+    "sgId": "20260603",
+    "wiwName": "진주시",
+    "wOrder": "255",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "255",
+    "sgId": "20260603",
+    "wiwName": "통영시",
+    "wOrder": "256",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "256",
+    "sgId": "20260603",
+    "wiwName": "고성군",
+    "wOrder": "257",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "257",
+    "sgId": "20260603",
+    "wiwName": "사천시",
+    "wOrder": "258",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "258",
+    "sgId": "20260603",
+    "wiwName": "김해시",
+    "wOrder": "259",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "259",
+    "sgId": "20260603",
+    "wiwName": "밀양시",
+    "wOrder": "260",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "260",
+    "sgId": "20260603",
+    "wiwName": "거제시",
+    "wOrder": "261",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "261",
+    "sgId": "20260603",
+    "wiwName": "의령군",
+    "wOrder": "262",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "262",
+    "sgId": "20260603",
+    "wiwName": "함안군",
+    "wOrder": "263",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "263",
+    "sgId": "20260603",
+    "wiwName": "창녕군",
+    "wOrder": "264",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "264",
+    "sgId": "20260603",
+    "wiwName": "양산시",
+    "wOrder": "265",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "265",
+    "sgId": "20260603",
+    "wiwName": "하동군",
+    "wOrder": "266",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "266",
+    "sgId": "20260603",
+    "wiwName": "남해군",
+    "wOrder": "267",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "267",
+    "sgId": "20260603",
+    "wiwName": "함양군",
+    "wOrder": "268",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "268",
+    "sgId": "20260603",
+    "wiwName": "산청군",
+    "wOrder": "269",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "269",
+    "sgId": "20260603",
+    "wiwName": "거창군",
+    "wOrder": "270",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "270",
+    "sgId": "20260603",
+    "wiwName": "합천군",
+    "wOrder": "271",
+    "sdName": "경상남도"
+  },
+  {
+    "num": "271",
+    "sgId": "20260603",
+    "wiwName": "제주특별자치도",
+    "wOrder": "272",
+    "sdName": ""
+  },
+  {
+    "num": "272",
+    "sgId": "20260603",
+    "wiwName": "제주시",
+    "wOrder": "273",
+    "sdName": "제주특별자치도"
+  },
+  {
+    "num": "273",
+    "sgId": "20260603",
+    "wiwName": "서귀포시",
+    "wOrder": "274",
+    "sdName": "제주특별자치도"
+  }
+]

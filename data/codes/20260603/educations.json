@@ -1,0 +1,149 @@
+[
+  {
+    "num": "1",
+    "sgId": "20260603",
+    "eduId": "58",
+    "eduName": "미기재",
+    "eOrder": "1"
+  },
+  {
+    "num": "2",
+    "sgId": "20260603",
+    "eduId": "59",
+    "eduName": "무학(독학)",
+    "eOrder": "2"
+  },
+  {
+    "num": "3",
+    "sgId": "20260603",
+    "eduId": "60",
+    "eduName": "초퇴",
+    "eOrder": "3"
+  },
+  {
+    "num": "4",
+    "sgId": "20260603",
+    "eduId": "61",
+    "eduName": "초졸",
+    "eOrder": "4"
+  },
+  {
+    "num": "5",
+    "sgId": "20260603",
+    "eduId": "71",
+    "eduName": "중재",
+    "eOrder": "5"
+  },
+  {
+    "num": "6",
+    "sgId": "20260603",
+    "eduId": "62",
+    "eduName": "중퇴",
+    "eOrder": "6"
+  },
+  {
+    "num": "7",
+    "sgId": "20260603",
+    "eduId": "63",
+    "eduName": "중졸",
+    "eOrder": "7"
+  },
+  {
+    "num": "8",
+    "sgId": "20260603",
+    "eduId": "70",
+    "eduName": "고재",
+    "eOrder": "8"
+  },
+  {
+    "num": "9",
+    "sgId": "20260603",
+    "eduId": "64",
+    "eduName": "고퇴",
+    "eOrder": "9"
+  },
+  {
+    "num": "10",
+    "sgId": "20260603",
+    "eduId": "65",
+    "eduName": "고졸",
+    "eOrder": "10"
+  },
+  {
+    "num": "11",
+    "sgId": "20260603",
+    "eduId": "763",
+    "eduName": "전문대재",
+    "eOrder": "11"
+  },
+  {
+    "num": "12",
+    "sgId": "20260603",
+    "eduId": "764",
+    "eduName": "전문대퇴",
+    "eOrder": "12"
+  },
+  {
+    "num": "13",
+    "sgId": "20260603",
+    "eduId": "765",
+    "eduName": "전문대졸",
+    "eOrder": "13"
+  },
+  {
+    "num": "14",
+    "sgId": "20260603",
+    "eduId": "67",
+    "eduName": "대재",
+    "eOrder": "14"
+  },
+  {
+    "num": "15",
+    "sgId": "20260603",
+    "eduId": "66",
+    "eduName": "대퇴",
+    "eOrder": "15"
+  },
+  {
+    "num": "16",
+    "sgId": "20260603",
+    "eduId": "270",
+    "eduName": "대학교수료",
+    "eOrder": "16"
+  },
+  {
+    "num": "17",
+    "sgId": "20260603",
+    "eduId": "68",
+    "eduName": "대졸",
+    "eOrder": "17"
+  },
+  {
+    "num": "18",
+    "sgId": "20260603",
+    "eduId": "220",
+    "eduName": "대학원재",
+    "eOrder": "18"
+  },
+  {
+    "num": "19",
+    "sgId": "20260603",
+    "eduId": "766",
+    "eduName": "대학원퇴",
+    "eOrder": "19"
+  },
+  {
+    "num": "20",
+    "sgId": "20260603",
+    "eduId": "69",
+    "eduName": "대학원수료",
+    "eOrder": "20"
+  },
+  {
+    "num": "21",
+    "sgId": "20260603",
+    "eduId": "221",
+    "eduName": "대학원졸",
+    "eOrder": "21"
+  }
+]
