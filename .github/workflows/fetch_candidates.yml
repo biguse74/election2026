@@ -1,0 +1,58 @@
+name: 후보자 일일 스냅샷
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+on:
+  schedule:
+    - cron: '15 18 * * *'   # 매일 KST 03:15 (예비와 15분 시차)
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 시작 일자 확인
+        id: start_check
+        run: |
+          today=$(date +%Y%m%d)
+          if [ "$today" -lt "20260514" ]; then
+            echo "5/14 이전이라 후보자 정보가 아직 OpenAPI에 없습니다."
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 후보자 수집
+        if: steps.start_check.outputs.skip != 'true'
+        env:
+          NEC_API_KEY: ${{ secrets.NEC_API_KEY }}
+        run: python scripts/fetch_candidates.py
+
+      - name: 변경사항 커밋·푸시
+        if: steps.start_check.outputs.skip != 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+          else
+            git commit -m "data: 후보자 스냅샷 $(date -u +%Y-%m-%d)"
+            git push
+          fi
