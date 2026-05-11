@@ -6,6 +6,23 @@ const SIDO_ALIASES = {
   '전라남도': '전남광주통합특별시',
 };
 
+// 행정안전부 표준 시도 정렬 순서 (서울 → 광역시 → 도 → 제주)
+const SIDO_ORDER = [
+  '서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시',
+  '대전광역시', '울산광역시', '세종특별자치시', '경기도', '강원특별자치도',
+  '충청북도', '충청남도', '전북특별자치도', '전라남도', '경상북도', '경상남도', '제주특별자치도',
+];
+
+const sidoSort = (a, b) => {
+  const ai = SIDO_ORDER.indexOf(a);
+  const bi = SIDO_ORDER.indexOf(b);
+  if (ai === -1 && bi === -1) return a.localeCompare(b, 'ko');
+  if (ai === -1) return 1;
+  if (bi === -1) return -1;
+  return ai - bi;
+};
+
+
 // 선거 종류별 정의 — 단일 소스. 신규 선거 추가 시 여기만 손대면 됨.
 //   card    : 홈 시도 카드 통계에 노출
 //   detail  : 시도 상세 페이지 섹션 정의 (없으면 상세에 미노출)
@@ -204,7 +221,7 @@ function renderHome() {
   const totalParties = new Set(cands.map(c => c.jdName)).size;
 
   // 시도 목록 (sdName 기준, '전국' 제외)
-  const sidos = Array.from(new Set(cands.map(c => c.sdName).filter(s => s && s !== '전국'))).sort(koSort);
+  const sidos = Array.from(new Set(cands.map(c => c.sdName).filter(s => s && s !== '전국'))).sort(sidoSort);
 
   const nomSrc = state.nominations
     ? `<p class="nominations-source">★ <strong>공천</strong> 배지: ${state.nominations.source}</p>`
