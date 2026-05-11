@@ -62,8 +62,12 @@ function dedupeByHuboid(list) {
   return out;
 }
 
+// 후보등록일(2026-05-14) 이후엔 공천 배지가 정보가치를 잃음(등록=확정). 자동으로 숨김.
+const NOMINATION_CUTOFF = '20260514';
+
 function isConfirmed(c) {
   if (!state.nominations) return false;
+  if (state.dateStr && state.dateStr >= NOMINATION_CUTOFF) return false;
   const groups = state.nominations[`sgTypecode_${c.sgTypecode}`];
   if (!groups) return false;
   const list = groups[c.sggName || c.sdName];
@@ -223,7 +227,8 @@ function renderHome() {
   // 시도 목록 (sdName 기준, '전국' 제외)
   const sidos = Array.from(new Set(cands.map(c => c.sdName).filter(s => s && s !== '전국'))).sort(sidoSort);
 
-  const nomSrc = state.nominations
+  const nomActive = state.nominations && (!state.dateStr || state.dateStr < NOMINATION_CUTOFF);
+  const nomSrc = nomActive
     ? `<p class="nominations-source">★ <strong>공천</strong> 배지: ${state.nominations.source}</p>`
     : '';
 
