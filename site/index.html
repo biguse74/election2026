@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
   :root {
     --bg: #f5f1ea; --bg-card: #fffdf8; --ink: #1a1a1a; --ink-sub: #555;
@@ -34,8 +35,14 @@
   .stat-value { font-family: var(--serif); font-size: 1.85rem; font-weight: 700; line-height: 1; }
   .stat-sub { font-size: 0.85rem; color: var(--ink-sub); margin-top: 0.25rem; }
   .section-title { font-family: var(--serif); font-weight: 700; font-size: 1.75rem; margin: 2rem 0 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--ink); }
+  .section-hint { font-size: 0.9rem; color: var(--ink-sub); margin-top: -1rem; margin-bottom: 1.5rem; font-style: italic; }
+  #map { height: 600px; border: 1px solid var(--rule); background: var(--bg-card); margin-bottom: 3rem; }
+  .leaflet-container { background: var(--bg) !important; font-family: var(--sans) !important; }
+  .sido-tooltip { background: var(--ink) !important; color: #fff !important; border: none !important; font-family: var(--serif) !important; font-weight: 700 !important; padding: 0.3rem 0.7rem !important; }
+  .sido-tooltip::before { display: none !important; }
   .region-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
-  .region { background: var(--bg-card); border: 1px solid var(--rule); padding: 1.25rem 1.5rem; }
+  .region { background: var(--bg-card); border: 1px solid var(--rule); padding: 1.25rem 1.5rem; transition: all 0.3s ease; scroll-margin-top: 100px; }
+  .region.highlight { border-color: var(--accent); border-width: 2px; box-shadow: 0 4px 16px rgba(196,30,58,0.18); }
   .region-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule); }
   .region-name { font-family: var(--serif); font-weight: 700; font-size: 1.15rem; }
   .region-count { font-size: 0.85rem; color: var(--ink-sub); }
@@ -70,6 +77,8 @@
   데이터 출처: <a href="https://www.data.go.kr" target="_blank" rel="noopener">공공데이터포털</a> 중앙선거관리위원회 OpenAPI ·
   마지막 갱신: <span id="last-updated">—</span>
 </footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 const ELECTION_DATE = '2026-06-03T00:00:00';
 
@@ -91,6 +100,11 @@ async function loadParties() {
   } catch { return {}; }
 }
 
+async function loadGeo() {
+  const resp = await fetch('assets/geo/sido.geojson');
+  return resp.ok ? await resp.json() : null;
+}
+
 async function loadLatestPreliminary() {
   const today = new Date();
   for (let i = 0; i < 14; i++) {
@@ -108,7 +122,53 @@ async function loadLatestPreliminary() {
   throw new Error('최근 14일 내 스냅샷 파일을 찾지 못했습니다.');
 }
 
-function render(data, parties) {
+function scrollToSido(name) {
+  const card = document.querySelector(`[data-sido="${CSS.escape(name)}"]`);
+  if (card) {
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.querySelectorAll('.region.highlight').forEach(el => el.classList.remove('highlight'));
+    card.classList.add('highlight');
+    setTimeout(() => card.classList.remove('highlight'), 2500);
+  }
+}
+
+function initMap(geo, bySido) {
+  const map = L.map('map', {
+    zoomControl: true,
+    scrollWheelZoom: false,
+    attributionControl: false,
+  }).setView([36.0, 127.7], 7);
+
+  const baseStyle = { fillColor: '#e8e0d0', weight: 1, color: '#999', fillOpacity: 0.55 };
+  const hoverStyle = { fillColor: '#f4d35e', weight: 2, color: '#1a1a1a', fillOpacity: 0.75 };
+
+  const layer = L.geoJSON(geo, {
+    style: baseStyle,
+    onEachFeature: (feature, layer) => {
+      const name = feature.properties.name;
+      // 시도지사 선거구 매칭 (광주/전남 → 전남광주통합특별시)
+      let matched = bySido[name];
+      if (!matched && (name === '광주광역시' || name === '전라남도')) {
+        matched = bySido['전남광주통합특별시'];
+      }
+      const count = matched ? matched.length : 0;
+      layer.bindTooltip(`${name} <span style="opacity:0.7">· ${count}명</span>`, {
+        sticky: true, className: 'sido-tooltip', direction: 'top',
+      });
+      layer.on('mouseover', e => e.target.setStyle(hoverStyle));
+      layer.on('mouseout', e => layer.resetStyle ? layer.resetStyle(e.target) : e.target.setStyle(baseStyle));
+      layer.on('click', () => {
+        let targetName = name;
+        if (name === '광주광역시' || name === '전라남도') targetName = '전남광주통합특별시';
+        scrollToSido(targetName);
+      });
+    },
+  }).addTo(map);
+
+  map.fitBounds(layer.getBounds(), { padding: [20, 20] });
+}
+
+function render(data, parties, geo) {
   const cands = data.candidates;
   const byType = {};
   for (const c of cands) {
@@ -150,11 +210,13 @@ function render(data, parties) {
       </div>
     </div>
     <h2 class="section-title">시도지사 후보자</h2>
+    <p class="section-hint">지도에서 시도를 클릭하면 해당 카드로 이동합니다.</p>
+    <div id="map"></div>
     <div class="region-grid">
       ${sortedRegions.map(region => {
         const list = bySido[region];
         return `
-          <div class="region">
+          <div class="region" data-sido="${region}">
             <div class="region-header">
               <div class="region-name">${region}</div>
               <div class="region-count">${list.length}명</div>
@@ -173,18 +235,21 @@ function render(data, parties) {
   const content = document.getElementById('content');
   content.innerHTML = html;
   content.classList.remove('loading');
+
+  if (geo) initMap(geo, bySido);
 }
 
 async function main() {
   calculateDDay();
   try {
-    const [{ data, dateStr }, parties] = await Promise.all([
+    const [{ data, dateStr }, parties, geo] = await Promise.all([
       loadLatestPreliminary(),
       loadParties(),
+      loadGeo(),
     ]);
     const dateFmt = `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)}`;
     document.getElementById('last-updated').textContent = dateFmt;
-    render(data, parties);
+    render(data, parties, geo);
   } catch (e) {
     document.getElementById('content').innerHTML =
       `<div class="loading">데이터 로딩 실패: ${e.message}</div>`;
