@@ -1,0 +1,92 @@
+:root {
+  --bg: #f5f1ea; --bg-card: #fffdf8; --ink: #1a1a1a; --ink-sub: #555;
+  --rule: #d8d2c8; --accent: #c41e3a; --highlight: #f4d35e;
+  --serif: 'Noto Serif KR', serif;
+  --sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+a { color: inherit; }
+
+/* Header */
+.header { border-bottom: 3px double var(--ink); padding: 2rem 2rem 1.25rem; }
+.header-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
+.brand { text-decoration: none; }
+.title { font-family: var(--serif); font-weight: 900; font-size: clamp(1.75rem, 4.5vw, 3rem); line-height: 1; letter-spacing: -0.02em; }
+.subtitle { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--ink-sub); margin-top: 0.4rem; letter-spacing: 0.04em; }
+.dday { text-align: right; font-family: var(--serif); }
+.dday-label { font-size: 0.75rem; color: var(--ink-sub); letter-spacing: 0.15em; text-transform: uppercase; }
+.dday-number { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1; color: var(--accent); }
+.dday-date { font-size: 0.85rem; color: var(--ink-sub); margin-top: 0.2rem; }
+
+/* Layout */
+main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+.loading { padding: 4rem 0; text-align: center; color: var(--ink-sub); font-family: var(--serif); font-style: italic; }
+
+/* Stats bar */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 3rem; }
+.stat { padding: 1.25rem 1.5rem; border-right: 1px solid var(--rule); }
+.stat:last-child { border-right: none; }
+.stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-sub); margin-bottom: 0.5rem; }
+.stat-value { font-family: var(--serif); font-size: 1.85rem; font-weight: 700; line-height: 1; }
+.stat-sub { font-size: 0.85rem; color: var(--ink-sub); margin-top: 0.25rem; }
+
+/* Section */
+.section-title { font-family: var(--serif); font-weight: 700; font-size: 1.75rem; margin: 2.5rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--ink); }
+.section-title:first-of-type { margin-top: 0; }
+.section-hint { font-size: 0.9rem; color: var(--ink-sub); margin-top: -0.75rem; margin-bottom: 1.5rem; font-style: italic; }
+
+/* Map */
+#map { height: 520px; border: 1px solid var(--rule); background: var(--bg-card); margin-bottom: 2.5rem; }
+.leaflet-container { background: var(--bg) !important; font-family: var(--sans) !important; }
+.sido-tooltip { background: var(--ink) !important; color: #fff !important; border: none !important; font-family: var(--serif) !important; font-weight: 700 !important; padding: 0.3rem 0.7rem !important; }
+.sido-tooltip::before { display: none !important; }
+
+/* 시도 그리드 (홈) */
+.sido-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
+.sido-card { display: block; background: var(--bg-card); border: 1px solid var(--rule); padding: 1.1rem 1.25rem; text-decoration: none; color: inherit; transition: all 0.18s ease; }
+.sido-card:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+.sido-card-name { font-family: var(--serif); font-weight: 700; font-size: 1.2rem; margin-bottom: 0.7rem; }
+.sido-card-stats { font-size: 0.85rem; color: var(--ink-sub); display: grid; gap: 0.25rem; }
+.sido-card-stats strong { color: var(--ink); font-weight: 700; }
+
+/* Breadcrumb */
+.breadcrumb { font-size: 0.9rem; color: var(--ink-sub); margin-bottom: 1rem; }
+.breadcrumb a { color: var(--ink-sub); text-decoration: none; }
+.breadcrumb a:hover { color: var(--accent); text-decoration: underline; }
+.breadcrumb .sep { margin: 0 0.4rem; color: var(--rule); }
+.breadcrumb .current { color: var(--ink); font-weight: 500; }
+
+/* 시도 상세 헤더 */
+.detail-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; padding-bottom: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--ink); }
+.detail-title { font-family: var(--serif); font-weight: 900; font-size: clamp(1.75rem, 4vw, 2.5rem); }
+.detail-inline-stats { display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.9rem; color: var(--ink-sub); }
+.detail-inline-stats strong { color: var(--ink); font-weight: 700; font-size: 1.1rem; }
+
+/* Candidate card (공통) */
+.candidate-card { background: var(--bg-card); border: 1px solid var(--rule); padding: 1rem 1.25rem; }
+.cc-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule); }
+.cc-name { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; }
+.cc-count { font-size: 0.8rem; color: var(--ink-sub); }
+.cc-empty { font-size: 0.85rem; color: var(--ink-sub); font-style: italic; padding: 0.5rem 0; }
+
+/* Candidate row */
+.candidate { display: flex; align-items: center; gap: 0.7rem; padding: 0.4rem 0; border-bottom: 1px dotted var(--rule); }
+.candidate:last-child { border-bottom: none; }
+.candidate-color { width: 4px; height: 22px; flex-shrink: 0; }
+.candidate-name { font-weight: 500; flex: 1; font-size: 0.95rem; }
+.candidate-party { font-size: 0.78rem; color: var(--ink-sub); }
+
+/* Grid layouts (상세) */
+.single-section { margin-bottom: 2rem; max-width: 600px; }
+.basic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+
+/* Footer */
+footer { text-align: center; padding: 2rem; font-size: 0.85rem; color: var(--ink-sub); border-top: 1px solid var(--rule); }
+footer a { color: var(--accent); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* 공천 확정 배지 */
+.candidate.confirmed .candidate-name { font-weight: 700; }
+.confirmed-badge { display: inline-block; margin-left: 0.4rem; font-size: 0.65rem; background: var(--accent); color: #fff; padding: 0.12rem 0.4rem; border-radius: 2px; font-weight: 700; letter-spacing: 0.05em; vertical-align: 2px; }
+.nominations-source { font-size: 0.8rem; color: var(--ink-sub); margin: -1rem 0 1rem; font-style: italic; }
