@@ -1,0 +1,51 @@
+name: og:image PNG 빌드
+
+# assets/og.svg → assets/og.png 변환. PNG는 카톡·페북 등 한국 SNS에서
+# SVG보다 호환성이 압도적으로 좋다. og.svg가 바뀔 때 자동, 수동 트리거도 가능.
+
+on:
+  push:
+    paths:
+      - 'assets/og.svg'
+      - '.github/workflows/build_og_image.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: librsvg + 한국어 폰트 설치
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin fonts-noto-cjk
+          fc-cache -fv
+
+      - name: SVG → PNG 변환 (1200x630)
+        run: rsvg-convert -w 1200 -h 630 assets/og.svg -o assets/og.png
+
+      - name: 결과 확인
+        run: |
+          ls -la assets/og.png
+          file assets/og.png
+
+      - name: PNG 커밋·푸시
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/og.png
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+            exit 0
+          fi
+          git commit -m "build: assets/og.png 갱신 (rsvg-convert)"
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            git pull --rebase origin main
+          done
+          exit 1
