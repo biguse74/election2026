@@ -743,7 +743,7 @@ function renderHome() {
     ${renderChangesBox()}
     ${renderMpBox()}
     <h2 class="section-title">시도별 후보자
-      <span class="section-count">카드를 클릭하면 해당 지역 상세로 이동합니다.</span>
+      <span class="section-count">카드를 클릭하면 해당 지역 상세 · <a class="section-link" href="#candidates">정당·지역으로 필터 검색 →</a></span>
     </h2>
     ${nomSrc}
     ${artSrc}
@@ -848,6 +848,7 @@ function route() {
   if (!hash) return renderHome();
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
+  if (hash === 'candidates') return renderCandidatesFull();
   if (hash === 'uncontested') return renderUncontestedFull(null);
   if (hash.startsWith('uncontested/')) {
     return renderUncontestedFull(hash.slice('uncontested/'.length));
@@ -970,6 +971,105 @@ function renderCompetitionFull() {
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
+// ============ 후보 전체 목록 + 다중 필터 (#candidates) ============
+const candidatesFilter = { sd: new Set(), sg: new Set(), jd: new Set(), st: new Set() };
+
+function buildFacets() {
+  const cs = state.data.candidates;
+  const sds = Array.from(new Set(cs.map(c => c.sdName).filter(s => s && s !== '전국'))).sort(sidoSort);
+  const sgs = SECTIONS.map(s => ({ code: s.sgTypecode, title: s.title }));
+  // 정당: 등장 빈도 내림차순
+  const partyCount = {};
+  cs.forEach(c => { const j = c.jdName || '무소속'; partyCount[j] = (partyCount[j] || 0) + 1; });
+  const jds = Object.entries(partyCount).sort((a, b) => b[1] - a[1]).map(([j, n]) => ({ name: j, count: n }));
+  // 상태
+  const statusCount = {};
+  cs.forEach(c => { const s = c.status || '등록'; statusCount[s] = (statusCount[s] || 0) + 1; });
+  const sts = Object.entries(statusCount).sort((a, b) => b[1] - a[1]).map(([s, n]) => ({ name: s, count: n }));
+  return { sds, sgs, jds, sts };
+}
+
+function applyCandidatesFilter() {
+  return state.data.candidates.filter(c => {
+    if (candidatesFilter.sd.size && !candidatesFilter.sd.has(c.sdName)) return false;
+    if (candidatesFilter.sg.size && !candidatesFilter.sg.has(String(c.sgTypecode))) return false;
+    if (candidatesFilter.jd.size && !candidatesFilter.jd.has(c.jdName || '무소속')) return false;
+    if (candidatesFilter.st.size && !candidatesFilter.st.has(c.status || '등록')) return false;
+    return true;
+  });
+}
+
+function renderCandidatesFull() {
+  const facets = buildFacets();
+  const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
+
+  const chip = (kind, key, label, count, active) =>
+    `<button type="button" class="filter-chip${active ? ' active' : ''}" data-kind="${kind}" data-key="${encodeURIComponent(key)}">${label}<small>${count.toLocaleString()}</small></button>`;
+
+  const sdChips = facets.sds.map(sd => {
+    const n = state.data.candidates.filter(c => c.sdName === sd).length;
+    return chip('sd', sd, sd, n, candidatesFilter.sd.has(sd));
+  }).join('');
+  const sgChips = facets.sgs.map(s => {
+    const n = state.data.candidates.filter(c => String(c.sgTypecode) === s.code).length;
+    return chip('sg', s.code, s.title, n, candidatesFilter.sg.has(s.code));
+  }).join('');
+  const jdChips = facets.jds.slice(0, 20).map(j =>
+    chip('jd', j.name, j.name, j.count, candidatesFilter.jd.has(j.name))
+  ).join('');
+  const stChips = facets.sts.map(s =>
+    chip('st', s.name, s.name, s.count, candidatesFilter.st.has(s.name))
+  ).join('');
+
+  const filtered = applyCandidatesFilter();
+  const total = state.data.candidates.length;
+  const activeCount = [
+    ...candidatesFilter.sd, ...candidatesFilter.sg, ...candidatesFilter.jd, ...candidatesFilter.st,
+  ].length;
+
+  const rowsHtml = filtered.slice(0, 300).map(c => {
+    const region = formatRegionLabel(c);
+    const sgTitle = titleMap[c.sgTypecode] || '';
+    return `
+      <li class="cand-row">
+        <span class="cand-color" style="background:${partyColor(c.jdName)}"></span>
+        <button type="button" class="cand-name candidate-detail-trigger" data-huboid="${c.huboid}">${c.name}</button>
+        <span class="cand-party">${c.jdName || '무소속'}</span>
+        <span class="cand-region">${region}</span>
+        <span class="cand-type">${sgTitle}</span>
+      </li>`;
+  }).join('');
+  const overflow = filtered.length > 300
+    ? `<p class="filter-overflow">+${(filtered.length - 300).toLocaleString()}명 더. 필터를 더 좁히면 모두 표시됩니다.</p>`
+    : '';
+
+  const html = `
+    <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">후보 찾기</span></nav>
+    <div class="detail-head">
+      <h1 class="detail-title">후보 찾기</h1>
+      <div class="detail-inline-stats">
+        <span><strong>${filtered.length.toLocaleString()}</strong> / ${total.toLocaleString()}명</span>
+        ${activeCount ? `<button type="button" class="filter-reset" data-filter-reset>필터 초기화 (${activeCount})</button>` : ''}
+      </div>
+    </div>
+    <section class="filter-section">
+      <h3 class="filter-group-title">시도</h3>
+      <div class="filter-chips">${sdChips}</div>
+      <h3 class="filter-group-title">선거 종류</h3>
+      <div class="filter-chips">${sgChips}</div>
+      <h3 class="filter-group-title">정당 <small>상위 20개</small></h3>
+      <div class="filter-chips">${jdChips}</div>
+      <h3 class="filter-group-title">등록 상태</h3>
+      <div class="filter-chips">${stChips}</div>
+    </section>
+    <ul class="cand-list">${rowsHtml || '<li class="cand-empty">조건에 맞는 후보가 없습니다.</li>'}</ul>
+    ${overflow}`;
+  const app = document.getElementById('app');
+  app.className = '';
+  app.innerHTML = html;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 // ============ 검색 (헤더 input → 결과 dropdown) ============
 function runSearch(q) {
   const norm = (q || '').trim();
@@ -1010,7 +1110,8 @@ function runSearch(q) {
   const more = matches.length > 30
     ? `<div class="sr-more">+${(matches.length - 30).toLocaleString()}건 더 (검색어를 더 정확히 입력)</div>`
     : '';
-  results.innerHTML = items + more;
+  const filterLink = '<a class="sr-filter-link" href="#candidates">정당·지역·선거로 필터 검색 →</a>';
+  results.innerHTML = items + more + filterLink;
   results.hidden = false;
 }
 
@@ -1114,6 +1215,22 @@ async function main() {
           panel.hidden = !panel.hidden;
           articleBtn.classList.toggle('open', !panel.hidden);
         }
+        return;
+      }
+      const chip = e.target.closest('.filter-chip');
+      if (chip) {
+        const kind = chip.dataset.kind;
+        const key = decodeURIComponent(chip.dataset.key);
+        const set = candidatesFilter[kind];
+        if (set) {
+          if (set.has(key)) set.delete(key); else set.add(key);
+          renderCandidatesFull();
+        }
+        return;
+      }
+      if (e.target.closest('[data-filter-reset]')) {
+        Object.values(candidatesFilter).forEach(s => s.clear());
+        renderCandidatesFull();
         return;
       }
       const expandBtn = e.target.closest('.expand-toggle');
