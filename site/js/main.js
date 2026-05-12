@@ -26,14 +26,15 @@ const sidoSort = (a, b) => {
 // 선거 종류별 정의 — 단일 소스. 신규 선거 추가 시 여기만 손대면 됨.
 //   card    : 홈 시도 카드 통계에 노출
 //   detail  : 시도 상세 페이지 섹션 정의 (없으면 상세에 미노출)
-//     layout : 'single'(단일 카드) | 'grid'(시군구별 그리드)
-//     groupBy: grid에서 그룹 키 추출 함수
+//     layout : 'single'(단일 카드) | 'grid'(시군구별 그리드) | 'collapsible'(선거구별 details 접힘)
+//     groupBy: grid/collapsible에서 그룹 키 추출 함수
 //   useAlias: 통합특별시 alias 매핑 적용 여부
 const SECTIONS = [
-  { id: 'chief',    sgTypecode: '3',  title: '시도지사',   useAlias: true, card: true, detail: { layout: 'single' } },
-  { id: 'head',     sgTypecode: '4',  title: '기초단체장', card: true, detail: { layout: 'grid', groupBy: c => c.sggName || c.wiwName } },
-  { id: 'sidoMp',   sgTypecode: '5',  title: '시도의원',   card: true },
-  { id: 'educator', sgTypecode: '11', title: '교육감',     card: true, detail: { layout: 'single' } },
+  { id: 'chief',    sgTypecode: '3',  title: '시도지사',       useAlias: true, card: true, detail: { layout: 'single' } },
+  { id: 'head',     sgTypecode: '4',  title: '기초단체장',     card: true, detail: { layout: 'grid', groupBy: c => c.sggName || c.wiwName } },
+  { id: 'sidoMp',   sgTypecode: '5',  title: '시도의원',       card: true, detail: { layout: 'collapsible', groupBy: c => c.sggName || c.wiwName || '(미지정)' } },
+  { id: 'wiwMp',    sgTypecode: '6',  title: '구시군의회의원', card: true, detail: { layout: 'collapsible', groupBy: c => c.sggName || c.wiwName || '(미지정)' } },
+  { id: 'educator', sgTypecode: '11', title: '교육감',         card: true, detail: { layout: 'single' } },
 ];
 
 // 행정구조상 선거 자체가 없는 경우의 컨텍스트 메시지.
@@ -41,9 +42,11 @@ const SECTIONS = [
 const ABSENCE_NOTES = {
   '제주특별자치도': {
     '4': '제주특별자치도는 기초자치단체가 없어 행정시(제주시·서귀포시)의 시장이 도지사로부터 임명됩니다. 기초단체장 선거가 실시되지 않습니다.',
+    '6': '제주특별자치도는 기초자치단체가 없어 구시군의회 자체가 없습니다. 기초의원 선거가 실시되지 않습니다.',
   },
   '세종특별자치시': {
     '4': '세종특별자치시는 단층제 광역자치단체로 기초자치단체가 없습니다. 기초단체장 선거가 실시되지 않습니다.',
+    '6': '세종특별자치시는 단층제로 기초자치단체가 없어 구시군의회 자체가 없습니다. 기초의원 선거가 실시되지 않습니다.',
   },
 };
 
@@ -210,6 +213,30 @@ function renderDetailSection(section, sidoName) {
       </div>`;
   }
 
+  if (layout === 'collapsible') {
+    // 선거구 수가 많은 시도의원·구시군의회의원용. 선거구별 details(기본 접힘)로 묶음.
+    const groups = candidates.reduce((acc, c) => {
+      const k = groupBy(c);
+      (acc[k] ||= []).push(c);
+      return acc;
+    }, {});
+    const keys = Object.keys(groups).sort(koSort);
+    return `
+      <h3 class="section-title">${section.title}
+        <span class="section-count">${candidates.length.toLocaleString()}명 · ${keys.length}개 선거구</span>
+      </h3>
+      <div class="collapsible-grid">
+        ${keys.map(k => `
+          <details class="electoral-district">
+            <summary>
+              <span class="ed-name">${k}</span>
+              <span class="ed-count">${groups[k].length}명</span>
+            </summary>
+            <div class="ed-body">${groups[k].map(candidateRow).join('')}</div>
+          </details>`).join('')}
+      </div>`;
+  }
+
   return '';
 }
 
@@ -264,11 +291,18 @@ function renderHome() {
     ? `<p class="nominations-source">★ <strong>공천</strong> 배지: ${state.nominations.source}</p>`
     : '';
 
+  // source('preliminary' | 'candidates')에 따라 라벨 자동 전환
+  const totalLabel = state.source === 'candidates' ? '총 후보자' : '총 예비후보자';
+  const candidateSuffix = state.source === 'candidates' ? '후보' : '예비후보';
+
   const html = `
     <div class="stats">
-      <div class="stat"><div class="stat-label">총 예비후보자</div><div class="stat-value">${cands.length.toLocaleString()}명</div><div class="stat-sub">${state.data.fetched_at.slice(0,10)} 기준</div></div>
-      <div class="stat"><div class="stat-label">시도지사 후보</div><div class="stat-value">${countBy('3').toLocaleString()}명</div><div class="stat-sub">16개 광역단체 선거</div></div>
-      <div class="stat"><div class="stat-label">기초단체장 후보</div><div class="stat-value">${countBy('4').toLocaleString()}명</div><div class="stat-sub">226개 시군구 선거</div></div>
+      <div class="stat"><div class="stat-label">${totalLabel}</div><div class="stat-value">${cands.length.toLocaleString()}명</div><div class="stat-sub">${state.data.fetched_at.slice(0,10)} 기준</div></div>
+      ${SECTIONS.filter(s => s.card).map(s => `
+        <div class="stat">
+          <div class="stat-label">${s.title} ${candidateSuffix}</div>
+          <div class="stat-value">${countBy(s.sgTypecode).toLocaleString()}명</div>
+        </div>`).join('')}
       <div class="stat"><div class="stat-label">참여 정당</div><div class="stat-value">${totalParties}개</div><div class="stat-sub">무소속 포함</div></div>
     </div>
     <h2 class="section-title">전국 지도</h2>

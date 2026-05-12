@@ -81,6 +81,30 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 .single-section { margin-bottom: 2rem; max-width: 600px; }
 .basic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
 
+/* section-title 옆 보조 카운트 (시도의원·구시군의원처럼 선거구 수 많을 때) */
+.section-count { font-family: var(--sans); font-weight: 400; font-size: 0.85rem; color: var(--ink-sub); margin-left: 0.6rem; letter-spacing: 0; }
+
+/* Collapsible 선거구 그리드 (시도의원·구시군의회의원) */
+.collapsible-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.6rem; margin-bottom: 2rem; }
+.electoral-district { background: var(--bg-card); border: 1px solid var(--rule); }
+.electoral-district[open] { border-color: var(--ink); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.electoral-district summary {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0.7rem 1rem; cursor: pointer; user-select: none;
+  list-style: none; gap: 0.6rem;
+}
+.electoral-district summary::-webkit-details-marker { display: none; }
+.electoral-district summary::before {
+  content: '▸'; color: var(--ink-sub); font-size: 0.75rem;
+  display: inline-block; transition: transform 0.15s;
+}
+.electoral-district[open] summary::before { transform: rotate(90deg); }
+.electoral-district summary:hover { background: rgba(196, 30, 58, 0.04); }
+.ed-name { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; flex: 1; }
+.ed-count { font-size: 0.78rem; color: var(--ink-sub); flex-shrink: 0; }
+.ed-body { padding: 0 1rem 0.8rem; border-top: 1px dotted var(--rule); }
+.ed-body .candidate:first-child { padding-top: 0.6rem; }
+
 /* Footer */
 footer { text-align: center; padding: 2rem; font-size: 0.85rem; color: var(--ink-sub); border-top: 1px solid var(--rule); }
 footer a { color: var(--accent); text-decoration: none; }
