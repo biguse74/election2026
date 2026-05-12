@@ -99,50 +99,84 @@ const PARTY_TAGS = {
   '녹색정의당': ['정의'],
 };
 
-// 뉴탐사 보도 태그 ↔ 후보 매칭. 정확도 최우선.
-//   - 이름만 일치는 동명이인 오연결 다발(이재명·한동훈·윤석열 등).
-//   - 시트 기사 태그에 후보의 정당 AND 지역 단서가 모두 함께 있어야 매칭.
-//   - 그렇게 좁혀서 후보가 1명일 때만 연결, 그래도 모호하면 보류.
-function tagsForCandidate(c) {
+// 시트 태그에 등장하지만 후보 매칭에 쓰면 위험한 이름들.
+// (1) 뉴탐사 공천대란 페이지의 NOT_PERSON 리스트를 기반으로 — 시트 운영자가 "후보가 아닌 인물·키워드"로 분류한 것.
+// (2) 박지원·한동훈처럼 시트에선 일반 정치인을 가리키지만 후보 데이터엔 동명이인이 잡히는 케이스 보강.
+const ARTICLE_IGNORE_NAMES = new Set([
+  '이재명','이화영','백정화','박상용','장인수','함돈균','유시민','전우용','김성훈',
+  '정천수','탁현민','송영길','박홍근','윤석열','이낙연','이제일','남성우','김성태',
+  '김건희','방시혁','박대용','민희진','김두일',
+  '박지원','한동훈',
+]);
+
+// 선거 직책 키워드 (시트가 "서울시장"·"강남구청장"처럼 직책으로 적는 케이스 대응).
+function positionTagsForCandidate(c) {
+  const type = String(c.sgTypecode || '');
   const sd = c.sdName || '';
-  const sgg = c.sggName || '';
-  const wiw = c.wiwName || '';
-  const jd  = c.jdName  || '';
+  const sdShort = (SIDO_TAGS[sd] || [sd])[0] || sd;
+  const wiw = c.wiwName || c.sggName || '';
+  const out = [];
+  if (type === '3') {
+    if (sd.includes('특별시') || sd.includes('광역시')) out.push(`${sdShort}시장`);
+    else out.push(`${sdShort}지사`, `${sdShort}도지사`);
+  } else if (type === '4' && wiw) {
+    if (wiw.endsWith('시')) out.push(`${wiw}장`, `${wiw}시장`);
+    else if (wiw.endsWith('군')) out.push(`${wiw}수`, `${wiw}군수`);
+    else if (wiw.endsWith('구')) out.push(`${wiw}청장`, `${wiw}장`);
+    else out.push(`${wiw}장`);
+  } else if (type === '11') {
+    out.push(`${sdShort}교육감`, `${sd}교육감`);
+  }
+  return out.filter(Boolean);
+}
+
+// 뉴탐사 보도 태그 ↔ 후보 매칭. 다음 중 하나라도 만족하면 매칭(후보가 1명으로 좁혀질 때만):
+//   ① 시트 태그에 후보의 직책 키워드(예: "서울시장","강남구청장")가 있음 — 강한 단서
+//   ② 시트 태그에 후보의 정당과 지역이 모두 있음
+//   ③ 후보 데이터에 같은 이름이 1명뿐 + 시트 태그에 지역 단서가 있음
+// + ARTICLE_IGNORE_NAMES에 든 이름은 매칭 후보에서 제외(유명 정치인의 동명이인 차단).
+function tagsForCandidate(c) {
+  const sd = c.sdName || '', sgg = c.sggName || '', wiw = c.wiwName || '', jd = c.jdName || '';
   return {
     region: new Set([sd, sgg, wiw, ...(SIDO_TAGS[sd] || [])].filter(Boolean)),
     party:  new Set([jd, ...(PARTY_TAGS[jd] || [])].filter(Boolean)),
   };
 }
-function hasIntersection(a, b) {
-  for (const x of a) if (b.has(x)) return true;
-  return false;
-}
+function hasIntersection(a, b) { for (const x of a) if (b.has(x)) return true; return false; }
 
 function buildArticleMap(articles, candidates) {
   if (!articles?.length || !candidates?.length) return {};
-  const byName = candidates.reduce((acc, c) => {
-    if (!c.name) return acc;
-    (acc[c.name] ||= []).push(c);
-    return acc;
-  }, {});
+  const byName = {};
+  for (const c of candidates) {
+    if (!c.name || ARTICLE_IGNORE_NAMES.has(c.name)) continue;
+    (byName[c.name] ||= []).push(c);
+  }
+  const nameCount = {};
+  for (const k of Object.keys(byName)) nameCount[k] = byName[k].length;
+
   const map = {};
   for (const art of articles) {
     const tagSet = new Set(art.tags || []);
     for (const tag of art.tags || []) {
       const candList = byName[tag];
       if (!candList?.length) continue;
-      // 정당 AND 지역 단서가 모두 시트 태그에 있는 후보만 (유명 동명이인 차단)
+      const sole = nameCount[tag] === 1;
       const qualified = candList.filter(c => {
+        // ① 직책 키워드 단독
+        if (positionTagsForCandidate(c).some(p => tagSet.has(p))) return true;
         const t = tagsForCandidate(c);
-        return hasIntersection(t.party, tagSet) && hasIntersection(t.region, tagSet);
+        // ② 정당 + 지역
+        if (hasIntersection(t.party, tagSet) && hasIntersection(t.region, tagSet)) return true;
+        // ③ 후보가 데이터에 1명 + 지역
+        if (sole && hasIntersection(t.region, tagSet)) return true;
+        return false;
       });
-      if (qualified.length !== 1) continue; // 0명: 단서 없음 / 2명 이상: 모호
+      if (qualified.length !== 1) continue;
       const c = qualified[0];
       if (!c.huboid) continue;
       (map[c.huboid] ||= []).push(art);
     }
   }
-  // 후보별 url 중복 제거 + 날짜 내림차순
   for (const k of Object.keys(map)) {
     const seen = new Set();
     map[k] = map[k]
@@ -452,7 +486,7 @@ function renderHome() {
   const artCount = Object.values(state.articleMap || {}).reduce((n, arr) => n + arr.length, 0);
   const matchedCount = Object.keys(state.articleMap || {}).length;
   const artSrc = state.articles && matchedCount
-    ? `<p class="nominations-source">📰 <strong>관련 보도</strong>: 뉴탐사 <a href="${state.articles.source_url}" target="_blank" rel="noopener">공천대란 페이지</a>의 인물 태그 ↔ 후보 매칭. 동명이인 오연결(이재명·한동훈 등) 방지를 위해 시트 기사 태그에 후보의 <strong>정당과 지역</strong>이 모두 함께 있을 때만 연결합니다. 매칭 후보 ${matchedCount.toLocaleString()}명, 연결 보도 ${artCount.toLocaleString()}건.</p>`
+    ? `<p class="nominations-source">📰 후보 옆 배지는 뉴탐사 <a href="${state.articles.source_url}" target="_blank" rel="noopener">공천대란</a> 코너의 관련 보도입니다. 후보 ${matchedCount.toLocaleString()}명에 보도 ${artCount.toLocaleString()}건 연결.</p>`
     : '';
 
   // source('preliminary' | 'candidates')에 따라 라벨 자동 전환
@@ -479,37 +513,16 @@ function renderHome() {
       </ol>
     </section>` : '';
 
-  // 무투표 가능·정원 미달·예비후보 미등록 (사실 진단)
+  // 경쟁 없는 선거구 (단독 출마·정원 미달·후보 0명)
   const uc = buildUncontestedList();
-  const stageNote = state.source === 'candidates'
-    ? '후보 등록 기준 — 등록 마감이라 사실상 확정.'
-    : '예비후보 등록 기준 — 5/14~15 후보 등록 시 변동 가능.';
-  const ucRowHtml = r => `
-    <li>
-      <a class="uc-region" href="#${encodeURIComponent(sidoFor(r))}">${r.sgg || r.sd}</a>
-      <span class="uc-type">${r.title}</span>
-      <span class="uc-detail">${r.count}/${r.seat}</span>
-      <span class="uc-sido">${r.sd}</span>
-    </li>`;
-  const ucBlock = (label, items, limit, cls) => {
-    if (!items.length) return '';
-    const shown = items.slice(0, limit);
-    const more = items.length - shown.length;
-    return `
-      <div class="uc-block ${cls}">
-        <h3 class="uc-block-title">${label} <span class="uc-count">${items.length.toLocaleString()}곳</span></h3>
-        <ul class="uc-list">${shown.map(ucRowHtml).join('')}</ul>
-        ${more > 0 ? `<p class="uc-more">+${more.toLocaleString()}곳 더 (시도 상세 페이지에서 확인)</p>` : ''}
-      </div>`;
-  };
   const ucBox = (uc.tied.length || uc.short.length || uc.zero.length) ? `
     <section class="uncontested">
-      <h2 class="section-title">이대로 가면 무투표 당선·정원 미달
-        <span class="section-count">${stageNote}</span>
+      <h2 class="section-title">경쟁 없는 선거구
+        <span class="section-count">${uncontestedStageNote()}</span>
       </h2>
-      ${ucBlock('무투표 당선 가능 (정원 = 후보)', uc.tied, 12, 'tied')}
-      ${ucBlock('정원 미달 (정원 &gt; 후보)', uc.short, 8, 'short')}
-      ${ucBlock('후보 0명', uc.zero, 8, 'zero')}
+      ${uncontestedBlock(uc.tied.slice(0, 12), uc.tied.length, '단독 출마·정원 충원 (후보 수 = 정원)', 'tied')}
+      ${uncontestedBlock(uc.short.slice(0, 8), uc.short.length, '정원 미달 (후보 수 < 정원)', 'short')}
+      ${uncontestedBlock(uc.zero.slice(0, 8), uc.zero.length, '후보 0명', 'zero')}
     </section>` : '';
 
   const html = `
@@ -596,8 +609,79 @@ function renderSidoDetail(sidoName) {
 // ============ Routing ============
 function route() {
   const hash = decodeURIComponent(location.hash.slice(1));
-  if (!hash) renderHome();
-  else renderSidoDetail(hash);
+  if (!hash) return renderHome();
+  if (hash === 'uncontested') return renderUncontestedFull(null);
+  if (hash.startsWith('uncontested/')) {
+    const cat = hash.slice('uncontested/'.length);
+    return renderUncontestedFull(cat);
+  }
+  return renderSidoDetail(hash);
+}
+
+// ============ 경쟁 없는 선거구 (공용 헬퍼) ============
+function uncontestedStageNote() {
+  return state.source === 'candidates'
+    ? '후보 등록 기준 — 사실상 확정'
+    : '예비후보 등록 기준 — 5/14~15 본후보 등록 시 변동 가능';
+}
+function uncontestedRow(r) {
+  return `
+    <li>
+      <a class="uc-region" href="#${encodeURIComponent(sidoFor(r))}">${r.sgg || r.sd}</a>
+      <span class="uc-type">${r.title}</span>
+      <span class="uc-detail">${r.count}/${r.seat}</span>
+      <span class="uc-sido">${r.sd}</span>
+    </li>`;
+}
+function uncontestedBlock(items, totalCount, label, cls) {
+  if (totalCount === 0) return '';
+  const shown = items;
+  const more = totalCount - shown.length;
+  return `
+    <div class="uc-block ${cls}">
+      <h3 class="uc-block-title">${label} <span class="uc-count">${totalCount.toLocaleString()}곳</span></h3>
+      <ul class="uc-list">${shown.map(uncontestedRow).join('')}</ul>
+      ${more > 0 ? `<p class="uc-more"><a href="#uncontested/${cls}">+${more.toLocaleString()}곳 더 보기 →</a></p>` : ''}
+    </div>`;
+}
+
+// 경쟁 없는 선거구 전체 페이지 (#uncontested 또는 #uncontested/{cat})
+function renderUncontestedFull(category) {
+  destroyMap();
+  const uc = buildUncontestedList();
+  const cats = [
+    { key: 'tied',  label: '단독 출마·정원 충원 (후보 수 = 정원)',  items: uc.tied,  cls: 'tied' },
+    { key: 'short', label: '정원 미달 (후보 수 < 정원)',          items: uc.short, cls: 'short' },
+    { key: 'zero',  label: '후보 0명',                            items: uc.zero,  cls: 'zero' },
+  ];
+  const filtered = category ? cats.filter(c => c.key === category) : cats;
+  const titleSuffix = category
+    ? ` · ${cats.find(c => c.key === category)?.label || category}`
+    : '';
+  const html = `
+    <nav class="breadcrumb">
+      <a href="#">전국</a>
+      <span class="sep">›</span>
+      <span class="current">경쟁 없는 선거구${titleSuffix}</span>
+    </nav>
+    <div class="detail-head">
+      <h1 class="detail-title">경쟁 없는 선거구</h1>
+      <div class="detail-inline-stats">
+        <span>${uncontestedStageNote()}</span>
+      </div>
+    </div>
+    ${filtered.map(c =>
+      `<div class="uc-block ${c.cls}">
+        <h3 class="uc-block-title">${c.label} <span class="uc-count">${c.items.length.toLocaleString()}곳</span></h3>
+        ${c.items.length === 0
+          ? '<p class="uc-more">해당 사항 없음.</p>'
+          : `<ul class="uc-list">${c.items.map(uncontestedRow).join('')}</ul>`}
+      </div>`
+    ).join('')}
+  `;
+  const app = document.getElementById('app');
+  app.className = '';
+  app.innerHTML = html;
 }
 
 // ============ 검색 (헤더 input → 결과 dropdown) ============

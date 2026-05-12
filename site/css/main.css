@@ -242,4 +242,6 @@ footer a:hover { text-decoration: underline; }
 .uc-block.short .uc-detail { color: #b25c00; }
 .uc-block.zero .uc-detail { color: var(--ink-sub); }
 .uc-sido { font-size: 0.72rem; color: var(--ink-sub); grid-row: 2; grid-column: 2; text-align: right; }
-.uc-more { font-size: 0.82rem; color: var(--ink-sub); margin-top: 0.5rem; }
+.uc-more { font-size: 0.85rem; color: var(--ink-sub); margin-top: 0.6rem; }
+.uc-more a { color: var(--accent); text-decoration: none; font-weight: 500; }
+.uc-more a:hover { text-decoration: underline; }
