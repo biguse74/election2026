@@ -50,7 +50,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, geo: null, nominations: null, dateStr: null, source: null, mapInstance: null };
+const state = { data: null, parties: {}, geo: null, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, mapInstance: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -66,6 +66,90 @@ function dedupeByHuboid(list) {
     out.push(c);
   }
   return out;
+}
+
+// 시도·정당 약칭 사전 (시트 태그가 줄임말로 적힌 케이스 매칭용)
+const SIDO_TAGS = {
+  '서울특별시': ['서울'],
+  '부산광역시': ['부산'],
+  '대구광역시': ['대구'],
+  '인천광역시': ['인천'],
+  '광주광역시': ['광주'],
+  '대전광역시': ['대전'],
+  '울산광역시': ['울산'],
+  '세종특별자치시': ['세종'],
+  '경기도': ['경기'],
+  '강원특별자치도': ['강원', '강원도'],
+  '충청북도': ['충북'],
+  '충청남도': ['충남'],
+  '전북특별자치도': ['전북', '전라북도'],
+  '전라남도': ['전남'],
+  '경상북도': ['경북'],
+  '경상남도': ['경남'],
+  '제주특별자치도': ['제주', '제주도'],
+  '전남광주통합특별시': ['전남', '광주', '전남광주'],
+};
+const PARTY_TAGS = {
+  '더불어민주당': ['민주당', '민주'],
+  '국민의힘': ['국힘'],
+  '조국혁신당': ['혁신당', '조국당'],
+  '개혁신당': ['개혁'],
+  '진보당': [],
+  '정의당': [],
+  '녹색정의당': ['정의'],
+};
+
+// 뉴탐사 보도 태그 ↔ 후보 매칭. 정확도 최우선.
+//   - 이름만 일치는 동명이인 오연결 다발(이재명·한동훈·윤석열 등).
+//   - 시트 기사 태그에 후보의 정당 AND 지역 단서가 모두 함께 있어야 매칭.
+//   - 그렇게 좁혀서 후보가 1명일 때만 연결, 그래도 모호하면 보류.
+function tagsForCandidate(c) {
+  const sd = c.sdName || '';
+  const sgg = c.sggName || '';
+  const wiw = c.wiwName || '';
+  const jd  = c.jdName  || '';
+  return {
+    region: new Set([sd, sgg, wiw, ...(SIDO_TAGS[sd] || [])].filter(Boolean)),
+    party:  new Set([jd, ...(PARTY_TAGS[jd] || [])].filter(Boolean)),
+  };
+}
+function hasIntersection(a, b) {
+  for (const x of a) if (b.has(x)) return true;
+  return false;
+}
+
+function buildArticleMap(articles, candidates) {
+  if (!articles?.length || !candidates?.length) return {};
+  const byName = candidates.reduce((acc, c) => {
+    if (!c.name) return acc;
+    (acc[c.name] ||= []).push(c);
+    return acc;
+  }, {});
+  const map = {};
+  for (const art of articles) {
+    const tagSet = new Set(art.tags || []);
+    for (const tag of art.tags || []) {
+      const candList = byName[tag];
+      if (!candList?.length) continue;
+      // 정당 AND 지역 단서가 모두 시트 태그에 있는 후보만 (유명 동명이인 차단)
+      const qualified = candList.filter(c => {
+        const t = tagsForCandidate(c);
+        return hasIntersection(t.party, tagSet) && hasIntersection(t.region, tagSet);
+      });
+      if (qualified.length !== 1) continue; // 0명: 단서 없음 / 2명 이상: 모호
+      const c = qualified[0];
+      if (!c.huboid) continue;
+      (map[c.huboid] ||= []).push(art);
+    }
+  }
+  // 후보별 url 중복 제거 + 날짜 내림차순
+  for (const k of Object.keys(map)) {
+    const seen = new Set();
+    map[k] = map[k]
+      .filter(a => !seen.has(a.url) && seen.add(a.url))
+      .sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  }
+  return map;
 }
 
 // 후보 등록(5/14~) 이후엔 candidates 스냅샷이 로드된다 = 등록 자체가 공천 확정 의미.
@@ -116,6 +200,7 @@ const safeJson = async (url, fallback) => {
 const loadParties = () => safeJson('data/parties.json', {});
 const loadNominations = () => safeJson('data/nominations.json', null);
 const loadGeo = () => safeJson('assets/geo/sido.geojson', null);
+const loadArticles = () => safeJson('data/articles.json', null);
 
 // 후보 등록 시작일. 이 날짜 이후로는 candidates 스냅샷이 우선.
 const CANDIDATES_START = '20260514';
@@ -154,14 +239,27 @@ async function loadLatestSnapshot() {
 }
 
 // ============ Render: 후보 row/card ============
+function articleListHtml(articles) {
+  return articles.map(a => `
+    <li>
+      <a href="${a.url}" target="_blank" rel="noopener noreferrer">${a.title}</a>
+      <span class="article-meta">${a.date || ''}${a.author ? ' · ' + a.author : ''}</span>
+    </li>`).join('');
+}
+
 function candidateRow(c) {
   const confirmed = isConfirmed(c);
+  const articles = state.articleMap?.[c.huboid] || [];
+  const hasArt = articles.length > 0;
+  const aid = hasArt ? `art-${c.huboid}` : '';
   return `
     <div class="candidate${confirmed ? ' confirmed' : ''}">
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
       <div class="candidate-name">${c.name}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</div>
       <div class="candidate-party">${c.jdName}</div>
-    </div>`;
+      ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
+    </div>
+    ${hasArt ? `<ul class="article-list" id="${aid}" hidden>${articleListHtml(articles)}</ul>` : ''}`;
 }
 
 function candidateCard(label, list) {
@@ -291,6 +389,12 @@ function renderHome() {
     ? `<p class="nominations-source">★ <strong>공천</strong> 배지: ${state.nominations.source}</p>`
     : '';
 
+  const artCount = Object.values(state.articleMap || {}).reduce((n, arr) => n + arr.length, 0);
+  const matchedCount = Object.keys(state.articleMap || {}).length;
+  const artSrc = state.articles && matchedCount
+    ? `<p class="nominations-source">📰 <strong>관련 보도</strong>: 뉴탐사 <a href="${state.articles.source_url}" target="_blank" rel="noopener">공천대란 페이지</a>의 인물 태그 ↔ 후보 매칭. 동명이인 오연결(이재명·한동훈 등) 방지를 위해 시트 기사 태그에 후보의 <strong>정당과 지역</strong>이 모두 함께 있을 때만 연결합니다. 매칭 후보 ${matchedCount.toLocaleString()}명, 연결 보도 ${artCount.toLocaleString()}건.</p>`
+    : '';
+
   // source('preliminary' | 'candidates')에 따라 라벨 자동 전환
   const totalLabel = state.source === 'candidates' ? '총 후보자' : '총 예비후보자';
   const candidateSuffix = state.source === 'candidates' ? '후보' : '예비후보';
@@ -310,6 +414,7 @@ function renderHome() {
     <div id="map"></div>
     <h2 class="section-title">시도별 후보자</h2>
     ${nomSrc}
+    ${artSrc}
     <div class="sido-grid">
       ${sidos.map(sido => {
         // 카드 통계는 SECTIONS 정의에서 자동 도출. 0인 항목은 숨김.
@@ -384,8 +489,8 @@ function route() {
 async function main() {
   calculateDDay();
   try {
-    const [{ data, dateStr, source }, parties, geo, nominations] = await Promise.all([
-      loadLatestSnapshot(), loadParties(), loadGeo(), loadNominations(),
+    const [{ data, dateStr, source }, parties, geo, nominations, articles] = await Promise.all([
+      loadLatestSnapshot(), loadParties(), loadGeo(), loadNominations(), loadArticles(),
     ]);
     // 로딩 시점에 단 한 번 dedup. 이후 모든 화면은 깨끗한 데이터를 본다.
     state.data = { ...data, candidates: dedupeByHuboid(data.candidates) };
@@ -394,9 +499,21 @@ async function main() {
     state.nominations = nominations;
     state.dateStr = dateStr;
     state.source = source;
+    state.articles = articles;
+    state.articleMap = buildArticleMap(articles?.articles, state.data.candidates);
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
+    // 후보 행의 보도 배지 토글 (이벤트 위임 — 행이 동적으로 다시 그려져도 OK)
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.article-toggle');
+      if (!btn) return;
+      e.preventDefault();
+      const panel = document.getElementById(btn.dataset.target);
+      if (!panel) return;
+      panel.hidden = !panel.hidden;
+      btn.classList.toggle('open', !panel.hidden);
+    });
     window.addEventListener('hashchange', route);
     route();
   } catch (e) {

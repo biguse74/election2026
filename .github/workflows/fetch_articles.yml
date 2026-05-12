@@ -1,0 +1,44 @@
+name: 뉴탐사 보도 시트 동기화
+
+# 뉴탐사 공천대란 페이지(newtamsa.org/p/gongcheon)가 사용하는
+# 구글 시트 CSV를 받아 site/data/articles.json으로 변환·커밋.
+
+on:
+  schedule:
+    # 매일 KST 09:00, 15:00, 21:00 (UTC 00, 06, 12) — 보도 추가가 잦은 시간대
+    - cron: '0 0,6,12 * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 보도 시트 수신·변환
+        run: python scripts/fetch_articles.py
+
+      - name: 변경사항 커밋·푸시
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add site/data/articles.json
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+          else
+            git commit -m "data: 뉴탐사 보도 시트 동기화 $(date -u +%Y-%m-%d-%H%M)"
+            git push
+          fi
