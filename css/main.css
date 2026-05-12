@@ -392,12 +392,19 @@ footer a:hover { text-decoration: underline; }
   .detail-head { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
   .detail-inline-stats { gap: 1rem; font-size: 0.85rem; }
   .article-list { margin-left: 0.8rem; padding-left: 0.6rem; }
-  /* 후보 행 모바일에서 정당 라벨이 잘림 방지 */
-  .candidate { flex-wrap: wrap; }
-  .candidate-name { flex-basis: calc(100% - 80px); }
 }
 @media (max-width: 380px) {
   .stats { grid-template-columns: 1fr; }
   .competition-list li { grid-template-columns: auto 1fr; }
   .comp-ratio, .comp-detail { grid-column: 2; text-align: left; }
+  /* 진짜 좁은 화면: 정당명을 두 번째 줄로 떨어뜨려 한 줄 안정 */
+  .candidate {
+    grid-template-columns: 4px minmax(0, 1fr) auto;
+    grid-template-areas: "color name actions" "color party party";
+    row-gap: 0.1rem;
+  }
+  .candidate-color { grid-area: color; }
+  .candidate-name { grid-area: name; }
+  .candidate-actions { grid-area: actions; }
+  .candidate-party { grid-area: party; }
 }
