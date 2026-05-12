@@ -605,150 +605,172 @@ function renderDetailSection(section, sidoName) {
   return '';
 }
 
-// 시계열 추세 (sparkline + 전체 페이지)
-function sparklineSvg(values, w = 220, h = 44, color = '#c41e3a') {
-  if (!values || values.length < 2) return '';
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const range = max - min || 1;
-  const stepX = w / (values.length - 1);
-  const pts = values.map((v, i) =>
-    `${(i * stepX).toFixed(1)},${(h - ((v - min) / range) * (h - 6) - 3).toFixed(1)}`
-  ).join(' ');
-  const last = values[values.length - 1];
-  const lastX = ((values.length - 1) * stepX).toFixed(1);
-  const lastY = (h - ((last - min) / range) * (h - 6) - 3).toFixed(1);
-  return `
-    <svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" class="sparkline" aria-hidden="true">
-      <polyline fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/>
-      <circle cx="${lastX}" cy="${lastY}" r="3" fill="${color}"/>
-    </svg>`;
+// 출마자 한눈에 — 정당·연령·성별·직업 통계
+function buildProfileStats() {
+  const cs = state.data.candidates;
+  // 정당
+  const byParty = {};
+  cs.forEach(c => { const j = c.jdName || '무소속'; byParty[j] = (byParty[j] || 0) + 1; });
+  const parties = Object.entries(byParty).sort((a,b) => b[1] - a[1]);
+  // 연령대 (10단위)
+  const ageBuckets = {20:0,30:0,40:0,50:0,60:0,70:0,80:0};
+  let ageSum = 0, ageCount = 0;
+  cs.forEach(c => {
+    const a = parseInt(c.age, 10);
+    if (!isNaN(a) && a > 0) {
+      ageSum += a; ageCount++;
+      const b = Math.max(20, Math.min(80, Math.floor(a / 10) * 10));
+      ageBuckets[b] = (ageBuckets[b] || 0) + 1;
+    }
+  });
+  const ageAvg = ageCount ? ageSum / ageCount : 0;
+  // 성별
+  const byGender = {};
+  cs.forEach(c => { const g = c.gender || '미기재'; byGender[g] = (byGender[g] || 0) + 1; });
+  // 직업
+  const byJob = {};
+  cs.forEach(c => { const j = c.job || '미기재'; byJob[j] = (byJob[j] || 0) + 1; });
+  const jobs = Object.entries(byJob).sort((a,b) => b[1] - a[1]).slice(0, 10);
+  return { total: cs.length, parties, ageBuckets, ageAvg, ageCount, byGender, jobs };
 }
 
 function renderTrendBox() {
-  const ts = state.timeseries;
-  if (!ts?.series?.length || ts.series.length < 2) return '';
-  const series = ts.series;
-  const totals = series.map(r => r.total);
-  const first = series[0];
-  const last = series[series.length - 1];
-  const delta = last.total - first.total;
-  const fmtDate = d => `${d.slice(4,6)}/${d.slice(6,8)}`;
+  if (!state.data) return '';
+  const s = buildProfileStats();
+  const womenPct = s.byGender['여'] ? (s.byGender['여'] / s.total * 100) : 0;
+  const topParty = s.parties[0];
   return `
     <a class="trend-card" href="#trend">
       <div class="trend-card-head">
-        <span class="trend-card-label">출마자 추세</span>
-        <span class="trend-card-period">${fmtDate(first.date)} → ${fmtDate(last.date)}</span>
+        <span class="trend-card-label">출마자 한눈에</span>
+        <span class="trend-card-period">정당·연령·성별</span>
       </div>
-      ${sparklineSvg(totals)}
-      <div class="trend-card-foot">
-        <span class="trend-card-now"><strong>${last.total.toLocaleString()}</strong>명</span>
-        <span class="trend-card-delta ${delta >= 0 ? 'up' : 'down'}">${delta >= 0 ? '+' : ''}${delta.toLocaleString()}</span>
-        <span class="trend-card-link">자세히 →</span>
+      <div class="trend-summary">
+        <div class="trend-summary-stat"><strong>${s.ageAvg.toFixed(1)}</strong>세<small>평균 연령</small></div>
+        <div class="trend-summary-stat"><strong>${womenPct.toFixed(0)}</strong>%<small>여성 비율</small></div>
+        <div class="trend-summary-stat"><strong>${topParty ? topParty[1].toLocaleString() : 0}</strong>명<small>${topParty ? topParty[0] : '-'}</small></div>
+        <span class="trend-card-link">전체 통계 →</span>
       </div>
     </a>`;
 }
 
-// 추세 전체 페이지 (#trend)
+// 가로 바 차트 — count 기반 horizontal bar
+function statBar(label, count, max, color) {
+  const pct = max > 0 ? (count / max * 100) : 0;
+  return `
+    <div class="stat-bar">
+      <div class="stat-bar-label">${label}</div>
+      <div class="stat-bar-track"><div class="stat-bar-fill" style="width: ${pct.toFixed(1)}%; background: ${color || 'var(--accent)'}"></div></div>
+      <div class="stat-bar-value">${count.toLocaleString()}</div>
+    </div>`;
+}
+
+// 출마자 한눈에 페이지 (#trend) — 정당·연령·성별·직업 통계
 function renderTrendFull() {
-  const ts = state.timeseries;
   const app = document.getElementById('app');
   app.className = '';
-  if (!ts?.series?.length) {
-    app.innerHTML = `
-      <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">추세</span></nav>
-      <div class="detail-head"><h1 class="detail-title">출마자 추세</h1></div>
-      <p class="absence-note">시계열 데이터가 아직 없습니다.</p>`;
+  if (!state.data) {
+    app.innerHTML = '<div class="loading">불러오는 중…</div>';
     return;
   }
-  const series = ts.series;
-  const fmtDate = d => `${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}`;
+  const s = buildProfileStats();
+  const womenPct = s.byGender['여'] ? (s.byGender['여'] / s.total * 100) : 0;
 
-  // 정당별 시계열 — 매일 등장 빈도 합쳐 상위 6개
-  const partySet = {};
-  series.forEach(r => Object.entries(r.by_party).forEach(([p, n]) => {
-    partySet[p] = (partySet[p] || 0) + n;
-  }));
-  const topParties = Object.entries(partySet).sort((a, b) => b[1] - a[1]).slice(0, 6).map(x => x[0]);
-
-  // 메인 라인 그래프 (총 출마자)
-  const w = 800, h = 200, pad = 30;
-  const totals = series.map(r => r.total);
-  const min = Math.min(...totals);
-  const max = Math.max(...totals);
-  const range = max - min || 1;
-  const stepX = (w - pad * 2) / (series.length - 1 || 1);
-  const pts = series.map((r, i) =>
-    `${(pad + i * stepX).toFixed(1)},${(h - pad - ((r.total - min) / range) * (h - pad * 2)).toFixed(1)}`
-  ).join(' ');
-
-  const xLabels = series.map((r, i) => {
-    const x = pad + i * stepX;
-    return `<text x="${x.toFixed(1)}" y="${h - 8}" font-size="10" fill="#888" text-anchor="middle">${r.date.slice(4,6)}/${r.date.slice(6,8)}</text>`;
+  // 정당 (상위 10) — horizontal bar
+  const partyTop = s.parties.slice(0, 10);
+  const partyMax = partyTop[0] ? partyTop[0][1] : 1;
+  const partyBars = partyTop.map(([p, n]) => {
+    const color = state.parties[p] || (p === '무소속' ? '#888' : '#bbb');
+    return statBar(p, n, partyMax, color);
   }).join('');
-  const yMaxLabel = `<text x="${pad - 6}" y="${pad + 4}" font-size="10" fill="#888" text-anchor="end">${max.toLocaleString()}</text>`;
-  const yMinLabel = `<text x="${pad - 6}" y="${h - pad + 4}" font-size="10" fill="#888" text-anchor="end">${min.toLocaleString()}</text>`;
 
-  const totalSvg = `
-    <svg viewBox="0 0 ${w} ${h}" class="trend-chart" aria-label="일자별 총 출마자 수">
-      <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h - pad}" stroke="#d8d2c8" stroke-width="1"/>
-      <line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" stroke="#d8d2c8" stroke-width="1"/>
-      <polyline fill="none" stroke="#c41e3a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/>
-      ${series.map((r, i) => {
-        const x = pad + i * stepX;
-        const y = h - pad - ((r.total - min) / range) * (h - pad * 2);
-        return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#c41e3a"/>`;
-      }).join('')}
-      ${yMaxLabel}${yMinLabel}${xLabels}
-    </svg>`;
+  // 연령대 (vertical bar)
+  const ageOrder = [20, 30, 40, 50, 60, 70, 80];
+  const ageMax = Math.max(...Object.values(s.ageBuckets), 1);
+  const ageBars = ageOrder.map(b => {
+    const n = s.ageBuckets[b] || 0;
+    const pct = (n / ageMax * 100).toFixed(1);
+    return `
+      <div class="age-bar">
+        <div class="age-bar-track">
+          <div class="age-bar-fill" style="height: ${pct}%"></div>
+        </div>
+        <div class="age-bar-value">${n.toLocaleString()}</div>
+        <div class="age-bar-label">${b}대</div>
+      </div>`;
+  }).join('');
 
-  // 정당별 시계열 라인 (상위 6개)
-  const palette = ['#152484', '#E61E2B', '#0A3CA2', '#FF7800', '#FFD400', '#888'];
-  const allCounts = [];
-  series.forEach(r => topParties.forEach(p => allCounts.push(r.by_party[p] || 0)));
-  const pMax = Math.max(...allCounts, 1);
-  const partyLines = topParties.map((p, idx) => {
-    const color = state.parties[p] || palette[idx] || '#888';
-    const pts = series.map((r, i) => {
-      const x = pad + i * stepX;
-      const v = r.by_party[p] || 0;
-      const y = h - pad - (v / pMax) * (h - pad * 2);
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    }).join(' ');
-    return `<polyline fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/>`;
-  }).join('');
-  const partyLegend = topParties.map((p, idx) => {
-    const color = state.parties[p] || palette[idx] || '#888';
-    const last = series[series.length - 1].by_party[p] || 0;
-    return `<li><span class="legend-swatch" style="background:${color}"></span>${p} <small>${last.toLocaleString()}</small></li>`;
-  }).join('');
-  const partySvg = `
-    <svg viewBox="0 0 ${w} ${h}" class="trend-chart" aria-label="정당별 후보 수 추이">
-      <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h - pad}" stroke="#d8d2c8" stroke-width="1"/>
-      <line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" stroke="#d8d2c8" stroke-width="1"/>
-      ${partyLines}
-      <text x="${pad - 6}" y="${pad + 4}" font-size="10" fill="#888" text-anchor="end">${pMax.toLocaleString()}</text>
-      <text x="${pad - 6}" y="${h - pad + 4}" font-size="10" fill="#888" text-anchor="end">0</text>
-      ${xLabels}
-    </svg>`;
+  // 성별
+  const male = s.byGender['남'] || 0;
+  const female = s.byGender['여'] || 0;
+  const genderMax = Math.max(male, female, 1);
+  const genderBars = `
+    ${statBar('남성', male, genderMax, '#2c5d8f')}
+    ${statBar('여성', female, genderMax, '#c41e3a')}
+  `;
+
+  // 직업 top 10
+  const jobMax = s.jobs[0] ? s.jobs[0][1] : 1;
+  const jobBars = s.jobs.map(([j, n]) => statBar(j || '미기재', n, jobMax, 'var(--ink-sub)')).join('');
+
+  // 시계열 — 페이지 하단에 작은 sparkline으로 유지(완전 제거 X, 보조 정보)
+  const ts = state.timeseries;
+  let trendSparkline = '';
+  if (ts?.series?.length >= 2) {
+    const series = ts.series;
+    const totals = series.map(r => r.total);
+    const first = series[0].date, last = series[series.length - 1].date;
+    const fmt = d => `${d.slice(4,6)}/${d.slice(6,8)}`;
+    const min = Math.min(...totals), max = Math.max(...totals), range = max - min || 1;
+    const w = 600, h = 80;
+    const stepX = w / (totals.length - 1);
+    const pts = totals.map((v, i) =>
+      `${(i*stepX).toFixed(1)},${(h - ((v-min)/range)*(h-10) - 5).toFixed(1)}`
+    ).join(' ');
+    trendSparkline = `
+      <section class="trend-section">
+        <h3 class="trend-section-title">최근 ${series.length}일 출마자 수 추이</h3>
+        <svg viewBox="0 0 ${w} ${h}" class="trend-chart" aria-label="출마자 수 변화">
+          <polyline fill="none" stroke="#c41e3a" stroke-width="2" points="${pts}"/>
+        </svg>
+        <p class="trend-meta">${fmt(first)} ${totals[0].toLocaleString()}명 → ${fmt(last)} ${totals[totals.length-1].toLocaleString()}명</p>
+      </section>`;
+  }
 
   app.innerHTML = `
-    <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">추세</span></nav>
+    <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">출마자 한눈에</span></nav>
     <div class="detail-head">
-      <h1 class="detail-title">출마자 추세</h1>
+      <h1 class="detail-title">출마자 한눈에</h1>
       <div class="detail-inline-stats">
-        <span>${fmtDate(series[0].date)} ~ ${fmtDate(series[series.length-1].date)} (${series.length}일)</span>
+        <span>총 ${s.total.toLocaleString()}명 · 평균 ${s.ageAvg.toFixed(1)}세 · 여성 ${womenPct.toFixed(0)}%</span>
       </div>
     </div>
+    <p class="page-intro">선관위 등록 데이터를 기반으로 정당·연령·성별·직업 분포를 정리했습니다. 재산·전과·병역 정보는 후보 등록(5/14) 이후 추가 공개될 예정.</p>
+
     <section class="trend-section">
-      <h3 class="trend-section-title">총 출마자 수</h3>
-      ${totalSvg}
+      <h3 class="trend-section-title">정당별 분포 <small>상위 10</small></h3>
+      <div class="bar-list">${partyBars}</div>
     </section>
+
+    <div class="trend-grid">
+      <section class="trend-section">
+        <h3 class="trend-section-title">연령대 분포</h3>
+        <div class="age-chart">${ageBars}</div>
+        <p class="trend-meta">평균 ${s.ageAvg.toFixed(1)}세 · ${s.ageCount.toLocaleString()}명 응답</p>
+      </section>
+      <section class="trend-section">
+        <h3 class="trend-section-title">성별 분포</h3>
+        <div class="bar-list">${genderBars}</div>
+        <p class="trend-meta">여성 비율 ${womenPct.toFixed(1)}%</p>
+      </section>
+    </div>
+
     <section class="trend-section">
-      <h3 class="trend-section-title">정당별 후보 수 (상위 ${topParties.length})</h3>
-      ${partySvg}
-      <ul class="trend-legend">${partyLegend}</ul>
-    </section>`;
+      <h3 class="trend-section-title">직업 분포 <small>상위 10</small></h3>
+      <div class="bar-list">${jobBars}</div>
+    </section>
+
+    ${trendSparkline}`;
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
