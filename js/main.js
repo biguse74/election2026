@@ -476,7 +476,6 @@ function openCandidateModal(huboid) {
     ['경력 ②', c.career2 || ''],
     ['주소',   c.addr || ''],
     ['등록일', regdate],
-    ['후보 ID', c.huboid || ''],
   ].filter(([, v]) => v);
 
   const fieldsHtml = fields.map(([k, v]) =>
