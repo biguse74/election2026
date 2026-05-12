@@ -394,7 +394,7 @@ function candidateRow(c) {
   return `
     <div class="candidate${confirmed ? ' confirmed' : ''}">
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
-      <div class="candidate-name">${c.name}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</div>
+      <button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${c.name} 상세 정보">${c.name}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>
       <div class="candidate-party">${c.jdName}</div>
       <span class="candidate-actions">
         ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
@@ -402,6 +402,91 @@ function candidateRow(c) {
       </span>
     </div>
     ${hasArt ? `<ul class="article-list" id="${aid}" hidden>${articleListHtml(articles)}</ul>` : ''}`;
+}
+
+// ============ 후보 상세 모달 ============
+function formatBirthday(s) {
+  if (!s || s.length < 8) return '';
+  return `${s.slice(0,4)}.${s.slice(4,6)}.${s.slice(6,8)}`;
+}
+function formatRegdate(s) {
+  return s && s.length >= 8 ? `${s.slice(0,4)}.${s.slice(4,6)}.${s.slice(6,8)}` : '';
+}
+
+function openCandidateModal(huboid) {
+  const c = state.data.candidates.find(x => x.huboid === huboid);
+  if (!c) return;
+  const root = document.getElementById('modal-root');
+  if (!root) return;
+
+  const confirmed = isConfirmed(c);
+  const articles = state.articleMap?.[c.huboid] || [];
+  const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
+  const sectionTitle = titleMap[c.sgTypecode] || '';
+  const region = formatRegionLabel(c);
+  const birth = formatBirthday(c.birthday);
+  const regdate = formatRegdate(c.regdate);
+
+  // 필드 정의: 값이 있는 것만 표시
+  const fields = [
+    ['정당',   c.jdName || '무소속'],
+    ['선거',   sectionTitle],
+    ['선거구', region],
+    ['상태',   c.status || ''],
+    ['성별',   c.gender || ''],
+    ['생년',   birth ? `${birth}${c.age ? ` (만 ${c.age}세)` : ''}` : ''],
+    ['한자',   c.hanjaName || ''],
+    ['직업',   c.job || ''],
+    ['학력',   c.edu || ''],
+    ['경력 ①', c.career1 || ''],
+    ['경력 ②', c.career2 || ''],
+    ['주소',   c.addr || ''],
+    ['등록일', regdate],
+    ['후보 ID', c.huboid || ''],
+  ].filter(([, v]) => v);
+
+  const fieldsHtml = fields.map(([k, v]) =>
+    `<div class="modal-field"><dt>${k}</dt><dd>${v}</dd></div>`
+  ).join('');
+
+  const articlesHtml = articles.length ? `
+    <section class="modal-section">
+      <h3 class="modal-section-title">관련 보도 <span class="modal-section-sub">${articles.length}건 · 뉴탐사 공천대란 매칭</span></h3>
+      <ul class="modal-articles">${articleListHtml(articles)}</ul>
+    </section>` : '';
+
+  const tipUrl = tipoffUrl(c);
+
+  root.innerHTML = `
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+      <button type="button" class="modal-close" data-modal-close aria-label="닫기">×</button>
+      <header class="modal-head" style="border-left-color:${partyColor(c.jdName)}">
+        <p class="modal-region">${region} · ${sectionTitle}</p>
+        <h2 id="modal-name" class="modal-name">${c.name}
+          ${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}
+        </h2>
+        <p class="modal-subline">${c.jdName || '무소속'}${c.status ? ` · ${c.status}` : ''}</p>
+      </header>
+      <dl class="modal-fields">${fieldsHtml}</dl>
+      ${articlesHtml}
+      <footer class="modal-foot">
+        <a class="modal-tip" href="${tipUrl}" target="_blank" rel="noopener">📮 이 후보 제보하기</a>
+        <p class="modal-source">기준: 중앙선관위 OpenAPI · ${state.dateStr ? `${state.dateStr.slice(0,4)}.${state.dateStr.slice(4,6)}.${state.dateStr.slice(6,8)} ${SOURCE_LABEL[state.source] || state.source}` : ''}</p>
+      </footer>
+    </div>`;
+  root.hidden = false;
+  document.body.classList.add('modal-open');
+  // 닫기 버튼에 포커스
+  root.querySelector('.modal-close')?.focus();
+}
+
+function closeCandidateModal() {
+  const root = document.getElementById('modal-root');
+  if (!root) return;
+  root.hidden = true;
+  root.innerHTML = '';
+  document.body.classList.remove('modal-open');
 }
 
 function candidateCard(label, list) {
@@ -1009,8 +1094,18 @@ async function main() {
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
-    // 클릭 위임: ① 후보 행 보도 배지 토글 ② collapsible 일괄 펼침/접힘
+    // 클릭 위임: 보도 배지 / collapsible 일괄 토글 / 후보 상세 모달 / 모달 닫기
     document.addEventListener('click', e => {
+      if (e.target.closest('[data-modal-close]')) {
+        closeCandidateModal();
+        return;
+      }
+      const detail = e.target.closest('.candidate-detail-trigger');
+      if (detail) {
+        e.preventDefault();
+        openCandidateModal(detail.dataset.huboid);
+        return;
+      }
       const articleBtn = e.target.closest('.article-toggle');
       if (articleBtn) {
         e.preventDefault();
@@ -1029,6 +1124,12 @@ async function main() {
         grid.querySelectorAll('details').forEach(d => { d.open = opening; });
         expandBtn.dataset.open = opening ? 'true' : 'false';
         expandBtn.textContent = opening ? '모두 접기' : '모두 펼치기';
+      }
+    });
+    // ESC로 모달 닫기
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !document.getElementById('modal-root').hidden) {
+        closeCandidateModal();
       }
     });
     initSearch();
