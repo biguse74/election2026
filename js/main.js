@@ -955,7 +955,7 @@ async function main() {
       <div class="error-banner">
         <strong>데이터를 불러오지 못했습니다.</strong>
         잠시 후 새로고침해 보시거나, 문제가 계속되면
-        <a href="https://github.com/biguse74/election2026/issues" target="_blank" rel="noopener">이슈로 알려</a> 주세요.
+        <a href="mailto:news@newtamsa.org">news@newtamsa.org</a>로 알려 주세요.
         <br><small style="color:var(--ink-sub)">기술 메시지: ${e.message}</small>
       </div>`;
   }
