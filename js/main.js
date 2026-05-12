@@ -843,8 +843,19 @@ function focusConstituency(sggName) {
 }
 
 // ============ Routing ============
+function updateSidoNavActive(hash) {
+  // 통합특별시 alias 처리: 광주광역시·전라남도 페이지 → 시도지사 진입이면 둘 다 강조 가능,
+  // 다만 hash가 한쪽이므로 그 한쪽만 강조.
+  const target = hash.includes('::') ? hash.split('::')[0] : hash;
+  document.querySelectorAll('.sido-chip').forEach(el => {
+    const href = decodeURIComponent(el.getAttribute('href').slice(1));
+    el.classList.toggle('active', href === target && target !== '');
+  });
+}
+
 function route() {
   const hash = decodeURIComponent(location.hash.slice(1));
+  updateSidoNavActive(hash);
   if (!hash) return renderHome();
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
