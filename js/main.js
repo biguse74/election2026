@@ -1259,14 +1259,22 @@ function renderCandidatesFull() {
       </div>
     </div>
     <section class="filter-section">
-      <h3 class="filter-group-title">시도</h3>
-      <div class="filter-chips">${sdChips}</div>
-      <h3 class="filter-group-title">선거 종류</h3>
-      <div class="filter-chips">${sgChips}</div>
-      <h3 class="filter-group-title">정당 <small>상위 20개</small></h3>
-      <div class="filter-chips">${jdChips}</div>
-      <h3 class="filter-group-title">등록 상태</h3>
-      <div class="filter-chips">${stChips}</div>
+      <div class="filter-group filter-group-wide">
+        <h3 class="filter-group-title">시도 <small>${facets.sds.length}곳</small></h3>
+        <div class="filter-chips">${sdChips}</div>
+      </div>
+      <div class="filter-group">
+        <h3 class="filter-group-title">선거 종류</h3>
+        <div class="filter-chips">${sgChips}</div>
+      </div>
+      <div class="filter-group filter-group-wide">
+        <h3 class="filter-group-title">정당 <small>등장 빈도 상위 20</small></h3>
+        <div class="filter-chips">${jdChips}</div>
+      </div>
+      <div class="filter-group">
+        <h3 class="filter-group-title">등록 상태</h3>
+        <div class="filter-chips">${stChips}</div>
+      </div>
     </section>
     <ul class="cand-list">${rowsHtml || '<li class="cand-empty">조건에 맞는 후보가 없습니다.</li>'}</ul>
     ${overflow}`;
