@@ -44,7 +44,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, geo: null, nominations: null, dateStr: null, mapInstance: null };
+const state = { data: null, parties: {}, geo: null, nominations: null, dateStr: null, source: null, mapInstance: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -62,11 +62,13 @@ function dedupeByHuboid(list) {
   return out;
 }
 
-// 후보등록일(2026-05-14) 이후엔 공천 배지가 정보가치를 잃음(등록=확정). 자동으로 숨김.
+// 후보 등록(5/14~) 이후엔 candidates 스냅샷이 로드된다 = 등록 자체가 공천 확정 의미.
+// → 배지가 정보가치를 잃으므로 자동 숨김. (안전망으로 dateStr cutoff도 함께 검사)
 const NOMINATION_CUTOFF = '20260514';
 
 function isConfirmed(c) {
   if (!state.nominations) return false;
+  if (state.source === 'candidates') return false;
   if (state.dateStr && state.dateStr >= NOMINATION_CUTOFF) return false;
   const groups = state.nominations[`sgTypecode_${c.sgTypecode}`];
   if (!groups) return false;
@@ -109,15 +111,40 @@ const loadParties = () => safeJson('data/parties.json', {});
 const loadNominations = () => safeJson('data/nominations.json', null);
 const loadGeo = () => safeJson('assets/geo/sido.geojson', null);
 
-async function loadLatestPreliminary() {
+// 후보 등록 시작일. 이 날짜 이후로는 candidates 스냅샷이 우선.
+const CANDIDATES_START = '20260514';
+
+const SOURCE_LABEL = {
+  preliminary: '예비후보',
+  candidates: '후보 등록',
+};
+
+// 후보 등록(5/14) 이후엔 candidates를 먼저 시도, 못 찾으면 preliminary로 폴백.
+// 두 데이터 모두 동일한 {candidates:[...]} 스키마라 호출부 변화 없음.
+async function loadLatestSnapshot() {
   const today = new Date();
+  const toDateStr = d => `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  const tryFetch = async (source, dateStr) => {
+    const r = await fetch(`../data/${source}/20260603/snapshot_${dateStr}.json`).catch(() => null);
+    return r?.ok ? { data: await r.json(), dateStr, source } : null;
+  };
+
+  // 1단계: 5/14 이후 날짜의 candidates 스냅샷을 최대 30일까지 거꾸로 탐색
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    const dateStr = toDateStr(d);
+    if (dateStr < CANDIDATES_START) break;
+    const hit = await tryFetch('candidates', dateStr);
+    if (hit) return hit;
+  }
+
+  // 2단계: preliminary 14일 폴백 (등록 전 기간 또는 candidates 부재 시)
   for (let i = 0; i < 14; i++) {
     const d = new Date(today); d.setDate(d.getDate() - i);
-    const dateStr = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
-    const r = await fetch(`../data/preliminary/20260603/snapshot_${dateStr}.json`).catch(() => null);
-    if (r?.ok) return { data: await r.json(), dateStr };
+    const hit = await tryFetch('preliminary', toDateStr(d));
+    if (hit) return hit;
   }
-  throw new Error('최근 14일 내 스냅샷 파일을 찾지 못했습니다.');
+  throw new Error('최근 스냅샷 파일을 찾지 못했습니다.');
 }
 
 // ============ Render: 후보 row/card ============
@@ -227,7 +254,9 @@ function renderHome() {
   // 시도 목록 (sdName 기준, '전국' 제외)
   const sidos = Array.from(new Set(cands.map(c => c.sdName).filter(s => s && s !== '전국'))).sort(sidoSort);
 
-  const nomActive = state.nominations && (!state.dateStr || state.dateStr < NOMINATION_CUTOFF);
+  const nomActive = state.nominations
+    && state.source !== 'candidates'
+    && (!state.dateStr || state.dateStr < NOMINATION_CUTOFF);
   const nomSrc = nomActive
     ? `<p class="nominations-source">★ <strong>공천</strong> 배지: ${state.nominations.source}</p>`
     : '';
@@ -318,8 +347,8 @@ function route() {
 async function main() {
   calculateDDay();
   try {
-    const [{ data, dateStr }, parties, geo, nominations] = await Promise.all([
-      loadLatestPreliminary(), loadParties(), loadGeo(), loadNominations(),
+    const [{ data, dateStr, source }, parties, geo, nominations] = await Promise.all([
+      loadLatestSnapshot(), loadParties(), loadGeo(), loadNominations(),
     ]);
     // 로딩 시점에 단 한 번 dedup. 이후 모든 화면은 깨끗한 데이터를 본다.
     state.data = { ...data, candidates: dedupeByHuboid(data.candidates) };
@@ -327,8 +356,10 @@ async function main() {
     state.geo = geo;
     state.nominations = nominations;
     state.dateStr = dateStr;
+    state.source = source;
+    const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
-      `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)}`;
+      `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
     window.addEventListener('hashchange', route);
     route();
   } catch (e) {
