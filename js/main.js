@@ -449,6 +449,47 @@ function renderDetailSection(section, sidoName) {
   return '';
 }
 
+// 국회의원 재·보궐 14개 선거구 전용 박스 (홈 페이지).
+// 결원 의석만 다시 뽑는 케이스라 시도별 카드 옆에 묻혀버리는 것보다,
+// 14개를 한 자리에 따로 펴 두는 게 정보가치 높음.
+function renderMpBox() {
+  const constituencies = (state.constituencies || []).filter(s => String(s.sgTypecode) === '2');
+  if (!constituencies.length) return '';
+  const candidates = state.data.candidates.filter(c => String(c.sgTypecode) === '2');
+  // sd → sgg 그룹화 (constituencies 기준 — 후보 0명 케이스도 보여주려고)
+  const grouped = constituencies.reduce((acc, s) => {
+    (acc[s.sdName] ||= []).push(s);
+    return acc;
+  }, {});
+  const sdKeys = Object.keys(grouped).sort(sidoSort);
+  const sumCount = candidates.length;
+  const stage = state.source === 'candidates' ? '후보' : '예비후보';
+
+  const cards = sdKeys.flatMap(sd => grouped[sd].map(s => {
+    const sgg = s.sggName;
+    const list = candidates.filter(c => c.sdName === sd && c.sggName === sgg);
+    const sdShort = (SIDO_TAGS[sd] || [sd])[0];
+    const linked = list.length > 0;
+    const href = `#${encodeURIComponent(sidoFor({ sdName: sd }))}::${encodeURIComponent(sgg)}`;
+    const detail = linked ? `${stage} <strong>${list.length}</strong>명` : `${stage} 미등록`;
+    const inner = `
+      <div class="mp-card-region">
+        <span class="mp-card-sido">${sdShort}</span>
+        <span class="mp-card-sgg">${sgg}</span>
+      </div>
+      <div class="mp-card-detail">${detail}</div>`;
+    return linked
+      ? `<a class="mp-card" href="${href}">${inner}</a>`
+      : `<span class="mp-card mp-card-empty" title="해당 선거구에 ${stage}가 아직 없어 시도 페이지에 표시되지 않습니다">${inner}</span>`;
+  })).join('');
+
+  return `
+    <h2 class="section-title">국회의원 재·보궐
+      <span class="section-count">${constituencies.length}개 선거구 · ${stage} ${sumCount.toLocaleString()}명 · 카드를 클릭하면 선거구로 이동</span>
+    </h2>
+    <div class="mp-grid">${cards}</div>`;
+}
+
 // ============ Render: 홈 ============
 // (전국 지도는 정보 박스가 풍부해진 시점에 제거. 시도 카드 그리드가 진입 역할 수행.)
 function renderHome() {
@@ -526,6 +567,7 @@ function renderHome() {
     </div>
     ${competitionBox}
     ${ucBox}
+    ${renderMpBox()}
     <h2 class="section-title">시도별 후보자
       <span class="section-count">카드를 클릭하면 해당 지역 상세로 이동합니다.</span>
     </h2>
