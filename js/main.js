@@ -52,7 +52,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, changelog: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -246,6 +246,7 @@ const loadParties = () => safeJson('data/parties.json', {});
 const loadNominations = () => safeJson('data/nominations.json', null);
 const loadArticles = () => safeJson('data/articles.json', null);
 const loadConstituencies = () => safeJson('data/constituencies.json', null);
+const loadChangelog = () => safeJson('data/changelog.json', null);
 
 // 라우팅용: 통합특별시는 광주/전남 중 광주로 진입 (alias 매핑이 양쪽 수용)
 const sidoFor = obj => obj.sdName === '전남광주통합특별시' || obj.sd === '전남광주통합특별시'
@@ -483,6 +484,75 @@ function renderDetailSection(section, sidoName) {
   return '';
 }
 
+// 오늘의 변경 — 어제·오늘 스냅샷 diff. data/changelog.json 사용.
+function renderChangesBox() {
+  const cl = state.changelog;
+  if (!cl || !cl.previous_date) return '';
+  const s = cl.summary;
+  const total = s.new + s.gone + s.party + s.status;
+  if (total === 0) return '';
+  const fmt = d => d ? `${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}` : '';
+  return `
+    <section class="changes">
+      <h2 class="section-title">오늘의 변경
+        <span class="section-count">${fmt(cl.previous_date)} → ${fmt(cl.today_date)} · 어제와 달라진 ${total.toLocaleString()}건</span>
+      </h2>
+      <a class="changes-row" href="#changes">
+        <span class="changes-stat changes-new"><strong>${s.new.toLocaleString()}</strong>명<small>신규 등록</small></span>
+        <span class="changes-stat changes-gone"><strong>${s.gone.toLocaleString()}</strong>명<small>사퇴·소실</small></span>
+        <span class="changes-stat changes-party"><strong>${s.party.toLocaleString()}</strong>건<small>정당 변경</small></span>
+        <span class="changes-stat changes-status"><strong>${s.status.toLocaleString()}</strong>건<small>상태 변경</small></span>
+        <span class="changes-arrow">자세히 보기 →</span>
+      </a>
+    </section>`;
+}
+
+// 변경 내역 전체 페이지 (#changes)
+function renderChangesFull() {
+  const cl = state.changelog;
+  const fmt = d => d ? `${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}` : '';
+  if (!cl || !cl.previous_date) {
+    const app = document.getElementById('app');
+    app.className = '';
+    app.innerHTML = `
+      <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">오늘의 변경</span></nav>
+      <div class="detail-head"><h1 class="detail-title">오늘의 변경</h1></div>
+      <p class="absence-note">비교할 어제 스냅샷이 아직 없습니다.</p>`;
+    return;
+  }
+  const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
+  const sectionLabel = c => titleMap[c.sgTypecode] || '';
+  const fullRow = (c, extra) => {
+    const region = formatRegionLabel({ sdName: c.sdName, sggName: c.sggName });
+    return `<li>
+      <span class="cl-name">${c.name}</span>
+      <span class="cl-party">${c.jdName || '무소속'}</span>
+      <span class="cl-region">${region}</span>
+      <span class="cl-type">${sectionLabel(c)}</span>
+      ${extra ? `<span class="cl-extra">${extra}</span>` : ''}
+    </li>`;
+  };
+  const block = (label, items, render, cls) => items.length ? `
+    <div class="cl-block ${cls}">
+      <h3 class="uc-block-title">${label} <span class="uc-count">${items.length.toLocaleString()}건</span></h3>
+      <ul class="cl-list">${items.map(render).join('')}</ul>
+    </div>` : '';
+  const html = `
+    <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">오늘의 변경</span></nav>
+    <div class="detail-head">
+      <h1 class="detail-title">오늘의 변경</h1>
+      <div class="detail-inline-stats"><span>${fmt(cl.previous_date)} → ${fmt(cl.today_date)} 스냅샷 비교</span></div>
+    </div>
+    ${block('신규 등록', cl.full.new, c => fullRow(c), 'tied')}
+    ${block('사퇴·소실', cl.full.gone, c => fullRow(c), 'zero')}
+    ${block('정당 변경', cl.full.party, c => fullRow(c, `${c.jdName_prev || '무소속'} → ${c.jdName || '무소속'}`), 'short')}
+    ${block('상태 변경', cl.full.status, c => fullRow(c, `${c.status_prev || ''} → ${c.status_now || ''}`), 'short')}`;
+  const app = document.getElementById('app');
+  app.className = '';
+  app.innerHTML = html;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 // 국회의원 재·보궐 14개 선거구 전용 박스 (홈 페이지).
 // 결원 의석만 다시 뽑는 케이스라 시도별 카드 옆에 묻혀버리는 것보다,
 // 14개를 한 자리에 따로 펴 두는 게 정보가치 높음.
@@ -585,6 +655,7 @@ function renderHome() {
       <div class="stat"><div class="stat-label">참여 정당</div><div class="stat-value">${totalParties}개</div><div class="stat-sub">무소속 포함</div></div>
     </div>
     ${summaryBox}
+    ${renderChangesBox()}
     ${renderMpBox()}
     <h2 class="section-title">시도별 후보자
       <span class="section-count">카드를 클릭하면 해당 지역 상세로 이동합니다.</span>
@@ -691,6 +762,7 @@ function route() {
   const hash = decodeURIComponent(location.hash.slice(1));
   if (!hash) return renderHome();
   if (hash === 'competition') return renderCompetitionFull();
+  if (hash === 'changes') return renderChangesFull();
   if (hash === 'uncontested') return renderUncontestedFull(null);
   if (hash.startsWith('uncontested/')) {
     return renderUncontestedFull(hash.slice('uncontested/'.length));
@@ -920,8 +992,9 @@ function initSearch() {
 async function main() {
   calculateDDay();
   try {
-    const [{ data, dateStr, source }, parties, nominations, articles, constituencies] = await Promise.all([
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
+      loadChangelog(),
     ]);
     // 로딩 시점에 단 한 번 dedup. 이후 모든 화면은 깨끗한 데이터를 본다.
     state.data = { ...data, candidates: dedupeByHuboid(data.candidates) };
@@ -932,6 +1005,7 @@ async function main() {
     state.articles = articles;
     state.articleMap = buildArticleMap(articles?.articles, state.data.candidates);
     state.constituencies = constituencies;
+    state.changelog = changelog;
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;

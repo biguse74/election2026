@@ -295,6 +295,40 @@ footer a:hover { text-decoration: underline; }
 /* 행정구조상 선거가 없는 경우 안내 */
 .absence-note { background: var(--bg-card); border-left: 3px solid var(--rule); padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--ink-sub); margin-bottom: 2rem; line-height: 1.65; }
 
+/* 오늘의 변경 — 어제·오늘 스냅샷 diff 박스 */
+.changes { margin-bottom: 2.5rem; }
+.changes-row {
+  display: grid; grid-template-columns: repeat(4, 1fr) auto;
+  align-items: center; gap: 0.6rem 1.2rem;
+  background: var(--bg-card); border: 1px solid var(--rule);
+  padding: 1rem 1.4rem;
+  text-decoration: none; color: inherit;
+  transition: all 0.18s ease;
+}
+.changes-row:hover { border-color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.changes-stat { display: flex; flex-direction: column; gap: 0.15rem; }
+.changes-stat strong { font-family: var(--serif); font-size: 1.5rem; font-weight: 900; line-height: 1; color: var(--ink); }
+.changes-stat small { font-size: 0.72rem; color: var(--ink-sub); }
+.changes-new strong { color: var(--accent); }
+.changes-gone strong { color: #555; }
+.changes-party strong { color: #b25c00; }
+.changes-status strong { color: #555; }
+.changes-arrow { font-size: 0.85rem; color: var(--accent); font-weight: 500; white-space: nowrap; }
+
+/* 변경 내역 전체 페이지 (#changes) */
+.cl-block { margin-bottom: 1.5rem; }
+.cl-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 0.4rem; }
+.cl-list li {
+  display: grid; grid-template-columns: auto 1fr auto; gap: 0.2rem 0.5rem;
+  background: var(--bg-card); border: 1px solid var(--rule);
+  padding: 0.55rem 0.8rem;
+}
+.cl-name { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; grid-column: 1; }
+.cl-party { font-size: 0.78rem; color: var(--ink-sub); grid-column: 2; }
+.cl-region { font-size: 0.78rem; color: var(--ink-sub); grid-column: 3; text-align: right; }
+.cl-type { font-size: 0.72rem; color: var(--ink-sub); grid-column: 1 / -1; }
+.cl-extra { font-size: 0.78rem; color: var(--accent); font-weight: 500; grid-column: 1 / -1; }
+
 /* 관전 포인트 — 홈에 보이는 요약 카드(경쟁률·경쟁없음 진입) */
 .summary-row {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -438,6 +472,9 @@ footer a:hover { text-decoration: underline; }
   .detail-head { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
   .detail-inline-stats { gap: 1rem; font-size: 0.85rem; }
   .article-list { margin-left: 0.8rem; padding-left: 0.6rem; }
+  .changes-row { grid-template-columns: repeat(2, 1fr); }
+  .changes-arrow { grid-column: 1 / -1; text-align: right; }
+  .cl-list { grid-template-columns: 1fr; }
 }
 @media (max-width: 380px) {
   .stats { grid-template-columns: 1fr; }

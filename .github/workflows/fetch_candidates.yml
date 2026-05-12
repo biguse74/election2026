@@ -44,6 +44,10 @@ jobs:
           NEC_API_KEY: ${{ secrets.NEC_API_KEY }}
         run: python scripts/fetch_candidates.py
 
+      - name: 어제·오늘 변화 로그 생성
+        if: steps.start_check.outputs.skip != 'true'
+        run: python scripts/build_changelog.py
+
       - name: HTML 사전 렌더링 (D-day·갱신일·총수)
         if: steps.start_check.outputs.skip != 'true'
         run: python scripts/render_summary.py
