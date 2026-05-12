@@ -532,41 +532,26 @@ function renderHome() {
   const totalLabel = state.source === 'candidates' ? '총 후보자' : '총 예비후보자';
   const candidateSuffix = state.source === 'candidates' ? '후보' : '예비후보';
 
-  // 경쟁률 상위 선거구 (sggJungsu=의석수 기준)
+  // 관전 포인트 — 디테일은 별도 페이지로 위임. 홈은 한눈에 보이는 카드 2개.
   const ranking = buildCompetitionRanking();
-  const topRanking = ranking.slice(0, 8);
-  const competitionBox = topRanking.length ? `
-    <section class="competition">
-      <h2 class="section-title">경쟁이 가장 치열한 선거구
-        <span class="section-count">의석 1자리당 후보 수 기준 · 상위 ${topRanking.length}개</span>
-      </h2>
-      <ol class="competition-list">
-        ${topRanking.map((r, i) => {
-          const target = r.sgg || r.sd;
-          const href = `#${encodeURIComponent(sidoFor(r))}::${encodeURIComponent(target)}`;
-          return `
-          <li>
-            <span class="comp-rank">${i+1}</span>
-            <a class="comp-region" href="${href}">${formatRegionLabel(r)}</a>
-            <span class="comp-type">${r.title}</span>
-            <span class="comp-ratio"><strong>${r.ratio.toFixed(1)}</strong>:1</span>
-            <span class="comp-detail">${r.count}명 / ${r.seat}석</span>
-          </li>`;
-        }).join('')}
-      </ol>
-    </section>` : '';
-
-  // 경쟁 없는 선거구 (단독 출마·정원 미달·후보 0명)
+  const top = ranking[0];
   const uc = buildUncontestedList();
-  const ucBox = (uc.tied.length || uc.short.length || uc.zero.length) ? `
-    <section class="uncontested">
-      <h2 class="section-title">경쟁 없는 선거구
-        <span class="section-count">${uncontestedStageNote()}</span>
-      </h2>
-      ${uncontestedBlock(uc.tied.slice(0, 12), uc.tied.length, '단독 출마·정원 충원 (후보 수 = 정원)', 'tied')}
-      ${uncontestedBlock(uc.short.slice(0, 8), uc.short.length, '정원 미달 (후보 수 < 정원)', 'short')}
-      ${uncontestedBlock(uc.zero.slice(0, 8), uc.zero.length, '후보 0명', 'zero')}
-    </section>` : '';
+  const ucTotal = uc.tied.length + uc.short.length + uc.zero.length;
+  const summaryBox = (top || ucTotal) ? `
+    <div class="summary-row">
+      ${top ? `
+        <a class="summary-card" href="#competition">
+          <span class="summary-card-label">경쟁이 가장 치열한 선거구</span>
+          <span class="summary-card-value"><strong>${top.ratio.toFixed(1)}</strong><span class="summary-card-unit">:1</span></span>
+          <span class="summary-card-sub">${formatRegionLabel(top)} ${top.title} · ${ranking.length.toLocaleString()}개 선거구 전체 보기 →</span>
+        </a>` : ''}
+      ${ucTotal ? `
+        <a class="summary-card" href="#uncontested">
+          <span class="summary-card-label">경쟁 없는 선거구</span>
+          <span class="summary-card-value"><strong>${ucTotal.toLocaleString()}</strong>곳</span>
+          <span class="summary-card-sub">단독 ${uc.tied.length} · 미달 ${uc.short.length} · 0명 ${uc.zero.length} · 모두 보기 →</span>
+        </a>` : ''}
+    </div>` : '';
 
   const html = `
     <div class="stats">
@@ -578,8 +563,7 @@ function renderHome() {
         </div>`).join('')}
       <div class="stat"><div class="stat-label">참여 정당</div><div class="stat-value">${totalParties}개</div><div class="stat-sub">무소속 포함</div></div>
     </div>
-    ${competitionBox}
-    ${ucBox}
+    ${summaryBox}
     ${renderMpBox()}
     <h2 class="section-title">시도별 후보자
       <span class="section-count">카드를 클릭하면 해당 지역 상세로 이동합니다.</span>
@@ -685,6 +669,7 @@ function focusConstituency(sggName) {
 function route() {
   const hash = decodeURIComponent(location.hash.slice(1));
   if (!hash) return renderHome();
+  if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'uncontested') return renderUncontestedFull(null);
   if (hash.startsWith('uncontested/')) {
     return renderUncontestedFull(hash.slice('uncontested/'.length));
@@ -770,6 +755,41 @@ function renderUncontestedFull(category) {
   const app = document.getElementById('app');
   app.className = '';
   app.innerHTML = html;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+// 경쟁률 전체 페이지 (#competition)
+function renderCompetitionFull() {
+  const ranking = buildCompetitionRanking();
+  const rows = ranking.map((r, i) => {
+    const target = r.sgg || r.sd;
+    const href = `#${encodeURIComponent(sidoFor(r))}::${encodeURIComponent(target)}`;
+    return `
+      <li>
+        <span class="comp-rank">${i + 1}</span>
+        <a class="comp-region" href="${href}">${formatRegionLabel(r)}</a>
+        <span class="comp-type">${r.title}</span>
+        <span class="comp-ratio"><strong>${r.ratio.toFixed(1)}</strong>:1</span>
+        <span class="comp-detail">${r.count}명 / ${r.seat}석</span>
+      </li>`;
+  }).join('');
+  const html = `
+    <nav class="breadcrumb">
+      <a href="#">전국</a>
+      <span class="sep">›</span>
+      <span class="current">경쟁이 치열한 선거구</span>
+    </nav>
+    <div class="detail-head">
+      <h1 class="detail-title">경쟁이 치열한 선거구</h1>
+      <div class="detail-inline-stats">
+        <span>의석 1자리당 후보 수 기준 · ${ranking.length.toLocaleString()}개 선거구</span>
+      </div>
+    </div>
+    <ol class="competition-list">${rows}</ol>`;
+  const app = document.getElementById('app');
+  app.className = '';
+  app.innerHTML = html;
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 // ============ 검색 (헤더 input → 결과 dropdown) ============

@@ -214,7 +214,32 @@ footer a:hover { text-decoration: underline; }
 /* 행정구조상 선거가 없는 경우 안내 */
 .absence-note { background: var(--bg-card); border-left: 3px solid var(--rule); padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--ink-sub); margin-bottom: 2rem; line-height: 1.65; }
 
-/* 경쟁이 가장 치열한 선거구 박스 */
+/* 관전 포인트 — 홈에 보이는 요약 카드(경쟁률·경쟁없음 진입) */
+.summary-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem; margin-bottom: 2.5rem;
+}
+.summary-card {
+  display: flex; flex-direction: column; gap: 0.45rem;
+  background: var(--bg-card); border: 1px solid var(--rule);
+  padding: 1.1rem 1.4rem;
+  text-decoration: none; color: inherit;
+  transition: all 0.18s ease;
+}
+.summary-card:hover { border-color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.summary-card-label {
+  font-size: 0.78rem; color: var(--ink-sub);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.summary-card-value {
+  font-family: var(--serif); font-size: 2.4rem; font-weight: 900;
+  line-height: 1; color: var(--ink);
+}
+.summary-card-value strong { color: var(--accent); font-weight: 900; }
+.summary-card-unit { font-family: var(--sans); font-size: 1.1rem; font-weight: 400; color: var(--ink-sub); margin-left: 0.1rem; }
+.summary-card-sub { font-size: 0.82rem; color: var(--ink-sub); line-height: 1.5; }
+
+/* 경쟁이 가장 치열한 선거구 박스 (전체 페이지에서 사용) */
 .competition { margin-bottom: 2.5rem; }
 .competition-list {
   list-style: none; padding: 0; margin: 0;
