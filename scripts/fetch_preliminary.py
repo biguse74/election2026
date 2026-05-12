@@ -23,7 +23,7 @@ import json
 import os
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 import requests
@@ -31,6 +31,10 @@ import requests
 BASE_URL = "http://apis.data.go.kr/9760000/PofelcddInfoInqireService"
 API_KEY = os.environ.get("NEC_API_KEY", "").strip()
 TARGET_SG_ID = "20260603"
+# 한국 시간 기준으로 날짜 결정. 워크플로우가 KST 03시(UTC 18시 전날)에
+# 돌기 때문에 UTC now_kst()를 쓰면 파일명이 전날 날짜로 저장됨.
+KST = timezone(timedelta(hours=9))
+def now_kst() -> datetime: return datetime.now(KST)
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 CODES_DIR = ROOT_DIR / "data" / "codes" / TARGET_SG_ID
@@ -185,7 +189,7 @@ def main() -> None:
 
     all_candidates: list[dict] = []
     call_count = 0
-    started_at = datetime.now()
+    started_at = now_kst()
 
     for sg_type, label in LOCAL_ELECTION_TYPES.items():
         print(f"[sgTypecode={sg_type}] {label}")
@@ -215,7 +219,7 @@ def main() -> None:
         print(f"huboid 중복 제거: {removed}건 (통합특별시 시도지사 등)\n")
 
     # 스냅샷 저장
-    today = datetime.now().strftime("%Y%m%d")
+    today = now_kst().strftime("%Y%m%d")
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out_file = OUT_DIR / f"snapshot_{today}.json"
 
@@ -232,7 +236,7 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    elapsed = (datetime.now() - started_at).total_seconds()
+    elapsed = (now_kst() - started_at).total_seconds()
 
     print("=" * 60)
     print(f"수집 완료")

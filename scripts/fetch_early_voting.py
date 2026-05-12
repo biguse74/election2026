@@ -24,7 +24,7 @@ import json
 import os
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 import requests
@@ -33,6 +33,8 @@ BASE_URL = "http://apis.data.go.kr/9760000/ErVotingSttusInfoInqireService"
 OPERATION = "getErVotingSttusInfoInqire"
 API_KEY = os.environ.get("NEC_API_KEY", "").strip()
 TARGET_SG_ID = "20260603"
+KST = timezone(timedelta(hours=9))
+def now_kst() -> datetime: return datetime.now(KST)
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT_DIR / "data" / "early_voting" / TARGET_SG_ID
@@ -133,7 +135,7 @@ def main() -> None:
     print(f"사전투표 현황 수집 (sgId={TARGET_SG_ID})")
     print("=" * 60)
 
-    started_at = datetime.now()
+    started_at = now_kst()
     all_rows: list[dict] = []
     call_count = 0
 
@@ -146,7 +148,7 @@ def main() -> None:
         time.sleep(0.2)
 
     if not all_rows:
-        elapsed = (datetime.now() - started_at).total_seconds()
+        elapsed = (now_kst() - started_at).total_seconds()
         print()
         print("=" * 60)
         print("사전투표 데이터가 아직 없습니다 (사전투표 시작 전 또는 미공개).")
@@ -155,7 +157,7 @@ def main() -> None:
         print("=" * 60)
         return
 
-    today = datetime.now().strftime("%Y%m%d")
+    today = now_kst().strftime("%Y%m%d")
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out_file = OUT_DIR / f"snapshot_{today}.json"
 
@@ -172,7 +174,7 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    elapsed = (datetime.now() - started_at).total_seconds()
+    elapsed = (now_kst() - started_at).total_seconds()
     print()
     print("=" * 60)
     print("수집 완료")

@@ -160,9 +160,12 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 .ed-body .candidate:first-child { padding-top: 0.6rem; }
 
 /* Footer */
-footer { text-align: center; padding: 2rem; font-size: 0.85rem; color: var(--ink-sub); border-top: 1px solid var(--rule); }
+footer { text-align: center; padding: 2rem 1rem; border-top: 1px solid var(--rule); color: var(--ink-sub); }
 footer a { color: var(--accent); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
+.footer-credit { font-size: 0.95rem; margin-bottom: 0.4rem; }
+.footer-credit strong { color: var(--ink); font-weight: 700; }
+.footer-meta { font-size: 0.82rem; }
 
 /* 공천 확정 배지 */
 .candidate.confirmed .candidate-name { font-weight: 700; }
