@@ -1,0 +1,43 @@
+name: 선거 코드 수동 갱신
+
+# 선거구·정당·직업·학력 등 정적 코드 정보 갱신. 자동 스케줄 없이 수동 트리거만.
+# 새 선거 종류 추가하거나 정당 분할/통합 등 코드 변동 시 실행.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 선거 코드 수집
+        env:
+          NEC_API_KEY: ${{ secrets.NEC_API_KEY }}
+        run: python scripts/fetch_codes.py
+
+      - name: 변경사항 커밋·푸시
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/codes/ data/constituencies.json
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+          else
+            git commit -m "data: 선거 코드 수동 갱신 $(date -u +%Y-%m-%d)"
+            git push
+          fi

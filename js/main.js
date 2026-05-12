@@ -30,6 +30,8 @@ const sidoSort = (a, b) => {
 //     groupBy: grid/collapsible에서 그룹 키 추출 함수
 //   useAlias: 통합특별시 alias 매핑 적용 여부
 const SECTIONS = [
+  // sgTypecode=2: 6/3 지방선거와 동시 시행되는 국회의원 재·보궐 (결원 의석만)
+  { id: 'mp',       sgTypecode: '2',  title: '국회의원(재·보궐)', card: true, detail: { layout: 'grid', groupBy: c => c.sggName || c.wiwName } },
   { id: 'chief',    sgTypecode: '3',  title: '시도지사',       useAlias: true, card: true, detail: { layout: 'single' } },
   { id: 'head',     sgTypecode: '4',  title: '기초단체장',     card: true, detail: { layout: 'grid', groupBy: c => c.sggName || c.wiwName } },
   { id: 'sidoMp',   sgTypecode: '5',  title: '시도의원',       card: true, detail: { layout: 'collapsible', groupBy: c => c.sggName || c.wiwName || '(미지정)' } },

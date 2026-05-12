@@ -36,8 +36,9 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 CODES_DIR = ROOT_DIR / "data" / "codes" / TARGET_SG_ID
 OUT_DIR = ROOT_DIR / "data" / "preliminary" / TARGET_SG_ID
 
-# 9회 지선에서 실시되는 선거종류 (교육의원[10] 일몰 적용)
+# 9회 지선 + 동시 시행 국회의원 재·보궐선거 (교육의원[10] 일몰 적용)
 LOCAL_ELECTION_TYPES: dict[int, str] = {
+    2: "국회의원선거(재·보궐)",
     3: "시도지사선거",
     4: "구시군장선거",
     5: "시도의원선거",

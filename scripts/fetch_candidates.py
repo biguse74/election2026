@@ -32,6 +32,7 @@ CODES_DIR = ROOT_DIR / "data" / "codes" / TARGET_SG_ID
 OUT_DIR = ROOT_DIR / "data" / "candidates" / TARGET_SG_ID
 
 LOCAL_ELECTION_TYPES: dict[int, str] = {
+    2: "국회의원선거(재·보궐)",
     3: "시도지사선거",
     4: "구시군장선거",
     5: "시도의원선거",

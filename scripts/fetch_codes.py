@@ -32,8 +32,9 @@ API_KEY = os.environ.get("NEC_API_KEY", "").strip()
 TARGET_VOTE_DATE = "20260603"  # 9회 지선 본투표일
 DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "codes"
 
-# 9회 지선에서 실시되는 선거종류 (교육의원[10] 일몰 적용)
+# 9회 지선 + 동시 시행 국회의원 재·보궐선거 (교육의원[10] 일몰 적용)
 LOCAL_ELECTION_TYPES: dict[int, str] = {
+    2: "국회의원선거(재·보궐)",
     3: "시도지사선거",
     4: "구시군장선거",
     5: "시도의원선거",
