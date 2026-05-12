@@ -211,36 +211,55 @@ const sidoFor = obj => obj.sdName === '전남광주통합특별시' || obj.sd ==
 // 경쟁률(후보 수 / 의석 수) 계산. SECTIONS의 sgTypecode만 대상.
 const seatKey = c => `${c.sgTypecode}|${c.sdName}|${c.sggName}`;
 
-function buildCompetitionRanking() {
+// 의석수 인덱스 + 선거구별 후보 수. 경쟁률·무투표 두 박스에서 공유.
+function buildSeatStats() {
   const constituencies = state.constituencies;
-  if (!constituencies?.length) return [];
+  if (!constituencies?.length) return null;
   const allowedTypes = new Set(SECTIONS.map(s => s.sgTypecode));
-  // 의석수 인덱스
   const seats = {};
   for (const s of constituencies) {
     if (!allowedTypes.has(String(s.sgTypecode))) continue;
     seats[seatKey(s)] = parseInt(s.sggJungsu, 10) || 1;
   }
-  // 선거구별 후보 수
   const counts = {};
   for (const c of state.data.candidates) {
     if (!allowedTypes.has(String(c.sgTypecode))) continue;
-    const k = seatKey(c);
-    counts[k] = (counts[k] || 0) + 1;
+    counts[seatKey(c)] = (counts[seatKey(c)] || 0) + 1;
   }
+  return { seats, counts };
+}
+
+function buildCompetitionRanking() {
+  const stats = buildSeatStats();
+  if (!stats) return [];
   const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
-  const rows = Object.entries(counts).map(([k, count]) => {
+  const rows = Object.entries(stats.counts).map(([k, count]) => {
     const [sgType, sd, sgg] = k.split('|');
-    const seat = seats[k] || 1;
-    return {
-      sgType, sd, sgg, count, seat,
-      ratio: count / seat,
-      title: titleMap[sgType] || sgType,
-    };
+    const seat = stats.seats[k] || 1;
+    return { sgType, sd, sgg, count, seat, ratio: count / seat, title: titleMap[sgType] || sgType };
   });
-  // 경쟁률 내림차순, 동률이면 후보 많은 순
   rows.sort((a, b) => b.ratio - a.ratio || b.count - a.count);
   return rows;
+}
+
+// 이대로 가면 무투표 당선될 가능성이 있는 곳 (정원 = 후보 수).
+// 정원 > 후보(미달)·0명도 함께 수집 — 사용자는 박스 안에서 카테고리별로 본다.
+function buildUncontestedList() {
+  const stats = buildSeatStats();
+  if (!stats) return { tied: [], short: [], zero: [] };
+  const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
+  const tied = [], short = [], zero = [];
+  for (const [k, seat] of Object.entries(stats.seats)) {
+    const count = stats.counts[k] || 0;
+    if (count > seat) continue;
+    const [sgType, sd, sgg] = k.split('|');
+    const row = { sgType, sd, sgg, count, seat, title: titleMap[sgType] || sgType };
+    if (count === 0) zero.push(row);
+    else if (count < seat) short.push(row);
+    else tied.push(row);
+  }
+  const cmp = (a, b) => sidoSort(a.sd, b.sd) || koSort(a.sgg || '', b.sgg || '');
+  return { tied: tied.sort(cmp), short: short.sort(cmp), zero: zero.sort(cmp) };
 }
 
 // 후보 등록 시작일. 이 날짜 이후로는 candidates 스냅샷이 우선.
@@ -460,6 +479,39 @@ function renderHome() {
       </ol>
     </section>` : '';
 
+  // 무투표 가능·정원 미달·예비후보 미등록 (사실 진단)
+  const uc = buildUncontestedList();
+  const stageNote = state.source === 'candidates'
+    ? '후보 등록 기준 — 등록 마감이라 사실상 확정.'
+    : '예비후보 등록 기준 — 5/14~15 후보 등록 시 변동 가능.';
+  const ucRowHtml = r => `
+    <li>
+      <a class="uc-region" href="#${encodeURIComponent(sidoFor(r))}">${r.sgg || r.sd}</a>
+      <span class="uc-type">${r.title}</span>
+      <span class="uc-detail">${r.count}/${r.seat}</span>
+      <span class="uc-sido">${r.sd}</span>
+    </li>`;
+  const ucBlock = (label, items, limit, cls) => {
+    if (!items.length) return '';
+    const shown = items.slice(0, limit);
+    const more = items.length - shown.length;
+    return `
+      <div class="uc-block ${cls}">
+        <h3 class="uc-block-title">${label} <span class="uc-count">${items.length.toLocaleString()}곳</span></h3>
+        <ul class="uc-list">${shown.map(ucRowHtml).join('')}</ul>
+        ${more > 0 ? `<p class="uc-more">+${more.toLocaleString()}곳 더 (시도 상세 페이지에서 확인)</p>` : ''}
+      </div>`;
+  };
+  const ucBox = (uc.tied.length || uc.short.length || uc.zero.length) ? `
+    <section class="uncontested">
+      <h2 class="section-title">이대로 가면 무투표 당선·정원 미달
+        <span class="section-count">${stageNote}</span>
+      </h2>
+      ${ucBlock('무투표 당선 가능 (정원 = 후보)', uc.tied, 12, 'tied')}
+      ${ucBlock('정원 미달 (정원 &gt; 후보)', uc.short, 8, 'short')}
+      ${ucBlock('후보 0명', uc.zero, 8, 'zero')}
+    </section>` : '';
+
   const html = `
     <div class="stats">
       <div class="stat"><div class="stat-label">${totalLabel}</div><div class="stat-value">${cands.length.toLocaleString()}명</div><div class="stat-sub">${state.data.fetched_at.slice(0,10)} 기준</div></div>
@@ -471,6 +523,7 @@ function renderHome() {
       <div class="stat"><div class="stat-label">참여 정당</div><div class="stat-value">${totalParties}개</div><div class="stat-sub">무소속 포함</div></div>
     </div>
     ${competitionBox}
+    ${ucBox}
     <h2 class="section-title">전국 지도</h2>
     <p class="section-hint">시도를 클릭하면 해당 지역의 후보자 상세로 이동합니다.</p>
     <div id="map"></div>

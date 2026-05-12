@@ -1,11 +1,23 @@
 :root {
   --bg: #f5f1ea; --bg-card: #fffdf8; --ink: #1a1a1a; --ink-sub: #555;
   --rule: #d8d2c8; --accent: #c41e3a; --highlight: #f4d35e;
-  --serif: 'Noto Serif KR', serif;
-  --sans: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --serif: 'Noto Serif KR', 'Apple SD Gothic Neo', 'Malgun Gothic', serif;
+  --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+          'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.6; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  word-break: keep-all;       /* 한글이 한 단어 단위로 줄바꿈 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
 a { color: inherit; }
 
 /* Header */
@@ -13,7 +25,7 @@ a { color: inherit; }
 .header-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
 .brand { text-decoration: none; }
 .title { font-family: var(--serif); font-weight: 900; font-size: clamp(1.75rem, 4.5vw, 3rem); line-height: 1; letter-spacing: -0.02em; }
-.subtitle { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--ink-sub); margin-top: 0.4rem; letter-spacing: 0.04em; }
+.subtitle { font-family: var(--serif); font-size: 0.95rem; color: var(--ink-sub); margin-top: 0.4rem; letter-spacing: 0.04em; }
 .header-right { display: flex; align-items: flex-end; gap: 1.5rem; flex-wrap: wrap; }
 .dday { text-align: right; font-family: var(--serif); }
 .dday-label { font-size: 0.75rem; color: var(--ink-sub); letter-spacing: 0.15em; text-transform: uppercase; }
@@ -44,12 +56,12 @@ a { color: inherit; }
 .sr-item:hover { background: rgba(196, 30, 58, 0.06); }
 .sr-name { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; display: block; }
 .sr-meta { font-size: 0.78rem; color: var(--ink-sub); display: block; margin-top: 0.15rem; }
-.sr-empty, .sr-more { padding: 0.6rem 0.85rem; font-size: 0.85rem; color: var(--ink-sub); font-style: italic; }
+.sr-empty, .sr-more { padding: 0.6rem 0.85rem; font-size: 0.85rem; color: var(--ink-sub); }
 .sr-more { border-top: 1px solid var(--rule); }
 
 /* Layout */
 main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
-.loading { padding: 4rem 0; text-align: center; color: var(--ink-sub); font-family: var(--serif); font-style: italic; }
+.loading { padding: 4rem 0; text-align: center; color: var(--ink-sub); font-family: var(--serif); letter-spacing: 0.05em; }
 
 /* Stats bar */
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 3rem; }
@@ -62,7 +74,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 /* Section */
 .section-title { font-family: var(--serif); font-weight: 700; font-size: 1.75rem; margin: 2.5rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--ink); }
 .section-title:first-of-type { margin-top: 0; }
-.section-hint { font-size: 0.9rem; color: var(--ink-sub); margin-top: -0.75rem; margin-bottom: 1.5rem; font-style: italic; }
+.section-hint { font-size: 0.9rem; color: var(--ink-sub); margin-top: -0.75rem; margin-bottom: 1.5rem; }
 
 /* Map */
 #map { height: 520px; border: 1px solid var(--rule); background: var(--bg-card); margin-bottom: 2.5rem; }
@@ -96,7 +108,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 .cc-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule); }
 .cc-name { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; }
 .cc-count { font-size: 0.8rem; color: var(--ink-sub); }
-.cc-empty { font-size: 0.85rem; color: var(--ink-sub); font-style: italic; padding: 0.5rem 0; }
+.cc-empty { font-size: 0.85rem; color: var(--ink-sub); padding: 0.5rem 0; }
 
 /* Candidate row */
 .candidate { display: flex; align-items: center; gap: 0.7rem; padding: 0.4rem 0; border-bottom: 1px dotted var(--rule); }
@@ -141,7 +153,7 @@ footer a:hover { text-decoration: underline; }
 /* 공천 확정 배지 */
 .candidate.confirmed .candidate-name { font-weight: 700; }
 .confirmed-badge { display: inline-block; margin-left: 0.4rem; font-size: 0.65rem; background: var(--accent); color: #fff; padding: 0.12rem 0.4rem; border-radius: 2px; font-weight: 700; letter-spacing: 0.05em; vertical-align: 2px; }
-.nominations-source { font-size: 0.8rem; color: var(--ink-sub); margin: -1rem 0 1rem; font-style: italic; line-height: 1.5; }
+.nominations-source { font-size: 0.85rem; color: var(--ink-sub); margin: -1rem 0 1rem; line-height: 1.6; }
 .nominations-source a { color: var(--accent); }
 .nominations-source a:hover { text-decoration: underline; }
 
@@ -164,7 +176,7 @@ footer a:hover { text-decoration: underline; }
 .article-meta { color: var(--ink-sub); font-size: 0.75rem; margin-left: 0.3rem; }
 
 /* 행정구조상 선거가 없는 경우 안내 */
-.absence-note { background: var(--bg-card); border-left: 3px solid var(--rule); padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--ink-sub); margin-bottom: 2rem; font-style: italic; line-height: 1.65; }
+.absence-note { background: var(--bg-card); border-left: 3px solid var(--rule); padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--ink-sub); margin-bottom: 2rem; line-height: 1.65; }
 
 /* 경쟁이 가장 치열한 선거구 박스 */
 .competition { margin-bottom: 2.5rem; }
@@ -195,3 +207,39 @@ footer a:hover { text-decoration: underline; }
 }
 .comp-ratio strong { color: var(--accent); font-weight: 900; }
 .comp-detail { font-size: 0.78rem; color: var(--ink-sub); text-align: right; grid-row: 2; grid-column: 3; }
+
+/* 무투표 가능 · 미달 · 0명 */
+.uncontested { margin-bottom: 2.5rem; }
+.uc-block { margin-bottom: 1.4rem; }
+.uc-block-title {
+  font-family: var(--serif); font-weight: 700; font-size: 1.05rem;
+  margin-bottom: 0.6rem; padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--rule);
+}
+.uc-block.tied .uc-block-title { color: var(--accent); }
+.uc-block.short .uc-block-title { color: #b25c00; }
+.uc-block.zero .uc-block-title { color: var(--ink-sub); }
+.uc-count { font-family: var(--sans); font-weight: 400; font-size: 0.82rem; color: var(--ink-sub); margin-left: 0.5rem; }
+.uc-list {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0.35rem;
+}
+.uc-list li {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 0.15rem 0.7rem;
+  background: var(--bg-card); border: 1px solid var(--rule);
+  padding: 0.55rem 0.8rem;
+}
+.uc-region { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; text-decoration: none; color: var(--ink); }
+.uc-region:hover { color: var(--accent); text-decoration: underline; }
+.uc-type { font-size: 0.78rem; color: var(--ink-sub); grid-column: 1; }
+.uc-detail {
+  font-family: var(--serif); font-weight: 700; font-size: 0.95rem;
+  grid-row: 1; grid-column: 2; text-align: right;
+  color: var(--accent);
+}
+.uc-block.short .uc-detail { color: #b25c00; }
+.uc-block.zero .uc-detail { color: var(--ink-sub); }
+.uc-sido { font-size: 0.72rem; color: var(--ink-sub); grid-row: 2; grid-column: 2; text-align: right; }
+.uc-more { font-size: 0.82rem; color: var(--ink-sub); margin-top: 0.5rem; }
