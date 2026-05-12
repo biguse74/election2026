@@ -199,8 +199,16 @@ function isConfirmed(c) {
   if (state.dateStr && state.dateStr >= NOMINATION_CUTOFF) return false;
   const groups = state.nominations[`sgTypecode_${c.sgTypecode}`];
   if (!groups) return false;
-  const list = groups[c.sggName || c.sdName];
-  if (!list) return false;
+  // 두 형태 지원:
+  //   ① 평면 {지역명:[...]}  — 시도지사용(시도명이 곧 선거구)
+  //   ② 중첩 {시도명:{선거구명:[...]}}  — 동명 자치구 충돌 방지(국회의원·기초단체장 등)
+  const flat = groups[c.sggName || c.sdName];
+  let list = Array.isArray(flat) ? flat : null;
+  if (!list) {
+    const inner = groups[c.sdName];
+    list = inner && typeof inner === 'object' ? inner[c.sggName] : null;
+  }
+  if (!Array.isArray(list)) return false;
   return list.some(([name, party]) => name === c.name && party === c.jdName);
 }
 
