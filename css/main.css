@@ -325,6 +325,36 @@ footer a:hover { text-decoration: underline; }
 /* 행정구조상 선거가 없는 경우 안내 */
 .absence-note { background: var(--bg-card); border-left: 3px solid var(--rule); padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--ink-sub); margin-bottom: 2rem; line-height: 1.65; }
 
+/* 출마자 추세 박스 (홈 sparkline) */
+.trend-card {
+  display: flex; flex-direction: column; gap: 0.4rem;
+  background: var(--bg-card); border: 1px solid var(--rule);
+  padding: 1rem 1.3rem; margin-bottom: 2.5rem;
+  text-decoration: none; color: inherit;
+  transition: all 0.18s ease;
+}
+.trend-card:hover { border-color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.trend-card-head { display: flex; justify-content: space-between; align-items: baseline; }
+.trend-card-label { font-size: 0.78rem; color: var(--ink-sub); letter-spacing: 0.08em; text-transform: uppercase; }
+.trend-card-period { font-size: 0.75rem; color: var(--ink-sub); }
+.sparkline { display: block; margin: 0.2rem auto; }
+.trend-card-foot { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.trend-card-now { font-family: var(--serif); font-size: 1.8rem; font-weight: 900; color: var(--ink); }
+.trend-card-now strong { color: var(--accent); }
+.trend-card-delta { font-size: 0.85rem; font-weight: 700; padding: 0.1rem 0.45rem; border-radius: 10px; }
+.trend-card-delta.up { color: var(--accent); background: rgba(196,30,58,0.08); }
+.trend-card-delta.down { color: #555; background: rgba(85,85,85,0.08); }
+.trend-card-link { margin-left: auto; font-size: 0.82rem; color: var(--accent); font-weight: 500; }
+
+/* 추세 전체 페이지 */
+.trend-section { background: var(--bg-card); border: 1px solid var(--rule); padding: 1.2rem 1.4rem; margin-bottom: 1.5rem; }
+.trend-section-title { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; margin-bottom: 0.8rem; }
+.trend-chart { width: 100%; height: auto; max-width: 800px; }
+.trend-legend { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.2rem; font-size: 0.85rem; }
+.trend-legend li { display: inline-flex; align-items: center; gap: 0.4rem; }
+.trend-legend small { color: var(--ink-sub); font-size: 0.75rem; }
+.legend-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; }
+
 /* 오늘의 변경 — 어제·오늘 스냅샷 diff 박스 */
 .changes { margin-bottom: 2.5rem; }
 .changes-row {

@@ -52,7 +52,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, changelog: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, changelog: null, timeseries: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -247,6 +247,7 @@ const loadNominations = () => safeJson('data/nominations.json', null);
 const loadArticles = () => safeJson('data/articles.json', null);
 const loadConstituencies = () => safeJson('data/constituencies.json', null);
 const loadChangelog = () => safeJson('data/changelog.json', null);
+const loadTimeseries = () => safeJson('data/timeseries.json', null);
 
 // 라우팅용: 통합특별시는 광주/전남 중 광주로 진입 (alias 매핑이 양쪽 수용)
 const sidoFor = obj => obj.sdName === '전남광주통합특별시' || obj.sd === '전남광주통합특별시'
@@ -605,6 +606,153 @@ function renderDetailSection(section, sidoName) {
   return '';
 }
 
+// 시계열 추세 (sparkline + 전체 페이지)
+function sparklineSvg(values, w = 220, h = 44, color = '#c41e3a') {
+  if (!values || values.length < 2) return '';
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const range = max - min || 1;
+  const stepX = w / (values.length - 1);
+  const pts = values.map((v, i) =>
+    `${(i * stepX).toFixed(1)},${(h - ((v - min) / range) * (h - 6) - 3).toFixed(1)}`
+  ).join(' ');
+  const last = values[values.length - 1];
+  const lastX = ((values.length - 1) * stepX).toFixed(1);
+  const lastY = (h - ((last - min) / range) * (h - 6) - 3).toFixed(1);
+  return `
+    <svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" class="sparkline" aria-hidden="true">
+      <polyline fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/>
+      <circle cx="${lastX}" cy="${lastY}" r="3" fill="${color}"/>
+    </svg>`;
+}
+
+function renderTrendBox() {
+  const ts = state.timeseries;
+  if (!ts?.series?.length || ts.series.length < 2) return '';
+  const series = ts.series;
+  const totals = series.map(r => r.total);
+  const first = series[0];
+  const last = series[series.length - 1];
+  const delta = last.total - first.total;
+  const fmtDate = d => `${d.slice(4,6)}/${d.slice(6,8)}`;
+  return `
+    <a class="trend-card" href="#trend">
+      <div class="trend-card-head">
+        <span class="trend-card-label">출마자 추세</span>
+        <span class="trend-card-period">${fmtDate(first.date)} → ${fmtDate(last.date)}</span>
+      </div>
+      ${sparklineSvg(totals)}
+      <div class="trend-card-foot">
+        <span class="trend-card-now"><strong>${last.total.toLocaleString()}</strong>명</span>
+        <span class="trend-card-delta ${delta >= 0 ? 'up' : 'down'}">${delta >= 0 ? '+' : ''}${delta.toLocaleString()}</span>
+        <span class="trend-card-link">자세히 →</span>
+      </div>
+    </a>`;
+}
+
+// 추세 전체 페이지 (#trend)
+function renderTrendFull() {
+  const ts = state.timeseries;
+  const app = document.getElementById('app');
+  app.className = '';
+  if (!ts?.series?.length) {
+    app.innerHTML = `
+      <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">추세</span></nav>
+      <div class="detail-head"><h1 class="detail-title">출마자 추세</h1></div>
+      <p class="absence-note">시계열 데이터가 아직 없습니다.</p>`;
+    return;
+  }
+  const series = ts.series;
+  const fmtDate = d => `${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6,8)}`;
+
+  // 정당별 시계열 — 매일 등장 빈도 합쳐 상위 6개
+  const partySet = {};
+  series.forEach(r => Object.entries(r.by_party).forEach(([p, n]) => {
+    partySet[p] = (partySet[p] || 0) + n;
+  }));
+  const topParties = Object.entries(partySet).sort((a, b) => b[1] - a[1]).slice(0, 6).map(x => x[0]);
+
+  // 메인 라인 그래프 (총 출마자)
+  const w = 800, h = 200, pad = 30;
+  const totals = series.map(r => r.total);
+  const min = Math.min(...totals);
+  const max = Math.max(...totals);
+  const range = max - min || 1;
+  const stepX = (w - pad * 2) / (series.length - 1 || 1);
+  const pts = series.map((r, i) =>
+    `${(pad + i * stepX).toFixed(1)},${(h - pad - ((r.total - min) / range) * (h - pad * 2)).toFixed(1)}`
+  ).join(' ');
+
+  const xLabels = series.map((r, i) => {
+    const x = pad + i * stepX;
+    return `<text x="${x.toFixed(1)}" y="${h - 8}" font-size="10" fill="#888" text-anchor="middle">${r.date.slice(4,6)}/${r.date.slice(6,8)}</text>`;
+  }).join('');
+  const yMaxLabel = `<text x="${pad - 6}" y="${pad + 4}" font-size="10" fill="#888" text-anchor="end">${max.toLocaleString()}</text>`;
+  const yMinLabel = `<text x="${pad - 6}" y="${h - pad + 4}" font-size="10" fill="#888" text-anchor="end">${min.toLocaleString()}</text>`;
+
+  const totalSvg = `
+    <svg viewBox="0 0 ${w} ${h}" class="trend-chart" aria-label="일자별 총 출마자 수">
+      <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h - pad}" stroke="#d8d2c8" stroke-width="1"/>
+      <line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" stroke="#d8d2c8" stroke-width="1"/>
+      <polyline fill="none" stroke="#c41e3a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/>
+      ${series.map((r, i) => {
+        const x = pad + i * stepX;
+        const y = h - pad - ((r.total - min) / range) * (h - pad * 2);
+        return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#c41e3a"/>`;
+      }).join('')}
+      ${yMaxLabel}${yMinLabel}${xLabels}
+    </svg>`;
+
+  // 정당별 시계열 라인 (상위 6개)
+  const palette = ['#152484', '#E61E2B', '#0A3CA2', '#FF7800', '#FFD400', '#888'];
+  const allCounts = [];
+  series.forEach(r => topParties.forEach(p => allCounts.push(r.by_party[p] || 0)));
+  const pMax = Math.max(...allCounts, 1);
+  const partyLines = topParties.map((p, idx) => {
+    const color = state.parties[p] || palette[idx] || '#888';
+    const pts = series.map((r, i) => {
+      const x = pad + i * stepX;
+      const v = r.by_party[p] || 0;
+      const y = h - pad - (v / pMax) * (h - pad * 2);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+    return `<polyline fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/>`;
+  }).join('');
+  const partyLegend = topParties.map((p, idx) => {
+    const color = state.parties[p] || palette[idx] || '#888';
+    const last = series[series.length - 1].by_party[p] || 0;
+    return `<li><span class="legend-swatch" style="background:${color}"></span>${p} <small>${last.toLocaleString()}</small></li>`;
+  }).join('');
+  const partySvg = `
+    <svg viewBox="0 0 ${w} ${h}" class="trend-chart" aria-label="정당별 후보 수 추이">
+      <line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h - pad}" stroke="#d8d2c8" stroke-width="1"/>
+      <line x1="${pad}" y1="${h - pad}" x2="${w - pad}" y2="${h - pad}" stroke="#d8d2c8" stroke-width="1"/>
+      ${partyLines}
+      <text x="${pad - 6}" y="${pad + 4}" font-size="10" fill="#888" text-anchor="end">${pMax.toLocaleString()}</text>
+      <text x="${pad - 6}" y="${h - pad + 4}" font-size="10" fill="#888" text-anchor="end">0</text>
+      ${xLabels}
+    </svg>`;
+
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">추세</span></nav>
+    <div class="detail-head">
+      <h1 class="detail-title">출마자 추세</h1>
+      <div class="detail-inline-stats">
+        <span>${fmtDate(series[0].date)} ~ ${fmtDate(series[series.length-1].date)} (${series.length}일)</span>
+      </div>
+    </div>
+    <section class="trend-section">
+      <h3 class="trend-section-title">총 출마자 수</h3>
+      ${totalSvg}
+    </section>
+    <section class="trend-section">
+      <h3 class="trend-section-title">정당별 후보 수 (상위 ${topParties.length})</h3>
+      ${partySvg}
+      <ul class="trend-legend">${partyLegend}</ul>
+    </section>`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 // 오늘의 변경 — 어제·오늘 스냅샷 diff. data/changelog.json 사용.
 function renderChangesBox() {
   const cl = state.changelog;
@@ -776,6 +924,7 @@ function renderHome() {
       <div class="stat"><div class="stat-label">참여 정당</div><div class="stat-value">${totalParties}개</div><div class="stat-sub">무소속 포함</div></div>
     </div>
     ${summaryBox}
+    ${renderTrendBox()}
     ${renderChangesBox()}
     ${renderMpBox()}
     <h2 class="section-title">시도별 후보자
@@ -898,6 +1047,7 @@ function route() {
   if (!hash) return renderHome();
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
+  if (hash === 'trend') return renderTrendFull();
   if (hash === 'candidates') return renderCandidatesFull();
   if (hash.startsWith('cand/')) {
     // 후보 영구 링크: 홈을 배경에 그리고 모달 자동 오픈
@@ -1234,9 +1384,9 @@ function initSearch() {
 async function main() {
   calculateDDay();
   try {
-    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog] = await Promise.all([
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
-      loadChangelog(),
+      loadChangelog(), loadTimeseries(),
     ]);
     // 로딩 시점에 단 한 번 dedup. 이후 모든 화면은 깨끗한 데이터를 본다.
     state.data = { ...data, candidates: dedupeByHuboid(data.candidates) };
@@ -1248,6 +1398,7 @@ async function main() {
     state.articleMap = buildArticleMap(articles?.articles, state.data.candidates);
     state.constituencies = constituencies;
     state.changelog = changelog;
+    state.timeseries = timeseries;
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;

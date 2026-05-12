@@ -48,6 +48,10 @@ jobs:
         if: steps.start_check.outputs.skip != 'true'
         run: python scripts/build_changelog.py
 
+      - name: 일자별 시계열 생성
+        if: steps.start_check.outputs.skip != 'true'
+        run: python scripts/build_timeseries.py
+
       - name: HTML 사전 렌더링 (D-day·갱신일·총수)
         if: steps.start_check.outputs.skip != 'true'
         run: python scripts/render_summary.py
