@@ -49,7 +49,16 @@ jobs:
           git add data/
           if git diff --staged --quiet; then
             echo "변경사항 없음 (커밋 생략)"
-          else
-            git commit -m "data: 예비후보자 스냅샷 $(date -u +%Y-%m-%d)"
-            git push
+            exit 0
           fi
+          git commit -m "data: 예비후보자 스냅샷 $(date -u +%Y-%m-%d)"
+          # 동시 실행 워크플로우와 push 경합 시 pull --rebase 후 최대 3회 재시도
+          for attempt in 1 2 3; do
+            if git push; then
+              echo "push 성공 (시도 $attempt)"
+              exit 0
+            fi
+            echo "push reject — pull --rebase 후 재시도 ($attempt/3)"
+            git pull --rebase origin main
+          done
+          echo "push 3회 실패"; exit 1
