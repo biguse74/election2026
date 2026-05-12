@@ -1257,6 +1257,7 @@ function renderCandidatesFull() {
         ${activeCount ? `<button type="button" class="filter-reset" data-filter-reset>필터 초기화 (${activeCount})</button>` : ''}
       </div>
     </div>
+    <p class="page-intro">조건을 클릭해 후보를 좁혀보세요. 같은 그룹 안에서는 여러 개 선택 가능, 그룹 사이는 모두 만족해야 결과에 포함됩니다.</p>
     <section class="filter-section">
       <div class="filter-group filter-group-wide">
         <h3 class="filter-group-title">시도 <small>${facets.sds.length}곳</small></h3>
