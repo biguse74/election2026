@@ -67,13 +67,23 @@ a { color: inherit; }
 main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 .loading { padding: 4rem 0; text-align: center; color: var(--ink-sub); font-family: var(--serif); letter-spacing: 0.05em; }
 
-/* Stats bar */
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 3rem; }
-.stat { padding: 1.25rem 1.5rem; border-right: 1px solid var(--rule); }
+/* Stats bar — 카드 폭을 줄여 8개 모두 한 줄에. 라벨 2줄짜리(국회의원 재·보궐) 있어도 값 baseline 통일. */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 3rem; }
+.stat {
+  display: flex; flex-direction: column;
+  padding: 1.1rem 1.15rem;
+  border-right: 1px solid var(--rule);
+}
 .stat:last-child { border-right: none; }
-.stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-sub); margin-bottom: 0.5rem; }
-.stat-value { font-family: var(--serif); font-size: 1.85rem; font-weight: 700; line-height: 1; }
-.stat-sub { font-size: 0.85rem; color: var(--ink-sub); margin-top: 0.25rem; }
+.stat-label {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-sub);
+  min-height: 2.4em;          /* 1줄·2줄 라벨 섞여도 값 위치 통일 */
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+.stat-value { font-family: var(--serif); font-size: 1.7rem; font-weight: 700; line-height: 1; }
+.stat-sub { font-size: 0.78rem; color: var(--ink-sub); margin-top: auto; padding-top: 0.4rem; }
 
 /* Section */
 .section-title { font-family: var(--serif); font-weight: 700; font-size: 1.75rem; margin: 2.5rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--ink); }
