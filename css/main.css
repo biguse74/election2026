@@ -67,6 +67,12 @@ a { color: inherit; }
 main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 .loading { padding: 4rem 0; text-align: center; color: var(--ink-sub); font-family: var(--serif); letter-spacing: 0.05em; }
 
+/* 사전 렌더링 요약 (JS off·SEO·SNS 미리보기에서도 의미 있는 첫 화면) */
+.pre-summary { padding: 4rem 1rem; text-align: center; }
+.pre-summary-line { font-family: var(--serif); font-size: 1.2rem; color: var(--ink); margin: 0.5rem 0; line-height: 1.5; }
+.pre-summary-line strong { color: var(--accent); }
+.pre-summary-meta { font-family: var(--sans); font-size: 0.9rem; color: var(--ink-sub); font-weight: 400; }
+
 /* Stats bar — 카드 폭을 줄여 8개 모두 한 줄에. 라벨 2줄짜리(국회의원 재·보궐) 있어도 값 baseline 통일. */
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: 3rem; }
 .stat {
@@ -203,6 +209,7 @@ footer a:hover { text-decoration: underline; }
 .footer-credit { font-size: 0.95rem; margin-bottom: 0.4rem; }
 .footer-credit strong { color: var(--ink); font-weight: 700; }
 .footer-meta { font-size: 0.82rem; }
+.footer-meta-sub { font-size: 0.78rem; opacity: 0.75; margin-top: 0.3rem; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
 /* 공천 확정 배지 */
 .candidate.confirmed .candidate-name { font-weight: 700; }

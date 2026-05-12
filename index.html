@@ -19,6 +19,24 @@
 <meta name="twitter:title" content="6·3 선거 출마자 2026">
 <meta name="twitter:description" content="지방선거·국회의원 재·보궐 출마자 데이터, 매일 갱신.">
 <link rel="canonical" href="https://election2026.newtamsa.org/">
+<meta property="og:image" content="https://election2026.newtamsa.org/assets/og.svg">
+<meta name="twitter:image" content="https://election2026.newtamsa.org/assets/og.svg">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "2026 지방선거·국회의원 재·보궐 출마자 데이터",
+  "description": "2026년 6월 3일 동시 시행되는 제9회 전국동시지방선거와 국회의원 재·보궐 출마자 데이터를 매일 갱신하는 뉴탐사 데이터 사이트.",
+  "url": "https://election2026.newtamsa.org/",
+  "creator": {"@type": "Organization", "name": "시민언론 뉴탐사", "url": "https://newtamsa.org"},
+  "publisher": {"@type": "Organization", "name": "시민언론 뉴탐사", "url": "https://newtamsa.org"},
+  "isBasedOn": "중앙선거관리위원회 공공데이터포털 OpenAPI",
+  "license": "공공누리 제4유형",
+  "spatialCoverage": "대한민국",
+  "temporalCoverage": "2026-06-03",
+  "keywords": "지방선거, 6·3 선거, 출마자, 후보자, 공천, 경쟁률, 재보궐선거, 국회의원, 뉴탐사"
+}
+</script>
 <!-- 인라인 SVG 파비콘 (뉴탐사 강조색 + "6·3") · 가운데점은 circle로 직접 그려 폰트 의존성 제거 -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23c41e3a'/%3E%3Ctext x='14' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'%3E6%3C/text%3E%3Ccircle cx='32' cy='30' r='3.5' fill='%23fff'/%3E%3Ctext x='38' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'%3E3%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,13 +59,13 @@
       </div>
       <div class="dday">
         <div class="dday-label">D-DAY</div>
-        <div class="dday-number" id="dday">—</div>
+        <div class="dday-number" id="dday">D-22</div>
         <div class="dday-date">2026년 6월 3일</div>
       </div>
     </div>
   </div>
 </header>
-<main id="app" class="loading">데이터 불러오는 중…</main>
+<main id="app" class="loading"><div class="pre-summary"><p class="pre-summary-line">현재 등록 <strong>예비후보 9,807명</strong></p><p class="pre-summary-line pre-summary-meta">기준 2026.05.12 · 데이터를 불러오는 중…</p></div></main>
 <footer>
   <p class="footer-credit">
     <strong>뉴탐사</strong>가 만들었습니다 ·
@@ -57,7 +75,11 @@
   </p>
   <p class="footer-meta">
     데이터 출처: <a href="https://www.data.go.kr" target="_blank" rel="noopener">공공데이터포털</a> 중앙선거관리위원회 OpenAPI ·
-    마지막 갱신: <span id="last-updated">—</span>
+    마지막 갱신: <span id="last-updated">2026.05.12 · 예비후보</span>
+  </p>
+  <p class="footer-meta footer-meta-sub">
+    중앙선관위 OpenAPI 원자료를 뉴탐사가 시도·정당·선거구 기준으로 재분류한 사이트입니다.
+    개표 결과는 선거 종료 후 검증을 거쳐 별도로 갱신됩니다.
   </p>
 </footer>
 <script src="js/main.js"></script>
