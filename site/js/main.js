@@ -42,6 +42,9 @@ const ABSENCE_NOTES = {
   '제주특별자치도': {
     '4': '제주특별자치도는 기초자치단체가 없어 행정시(제주시·서귀포시)의 시장이 도지사로부터 임명됩니다. 기초단체장 선거가 실시되지 않습니다.',
   },
+  '세종특별자치시': {
+    '4': '세종특별자치시는 단층제 광역자치단체로 기초자치단체가 없습니다. 기초단체장 선거가 실시되지 않습니다.',
+  },
 };
 
 const state = { data: null, parties: {}, geo: null, nominations: null, dateStr: null, source: null, mapInstance: null };

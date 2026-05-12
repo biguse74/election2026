@@ -83,9 +83,9 @@
 - 다른 선거(교육감, 기초단체장, 시도의원 등)는 광주/전남 분리 유지
 - **데이터 함정**: API를 `sdName=광주광역시`로 호출해도, `sdName=전라남도`로 호출해도 통합특별시 시도지사 후보가 **둘 다 반환됨** → 중복 발생
 - **대응**:
-  - `dedupeByHuboid()`로 `huboid` 기준 중복 제거 (현재 `main.js` 로딩 시점에 1회 실행)
+  - `fetch_*.py`에서 저장 직전 `dedupe_by_huboid()`로 원본 단계 dedup (5/12부터 적용)
+  - `main.js` 로딩 시점에도 `dedupeByHuboid()`로 한 번 더 (구 스냅샷 호환 + 안전망)
   - `SIDO_ALIASES`로 광주·전남 상세 페이지 진입 시 통합특별시 후보 lookup
-- ⚠️ `fetch_preliminary.py` / `fetch_candidates.py`에는 아직 dedup 미적용 — JSON 원본에는 중복이 남는다 (개선 필요 사항)
 
 ### 제주특별자치도
 
@@ -195,8 +195,6 @@ gh run view <run-id> --log
 
 ## 알려진 미해결 항목 (TODO)
 
-- [ ] `fetch_preliminary.py` / `fetch_candidates.py`에 `dedupeByHuboid` 적용 (현재 JS만 dedup, 원본 JSON에 중복 잔존)
-- [ ] 세종특별자치시 기초단체장 `ABSENCE_NOTES` 추가 (데이터 0 확인 후)
 - [ ] 6/3 실시간 개표 데이터: OpenAPI 미제공 → `info.nec.go.kr` 스크래퍼 별도 필요
 - [ ] 사전투표·투개표·당선인 fetcher 미구현 (선거 후 약 8월 데이터 갱신 대응)
 - [ ] 시도의원·구시군의회의원 상세 페이지 섹션 (데이터량이 커서 collapsible UI 필요)

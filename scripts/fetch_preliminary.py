@@ -145,6 +145,24 @@ def fetch_pages(operation: str, params: dict, max_pages: int = 100) -> list[dict
     return items
 
 
+def dedupe_by_huboid(items: list[dict]) -> list[dict]:
+    """huboid 기준 중복 제거.
+
+    전남광주통합특별시 시도지사 후보는 sdName=광주광역시·전라남도 양쪽 호출에서
+    모두 반환되어 약 240건 중복이 발생한다. 저장 전 한 번 정리해 둔다.
+    """
+    seen: set[str] = set()
+    out: list[dict] = []
+    for c in items:
+        hid = c.get("huboid")
+        if hid and hid in seen:
+            continue
+        if hid:
+            seen.add(hid)
+        out.append(c)
+    return out
+
+
 def main() -> None:
     if not API_KEY:
         sys.exit("환경변수 NEC_API_KEY가 설정되지 않았습니다.")
@@ -187,6 +205,13 @@ def main() -> None:
             time.sleep(0.2)
         print(f"  -- 소계: {type_total:,}명")
         print()
+
+    # huboid 중복 제거 (통합특별시 시도지사가 광주·전남 양쪽에서 반환됨)
+    before = len(all_candidates)
+    all_candidates = dedupe_by_huboid(all_candidates)
+    removed = before - len(all_candidates)
+    if removed:
+        print(f"huboid 중복 제거: {removed}건 (통합특별시 시도지사 등)\n")
 
     # 스냅샷 저장
     today = datetime.now().strftime("%Y%m%d")
