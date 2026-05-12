@@ -91,18 +91,20 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 .section-hint { font-size: 0.9rem; color: var(--ink-sub); margin-top: -0.75rem; margin-bottom: 1.5rem; }
 
 /* 국회의원 재·보궐 14개 선거구 그리드 (홈 — 시도 카드 위) */
-.mp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-bottom: 2.5rem; }
+.mp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.6rem; margin-bottom: 2.5rem; }
 .mp-card {
-  display: flex; align-items: baseline; gap: 0.6rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline; gap: 0.3rem 0.6rem;
   background: var(--bg-card); border: 1px solid var(--rule);
   padding: 0.7rem 0.95rem; text-decoration: none; color: inherit;
   transition: all 0.18s ease;
 }
 .mp-card:hover { border-color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
-.mp-card-region { flex: 1; }
-.mp-card-sido { font-size: 0.72rem; color: var(--accent); font-weight: 700; letter-spacing: 0.04em; margin-right: 0.3rem; }
-.mp-card-sgg { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; color: var(--ink); }
-.mp-card-detail { font-size: 0.78rem; color: var(--ink-sub); flex-shrink: 0; }
+.mp-card-region { min-width: 0; word-break: keep-all; }
+.mp-card-sido { font-size: 0.72rem; color: var(--accent); font-weight: 700; letter-spacing: 0.04em; margin-right: 0.3rem; white-space: nowrap; }
+.mp-card-sgg { font-family: var(--serif); font-weight: 700; font-size: 0.92rem; color: var(--ink); overflow-wrap: anywhere; }
+.mp-card-detail { font-size: 0.78rem; color: var(--ink-sub); white-space: nowrap; align-self: start; }
 .mp-card-detail strong { color: var(--ink); font-weight: 700; }
 .mp-card-empty { opacity: 0.62; cursor: help; }
 .mp-card-empty:hover { transform: none; box-shadow: none; border-color: var(--rule); }

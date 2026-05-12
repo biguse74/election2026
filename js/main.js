@@ -244,6 +244,18 @@ const sidoFor = obj => obj.sdName === '전남광주통합특별시' || obj.sd ==
   ? '광주광역시'
   : (obj.sdName || obj.sd);
 
+// 합동 선거구명을 가독성 있게 분리 ("공주시부여군청양군" → "공주시·부여군·청양군").
+// 규칙: (한글)(시|군|구)(한글) 패턴에서 다음 글자가 후속 식별자(갑·을·병·정·선·거·구)가 아닐 때만 분리.
+// lookbehind로 prev 한글을 강제해 "군산", "구로" 같은 단어 시작의 군·구는 보존.
+function prettifySgg(sgg) {
+  if (!sgg) return sgg;
+  return sgg.replace(/(?<=[가-힣])(시|군|구)(?=[가-힣])/g, (m, _p1, offset, full) => {
+    const next = full[offset + 1];
+    if (next && /[갑을병정선거구]/.test(next)) return m;
+    return m + '·';
+  });
+}
+
 // 선거구 라벨에 시도 약칭을 붙여 동명 구(서구·중구·동구 등) 모호함 제거.
 // 예: "서구바선거구" → "광주 서구바선거구"
 function formatRegionLabel(item) {
@@ -476,7 +488,7 @@ function renderMpBox() {
     const inner = `
       <div class="mp-card-region">
         <span class="mp-card-sido">${sdShort}</span>
-        <span class="mp-card-sgg">${sgg}</span>
+        <span class="mp-card-sgg">${prettifySgg(sgg)}</span>
       </div>
       <div class="mp-card-detail">${detail}</div>`;
     return linked
