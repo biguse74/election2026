@@ -21,7 +21,7 @@ body {
 a { color: inherit; }
 
 /* Header */
-.header { border-bottom: 3px double var(--ink); padding: 2rem 2rem 1.75rem; }
+.header { border-bottom: 3px double var(--ink); padding: 2rem 2rem 2.75rem; }
 .header-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
 .brand { text-decoration: none; }
 .title { font-family: var(--serif); font-weight: 900; font-size: clamp(1.75rem, 4.5vw, 3rem); line-height: 1; letter-spacing: -0.02em; }
@@ -64,10 +64,10 @@ a { color: inherit; }
 .sr-item.selected .sr-meta { color: rgba(255,255,255,0.85); }
 
 /* 시도 빠른 칩 (헤더 아래, 모든 페이지 공통) */
-.sido-nav { border-bottom: 1px solid var(--rule); background: var(--bg-card); }
+.sido-nav { border-bottom: 1px solid var(--rule); border-top: 1px solid var(--rule); background: var(--bg-card); margin-top: 0; }
 .sido-nav-inner {
   max-width: 1400px; margin: 0 auto;
-  padding: 0.85rem 2rem;
+  padding: 1.05rem 2rem;
   display: flex; flex-wrap: nowrap; gap: 0.35rem;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
   scrollbar-width: thin; scrollbar-color: var(--rule) transparent;
