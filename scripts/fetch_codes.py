@@ -193,13 +193,13 @@ def main() -> None:
         save_json(cstc_dir / f"sgType_{sg_type}.json", items)
         combined.extend(items)
 
-    # 클라이언트(main.js)에서 한 번에 읽도록 통합본을 site/data/에 출력.
+    # 클라이언트(main.js)에서 한 번에 읽도록 통합본을 data/constituencies.json으로 출력.
     # sggJungsu(의석수)를 후보 수와 곱해 경쟁률 계산용으로 사용.
     root_dir = DATA_DIR.parent.parent
-    site_data = root_dir / "site" / "data" / "constituencies.json"
-    site_data.parent.mkdir(parents=True, exist_ok=True)
-    save_json(site_data, combined)
-    print(f"  통합본 저장: {site_data.relative_to(root_dir)} ({len(combined)}개)")
+    combined_path = root_dir / "data" / "constituencies.json"
+    combined_path.parent.mkdir(parents=True, exist_ok=True)
+    save_json(combined_path, combined)
+    print(f"  통합본 저장: {combined_path.relative_to(root_dir)} ({len(combined)}개)")
 
     print(f"\n완료. 저장 경로: {DATA_DIR.resolve()}")
 

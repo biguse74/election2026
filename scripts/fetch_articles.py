@@ -42,7 +42,7 @@ SHEET_CSV_URL = (
 SOURCE_PAGE = "https://newtamsa.org/p/gongcheon"
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
-OUT_FILE = ROOT_DIR / "site" / "data" / "articles.json"
+OUT_FILE = ROOT_DIR / "data" / "articles.json"
 
 KST = timezone(timedelta(hours=9))
 

@@ -321,7 +321,7 @@ async function loadLatestSnapshot() {
   const today = new Date();
   const toDateStr = d => `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
   const tryFetch = async (source, dateStr) => {
-    const r = await fetch(`../data/${source}/20260603/snapshot_${dateStr}.json`).catch(() => null);
+    const r = await fetch(`data/${source}/20260603/snapshot_${dateStr}.json`).catch(() => null);
     return r?.ok ? { data: await r.json(), dateStr, source } : null;
   };
 
