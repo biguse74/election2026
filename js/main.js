@@ -397,7 +397,7 @@ function candidateRow(c) {
       <div class="candidate-party">${c.jdName}</div>
       <span class="candidate-actions">
         ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
-        <a class="tip-button" href="${tipoffUrl(c)}" target="_blank" rel="noopener" title="${tipTitle}" aria-label="${tipTitle}">📮</a>
+        <a class="tip-button" href="${tipoffUrl(c)}" target="_blank" rel="noopener" title="${tipTitle}" aria-label="${tipTitle}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z"/><path d="m3 7 9 6 9-6"/></svg></a>
       </span>
     </div>
     ${hasArt ? `<ul class="article-list" id="${aid}" hidden>${articleListHtml(articles)}</ul>` : ''}`;
