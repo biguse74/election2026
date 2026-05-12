@@ -375,17 +375,28 @@ function articleListHtml(articles) {
     </li>`).join('');
 }
 
+// 후보 → 뉴탐사 제보 페이지로 직접 연결. 후보명·지역구·정당을 제목에 미리 채워 보냄.
+function tipoffUrl(c) {
+  const region = [c.sdName, c.sggName].filter(Boolean).join(' ');
+  const titleMap = { '2': '국회의원(재·보궐)', '3': '시도지사', '4': '기초단체장', '5': '시도의원', '6': '구시군의회의원', '11': '교육감' };
+  const sect = titleMap[String(c.sgTypecode)] || '';
+  const subject = `[제보] ${c.name} (${c.jdName || '무소속'}) · ${region} ${sect}`.trim();
+  return `https://tipoff.newtamsa.org/?subject=${encodeURIComponent(subject)}`;
+}
+
 function candidateRow(c) {
   const confirmed = isConfirmed(c);
   const articles = state.articleMap?.[c.huboid] || [];
   const hasArt = articles.length > 0;
   const aid = hasArt ? `art-${c.huboid}` : '';
+  const tipTitle = `${c.name} 후보 관련 제보 — 뉴탐사`;
   return `
     <div class="candidate${confirmed ? ' confirmed' : ''}">
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
       <div class="candidate-name">${c.name}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</div>
       <div class="candidate-party">${c.jdName}</div>
       ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
+      <a class="tip-button" href="${tipoffUrl(c)}" target="_blank" rel="noopener" title="${tipTitle}" aria-label="${tipTitle}">제보</a>
     </div>
     ${hasArt ? `<ul class="article-list" id="${aid}" hidden>${articleListHtml(articles)}</ul>` : ''}`;
 }
