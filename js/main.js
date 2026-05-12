@@ -424,11 +424,15 @@ function renderDetailSection(section, sidoName) {
       return acc;
     }, {});
     const keys = Object.keys(groups).sort(koSort);
+    const gridId = `cg-${section.id}`;
     return `
       <h3 class="section-title">${section.title}
         <span class="section-count">${candidates.length.toLocaleString()}명 · ${keys.length}개 선거구</span>
+        <span class="section-toolbar">
+          <button type="button" class="expand-toggle" data-target="${gridId}" data-open="false">모두 펼치기</button>
+        </span>
       </h3>
-      <div class="collapsible-grid">
+      <div id="${gridId}" class="collapsible-grid">
         ${keys.map(k => `
           <details class="electoral-district">
             <summary>
@@ -780,12 +784,36 @@ function initSearch() {
       input.value = '';
     }
   });
-  // ESC로 닫기
+  // 키보드 네비게이션: ↑↓로 이동, Enter로 이동, ESC로 닫기
   input.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       input.value = '';
       results.hidden = true;
       input.blur();
+      return;
+    }
+    if (results.hidden) return;
+    const items = [...results.querySelectorAll('.sr-item')];
+    if (!items.length) return;
+    const current = items.findIndex(el => el.classList.contains('selected'));
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      const next = current < 0 ? 0 : Math.min(current + 1, items.length - 1);
+      items.forEach((el, i) => el.classList.toggle('selected', i === next));
+      items[next].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = current <= 0 ? items.length - 1 : current - 1;
+      items.forEach((el, i) => el.classList.toggle('selected', i === prev));
+      items[prev].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter') {
+      const sel = items.find(el => el.classList.contains('selected')) || items[0];
+      if (sel?.href) {
+        e.preventDefault();
+        location.href = sel.href;
+        results.hidden = true;
+        input.value = '';
+      }
     }
   });
 }
@@ -809,22 +837,42 @@ async function main() {
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
-    // 후보 행의 보도 배지 토글 (이벤트 위임 — 행이 동적으로 다시 그려져도 OK)
+    // 클릭 위임: ① 후보 행 보도 배지 토글 ② collapsible 일괄 펼침/접힘
     document.addEventListener('click', e => {
-      const btn = e.target.closest('.article-toggle');
-      if (!btn) return;
-      e.preventDefault();
-      const panel = document.getElementById(btn.dataset.target);
-      if (!panel) return;
-      panel.hidden = !panel.hidden;
-      btn.classList.toggle('open', !panel.hidden);
+      const articleBtn = e.target.closest('.article-toggle');
+      if (articleBtn) {
+        e.preventDefault();
+        const panel = document.getElementById(articleBtn.dataset.target);
+        if (panel) {
+          panel.hidden = !panel.hidden;
+          articleBtn.classList.toggle('open', !panel.hidden);
+        }
+        return;
+      }
+      const expandBtn = e.target.closest('.expand-toggle');
+      if (expandBtn) {
+        const grid = document.getElementById(expandBtn.dataset.target);
+        if (!grid) return;
+        const opening = expandBtn.dataset.open !== 'true';
+        grid.querySelectorAll('details').forEach(d => { d.open = opening; });
+        expandBtn.dataset.open = opening ? 'true' : 'false';
+        expandBtn.textContent = opening ? '모두 접기' : '모두 펼치기';
+      }
     });
     initSearch();
     window.addEventListener('hashchange', route);
     route();
   } catch (e) {
-    document.getElementById('app').innerHTML =
-      `<div class="loading">데이터 로딩 실패: ${e.message}</div>`;
+    console.error(e);
+    const app = document.getElementById('app');
+    app.classList.remove('loading');
+    app.innerHTML = `
+      <div class="error-banner">
+        <strong>데이터를 불러오지 못했습니다.</strong>
+        잠시 후 새로고침해 보시거나, 문제가 계속되면
+        <a href="https://github.com/biguse74/election2026/issues" target="_blank" rel="noopener">이슈로 알려</a> 주세요.
+        <br><small style="color:var(--ink-sub)">기술 메시지: ${e.message}</small>
+      </div>`;
   }
 }
 
