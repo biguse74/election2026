@@ -14,10 +14,38 @@ a { color: inherit; }
 .brand { text-decoration: none; }
 .title { font-family: var(--serif); font-weight: 900; font-size: clamp(1.75rem, 4.5vw, 3rem); line-height: 1; letter-spacing: -0.02em; }
 .subtitle { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--ink-sub); margin-top: 0.4rem; letter-spacing: 0.04em; }
+.header-right { display: flex; align-items: flex-end; gap: 1.5rem; flex-wrap: wrap; }
 .dday { text-align: right; font-family: var(--serif); }
 .dday-label { font-size: 0.75rem; color: var(--ink-sub); letter-spacing: 0.15em; text-transform: uppercase; }
 .dday-number { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1; color: var(--accent); }
 .dday-date { font-size: 0.85rem; color: var(--ink-sub); margin-top: 0.2rem; }
+
+/* 검색 박스 */
+.search { position: relative; min-width: 220px; }
+#search-input {
+  width: 100%; padding: 0.55rem 0.85rem; border: 1px solid var(--rule);
+  background: var(--bg-card); font-family: inherit; font-size: 0.95rem;
+  color: var(--ink); border-radius: 2px; outline: none;
+  transition: border-color 0.15s;
+}
+#search-input:focus { border-color: var(--ink); }
+#search-input::placeholder { color: var(--ink-sub); }
+.search-results {
+  position: absolute; top: calc(100% + 4px); right: 0; left: 0;
+  max-height: 60vh; overflow-y: auto; z-index: 1000;
+  background: var(--bg-card); border: 1px solid var(--ink);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.sr-item {
+  display: block; padding: 0.55rem 0.85rem; text-decoration: none; color: inherit;
+  border-bottom: 1px dotted var(--rule);
+}
+.sr-item:last-child { border-bottom: none; }
+.sr-item:hover { background: rgba(196, 30, 58, 0.06); }
+.sr-name { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; display: block; }
+.sr-meta { font-size: 0.78rem; color: var(--ink-sub); display: block; margin-top: 0.15rem; }
+.sr-empty, .sr-more { padding: 0.6rem 0.85rem; font-size: 0.85rem; color: var(--ink-sub); font-style: italic; }
+.sr-more { border-top: 1px solid var(--rule); }
 
 /* Layout */
 main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
@@ -137,3 +165,33 @@ footer a:hover { text-decoration: underline; }
 
 /* 행정구조상 선거가 없는 경우 안내 */
 .absence-note { background: var(--bg-card); border-left: 3px solid var(--rule); padding: 1rem 1.25rem; font-size: 0.9rem; color: var(--ink-sub); margin-bottom: 2rem; font-style: italic; line-height: 1.65; }
+
+/* 경쟁이 가장 치열한 선거구 박스 */
+.competition { margin-bottom: 2.5rem; }
+.competition-list {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0.4rem;
+}
+.competition-list li {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: baseline;
+  gap: 0.5rem 0.8rem;
+  background: var(--bg-card); border: 1px solid var(--rule);
+  padding: 0.65rem 0.85rem;
+}
+.comp-rank {
+  font-family: var(--serif); font-weight: 900; font-size: 1.15rem;
+  color: var(--accent); min-width: 1.4rem;
+}
+.comp-region {
+  font-family: var(--serif); font-weight: 700; font-size: 1rem;
+  text-decoration: none; color: var(--ink);
+}
+.comp-region:hover { color: var(--accent); text-decoration: underline; }
+.comp-type { font-size: 0.78rem; color: var(--ink-sub); grid-column: 2; }
+.comp-ratio {
+  font-family: var(--serif); font-size: 1.15rem; color: var(--ink);
+  text-align: right; grid-row: 1; grid-column: 3;
+}
+.comp-ratio strong { color: var(--accent); font-weight: 900; }
+.comp-detail { font-size: 0.78rem; color: var(--ink-sub); text-align: right; grid-row: 2; grid-column: 3; }

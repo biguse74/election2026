@@ -50,7 +50,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, geo: null, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, mapInstance: null };
+const state = { data: null, parties: {}, geo: null, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, mapInstance: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -201,6 +201,47 @@ const loadParties = () => safeJson('data/parties.json', {});
 const loadNominations = () => safeJson('data/nominations.json', null);
 const loadGeo = () => safeJson('assets/geo/sido.geojson', null);
 const loadArticles = () => safeJson('data/articles.json', null);
+const loadConstituencies = () => safeJson('data/constituencies.json', null);
+
+// 라우팅용: 통합특별시는 광주/전남 중 광주로 진입 (alias 매핑이 양쪽 수용)
+const sidoFor = obj => obj.sdName === '전남광주통합특별시' || obj.sd === '전남광주통합특별시'
+  ? '광주광역시'
+  : (obj.sdName || obj.sd);
+
+// 경쟁률(후보 수 / 의석 수) 계산. SECTIONS의 sgTypecode만 대상.
+const seatKey = c => `${c.sgTypecode}|${c.sdName}|${c.sggName}`;
+
+function buildCompetitionRanking() {
+  const constituencies = state.constituencies;
+  if (!constituencies?.length) return [];
+  const allowedTypes = new Set(SECTIONS.map(s => s.sgTypecode));
+  // 의석수 인덱스
+  const seats = {};
+  for (const s of constituencies) {
+    if (!allowedTypes.has(String(s.sgTypecode))) continue;
+    seats[seatKey(s)] = parseInt(s.sggJungsu, 10) || 1;
+  }
+  // 선거구별 후보 수
+  const counts = {};
+  for (const c of state.data.candidates) {
+    if (!allowedTypes.has(String(c.sgTypecode))) continue;
+    const k = seatKey(c);
+    counts[k] = (counts[k] || 0) + 1;
+  }
+  const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
+  const rows = Object.entries(counts).map(([k, count]) => {
+    const [sgType, sd, sgg] = k.split('|');
+    const seat = seats[k] || 1;
+    return {
+      sgType, sd, sgg, count, seat,
+      ratio: count / seat,
+      title: titleMap[sgType] || sgType,
+    };
+  });
+  // 경쟁률 내림차순, 동률이면 후보 많은 순
+  rows.sort((a, b) => b.ratio - a.ratio || b.count - a.count);
+  return rows;
+}
 
 // 후보 등록 시작일. 이 날짜 이후로는 candidates 스냅샷이 우선.
 const CANDIDATES_START = '20260514';
@@ -399,6 +440,26 @@ function renderHome() {
   const totalLabel = state.source === 'candidates' ? '총 후보자' : '총 예비후보자';
   const candidateSuffix = state.source === 'candidates' ? '후보' : '예비후보';
 
+  // 경쟁률 상위 선거구 (sggJungsu=의석수 기준)
+  const ranking = buildCompetitionRanking();
+  const topRanking = ranking.slice(0, 8);
+  const competitionBox = topRanking.length ? `
+    <section class="competition">
+      <h2 class="section-title">경쟁이 가장 치열한 선거구
+        <span class="section-count">의석 1자리당 후보 수 기준 · 상위 ${topRanking.length}개</span>
+      </h2>
+      <ol class="competition-list">
+        ${topRanking.map((r, i) => `
+          <li>
+            <span class="comp-rank">${i+1}</span>
+            <a class="comp-region" href="#${encodeURIComponent(sidoFor(r))}">${r.sgg || r.sd}</a>
+            <span class="comp-type">${r.title}</span>
+            <span class="comp-ratio"><strong>${r.ratio.toFixed(1)}</strong>:1</span>
+            <span class="comp-detail">${r.count}명 / ${r.seat}석</span>
+          </li>`).join('')}
+      </ol>
+    </section>` : '';
+
   const html = `
     <div class="stats">
       <div class="stat"><div class="stat-label">${totalLabel}</div><div class="stat-value">${cands.length.toLocaleString()}명</div><div class="stat-sub">${state.data.fetched_at.slice(0,10)} 기준</div></div>
@@ -409,6 +470,7 @@ function renderHome() {
         </div>`).join('')}
       <div class="stat"><div class="stat-label">참여 정당</div><div class="stat-value">${totalParties}개</div><div class="stat-sub">무소속 포함</div></div>
     </div>
+    ${competitionBox}
     <h2 class="section-title">전국 지도</h2>
     <p class="section-hint">시도를 클릭하면 해당 지역의 후보자 상세로 이동합니다.</p>
     <div id="map"></div>
@@ -485,12 +547,84 @@ function route() {
   else renderSidoDetail(hash);
 }
 
+// ============ 검색 (헤더 input → 결과 dropdown) ============
+function runSearch(q) {
+  const norm = (q || '').trim();
+  const results = document.getElementById('search-results');
+  if (!results) return;
+  if (norm.length < 1) {
+    results.hidden = true;
+    results.innerHTML = '';
+    return;
+  }
+  const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
+  const matches = state.data.candidates.filter(c => c.name && c.name.includes(norm));
+  if (matches.length === 0) {
+    results.innerHTML = '<div class="sr-empty">일치하는 후보가 없습니다</div>';
+    results.hidden = false;
+    return;
+  }
+  // 정확 일치 우선, 그 다음 시도 기본 정렬
+  matches.sort((a, b) => (a.name === norm ? -1 : 0) - (b.name === norm ? -1 : 0)
+    || sidoSort(a.sdName, b.sdName));
+  const top = matches.slice(0, 30);
+  const items = top.map(c => {
+    const region = c.sggName && c.sggName !== c.sdName
+      ? `${c.sdName} · ${c.sggName}` : (c.sdName || '');
+    return `
+      <a class="sr-item" href="#${encodeURIComponent(sidoFor(c))}">
+        <span class="sr-name">${c.name}</span>
+        <span class="sr-meta">${c.jdName || '무소속'} · ${titleMap[c.sgTypecode] || ''} · ${region}</span>
+      </a>`;
+  }).join('');
+  const more = matches.length > 30
+    ? `<div class="sr-more">+${(matches.length - 30).toLocaleString()}건 더 (검색어를 더 정확히 입력)</div>`
+    : '';
+  results.innerHTML = items + more;
+  results.hidden = false;
+}
+
+function initSearch() {
+  const input = document.getElementById('search-input');
+  const results = document.getElementById('search-results');
+  if (!input || !results) return;
+  let timer = null;
+  input.addEventListener('input', e => {
+    clearTimeout(timer);
+    const q = e.target.value;
+    timer = setTimeout(() => runSearch(q), 100);
+  });
+  input.addEventListener('focus', () => {
+    if (input.value.trim()) runSearch(input.value);
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search')) {
+      results.hidden = true;
+    }
+  });
+  // 결과 클릭 시 닫기 + input 비우기 (라우팅은 href가 처리)
+  results.addEventListener('click', e => {
+    if (e.target.closest('.sr-item')) {
+      results.hidden = true;
+      input.value = '';
+    }
+  });
+  // ESC로 닫기
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      input.value = '';
+      results.hidden = true;
+      input.blur();
+    }
+  });
+}
+
 // ============ Bootstrap ============
 async function main() {
   calculateDDay();
   try {
-    const [{ data, dateStr, source }, parties, geo, nominations, articles] = await Promise.all([
-      loadLatestSnapshot(), loadParties(), loadGeo(), loadNominations(), loadArticles(),
+    const [{ data, dateStr, source }, parties, geo, nominations, articles, constituencies] = await Promise.all([
+      loadLatestSnapshot(), loadParties(), loadGeo(), loadNominations(), loadArticles(), loadConstituencies(),
     ]);
     // 로딩 시점에 단 한 번 dedup. 이후 모든 화면은 깨끗한 데이터를 본다.
     state.data = { ...data, candidates: dedupeByHuboid(data.candidates) };
@@ -501,6 +635,7 @@ async function main() {
     state.source = source;
     state.articles = articles;
     state.articleMap = buildArticleMap(articles?.articles, state.data.candidates);
+    state.constituencies = constituencies;
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
@@ -514,6 +649,7 @@ async function main() {
       panel.hidden = !panel.hidden;
       btn.classList.toggle('open', !panel.hidden);
     });
+    initSearch();
     window.addEventListener('hashchange', route);
     route();
   } catch (e) {
