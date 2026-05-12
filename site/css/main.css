@@ -126,8 +126,14 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 
 /* Collapsible 선거구 그리드 (시도의원·구시군의회의원) */
 .collapsible-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.6rem; margin-bottom: 2rem; }
-.electoral-district { background: var(--bg-card); border: 1px solid var(--rule); }
+.electoral-district { background: var(--bg-card); border: 1px solid var(--rule); transition: box-shadow 0.4s, border-color 0.4s; }
 .electoral-district[open] { border-color: var(--ink); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+/* 외부에서 진입해 자동 펼친 선거구를 잠깐 강조 */
+.electoral-district.focused,
+.candidate-card.focused {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.18) !important;
+}
 .electoral-district summary {
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 0.7rem 1rem; cursor: pointer; user-select: none;
@@ -233,6 +239,9 @@ footer a:hover { text-decoration: underline; }
 }
 .uc-region { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; text-decoration: none; color: var(--ink); }
 .uc-region:hover { color: var(--accent); text-decoration: underline; }
+/* 후보 0명: 클릭해도 갈 곳 없음 (시도 페이지에 그려지지 않음) */
+.uc-region-dead { color: var(--ink-sub); cursor: help; }
+.uc-region-dead:hover { text-decoration: none; }
 .uc-type { font-size: 0.78rem; color: var(--ink-sub); grid-column: 1; }
 .uc-detail {
   font-family: var(--serif); font-weight: 700; font-size: 0.95rem;

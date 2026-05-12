@@ -502,14 +502,18 @@ function renderHome() {
         <span class="section-count">의석 1자리당 후보 수 기준 · 상위 ${topRanking.length}개</span>
       </h2>
       <ol class="competition-list">
-        ${topRanking.map((r, i) => `
+        ${topRanking.map((r, i) => {
+          const label = r.sgg || r.sd;
+          const href = `#${encodeURIComponent(sidoFor(r))}::${encodeURIComponent(label)}`;
+          return `
           <li>
             <span class="comp-rank">${i+1}</span>
-            <a class="comp-region" href="#${encodeURIComponent(sidoFor(r))}">${r.sgg || r.sd}</a>
+            <a class="comp-region" href="${href}">${label}</a>
             <span class="comp-type">${r.title}</span>
             <span class="comp-ratio"><strong>${r.ratio.toFixed(1)}</strong>:1</span>
             <span class="comp-detail">${r.count}명 / ${r.seat}석</span>
-          </li>`).join('')}
+          </li>`;
+        }).join('')}
       </ol>
     </section>` : '';
 
@@ -568,7 +572,7 @@ function renderHome() {
 }
 
 // ============ Render: 상세 ============
-function renderSidoDetail(sidoName) {
+function renderSidoDetail(sidoName, focusSgg) {
   destroyMap();
 
   // 상세에서 그릴 섹션들의 후보 데이터를 한 번에 준비
@@ -603,7 +607,41 @@ function renderSidoDetail(sidoName) {
   const app = document.getElementById('app');
   app.innerHTML = html;
   app.classList.remove('loading');
-  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // focus가 있으면 해당 선거구를 펼치고 스크롤. 없으면 페이지 최상단.
+  if (focusSgg) {
+    focusConstituency(focusSgg);
+  } else {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+}
+
+// 시도 상세 페이지에서 특정 선거구를 펼치고 스크롤. collapsible 묻힘 해소.
+function focusConstituency(sggName) {
+  requestAnimationFrame(() => {
+    // collapsible details 안의 ed-name 텍스트로 찾는다
+    const target = [...document.querySelectorAll('.electoral-district')]
+      .find(d => d.querySelector('.ed-name')?.textContent === sggName);
+    if (target) {
+      target.open = true;
+      target.classList.add('focused');
+      target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      // 잠깐 강조 후 제거
+      setTimeout(() => target.classList.remove('focused'), 2400);
+      return;
+    }
+    // 기초단체장 그리드 카드도 시도
+    const card = [...document.querySelectorAll('.basic-grid .candidate-card')]
+      .find(el => el.querySelector('.cc-name')?.textContent === sggName);
+    if (card) {
+      card.classList.add('focused');
+      card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      setTimeout(() => card.classList.remove('focused'), 2400);
+      return;
+    }
+    // 못 찾으면 그냥 최상단
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  });
 }
 
 // ============ Routing ============
@@ -612,8 +650,12 @@ function route() {
   if (!hash) return renderHome();
   if (hash === 'uncontested') return renderUncontestedFull(null);
   if (hash.startsWith('uncontested/')) {
-    const cat = hash.slice('uncontested/'.length);
-    return renderUncontestedFull(cat);
+    return renderUncontestedFull(hash.slice('uncontested/'.length));
+  }
+  // "{시도명}" 또는 "{시도명}::{선거구명}" (구분자 :: — 시도명에 ':' 포함되지 않음을 가정)
+  const sepIdx = hash.indexOf('::');
+  if (sepIdx > 0) {
+    return renderSidoDetail(hash.slice(0, sepIdx), hash.slice(sepIdx + 2));
   }
   return renderSidoDetail(hash);
 }
@@ -625,9 +667,19 @@ function uncontestedStageNote() {
     : '예비후보 등록 기준 — 5/14~15 본후보 등록 시 변동 가능';
 }
 function uncontestedRow(r) {
+  // 후보 0명은 시도 페이지에 해당 선거구가 그려지지 않음 → 링크 비활성화.
+  // 후보가 1명 이상이면 시도 상세에서 자동 펼침·스크롤되도록 focus 해시 부여.
+  const label = r.sgg || r.sd;
+  const linked = r.count > 0;
+  const hash = linked
+    ? `#${encodeURIComponent(sidoFor(r))}::${encodeURIComponent(label)}`
+    : null;
+  const regionEl = linked
+    ? `<a class="uc-region" href="${hash}">${label}</a>`
+    : `<span class="uc-region uc-region-dead" title="해당 선거구에 후보가 없어 별도 페이지에 표시되지 않습니다">${label}</span>`;
   return `
     <li>
-      <a class="uc-region" href="#${encodeURIComponent(sidoFor(r))}">${r.sgg || r.sd}</a>
+      ${regionEl}
       <span class="uc-type">${r.title}</span>
       <span class="uc-detail">${r.count}/${r.seat}</span>
       <span class="uc-sido">${r.sd}</span>
@@ -708,8 +760,15 @@ function runSearch(q) {
   const items = top.map(c => {
     const region = c.sggName && c.sggName !== c.sdName
       ? `${c.sdName} · ${c.sggName}` : (c.sdName || '');
+    // 기초단체장(그리드)·시도의원·기초의원(collapsible)은 페이지에 묻혀 있으므로
+    // focus 해시로 자동 펼침·스크롤·강조
+    const needsFocus = ['4', '5', '6'].includes(String(c.sgTypecode))
+      && c.sggName && c.sggName !== c.sdName;
+    const href = needsFocus
+      ? `#${encodeURIComponent(sidoFor(c))}::${encodeURIComponent(c.sggName)}`
+      : `#${encodeURIComponent(sidoFor(c))}`;
     return `
-      <a class="sr-item" href="#${encodeURIComponent(sidoFor(c))}">
+      <a class="sr-item" href="${href}">
         <span class="sr-name">${c.name}</span>
         <span class="sr-meta">${c.jdName || '무소속'} · ${titleMap[c.sgTypecode] || ''} · ${region}</span>
       </a>`;
