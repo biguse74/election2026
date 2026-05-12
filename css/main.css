@@ -25,6 +25,7 @@ a { color: inherit; }
 .header-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
 .brand { text-decoration: none; }
 .title { font-family: var(--serif); font-weight: 900; font-size: clamp(1.75rem, 4.5vw, 3rem); line-height: 1; letter-spacing: -0.02em; }
+.title-year { color: var(--accent); margin-left: 0.15em; }
 .subtitle { font-family: var(--serif); font-size: 0.95rem; color: var(--ink-sub); margin-top: 0.4rem; letter-spacing: 0.04em; }
 .header-right { display: flex; align-items: flex-end; gap: 1.5rem; flex-wrap: wrap; }
 .dday { text-align: right; font-family: var(--serif); }
