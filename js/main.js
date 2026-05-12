@@ -395,8 +395,10 @@ function candidateRow(c) {
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
       <div class="candidate-name">${c.name}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</div>
       <div class="candidate-party">${c.jdName}</div>
-      ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
-      <a class="tip-button" href="${tipoffUrl(c)}" target="_blank" rel="noopener" title="${tipTitle}" aria-label="${tipTitle}">제보</a>
+      <span class="candidate-actions">
+        ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
+        <a class="tip-button" href="${tipoffUrl(c)}" target="_blank" rel="noopener" title="${tipTitle}" aria-label="${tipTitle}">제보</a>
+      </span>
     </div>
     ${hasArt ? `<ul class="article-list" id="${aid}" hidden>${articleListHtml(articles)}</ul>` : ''}`;
 }

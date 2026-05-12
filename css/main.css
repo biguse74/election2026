@@ -137,22 +137,40 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 .cc-count { font-size: 0.8rem; color: var(--ink-sub); }
 .cc-empty { font-size: 0.85rem; color: var(--ink-sub); padding: 0.5rem 0; }
 
-/* Candidate row */
-.candidate { display: flex; align-items: center; gap: 0.7rem; padding: 0.4rem 0; border-bottom: 1px dotted var(--rule); }
+/* Candidate row — grid로 명확한 컬럼 정의(색띠·이름·정당·액션). 박스 폭 좁아도 wrap 없이 안정. */
+.candidate {
+  display: grid;
+  grid-template-columns: 4px minmax(0, 1fr) minmax(0, auto) auto;
+  align-items: center;
+  column-gap: 0.55rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px dotted var(--rule);
+}
 .candidate:last-child { border-bottom: none; }
-.candidate-color { width: 4px; height: 22px; flex-shrink: 0; }
-.candidate-name { font-weight: 500; flex: 1; font-size: 0.95rem; }
-.candidate-party { font-size: 0.78rem; color: var(--ink-sub); }
+.candidate-color { width: 4px; height: 22px; }
+.candidate-name {
+  font-weight: 500; font-size: 0.95rem;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  min-width: 0;
+  white-space: nowrap;
+}
+.candidate-name > * { flex-shrink: 0; }
+.candidate-party {
+  font-size: 0.78rem; color: var(--ink-sub);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  min-width: 0;
+}
+.candidate-actions { display: inline-flex; gap: 0.4rem; align-items: center; }
 
 /* Grid layouts (상세) */
 .single-section { margin-bottom: 2rem; max-width: 600px; }
-.basic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.basic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
 
 /* section-title 옆 보조 카운트 (시도의원·구시군의원처럼 선거구 수 많을 때) */
 .section-count { font-family: var(--sans); font-weight: 400; font-size: 0.85rem; color: var(--ink-sub); margin-left: 0.6rem; letter-spacing: 0; }
 
 /* Collapsible 선거구 그리드 (시도의원·구시군의회의원) */
-.collapsible-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.6rem; margin-bottom: 2rem; }
+.collapsible-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.6rem; margin-bottom: 2rem; }
 .electoral-district { background: var(--bg-card); border: 1px solid var(--rule); transition: box-shadow 0.4s, border-color 0.4s; }
 .electoral-district[open] { border-color: var(--ink); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 /* 외부에서 진입해 자동 펼친 선거구를 잠깐 강조 */
