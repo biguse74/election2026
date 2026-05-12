@@ -76,12 +76,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
 .section-title:first-of-type { margin-top: 0; }
 .section-hint { font-size: 0.9rem; color: var(--ink-sub); margin-top: -0.75rem; margin-bottom: 1.5rem; }
 
-/* Map */
-#map { height: 520px; border: 1px solid var(--rule); background: var(--bg-card); margin-bottom: 2.5rem; }
-.leaflet-container { background: var(--bg) !important; font-family: var(--sans) !important; }
-.sido-tooltip { background: var(--ink) !important; color: #fff !important; border: none !important; font-family: var(--serif) !important; font-weight: 700 !important; padding: 0.3rem 0.7rem !important; }
-.sido-tooltip::before { display: none !important; }
-
 /* 시도 그리드 (홈) */
 .sido-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; }
 .sido-card { display: block; background: var(--bg-card); border: 1px solid var(--rule); padding: 1.1rem 1.25rem; text-decoration: none; color: inherit; transition: all 0.18s ease; }
@@ -239,18 +233,16 @@ footer a:hover { text-decoration: underline; }
 }
 .uc-region { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; text-decoration: none; color: var(--ink); }
 .uc-region:hover { color: var(--accent); text-decoration: underline; }
-/* 후보 0명: 클릭해도 갈 곳 없음 (시도 페이지에 그려지지 않음) */
 .uc-region-dead { color: var(--ink-sub); cursor: help; }
 .uc-region-dead:hover { text-decoration: none; }
 .uc-type { font-size: 0.78rem; color: var(--ink-sub); grid-column: 1; }
 .uc-detail {
   font-family: var(--serif); font-weight: 700; font-size: 0.95rem;
-  grid-row: 1; grid-column: 2; text-align: right;
-  color: var(--accent);
+  grid-row: 1 / span 2; grid-column: 2; align-self: center;
+  text-align: right; color: var(--accent);
 }
 .uc-block.short .uc-detail { color: #b25c00; }
 .uc-block.zero .uc-detail { color: var(--ink-sub); }
-.uc-sido { font-size: 0.72rem; color: var(--ink-sub); grid-row: 2; grid-column: 2; text-align: right; }
 .uc-more { font-size: 0.85rem; color: var(--ink-sub); margin-top: 0.6rem; }
 .uc-more a { color: var(--accent); text-decoration: none; font-weight: 500; }
 .uc-more a:hover { text-decoration: underline; }

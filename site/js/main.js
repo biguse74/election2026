@@ -50,7 +50,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, geo: null, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, mapInstance: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -233,7 +233,6 @@ const safeJson = async (url, fallback) => {
 };
 const loadParties = () => safeJson('data/parties.json', {});
 const loadNominations = () => safeJson('data/nominations.json', null);
-const loadGeo = () => safeJson('assets/geo/sido.geojson', null);
 const loadArticles = () => safeJson('data/articles.json', null);
 const loadConstituencies = () => safeJson('data/constituencies.json', null);
 
@@ -241,6 +240,18 @@ const loadConstituencies = () => safeJson('data/constituencies.json', null);
 const sidoFor = obj => obj.sdName === '전남광주통합특별시' || obj.sd === '전남광주통합특별시'
   ? '광주광역시'
   : (obj.sdName || obj.sd);
+
+// 선거구 라벨에 시도 약칭을 붙여 동명 구(서구·중구·동구 등) 모호함 제거.
+// 예: "서구바선거구" → "광주 서구바선거구"
+function formatRegionLabel(item) {
+  const sd = item.sdName || item.sd || '';
+  const sgg = item.sggName || item.sgg || '';
+  if (!sgg || sgg === sd) return sd || sgg;
+  const sdShort = (SIDO_TAGS[sd] || [sd])[0] || sd;
+  // 통합특별시 같은 특수 케이스는 그냥 sd 표시
+  if (sd === '전남광주통합특별시') return sgg;
+  return `${sdShort} ${sgg}`;
+}
 
 // 경쟁률(후보 수 / 의석 수) 계산. SECTIONS의 sgTypecode만 대상.
 const seatKey = c => `${c.sgTypecode}|${c.sdName}|${c.sggName}`;
@@ -433,40 +444,8 @@ function renderDetailSection(section, sidoName) {
 }
 
 // ============ Render: 홈 ============
-function destroyMap() {
-  if (state.mapInstance) { state.mapInstance.remove(); state.mapInstance = null; }
-}
-
-function initHomeMap() {
-  destroyMap();
-  if (!state.geo) return;
-  const map = L.map('map', { zoomControl: true, scrollWheelZoom: false, attributionControl: false })
-    .setView([36.0, 127.7], 7);
-  state.mapInstance = map;
-
-  const base = { fillColor: '#e8e0d0', weight: 1, color: '#999', fillOpacity: 0.55 };
-  const hover = { fillColor: '#f4d35e', weight: 2, color: '#1a1a1a', fillOpacity: 0.8 };
-
-  const layer = L.geoJSON(state.geo, {
-    style: base,
-    onEachFeature: (feature, layer) => {
-      const name = feature.properties.name;
-      const chiefs = getSectionCandidates(SECTIONS[0], name).length;
-      const heads = getSectionCandidates(SECTIONS[1], name).length;
-      layer.bindTooltip(
-        `${name}<br><span style="opacity:0.75;font-weight:400">시도지사 ${chiefs} · 기초단체장 ${heads}</span>`,
-        { sticky: true, className: 'sido-tooltip', direction: 'top' }
-      );
-      layer.on('mouseover', e => e.target.setStyle(hover));
-      layer.on('mouseout', e => layer.resetStyle?.(e.target) ?? e.target.setStyle(base));
-      layer.on('click', () => { location.hash = '#' + encodeURIComponent(name); });
-    },
-  }).addTo(map);
-  map.fitBounds(layer.getBounds(), { padding: [20, 20] });
-}
-
+// (전국 지도는 정보 박스가 풍부해진 시점에 제거. 시도 카드 그리드가 진입 역할 수행.)
 function renderHome() {
-  destroyMap();
   const cands = state.data.candidates;
 
   // 글로벌 카운트
@@ -503,12 +482,12 @@ function renderHome() {
       </h2>
       <ol class="competition-list">
         ${topRanking.map((r, i) => {
-          const label = r.sgg || r.sd;
-          const href = `#${encodeURIComponent(sidoFor(r))}::${encodeURIComponent(label)}`;
+          const target = r.sgg || r.sd;
+          const href = `#${encodeURIComponent(sidoFor(r))}::${encodeURIComponent(target)}`;
           return `
           <li>
             <span class="comp-rank">${i+1}</span>
-            <a class="comp-region" href="${href}">${label}</a>
+            <a class="comp-region" href="${href}">${formatRegionLabel(r)}</a>
             <span class="comp-type">${r.title}</span>
             <span class="comp-ratio"><strong>${r.ratio.toFixed(1)}</strong>:1</span>
             <span class="comp-detail">${r.count}명 / ${r.seat}석</span>
@@ -541,10 +520,9 @@ function renderHome() {
     </div>
     ${competitionBox}
     ${ucBox}
-    <h2 class="section-title">전국 지도</h2>
-    <p class="section-hint">시도를 클릭하면 해당 지역의 후보자 상세로 이동합니다.</p>
-    <div id="map"></div>
-    <h2 class="section-title">시도별 후보자</h2>
+    <h2 class="section-title">시도별 후보자
+      <span class="section-count">카드를 클릭하면 해당 지역 상세로 이동합니다.</span>
+    </h2>
     ${nomSrc}
     ${artSrc}
     <div class="sido-grid">
@@ -568,12 +546,10 @@ function renderHome() {
   const app = document.getElementById('app');
   app.innerHTML = html;
   app.classList.remove('loading');
-  initHomeMap();
 }
 
 // ============ Render: 상세 ============
 function renderSidoDetail(sidoName, focusSgg) {
-  destroyMap();
 
   // 상세에서 그릴 섹션들의 후보 데이터를 한 번에 준비
   const sectionData = SECTIONS
@@ -669,10 +645,11 @@ function uncontestedStageNote() {
 function uncontestedRow(r) {
   // 후보 0명은 시도 페이지에 해당 선거구가 그려지지 않음 → 링크 비활성화.
   // 후보가 1명 이상이면 시도 상세에서 자동 펼침·스크롤되도록 focus 해시 부여.
-  const label = r.sgg || r.sd;
+  const label = formatRegionLabel(r);
+  const target = r.sgg || r.sd;
   const linked = r.count > 0;
   const hash = linked
-    ? `#${encodeURIComponent(sidoFor(r))}::${encodeURIComponent(label)}`
+    ? `#${encodeURIComponent(sidoFor(r))}::${encodeURIComponent(target)}`
     : null;
   const regionEl = linked
     ? `<a class="uc-region" href="${hash}">${label}</a>`
@@ -682,7 +659,6 @@ function uncontestedRow(r) {
       ${regionEl}
       <span class="uc-type">${r.title}</span>
       <span class="uc-detail">${r.count}/${r.seat}</span>
-      <span class="uc-sido">${r.sd}</span>
     </li>`;
 }
 function uncontestedBlock(items, totalCount, label, cls) {
@@ -699,7 +675,6 @@ function uncontestedBlock(items, totalCount, label, cls) {
 
 // 경쟁 없는 선거구 전체 페이지 (#uncontested 또는 #uncontested/{cat})
 function renderUncontestedFull(category) {
-  destroyMap();
   const uc = buildUncontestedList();
   const cats = [
     { key: 'tied',  label: '단독 출마·정원 충원 (후보 수 = 정원)',  items: uc.tied,  cls: 'tied' },
@@ -819,13 +794,12 @@ function initSearch() {
 async function main() {
   calculateDDay();
   try {
-    const [{ data, dateStr, source }, parties, geo, nominations, articles, constituencies] = await Promise.all([
-      loadLatestSnapshot(), loadParties(), loadGeo(), loadNominations(), loadArticles(), loadConstituencies(),
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies] = await Promise.all([
+      loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
     ]);
     // 로딩 시점에 단 한 번 dedup. 이후 모든 화면은 깨끗한 데이터를 본다.
     state.data = { ...data, candidates: dedupeByHuboid(data.candidates) };
     state.parties = parties;
-    state.geo = geo;
     state.nominations = nominations;
     state.dateStr = dateStr;
     state.source = source;
