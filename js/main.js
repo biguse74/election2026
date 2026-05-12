@@ -768,7 +768,7 @@ function renderChangesBox() {
       </h2>
       <a class="changes-row" href="#changes">
         <span class="changes-stat changes-new"><strong>${s.new.toLocaleString()}</strong>명<small>신규 등록</small></span>
-        <span class="changes-stat changes-gone"><strong>${s.gone.toLocaleString()}</strong>명<small>사퇴·소실</small></span>
+        <span class="changes-stat changes-gone"><strong>${s.gone.toLocaleString()}</strong>명<small>명단 이탈</small></span>
         <span class="changes-stat changes-party"><strong>${s.party.toLocaleString()}</strong>건<small>정당 변경</small></span>
         <span class="changes-stat changes-status"><strong>${s.status.toLocaleString()}</strong>건<small>상태 변경</small></span>
         <span class="changes-arrow">자세히 보기 →</span>
@@ -813,7 +813,7 @@ function renderChangesFull() {
       <div class="detail-inline-stats"><span>${fmt(cl.previous_date)} → ${fmt(cl.today_date)} 스냅샷 비교</span></div>
     </div>
     ${block('신규 등록', cl.full.new, c => fullRow(c), 'tied')}
-    ${block('사퇴·소실', cl.full.gone, c => fullRow(c), 'zero')}
+    ${block('명단 이탈 (사퇴·등록무효 등)', cl.full.gone, c => fullRow(c), 'zero')}
     ${block('정당 변경', cl.full.party, c => fullRow(c, `${c.jdName_prev || '무소속'} → ${c.jdName || '무소속'}`), 'short')}
     ${block('상태 변경', cl.full.status, c => fullRow(c, `${c.status_prev || ''} → ${c.status_now || ''}`), 'short')}`;
   const app = document.getElementById('app');

@@ -126,7 +126,7 @@ def main() -> None:
     s = result["summary"]
     print(
         f"changelog: {result['previous_date']} → {result['today_date']} "
-        f"(신규 {s['new']} · 사퇴/소실 {s['gone']} · 정당변경 {s['party']} · 상태변경 {s['status']})"
+        f"(신규 {s['new']} · 이탈 {s['gone']} · 정당변경 {s['party']} · 상태변경 {s['status']})"
     )
 
 
