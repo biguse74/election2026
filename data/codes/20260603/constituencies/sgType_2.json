@@ -1,0 +1,142 @@
+[
+  {
+    "num": "1",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "북구갑",
+    "sdName": "부산광역시",
+    "wiwName": "북구",
+    "sggJungsu": "1",
+    "sOrder": "55"
+  },
+  {
+    "num": "2",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "달성군",
+    "sdName": "대구광역시",
+    "wiwName": "달성군",
+    "sggJungsu": "1",
+    "sOrder": "78"
+  },
+  {
+    "num": "3",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "연수구갑",
+    "sdName": "인천광역시",
+    "wiwName": "연수구",
+    "sggJungsu": "1",
+    "sOrder": "82"
+  },
+  {
+    "num": "4",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "계양구을",
+    "sdName": "인천광역시",
+    "wiwName": "계양구",
+    "sggJungsu": "1",
+    "sOrder": "89"
+  },
+  {
+    "num": "5",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "광산구을",
+    "sdName": "광주광역시",
+    "wiwName": "광산구",
+    "sggJungsu": "1",
+    "sOrder": "100"
+  },
+  {
+    "num": "6",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "남구갑",
+    "sdName": "울산광역시",
+    "wiwName": "남구",
+    "sggJungsu": "1",
+    "sOrder": "109"
+  },
+  {
+    "num": "7",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "평택시을",
+    "sdName": "경기도",
+    "wiwName": "평택시",
+    "sggJungsu": "1",
+    "sOrder": "136"
+  },
+  {
+    "num": "8",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "안산시갑",
+    "sdName": "경기도",
+    "wiwName": "안산시상록구",
+    "sggJungsu": "1",
+    "sOrder": "140"
+  },
+  {
+    "num": "9",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "하남시갑",
+    "sdName": "경기도",
+    "wiwName": "하남시",
+    "sggJungsu": "1",
+    "sOrder": "156"
+  },
+  {
+    "num": "10",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "공주시부여군청양군",
+    "sdName": "충청남도",
+    "wiwName": "공주시",
+    "sggJungsu": "1",
+    "sOrder": "195"
+  },
+  {
+    "num": "11",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "아산시을",
+    "sdName": "충청남도",
+    "wiwName": "아산시",
+    "sggJungsu": "1",
+    "sOrder": "198"
+  },
+  {
+    "num": "12",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "군산시김제시부안군갑",
+    "sdName": "전북특별자치도",
+    "wiwName": "군산시",
+    "sggJungsu": "1",
+    "sOrder": "206"
+  },
+  {
+    "num": "13",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "군산시김제시부안군을",
+    "sdName": "전북특별자치도",
+    "wiwName": "김제시",
+    "sggJungsu": "1",
+    "sOrder": "207"
+  },
+  {
+    "num": "14",
+    "sgId": "20260603",
+    "sgTypecode": "2",
+    "sggName": "서귀포시",
+    "sdName": "제주특별자치도",
+    "wiwName": "서귀포시",
+    "sggJungsu": "1",
+    "sOrder": "254"
+  }
+]
