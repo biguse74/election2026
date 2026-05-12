@@ -404,6 +404,39 @@ function candidateRow(c) {
     ${hasArt ? `<ul class="article-list" id="${aid}" hidden>${articleListHtml(articles)}</ul>` : ''}`;
 }
 
+// ============ 공유 (Web Share API + clipboard fallback) ============
+function showToast(msg) {
+  let toast = document.getElementById('toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.className = 'toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+async function shareLink(title, url) {
+  if (navigator.share) {
+    try { await navigator.share({ title, url }); return; }
+    catch (e) { if (e.name === 'AbortError') return; /* 사용자 취소 */ }
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast('링크가 복사되었습니다');
+  } catch {
+    // 매우 오래된 브라우저: prompt로 직접 노출
+    window.prompt('링크 복사:', url);
+  }
+}
+
+function candidateShareUrl(huboid) {
+  return `${location.origin}${location.pathname}#cand/${huboid}`;
+}
+
 // ============ 후보 상세 모달 ============
 function formatBirthday(s) {
   if (!s || s.length < 8) return '';
@@ -471,7 +504,10 @@ function openCandidateModal(huboid) {
       <dl class="modal-fields">${fieldsHtml}</dl>
       ${articlesHtml}
       <footer class="modal-foot">
-        <a class="modal-tip" href="${tipUrl}" target="_blank" rel="noopener">📮 이 후보 제보하기</a>
+        <div class="modal-actions">
+          <a class="modal-tip" href="${tipUrl}" target="_blank" rel="noopener">📮 이 후보 제보하기</a>
+          <button type="button" class="modal-share" data-share-cand="${c.huboid}" data-share-title="${c.name} (${c.jdName || '무소속'}) — ${region}">🔗 링크 공유</button>
+        </div>
         <p class="modal-source">기준: 중앙선관위 OpenAPI · ${state.dateStr ? `${state.dateStr.slice(0,4)}.${state.dateStr.slice(4,6)}.${state.dateStr.slice(6,8)} ${SOURCE_LABEL[state.source] || state.source}` : ''}</p>
       </footer>
     </div>`;
@@ -794,7 +830,10 @@ function renderSidoDetail(sidoName, focusSgg) {
       <a href="#">전체</a> <span class="sep">›</span> <span class="current">${sidoName}</span>
     </nav>
     <div class="detail-head">
-      <h2 class="detail-title">${sidoName}</h2>
+      <div>
+        <h2 class="detail-title">${sidoName}</h2>
+        <button type="button" class="page-share" data-share-page data-share-title="${sidoName} 출마자 현황 — 6·3 지방선거">🔗 이 페이지 공유</button>
+      </div>
       <div class="detail-inline-stats">
         ${stats.map(s => `<div><strong>${s.count}</strong> ${s.label}</div>`).join('')}
       </div>
@@ -860,6 +899,12 @@ function route() {
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'candidates') return renderCandidatesFull();
+  if (hash.startsWith('cand/')) {
+    // 후보 영구 링크: 홈을 배경에 그리고 모달 자동 오픈
+    renderHome();
+    openCandidateModal(hash.slice('cand/'.length));
+    return;
+  }
   if (hash === 'uncontested') return renderUncontestedFull(null);
   if (hash.startsWith('uncontested/')) {
     return renderUncontestedFull(hash.slice('uncontested/'.length));
@@ -1210,6 +1255,21 @@ async function main() {
     document.addEventListener('click', e => {
       if (e.target.closest('[data-modal-close]')) {
         closeCandidateModal();
+        return;
+      }
+      const shareCand = e.target.closest('[data-share-cand]');
+      if (shareCand) {
+        e.preventDefault();
+        const huboid = shareCand.dataset.shareCand;
+        const title = `${shareCand.dataset.shareTitle} — 6·3 선거 출마자 2026`;
+        shareLink(title, candidateShareUrl(huboid));
+        return;
+      }
+      const sharePage = e.target.closest('[data-share-page]');
+      if (sharePage) {
+        e.preventDefault();
+        const title = `${sharePage.dataset.shareTitle}`;
+        shareLink(title, location.href);
         return;
       }
       const detail = e.target.closest('.candidate-detail-trigger');
