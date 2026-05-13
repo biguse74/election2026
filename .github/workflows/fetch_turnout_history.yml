@@ -1,0 +1,40 @@
+name: 역대 투표율 수동 갱신
+
+# 1~2년에 한 번 정도면 충분 (과거 데이터). 새 회차(다음 9회 결과)가 OpenAPI에
+# 들어오면 ELECTIONS 리스트에 추가 후 수동 트리거.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - name: 역대 투표율 수집
+        env:
+          NEC_API_KEY: ${{ secrets.NEC_API_KEY }}
+        run: python scripts/fetch_turnout_history.py
+      - name: 변경사항 커밋·푸시
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/history_turnout.json
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+            exit 0
+          fi
+          git commit -m "data: 역대 투표율 수동 갱신 $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            git pull --rebase origin main
+          done
+          exit 1
