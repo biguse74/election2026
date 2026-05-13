@@ -107,6 +107,12 @@ def main() -> None:
         "loading-summary",
     )
 
+    # Cache buster — 매 갱신마다 CSS/JS URL에 ?v=YYYYMMDDHHMM 박아
+    # GitHub Pages·CDN·브라우저 캐시(max-age=600)를 우회한다.
+    v = now.strftime("%Y%m%d%H%M")
+    html = re.sub(r'(css/main\.css)(\?v=\d+)?', rf'\1?v={v}', html)
+    html = re.sub(r'(js/main\.js)(\?v=\d+)?', rf'\1?v={v}', html)
+
     html_path.write_text(html, encoding="utf-8")
     print(
         f"render_summary: dday={dday}, {stage_label} {total:,}명, "
