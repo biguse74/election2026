@@ -21,7 +21,7 @@ body {
 a { color: inherit; }
 
 /* Header */
-.header { border-bottom: 3px double var(--ink); padding: 2rem 2rem 2.75rem; }
+.header { border-bottom: 3px double var(--ink); padding: 2rem 2rem 3rem; }
 .header-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem; }
 .brand { text-decoration: none; }
 .title { font-family: var(--serif); font-weight: 900; font-size: clamp(1.75rem, 4.5vw, 3rem); line-height: 1; letter-spacing: -0.02em; }
@@ -88,7 +88,7 @@ a { color: inherit; }
 .sido-chip-divider { width: 1px; background: var(--rule); margin: 0 0.2rem; flex-shrink: 0; }
 
 /* Layout */
-main { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+main { max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
 .loading { padding: 4rem 0; text-align: center; color: var(--ink-sub); font-family: var(--serif); letter-spacing: 0.05em; }
 
 /* 사전 렌더링 요약 (JS off·SEO·SNS 미리보기에서도 의미 있는 첫 화면) */
@@ -684,9 +684,12 @@ body.modal-open { overflow: hidden; }
 
 /* ============ 반응형 (태블릿/모바일) ============ */
 @media (max-width: 760px) {
-  .header { padding: 1.25rem 1rem 1rem; }
+  .header { padding: 1.25rem 1rem 1.5rem; }
   .header-inner { flex-direction: column; align-items: stretch; gap: 1rem; }
+  /* 모바일 흐름: 브랜드 → D-day → 검색 → sido-nav (검색·필터 묶음 유지) */
   .header-right { align-items: stretch; gap: 0.75rem; }
+  .header-right .dday { order: 1; }
+  .header-right .search { order: 2; }
   .search { min-width: 0; width: 100%; }
   .search-results { left: 0; right: 0; max-height: 70vh; }
   .dday { text-align: left; display: flex; align-items: baseline; gap: 0.8rem; }
