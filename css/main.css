@@ -86,6 +86,14 @@ a { color: inherit; }
 .sido-chip-action { background: var(--bg-card); border-style: dashed; color: var(--accent); font-weight: 500; }
 .sido-chip-action:hover { background: var(--accent); color: #fff; border-color: var(--accent); border-style: solid; }
 .sido-chip-divider { width: 1px; background: var(--rule); margin: 0 0.2rem; flex-shrink: 0; }
+/* 외부 링크 (뉴탐사·후원) */
+.sido-chip-external { color: var(--ink-sub); font-weight: 500; }
+.sido-chip-external:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+.sido-chip-donate {
+  background: var(--ink); color: #fff; border-color: var(--ink);
+  font-weight: 700;
+}
+.sido-chip-donate:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 /* Layout */
 main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
@@ -238,6 +246,7 @@ footer a { color: var(--accent); text-decoration: none; }
 footer a:hover { text-decoration: underline; }
 .footer-credit { font-size: 0.95rem; margin-bottom: 0.4rem; }
 .footer-credit strong { color: var(--ink); font-weight: 700; }
+.footer-donate { font-weight: 700; }
 .footer-meta { font-size: 0.82rem; }
 .footer-meta-sub { font-size: 0.78rem; opacity: 0.75; margin-top: 0.3rem; max-width: 720px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
