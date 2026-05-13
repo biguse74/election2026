@@ -367,6 +367,44 @@ footer a:hover { text-decoration: underline; }
 .age-bar-value { font-family: var(--serif); font-weight: 700; font-size: 0.78rem; color: var(--ink); }
 .age-bar-label { font-size: 0.72rem; color: var(--ink-sub); }
 
+/* 과거 회차 비교 (#history) */
+.forecast { padding: 0.5rem 0; }
+.forecast-label { font-size: 0.85rem; color: var(--ink-sub); display: block; margin-bottom: 0.5rem; }
+.forecast-input-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+#forecast-turnout {
+  flex: 1; height: 6px; -webkit-appearance: none; appearance: none;
+  background: var(--bg); border: 1px solid var(--rule); border-radius: 3px; outline: none;
+}
+#forecast-turnout::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent); cursor: pointer;
+  box-shadow: 0 2px 6px rgba(196,30,58,0.35);
+}
+#forecast-turnout::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent); cursor: pointer; border: none;
+}
+.forecast-output {
+  font-family: var(--serif); font-weight: 900; font-size: 1.6rem;
+  color: var(--accent); min-width: 80px; text-align: right;
+}
+.forecast-match {
+  background: var(--bg); padding: 1rem 1.2rem; border-left: 3px solid var(--accent);
+}
+.forecast-match p { margin: 0.25rem 0; font-size: 0.92rem; line-height: 1.6; }
+.forecast-context { color: var(--ink-sub); font-size: 0.85rem !important; }
+.forecast-winners strong { color: var(--ink); }
+.forecast-caveat { font-size: 0.78rem; color: var(--ink-sub); margin-top: 0.8rem; }
+
+.hist-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.hist-table th, .hist-table td { padding: 0.5rem 0.7rem; text-align: left; border-bottom: 1px solid var(--rule); }
+.hist-table th { font-family: var(--sans); font-weight: 500; font-size: 0.78rem; color: var(--ink-sub); border-bottom: 2px solid var(--ink); }
+.hist-round { font-family: var(--serif); font-weight: 700; }
+.hist-turn strong { color: var(--accent); font-family: var(--serif); font-size: 1rem; }
+.hist-turn small { display: block; font-size: 0.72rem; color: var(--ink-sub); }
+.hist-context { color: var(--ink-sub); font-size: 0.82rem; }
+
 /* 오늘의 변경 — 어제·오늘 스냅샷 diff 박스 */
 .changes { margin-bottom: 2.5rem; }
 .changes-row {

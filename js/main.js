@@ -52,7 +52,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, changelog: null, timeseries: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, changelog: null, timeseries: null, history: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -250,6 +250,7 @@ const loadArticles = () => safeJson('data/articles.json', null);
 const loadConstituencies = () => safeJson('data/constituencies.json', null);
 const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
+const loadHistory = () => safeJson('data/history.json', null);
 
 // 라우팅용: 통합특별시는 광주/전남 중 광주로 진입 (alias 매핑이 양쪽 수용)
 const sidoFor = obj => obj.sdName === '전남광주통합특별시' || obj.sd === '전남광주통합특별시'
@@ -605,6 +606,146 @@ function renderDetailSection(section, sidoName) {
   }
 
   return '';
+}
+
+// 역대 지방선거 투표율 — 단정적 예측 X, 과거 패턴 비교 도구
+function historyWinnersSummary(winners) {
+  return Object.entries(winners).sort((a,b) => b[1]-a[1])
+    .map(([p, n]) => `${p} ${n}`).join(' · ');
+}
+function findClosestPastElection(turnout) {
+  const elections = state.history?.elections || [];
+  if (!elections.length) return null;
+  let best = elections[0], bestDiff = Math.abs(elections[0].turnout - turnout);
+  for (const e of elections) {
+    const d = Math.abs(e.turnout - turnout);
+    if (d < bestDiff) { best = e; bestDiff = d; }
+  }
+  return { match: best, diff: bestDiff };
+}
+
+function renderHistoryFull() {
+  const app = document.getElementById('app');
+  app.className = '';
+  const h = state.history;
+  if (!h?.elections?.length) {
+    app.innerHTML = `
+      <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">과거 회차</span></nav>
+      <div class="detail-head"><h1 class="detail-title">과거 지방선거 비교</h1></div>
+      <p class="absence-note">과거 데이터가 아직 없습니다.</p>`;
+    return;
+  }
+
+  const elections = h.elections;
+  const turnouts = elections.map(e => e.turnout);
+  const avg = turnouts.reduce((a, b) => a + b, 0) / turnouts.length;
+  const maxT = Math.max(...turnouts);
+  const minT = Math.min(...turnouts);
+
+  // 회차별 막대 그래프
+  const w = 800, h_ = 180, pad = 30;
+  const stepX = (w - pad * 2) / (elections.length - 1);
+  const barWidth = Math.min(40, stepX * 0.55);
+  const yScale = v => h_ - pad - ((v - 40) / 35) * (h_ - pad * 2);  // 40~75% 범위
+  const bars = elections.map((e, i) => {
+    const x = pad + i * stepX;
+    const y = yScale(e.turnout);
+    return `
+      <rect x="${(x - barWidth/2).toFixed(1)}" y="${y.toFixed(1)}"
+            width="${barWidth.toFixed(1)}" height="${(h_ - pad - y).toFixed(1)}"
+            fill="#c41e3a" opacity="0.85"/>
+      <text x="${x.toFixed(1)}" y="${(y - 6).toFixed(1)}" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">${e.turnout}%</text>
+      <text x="${x.toFixed(1)}" y="${h_ - 10}" font-size="10" fill="#888" text-anchor="middle">${e.round}회</text>
+      <text x="${x.toFixed(1)}" y="${h_ - 22}" font-size="9" fill="#aaa" text-anchor="middle">${e.year}</text>
+    `;
+  }).join('');
+  const avgLine = `
+    <line x1="${pad}" y1="${yScale(avg)}" x2="${w - pad}" y2="${yScale(avg)}"
+          stroke="#888" stroke-width="1" stroke-dasharray="4 3"/>
+    <text x="${w - pad + 4}" y="${yScale(avg) + 4}" font-size="9" fill="#888">평균 ${avg.toFixed(1)}%</text>`;
+  const chartSvg = `
+    <svg viewBox="0 0 ${w} ${h_}" class="trend-chart" aria-label="역대 투표율">
+      <line x1="${pad}" y1="${h_ - pad}" x2="${w - pad}" y2="${h_ - pad}" stroke="#d8d2c8"/>
+      ${bars}${avgLine}
+    </svg>`;
+
+  // 회차별 표
+  const tableRows = elections.map(e => {
+    const winners = historyWinnersSummary(e.winners);
+    return `
+      <tr>
+        <td class="hist-round">${e.round}회</td>
+        <td class="hist-year">${e.year}</td>
+        <td class="hist-turn"><strong>${e.turnout}%</strong>${e.early_turnout ? `<small>사전 ${e.early_turnout}%</small>` : ''}</td>
+        <td class="hist-seats">${winners}</td>
+        <td class="hist-context">${e.context}</td>
+      </tr>`;
+  }).join('');
+
+  // 슬라이더 매칭 영역 (초기값: 8회 50.9 + 평균의 평균쯤)
+  const initial = 55;
+  const initialMatch = findClosestPastElection(initial);
+  const initWinners = historyWinnersSummary(initialMatch.match.winners);
+
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">과거 회차 비교</span></nav>
+    <div class="detail-head">
+      <h1 class="detail-title">과거 지방선거 비교</h1>
+      <div class="detail-inline-stats">
+        <span>1~8회 · 평균 투표율 ${avg.toFixed(1)}%</span>
+      </div>
+    </div>
+    <p class="page-intro">역대 8번의 전국동시지방선거 투표율과 광역단체장 결과입니다. <strong>아래는 단정적 예측이 아닌 과거 패턴 비교</strong>입니다 — 6/3 투표율 시나리오를 가정해 가장 비슷한 과거 회차를 찾아볼 수 있습니다.</p>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">회차별 투표율</h3>
+      ${chartSvg}
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">6·3 투표율 시나리오 매칭</h3>
+      <div class="forecast">
+        <label class="forecast-label" for="forecast-turnout">가정 투표율</label>
+        <div class="forecast-input-row">
+          <input id="forecast-turnout" type="range" min="40" max="75" step="0.1" value="${initial}">
+          <output id="forecast-output" class="forecast-output">${initial.toFixed(1)}%</output>
+        </div>
+        <div id="forecast-match" class="forecast-match">
+          <p>가장 가까운 과거 회차: <strong>${initialMatch.match.round}회 (${initialMatch.match.year}, ${initialMatch.match.turnout}%)</strong> · 차이 ${initialMatch.diff.toFixed(1)}%p</p>
+          <p class="forecast-context">${initialMatch.match.context}</p>
+          <p class="forecast-winners">광역단체장 결과: <strong>${initWinners}</strong></p>
+        </div>
+        <p class="forecast-caveat">※ 단정적 예측이 아닙니다. 후보·시기·외부 변수가 모두 달라 참고용 비교입니다.</p>
+      </div>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">회차별 상세</h3>
+      <table class="hist-table">
+        <thead>
+          <tr><th>회차</th><th>연도</th><th>투표율</th><th>광역단체장</th><th>맥락</th></tr>
+        </thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+      <p class="trend-meta">출처: 중앙선거관리위원회 통계 + 위키피디아 종합</p>
+    </section>`;
+
+  // 슬라이더 인터랙티브
+  const input = document.getElementById('forecast-turnout');
+  const output = document.getElementById('forecast-output');
+  const matchEl = document.getElementById('forecast-match');
+  input.addEventListener('input', () => {
+    const v = parseFloat(input.value);
+    output.textContent = v.toFixed(1) + '%';
+    const r = findClosestPastElection(v);
+    const winners = historyWinnersSummary(r.match.winners);
+    matchEl.innerHTML = `
+      <p>가장 가까운 과거 회차: <strong>${r.match.round}회 (${r.match.year}, ${r.match.turnout}%)</strong> · 차이 ${r.diff.toFixed(1)}%p</p>
+      <p class="forecast-context">${r.match.context}</p>
+      <p class="forecast-winners">광역단체장 결과: <strong>${winners}</strong></p>`;
+  });
+
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 // 출마자 한눈에 — 정당·연령·성별·직업 통계
@@ -1071,6 +1212,7 @@ function route() {
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'trend') return renderTrendFull();
+  if (hash === 'history') return renderHistoryFull();
   if (hash === 'candidates') return renderCandidatesFull();
   if (hash.startsWith('cand/')) {
     // 후보 영구 링크: 홈을 배경에 그리고 모달 자동 오픈
@@ -1416,9 +1558,9 @@ function initSearch() {
 async function main() {
   calculateDDay();
   try {
-    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries] = await Promise.all([
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries, history] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
-      loadChangelog(), loadTimeseries(),
+      loadChangelog(), loadTimeseries(), loadHistory(),
     ]);
     // 로딩 시점에 단 한 번 dedup. 이후 모든 화면은 깨끗한 데이터를 본다.
     state.data = { ...data, candidates: dedupeByHuboid(data.candidates) };
@@ -1431,6 +1573,7 @@ async function main() {
     state.constituencies = constituencies;
     state.changelog = changelog;
     state.timeseries = timeseries;
+    state.history = history;
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
