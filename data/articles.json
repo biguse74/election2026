@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-05-12T23:30:38+09:00",
+  "updated_at": "2026-05-13T12:38:16+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 305,
+  "count": 306,
   "articles": [
+    {
+      "date": "2026-05-13",
+      "title": "호남 후보들 '에베레스트'에 빗댄 정청래…강진 상여 시위에 정문 막혀 후문 입장",
+      "url": "https://newtamsa.org/news/vddFtb",
+      "category": "특별기획",
+      "tags": [
+        "지방선거",
+        "정청래",
+        "차영수",
+        "강진군",
+        "신안군",
+        "박우량",
+        "박해중"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-05-12",
       "title": "정청래는 강진行, 차영수 공천에 35년 당원은 작별",
