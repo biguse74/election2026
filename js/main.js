@@ -197,6 +197,8 @@ function isConfirmed(c) {
   if (!state.nominations) return false;
   if (state.source === 'candidates') return false;
   if (state.dateStr && state.dateStr >= NOMINATION_CUTOFF) return false;
+  // 무소속은 정당 공천 개념 자체가 성립 안 함 — 배지 부여 금지
+  if (!c.jdName || c.jdName === '무소속') return false;
   const groups = state.nominations[`sgTypecode_${c.sgTypecode}`];
   if (!groups) return false;
   // 두 형태 지원:
