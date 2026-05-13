@@ -1,9 +1,45 @@
 {
-  "updated_at": "2026-05-13T17:47:59+09:00",
+  "updated_at": "2026-05-13T23:39:46+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 306,
+  "count": 308,
   "articles": [
+    {
+      "date": "2026-05-13",
+      "title": "부산시장 선거 박형준이 북구갑 단일화에 매달리는 이유",
+      "url": "https://newtamsa.org/news/Dpa_dp",
+      "category": "데이터",
+      "tags": [
+        "부산시",
+        "박형준",
+        "전재수",
+        "단일화",
+        "지방선거",
+        "한국갤럽",
+        "시뮬레이션",
+        "몬테카를로",
+        "수영구",
+        "개소식",
+        "한동훈",
+        "박민식"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-05-12",
+      "title": "전북지사 김관영-이원택 박빙, 5권역 중 4곳 김관영",
+      "url": "https://newtamsa.org/news/-VLF8H",
+      "category": "데이터",
+      "tags": [
+        "전북지사",
+        "김관영",
+        "이원택",
+        "몬테카를로",
+        "시뮬레이션",
+        "익산"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-05-13",
       "title": "호남 후보들 '에베레스트'에 빗댄 정청래…강진 상여 시위에 정문 막혀 후문 입장",
