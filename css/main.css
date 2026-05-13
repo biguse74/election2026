@@ -433,10 +433,11 @@ footer a:hover { text-decoration: underline; }
 .hist-turn small { display: block; font-size: 0.72rem; color: var(--ink-sub); }
 .hist-context { color: var(--ink-sub); font-size: 0.82rem; }
 
-/* 시도별 표 — 작은 셀, 변화량 색상 */
+/* 시도별 표 — 시도명은 좌측, 숫자는 모두 가운데 정렬(헤더·본문 일치) */
 .hist-table-sido { font-size: 0.82rem; }
-.hist-table-sido th { font-weight: 700; }
-.hist-table-sido td { text-align: right; padding: 0.4rem 0.5rem; }
+.hist-table-sido thead th { font-weight: 700; text-align: center; }
+.hist-table-sido thead th:first-child { text-align: left; }
+.hist-table-sido td { text-align: center; padding: 0.4rem 0.5rem; }
 .hist-table-sido tbody th { font-family: var(--serif); font-weight: 500; text-align: left; padding: 0.4rem 0.7rem; border-bottom: 1px solid var(--rule); color: var(--ink); }
 .hist-table-sido .delta.up { color: #2c5d8f; font-weight: 700; }
 .hist-table-sido .delta.down { color: var(--accent); font-weight: 700; }
