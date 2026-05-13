@@ -195,7 +195,13 @@ gh run view <run-id> --log
 
 ## 알려진 미해결 항목 (TODO)
 
-- [ ] 6/3 실시간 개표 데이터: OpenAPI 미제공 → `info.nec.go.kr` 스크래퍼 별도 필요
+- [ ] 6/3 실시간 개표 데이터 (선관위 OpenAPI 미제공). A+D 조합으로:
+      · **A. `info.nec.go.kr` 스크래퍼** — 본가 사이트 내부 fetch endpoint 파악(5/말),
+        Python 스크립트로 5~10분 간격 폴링, `data/tally/snapshot_*.json` 저장
+      · **D. 출구조사 (저녁 7:30)** — 방송 3사 컨소시엄 결과를 수동 입력하는
+        `data/exit_poll.json` 1회용 데이터. UI에 "출구조사 (가) 1위" 형태
+      · **본가동 일정**: 5/말~6/2 정찰·PoC, 6/3 18:00부터 가동, 익일 KST 03시
+        OpenAPI 정식 결과로 자동 전환(이미 candidates→preliminary 전환 패턴 재사용)
 - [ ] 사전투표·투개표·당선인 fetcher 미구현 (선거 후 약 8월 데이터 갱신 대응)
 - [ ] 시도의원·구시군의회의원 상세 페이지 섹션 (데이터량이 커서 collapsible UI 필요)
 
