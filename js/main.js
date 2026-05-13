@@ -52,7 +52,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, changelog: null, timeseries: null, history: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, changelog: null, timeseries: null, history: null, historyTurnout: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -251,6 +251,7 @@ const loadConstituencies = () => safeJson('data/constituencies.json', null);
 const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
+const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
 
 // 라우팅용: 통합특별시는 광주/전남 중 광주로 진입 (alias 매핑이 양쪽 수용)
 const sidoFor = obj => obj.sdName === '전남광주통합특별시' || obj.sd === '전남광주통합특별시'
@@ -608,6 +609,145 @@ function renderDetailSection(section, sidoName) {
   return '';
 }
 
+// 지역 그룹·시도별 라인 그래프 SVG. 같은 차트 안에 여러 라인.
+function lineChartSvg(rounds, lines, opts = {}) {
+  // rounds: [{round, year}], lines: [{label, color, values: [v|null...]}]
+  const w = opts.w || 760, h = opts.h || 220, pad = opts.pad || 36;
+  const allVals = lines.flatMap(l => l.values.filter(v => v != null));
+  if (!allVals.length) return '';
+  const min = Math.floor(Math.min(...allVals) / 5) * 5;
+  const max = Math.ceil(Math.max(...allVals) / 5) * 5;
+  const range = max - min || 1;
+  const stepX = (w - pad * 1.4) / (rounds.length - 1 || 1);
+  const x = i => pad + i * stepX;
+  const y = v => h - pad - ((v - min) / range) * (h - pad * 2);
+
+  const grid = [];
+  const ticks = 4;
+  for (let i = 0; i <= ticks; i++) {
+    const val = min + (range * i / ticks);
+    const yy = y(val);
+    grid.push(`<line x1="${pad}" y1="${yy.toFixed(1)}" x2="${w - pad * 0.4}" y2="${yy.toFixed(1)}" stroke="#ece6dc" stroke-width="1"/>`);
+    grid.push(`<text x="${(pad - 6).toFixed(1)}" y="${(yy + 3).toFixed(1)}" font-size="10" fill="#888" text-anchor="end">${val.toFixed(0)}%</text>`);
+  }
+  const xLabels = rounds.map((r, i) =>
+    `<text x="${x(i).toFixed(1)}" y="${h - 10}" font-size="10" fill="#888" text-anchor="middle">${r.round}회</text>`
+  ).join('');
+
+  const polylines = lines.map(l => {
+    const pts = l.values.map((v, i) => v == null ? null : `${x(i).toFixed(1)},${y(v).toFixed(1)}`).filter(Boolean).join(' ');
+    const circles = l.values.map((v, i) => v == null ? '' :
+      `<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3" fill="${l.color}"/>`
+    ).join('');
+    return `<polyline fill="none" stroke="${l.color}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" points="${pts}"/>${circles}`;
+  }).join('');
+
+  return `
+    <svg viewBox="0 0 ${w} ${h}" class="trend-chart" aria-label="시도별 투표율 추이">
+      ${grid.join('')}${xLabels}${polylines}
+    </svg>`;
+}
+
+function renderTurnoutBySidoSection() {
+  const ht = state.historyTurnout;
+  if (!ht?.elections?.length) return '';
+  const agg = aggregateTurnoutBySido(ht);
+  const rounds = ht.elections.map(e => ({ round: e.round, year: e.year }));
+
+  // 지역 그룹 평균 라인 차트
+  const groupLines = Object.entries(SIDO_GROUPS).map(([label, sds]) => ({
+    label,
+    color: GROUP_COLORS[label],
+    values: rounds.map(r => {
+      const vs = sds.map(sd => agg[r.round]?.[sd]).filter(v => v != null && v > 0);
+      return vs.length ? +(vs.reduce((a,b) => a+b, 0) / vs.length).toFixed(2) : null;
+    }),
+  }));
+  const groupChart = lineChartSvg(rounds, groupLines);
+  const groupLegend = groupLines.map(l => {
+    const last = l.values[l.values.length - 1];
+    return `<li><span class="legend-swatch" style="background:${l.color}"></span>${l.label} <small>${last != null ? last.toFixed(1) + '%' : '-'}</small></li>`;
+  }).join('');
+
+  // 시도별 표 (지역 그룹순 + 8회 대비 7회 변화량)
+  const allSidos = Object.values(SIDO_GROUPS).flat();
+  const tableRows = allSidos.map(sd => {
+    const cells = rounds.map(r => {
+      const v = agg[r.round]?.[sd];
+      return v == null || v === 0 ? '<td>—</td>' : `<td>${v.toFixed(1)}%</td>`;
+    }).join('');
+    // 7→8 변화량
+    const r7 = agg[7]?.[sd], r8 = agg[8]?.[sd];
+    const delta = (r7 && r8) ? r8 - r7 : null;
+    const deltaCell = delta == null
+      ? '<td>—</td>'
+      : `<td class="delta ${delta >= 0 ? 'up' : 'down'}">${delta >= 0 ? '+' : ''}${delta.toFixed(1)}p</td>`;
+    return `<tr><th>${sd}</th>${cells}${deltaCell}</tr>`;
+  }).join('');
+
+  return `
+    <section class="trend-section">
+      <h3 class="trend-section-title">시도별 투표율 추이 <small>3~8회 · 선관위 OpenAPI</small></h3>
+      ${groupChart}
+      <ul class="trend-legend">${groupLegend}</ul>
+      <p class="forecast-context" style="margin-top:1rem">
+        <strong>주목할 패턴</strong>: 호남(광주·전북·전남)은 3~7회 동안 일관되게 최고 투표율을 유지했지만, <strong>8회(2022)에 영남·수도권보다 낮아지는 역전</strong>이 발생. 특히 광주는 7회 59.2% → 8회 37.7%로 21.5%p 급락. 6/3 9회 결과가 다시 호남 상승으로 돌아갈지가 관전 포인트.
+      </p>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">시도별 회차 표</h3>
+      <div class="table-scroll">
+        <table class="hist-table hist-table-sido">
+          <thead>
+            <tr><th>시도</th>${rounds.map(r => `<th>${r.round}회</th>`).join('')}<th>7→8 변화</th></tr>
+          </thead>
+          <tbody>${tableRows}</tbody>
+        </table>
+      </div>
+      <p class="trend-meta">8회 대비 7회 변화량 · "—" 표시는 데이터 미제공(2회 미참여 시도 등)</p>
+    </section>`;
+}
+
+// 시도별 시계열 집계 (시군구 행 합산 → 시도 단위)
+function aggregateTurnoutBySido(turnout) {
+  // 반환: { round: { sd: rate } }
+  const out = {};
+  if (!turnout?.elections) return out;
+  for (const e of turnout.elections) {
+    const sums = {};
+    for (const r of e.by_sido || []) {
+      const sd = r.sdName;
+      if (!sd) continue;
+      const cur = sums[sd] || { sunsu: 0, tusu: 0 };
+      cur.sunsu += r.sunsu || 0;
+      cur.tusu += r.tusu || 0;
+      sums[sd] = cur;
+    }
+    const rates = {};
+    for (const [sd, v] of Object.entries(sums)) {
+      rates[sd] = v.sunsu > 0 ? +(v.tusu / v.sunsu * 100).toFixed(2) : null;
+    }
+    out[e.round] = rates;
+  }
+  return out;
+}
+
+const SIDO_GROUPS = {
+  '호남':  ['광주광역시', '전라북도', '전라남도'],
+  '영남':  ['부산광역시', '대구광역시', '울산광역시', '경상북도', '경상남도'],
+  '수도권': ['서울특별시', '인천광역시', '경기도'],
+  '충청':  ['대전광역시', '세종특별자치시', '충청북도', '충청남도'],
+  '강원·제주': ['강원도', '제주특별자치도'],
+};
+const GROUP_COLORS = {
+  '호남':   '#152484',  // 민주당 색 — 호남 강조
+  '영남':   '#E61E2B',
+  '수도권': '#888',
+  '충청':   '#FF7800',
+  '강원·제주': '#0A3CA2',
+};
+
 // 역대 지방선거 투표율 — 단정적 예측 X, 과거 패턴 비교 도구
 function historyWinnersSummary(winners) {
   return Object.entries(winners).sort((a,b) => b[1]-a[1])
@@ -718,6 +858,8 @@ function renderHistoryFull() {
         <p class="forecast-caveat">※ 단정적 예측이 아닙니다. 후보·시기·외부 변수가 모두 달라 참고용 비교입니다.</p>
       </div>
     </section>
+
+    ${renderTurnoutBySidoSection()}
 
     <section class="trend-section">
       <h3 class="trend-section-title">회차별 상세</h3>
@@ -1558,9 +1700,9 @@ function initSearch() {
 async function main() {
   calculateDDay();
   try {
-    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries, history] = await Promise.all([
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries, history, historyTurnout] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
-      loadChangelog(), loadTimeseries(), loadHistory(),
+      loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(),
     ]);
     // 로딩 시점에 단 한 번 dedup. 이후 모든 화면은 깨끗한 데이터를 본다.
     state.data = { ...data, candidates: dedupeByHuboid(data.candidates) };
@@ -1574,6 +1716,7 @@ async function main() {
     state.changelog = changelog;
     state.timeseries = timeseries;
     state.history = history;
+    state.historyTurnout = historyTurnout;
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
