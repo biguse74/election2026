@@ -286,6 +286,10 @@ function formatRegionLabel(item) {
 const seatKey = c => `${c.sgTypecode}|${c.sdName}|${c.sggName}`;
 
 // 의석수 인덱스 + 선거구별 후보 수. 경쟁률·무투표 두 박스에서 공유.
+// 사퇴·등록무효·사망은 '활성 후보'에서 제외(실질 경쟁률 정확도).
+function isActiveCandidate(c) {
+  return !c.status || c.status === '등록';
+}
 function buildSeatStats() {
   const constituencies = state.constituencies;
   if (!constituencies?.length) return null;
@@ -298,6 +302,7 @@ function buildSeatStats() {
   const counts = {};
   for (const c of state.data.candidates) {
     if (!allowedTypes.has(String(c.sgTypecode))) continue;
+    if (!isActiveCandidate(c)) continue;
     counts[seatKey(c)] = (counts[seatKey(c)] || 0) + 1;
   }
   return { seats, counts };
@@ -390,16 +395,25 @@ function tipoffUrl(c) {
   return `https://tipoff.newtamsa.org/?subject=${encodeURIComponent(subject)}`;
 }
 
+// 후보 등록 상태 분류: '등록' 외에는 비활성으로 시각 표시
+const STATUS_BADGE = {
+  '사퇴':    { cls: 'withdrawn', label: '사퇴' },
+  '등록무효': { cls: 'invalid',   label: '무효' },
+  '사망':    { cls: 'deceased',  label: '사망' },
+};
+
 function candidateRow(c) {
   const confirmed = isConfirmed(c);
   const articles = state.articleMap?.[c.huboid] || [];
   const hasArt = articles.length > 0;
   const aid = hasArt ? `art-${c.huboid}` : '';
   const tipTitle = `${c.name} 후보 관련 제보 — 뉴탐사`;
+  const statusInfo = STATUS_BADGE[c.status];
+  const statusBadge = statusInfo ? `<span class="status-badge status-${statusInfo.cls}">${statusInfo.label}</span>` : '';
   return `
-    <div class="candidate${confirmed ? ' confirmed' : ''}">
+    <div class="candidate${confirmed ? ' confirmed' : ''}${statusInfo ? ' candidate-inactive' : ''}">
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
-      <button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${c.name} 상세 정보">${c.name}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>
+      <button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${c.name} 상세 정보">${c.name}${statusBadge}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>
       <div class="candidate-party">${c.jdName}</div>
       <span class="candidate-actions">
         ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
@@ -1134,7 +1148,7 @@ function renderChangesFull() {
 function renderMpBox() {
   const constituencies = (state.constituencies || []).filter(s => String(s.sgTypecode) === '2');
   if (!constituencies.length) return '';
-  const candidates = state.data.candidates.filter(c => String(c.sgTypecode) === '2');
+  const candidates = state.data.candidates.filter(c => String(c.sgTypecode) === '2' && isActiveCandidate(c));
   // sd → sgg 그룹화 (constituencies 기준 — 후보 0명 케이스도 보여주려고)
   const grouped = constituencies.reduce((acc, s) => {
     (acc[s.sdName] ||= []).push(s);
@@ -1173,10 +1187,18 @@ function renderMpBox() {
 // (전국 지도는 정보 박스가 풍부해진 시점에 제거. 시도 카드 그리드가 진입 역할 수행.)
 function renderHome() {
   const cands = state.data.candidates;
+  const activeCands = cands.filter(isActiveCandidate);
+  const inactiveCount = cands.length - activeCands.length;
+  // 상태별 카운트
+  const byStatus = cands.reduce((acc, c) => {
+    const s = c.status && c.status !== '등록' ? c.status : null;
+    if (s) acc[s] = (acc[s] || 0) + 1;
+    return acc;
+  }, {});
 
-  // 글로벌 카운트
-  const countBy = sgType => cands.filter(c => String(c.sgTypecode) === sgType).length;
-  const totalParties = new Set(cands.map(c => c.jdName)).size;
+  // 글로벌 카운트 — 활성 후보만
+  const countBy = sgType => activeCands.filter(c => String(c.sgTypecode) === sgType).length;
+  const totalParties = new Set(activeCands.map(c => c.jdName)).size;
 
   // 시도 목록 (sdName 기준, '전국' 제외)
   const sidos = Array.from(new Set(cands.map(c => c.sdName).filter(s => s && s !== '전국'))).sort(sidoSort);
@@ -1221,7 +1243,7 @@ function renderHome() {
 
   const html = `
     <div class="stats">
-      <div class="stat"><div class="stat-label">${totalLabel}</div><div class="stat-value">${cands.length.toLocaleString()}명</div><div class="stat-sub">${state.data.fetched_at.slice(0,10)} 기준</div></div>
+      <div class="stat"><div class="stat-label">${totalLabel}</div><div class="stat-value">${activeCands.length.toLocaleString()}명</div><div class="stat-sub">${inactiveCount > 0 ? `사퇴·무효 ${inactiveCount.toLocaleString()} 제외` : `${state.data.fetched_at.slice(0,10)} 기준`}</div></div>
       ${SECTIONS.filter(s => s.card).map(s => `
         <div class="stat">
           <div class="stat-label">${s.title} ${candidateSuffix}</div>

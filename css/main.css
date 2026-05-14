@@ -272,6 +272,23 @@ footer a:hover { text-decoration: underline; }
 /* 공천 확정 배지 */
 .candidate.confirmed .candidate-name { font-weight: 700; }
 .confirmed-badge { display: inline-block; margin-left: 0.4rem; font-size: 0.65rem; background: var(--accent); color: #fff; padding: 0.12rem 0.4rem; border-radius: 2px; font-weight: 700; letter-spacing: 0.05em; vertical-align: 2px; }
+
+/* 후보 등록 상태 배지 — 사퇴·무효·사망 */
+.status-badge {
+  display: inline-block; margin-left: 0.4rem;
+  font-size: 0.65rem; padding: 0.12rem 0.4rem; border-radius: 2px;
+  font-weight: 700; letter-spacing: 0.05em; vertical-align: 2px;
+  color: #fff;
+}
+.status-withdrawn { background: #888; }
+.status-invalid   { background: #b25c00; }
+.status-deceased  { background: #1a1a1a; }
+
+/* 비활성 후보(사퇴·무효·사망)는 옅게 + strikethrough */
+.candidate.candidate-inactive { opacity: 0.55; }
+.candidate.candidate-inactive .candidate-name { text-decoration: line-through; text-decoration-color: rgba(85,85,85,0.6); text-decoration-thickness: 1px; }
+.candidate.candidate-inactive .candidate-name .status-badge,
+.candidate.candidate-inactive .candidate-name .confirmed-badge { text-decoration: none; }
 .nominations-source { font-size: 0.85rem; color: var(--ink-sub); margin: -1rem 0 1rem; line-height: 1.6; }
 .nominations-source a { color: var(--accent); }
 .nominations-source a:hover { text-decoration: underline; }
