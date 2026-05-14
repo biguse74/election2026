@@ -313,14 +313,30 @@ footer a:hover { text-decoration: underline; }
 
 /* 후보 등록 상태 배지 — 사퇴·무효·사망 */
 .status-badge {
+  position: relative;
   display: inline-block; margin-left: 0.4rem;
   font-size: 0.65rem; padding: 0.12rem 0.4rem; border-radius: 2px;
   font-weight: 700; letter-spacing: 0.05em; vertical-align: 2px;
   color: #fff;
+  cursor: help;
 }
 .status-withdrawn { background: #888; }
 .status-invalid   { background: #b25c00; }
 .status-deceased  { background: #1a1a1a; }
+/* 호버 시 상세 설명 툴팁 */
+.status-badge::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: #fff;
+  font-size: 0.72rem; font-weight: 500; letter-spacing: 0;
+  padding: 0.35rem 0.7rem; border-radius: 3px;
+  white-space: nowrap;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.15s ease 0.1s;
+  z-index: 100;
+}
+.status-badge:hover::after { opacity: 1; }
 
 /* 비활성 후보(사퇴·무효·사망)는 옅게 + strikethrough */
 .candidate.candidate-inactive { opacity: 0.55; }

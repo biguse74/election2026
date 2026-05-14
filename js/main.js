@@ -486,9 +486,9 @@ function tipoffUrl(c) {
 
 // 후보 등록 상태 분류: '등록' 외에는 비활성으로 시각 표시
 const STATUS_BADGE = {
-  '사퇴':    { cls: 'withdrawn', label: '사퇴' },
-  '등록무효': { cls: 'invalid',   label: '무효' },
-  '사망':    { cls: 'deceased',  label: '사망' },
+  '사퇴':    { cls: 'withdrawn', label: '사퇴', tip: '후보 본인의 자진 사퇴' },
+  '등록무효': { cls: 'invalid',   label: '무효', tip: '선관위 직권 등록무효 (자격 결격·서류 미비 등)' },
+  '사망':    { cls: 'deceased',  label: '사망', tip: '후보자 사망 (자동 등록무효)' },
 };
 
 function candidateRow(c) {
@@ -498,7 +498,9 @@ function candidateRow(c) {
   const aid = hasArt ? `art-${c.huboid}` : '';
   const tipTitle = `${c.name} 후보 관련 제보 — 뉴탐사`;
   const statusInfo = STATUS_BADGE[c.status];
-  const statusBadge = statusInfo ? `<span class="status-badge status-${statusInfo.cls}">${statusInfo.label}</span>` : '';
+  const statusBadge = statusInfo
+    ? `<span class="status-badge status-${statusInfo.cls}" title="${statusInfo.tip}" data-tip="${statusInfo.tip}">${statusInfo.label}</span>`
+    : '';
   return `
     <div class="candidate${confirmed ? ' confirmed' : ''}${statusInfo ? ' candidate-inactive' : ''}">
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
@@ -573,7 +575,7 @@ function openCandidateModal(huboid) {
     ['정당',   c.jdName || '무소속'],
     ['선거',   sectionTitle],
     ['선거구', region],
-    ['상태',   c.status || ''],
+    ['상태',   c.status ? `${c.status}${STATUS_BADGE[c.status] ? ` <small style="color:var(--ink-sub)">— ${STATUS_BADGE[c.status].tip}</small>` : ''}` : ''],
     ['성별',   c.gender || ''],
     ['생년',   birth ? `${birth}${c.age ? ` (만 ${c.age}세)` : ''}` : ''],
     ['한자',   c.hanjaName || ''],
