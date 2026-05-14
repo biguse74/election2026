@@ -1,5 +1,94 @@
 const ELECTION_DATE = '2026-06-03T00:00:00';
 
+// 제9회 전국동시지방선거 공식 일정 (선관위 안내 기준)
+const ELECTION_SCHEDULE = [
+  { start: '2026-05-14', end: '2026-05-15', label: '후보자 등록',     note: '시·도지사, 단체장, 의원, 교육감, 국회의원 재·보궐' },
+  { start: '2026-05-21', end: '2026-06-02', label: '선거운동 기간',   note: '13일간 공식 선거운동' },
+  { start: '2026-05-29', end: '2026-05-30', label: '사전투표',         note: '오전 6시 ~ 오후 6시' },
+  { start: '2026-06-03', end: '2026-06-03', label: '본투표',           note: '오전 6시 ~ 오후 6시' },
+  { start: '2026-07-01', end: '2026-07-01', label: '당선인 임기 시작', note: '4년 임기' },
+];
+
+function nextElectionMilestone(now) {
+  now = now || new Date();
+  for (const m of ELECTION_SCHEDULE) {
+    const end = new Date(m.end + 'T23:59:59+09:00');
+    if (now <= end) {
+      const start = new Date(m.start + 'T00:00:00+09:00');
+      return { ...m, _now: now >= start };
+    }
+  }
+  return null;
+}
+
+function renderScheduleBar() {
+  const bar = document.getElementById('schedule-bar');
+  if (!bar) return;
+  const now = new Date();
+  const m = nextElectionMilestone(now);
+  if (!m) { bar.hidden = true; return; }
+  bar.hidden = false;
+
+  const fmt = d => `${d.slice(5,7)}/${d.slice(8,10)}`;
+  const periodText = m.start === m.end ? fmt(m.start) : `${fmt(m.start)}~${fmt(m.end)}`;
+
+  document.getElementById('schedule-label').textContent = m._now ? '진행 중' : '다음 일정';
+  document.getElementById('schedule-event').textContent = m.label;
+  document.getElementById('schedule-period').textContent = periodText;
+
+  const startDate = new Date(m.start + 'T00:00:00+09:00');
+  startDate.setHours(0,0,0,0);
+  const today = new Date(now); today.setHours(0,0,0,0);
+  const days = Math.ceil((startDate - today) / 86_400_000);
+  const dEl = document.getElementById('schedule-dday');
+  if (m._now) dEl.textContent = '오늘';
+  else if (days > 0) dEl.textContent = `D-${days}`;
+  else dEl.textContent = '';
+}
+
+// 전체 일정 페이지
+function renderScheduleFull() {
+  const app = document.getElementById('app');
+  app.className = '';
+  const now = new Date();
+  const next = nextElectionMilestone(now);
+  const rows = ELECTION_SCHEDULE.map(m => {
+    const start = new Date(m.start + 'T00:00:00+09:00');
+    const end = new Date(m.end + 'T23:59:59+09:00');
+    const isPast = now > end;
+    const isNow = now >= start && now <= end;
+    const cls = isPast ? 'sched-past' : isNow ? 'sched-now' : 'sched-future';
+    const status = isPast ? '종료' : isNow ? '진행 중' : '예정';
+    const period = m.start === m.end ? m.start : `${m.start} ~ ${m.end}`;
+    return `
+      <tr class="${cls}">
+        <td class="sched-status">${status}</td>
+        <td class="sched-period">${period}</td>
+        <td class="sched-label"><strong>${m.label}</strong></td>
+        <td class="sched-note">${m.note || ''}</td>
+      </tr>`;
+  }).join('');
+
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">선거 일정</span></nav>
+    <div class="detail-head">
+      <h1 class="detail-title">제9회 전국동시지방선거 공식 일정</h1>
+      <div class="detail-inline-stats">
+        <span>${next ? `${next._now ? '오늘' : '다음'}: ${next.label}` : '모든 일정 종료'}</span>
+      </div>
+    </div>
+    <p class="page-intro">중앙선거관리위원회 공식 안내 기준. 6월 3일 본투표를 향한 주요 마일스톤.</p>
+    <section class="trend-section">
+      <table class="hist-table sched-table">
+        <thead>
+          <tr><th>상태</th><th>일정</th><th>이벤트</th><th>비고</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </section>`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 // 광주광역시·전라남도는 시도지사 선거에서만 '전남광주통합특별시' 하나로 통합됨
 const SIDO_ALIASES = {
   '광주광역시': '전남광주통합특별시',
@@ -1377,6 +1466,7 @@ function route() {
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'trend') return renderTrendFull();
   if (hash === 'history') return renderHistoryFull();
+  if (hash === 'schedule') return renderScheduleFull();
   if (hash === 'candidates') return renderCandidatesFull();
   if (hash.startsWith('cand/')) {
     // 후보 영구 링크: 홈을 배경에 그리고 모달 자동 오픈
@@ -1733,6 +1823,7 @@ function initSearch() {
 // ============ Bootstrap ============
 async function main() {
   calculateDDay();
+  renderScheduleBar();
   try {
     const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries, history, historyTurnout] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),

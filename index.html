@@ -46,7 +46,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
-<link rel="stylesheet" href="css/main.css?v=202605141200">
+<link rel="stylesheet" href="css/main.css?v=202605141203">
 </head>
 <body>
 <div class="util-bar">
@@ -54,6 +54,15 @@
     <a href="https://newtamsa.org" target="_blank" rel="noopener" class="util-link">뉴탐사 홈</a>
     <a href="https://tipoff.newtamsa.org" target="_blank" rel="noopener" class="util-link">제보</a>
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener" class="util-link util-donate">💛 후원하기</a>
+  </div>
+</div>
+<div id="schedule-bar" class="schedule-bar" hidden>
+  <div class="schedule-bar-inner">
+    <span class="schedule-label" id="schedule-label">다음 일정</span>
+    <strong class="schedule-event" id="schedule-event">—</strong>
+    <span class="schedule-period" id="schedule-period"></span>
+    <span class="schedule-dday" id="schedule-dday"></span>
+    <a href="#schedule" class="schedule-more">전체 일정 →</a>
   </div>
 </div>
 <header class="header">
@@ -98,6 +107,7 @@
       <a href="#changes" class="sido-chip sido-chip-action">오늘의 변경</a>
       <a href="#trend" class="sido-chip sido-chip-action">출마자 한눈에</a>
       <a href="#history" class="sido-chip sido-chip-action">과거 회차 비교</a>
+      <a href="#schedule" class="sido-chip sido-chip-action">선거 일정</a>
     </div>
   </nav>
 </header>
@@ -119,6 +129,6 @@
     중앙선관위 OpenAPI 원자료를 뉴탐사가 시도·정당·선거구 기준으로 재분류한 사이트입니다.
   </p>
 </footer>
-<script src="js/main.js?v=202605141200"></script>
+<script src="js/main.js?v=202605141203"></script>
 </body>
 </html>
