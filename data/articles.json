@@ -1,9 +1,48 @@
 {
-  "updated_at": "2026-05-14T17:40:59+09:00",
+  "updated_at": "2026-05-14T23:20:25+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 308,
+  "count": 310,
   "articles": [
+    {
+      "date": "2026-05-14",
+      "title": "코스피 폭락은 블룸버그 영문 송고보다 빨랐다",
+      "url": "https://newtamsa.org/news/oTSn-9",
+      "category": "데이터",
+      "tags": [
+        "코스피",
+        "김용범",
+        "정책실장",
+        "국민배당금",
+        "초과이익",
+        "초과이윤",
+        "초과세수",
+        "이재명",
+        "블룸버그",
+        "파이낸셜타임스"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-05-14",
+      "title": "쌍방울 대북사업 설계자 \"박상용 검사실서 이재명 통화 알리바이 맞추기 강요당했다\"",
+      "url": "https://newtamsa.org/news/SzgwDG",
+      "category": "단독보도",
+      "tags": [
+        "쌍방울",
+        "대북사업",
+        "박상용",
+        "N프로젝트",
+        "김성태",
+        "북한",
+        "광물",
+        "채굴",
+        "스마트팜",
+        "주가부양",
+        "주가조작"
+      ],
+      "author": "허재현, 강진구"
+    },
     {
       "date": "2026-05-13",
       "title": "부산시장 선거 박형준이 북구갑 단일화에 매달리는 이유",
