@@ -1511,7 +1511,9 @@ const candidatesFilter = { sd: new Set(), sg: new Set(), jd: new Set(), st: new 
 
 function buildFacets() {
   const cs = state.data.candidates;
-  const sds = Array.from(new Set(cs.map(c => c.sdName).filter(s => s && s !== '전국'))).sort(sidoSort);
+  // 통합특별시는 시도지사 선거에서만 사용되는 가상 시도 — 광주·전남으로 흡수해 17개로 일관성 유지.
+  const sds = Array.from(new Set(cs.map(c => c.sdName)
+    .filter(s => s && s !== '전국' && s !== '전남광주통합특별시'))).sort(sidoSort);
   const sgs = SECTIONS.map(s => ({ code: s.sgTypecode, title: s.title }));
   // 정당: 등장 빈도 내림차순
   const partyCount = {};
@@ -1525,8 +1527,16 @@ function buildFacets() {
 }
 
 function applyCandidatesFilter() {
+  // 광주·전남 선택 시 통합특별시(시도지사) 후보도 포함 — 사용자 입장에선 자기 시도
+  const sdMatch = candidatesFilter.sd.size
+    ? new Set([
+        ...candidatesFilter.sd,
+        ...(candidatesFilter.sd.has('광주광역시') || candidatesFilter.sd.has('전라남도')
+            ? ['전남광주통합특별시'] : []),
+      ])
+    : null;
   return state.data.candidates.filter(c => {
-    if (candidatesFilter.sd.size && !candidatesFilter.sd.has(c.sdName)) return false;
+    if (sdMatch && !sdMatch.has(c.sdName)) return false;
     if (candidatesFilter.sg.size && !candidatesFilter.sg.has(String(c.sgTypecode))) return false;
     if (candidatesFilter.jd.size && !candidatesFilter.jd.has(c.jdName || '무소속')) return false;
     if (candidatesFilter.st.size && !candidatesFilter.st.has(c.status || '등록')) return false;
@@ -1542,7 +1552,9 @@ function renderCandidatesFull() {
     `<button type="button" class="filter-chip${active ? ' active' : ''}" data-kind="${kind}" data-key="${encodeURIComponent(key)}">${label}<small>${count.toLocaleString()}</small></button>`;
 
   const sdChips = facets.sds.map(sd => {
-    const n = state.data.candidates.filter(c => c.sdName === sd).length;
+    // 광주·전남 칩은 통합특별시(시도지사) 후보까지 카운트에 포함
+    const extra = (sd === '광주광역시' || sd === '전라남도') ? '전남광주통합특별시' : null;
+    const n = state.data.candidates.filter(c => c.sdName === sd || c.sdName === extra).length;
     return chip('sd', sd, sd, n, candidatesFilter.sd.has(sd));
   }).join('');
   const sgChips = facets.sgs.map(s => {
