@@ -49,35 +49,19 @@
     "gone": [],
     "party": [
       {
-        "name": "김상진",
-        "jdName": "무소속",
-        "sdName": "경상북도",
-        "sggName": "안동시제2선거구",
-        "sgTypecode": "5",
-        "jdName_prev": "국민의힘"
-      },
-      {
-        "name": "변재민",
-        "jdName": "개혁신당",
-        "sdName": "인천광역시",
-        "sggName": "연수구나선거구",
-        "sgTypecode": "6",
-        "jdName_prev": "국민의힘"
-      },
-      {
-        "name": "권기원",
-        "jdName": "무소속",
-        "sdName": "경상북도",
-        "sggName": "안동시바선거구",
-        "sgTypecode": "6",
-        "jdName_prev": "국민의힘"
-      },
-      {
         "name": "전영탁",
         "jdName": "더불어민주당",
         "sdName": "경상북도",
         "sggName": "영주시바선거구",
         "sgTypecode": "6",
+        "jdName_prev": "국민의힘"
+      },
+      {
+        "name": "이홍기",
+        "jdName": "무소속",
+        "sdName": "경상남도",
+        "sggName": "거창군",
+        "sgTypecode": "4",
         "jdName_prev": "국민의힘"
       },
       {
@@ -89,113 +73,66 @@
         "jdName_prev": "국민의힘"
       },
       {
-        "name": "이홍기",
+        "name": "권기원",
         "jdName": "무소속",
-        "sdName": "경상남도",
-        "sggName": "거창군",
-        "sgTypecode": "4",
+        "sdName": "경상북도",
+        "sggName": "안동시바선거구",
+        "sgTypecode": "6",
+        "jdName_prev": "국민의힘"
+      },
+      {
+        "name": "변재민",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "연수구나선거구",
+        "sgTypecode": "6",
+        "jdName_prev": "국민의힘"
+      },
+      {
+        "name": "김상진",
+        "jdName": "무소속",
+        "sdName": "경상북도",
+        "sggName": "안동시제2선거구",
+        "sgTypecode": "5",
         "jdName_prev": "국민의힘"
       }
     ],
     "status": [
       {
-        "name": "최진석",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "부산진구가선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "강경진",
+        "name": "윤진호",
         "jdName": "더불어민주당",
         "sdName": "서울특별시",
-        "sggName": "구로구가선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "안용화",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "남양주시제8선거구",
-        "sgTypecode": "5",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "방병욱",
-        "jdName": "무소속",
-        "sdName": "충청남도",
-        "sggName": "홍성군",
+        "sggName": "성북구",
         "sgTypecode": "4",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "백승흥",
-        "jdName": "국민의힘",
-        "sdName": "경상남도",
-        "sggName": "진주시제4선거구",
-        "sgTypecode": "5",
+        "name": "김진영",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "속초시나선거구",
+        "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "등록무효"
       },
       {
-        "name": "이창식",
-        "jdName": "국민의힘",
+        "name": "김한곤",
+        "jdName": "무소속",
+        "sdName": "경상남도",
+        "sggName": "함양군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김선아",
+        "jdName": "더불어민주당",
         "sdName": "경기도",
         "sggName": "용인시자선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "박동웅",
-        "jdName": "더불어민주당",
-        "sdName": "서울특별시",
-        "sggName": "구로구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "이영경",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "남구나선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "강을석",
-        "jdName": "무소속",
-        "sdName": "서울특별시",
-        "sggName": "강남구다선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
         "status_now": "사퇴"
-      },
-      {
-        "name": "송선기",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "사상구다선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김정태",
-        "jdName": "더불어민주당",
-        "sdName": "서울특별시",
-        "sggName": "영등포구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "등록무효"
       },
       {
         "name": "한은미",
@@ -203,6 +140,24 @@
         "sdName": "경상북도",
         "sggName": "경상북도",
         "sgTypecode": "11",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "목혜빈",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강서구제1선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "김미나",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "창원시파선거구",
+        "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
@@ -216,49 +171,49 @@
         "status_now": "사퇴"
       },
       {
-        "name": "허인환",
+        "name": "김규진",
         "jdName": "더불어민주당",
-        "sdName": "인천광역시",
-        "sggName": "제물포구",
+        "sdName": "서울특별시",
+        "sggName": "서대문구",
         "sgTypecode": "4",
         "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "노창래",
-        "jdName": "더불어민주당",
-        "sdName": "인천광역시",
-        "sggName": "연수구라선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "여문규",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "사상구가선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
         "status_now": "등록무효"
       },
       {
-        "name": "김인엽",
-        "jdName": "",
-        "sdName": "세종특별자치시",
-        "sggName": "세종특별자치시",
-        "sgTypecode": "11",
+        "name": "조영욱",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "수성구가선거구",
+        "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "이해남",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "북구나선거구",
+        "name": "이진규",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "용인시나선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
-        "status_now": "등록무효"
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김동승",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "중랑구라선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김진성",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "용인시자선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
       },
       {
         "name": "김대영",
@@ -270,13 +225,58 @@
         "status_now": "사퇴"
       },
       {
-        "name": "김양희",
+        "name": "김상권",
+        "jdName": "",
+        "sdName": "경상남도",
+        "sggName": "경상남도",
+        "sgTypecode": "11",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "방병욱",
+        "jdName": "무소속",
+        "sdName": "충청남도",
+        "sggName": "홍성군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김동령",
         "jdName": "더불어민주당",
         "sdName": "서울특별시",
-        "sggName": "서대문구제4선거구",
-        "sgTypecode": "5",
+        "sggName": "구로구마선거구",
+        "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "등록무효"
+      },
+      {
+        "name": "이삼수",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "사천시다선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "이영경",
+        "jdName": "더불어민주당",
+        "sdName": "부산광역시",
+        "sggName": "남구나선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "정장수",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "중구",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
       }
     ]
   },
@@ -321,35 +321,19 @@
     "gone": [],
     "party": [
       {
-        "name": "김상진",
-        "jdName": "무소속",
-        "sdName": "경상북도",
-        "sggName": "안동시제2선거구",
-        "sgTypecode": "5",
-        "jdName_prev": "국민의힘"
-      },
-      {
-        "name": "변재민",
-        "jdName": "개혁신당",
-        "sdName": "인천광역시",
-        "sggName": "연수구나선거구",
-        "sgTypecode": "6",
-        "jdName_prev": "국민의힘"
-      },
-      {
-        "name": "권기원",
-        "jdName": "무소속",
-        "sdName": "경상북도",
-        "sggName": "안동시바선거구",
-        "sgTypecode": "6",
-        "jdName_prev": "국민의힘"
-      },
-      {
         "name": "전영탁",
         "jdName": "더불어민주당",
         "sdName": "경상북도",
         "sggName": "영주시바선거구",
         "sgTypecode": "6",
+        "jdName_prev": "국민의힘"
+      },
+      {
+        "name": "이홍기",
+        "jdName": "무소속",
+        "sdName": "경상남도",
+        "sggName": "거창군",
+        "sgTypecode": "4",
         "jdName_prev": "국민의힘"
       },
       {
@@ -361,300 +345,37 @@
         "jdName_prev": "국민의힘"
       },
       {
-        "name": "이홍기",
+        "name": "권기원",
         "jdName": "무소속",
-        "sdName": "경상남도",
-        "sggName": "거창군",
-        "sgTypecode": "4",
+        "sdName": "경상북도",
+        "sggName": "안동시바선거구",
+        "sgTypecode": "6",
+        "jdName_prev": "국민의힘"
+      },
+      {
+        "name": "변재민",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "연수구나선거구",
+        "sgTypecode": "6",
+        "jdName_prev": "국민의힘"
+      },
+      {
+        "name": "김상진",
+        "jdName": "무소속",
+        "sdName": "경상북도",
+        "sggName": "안동시제2선거구",
+        "sgTypecode": "5",
         "jdName_prev": "국민의힘"
       }
     ],
     "status": [
       {
-        "name": "최진석",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "부산진구가선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "강경진",
+        "name": "윤진호",
         "jdName": "더불어민주당",
         "sdName": "서울특별시",
-        "sggName": "구로구가선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "안용화",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "남양주시제8선거구",
-        "sgTypecode": "5",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "방병욱",
-        "jdName": "무소속",
-        "sdName": "충청남도",
-        "sggName": "홍성군",
+        "sggName": "성북구",
         "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "백승흥",
-        "jdName": "국민의힘",
-        "sdName": "경상남도",
-        "sggName": "진주시제4선거구",
-        "sgTypecode": "5",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "이창식",
-        "jdName": "국민의힘",
-        "sdName": "경기도",
-        "sggName": "용인시자선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "박동웅",
-        "jdName": "더불어민주당",
-        "sdName": "서울특별시",
-        "sggName": "구로구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "이영경",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "남구나선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "강을석",
-        "jdName": "무소속",
-        "sdName": "서울특별시",
-        "sggName": "강남구다선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "송선기",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "사상구다선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김정태",
-        "jdName": "더불어민주당",
-        "sdName": "서울특별시",
-        "sggName": "영등포구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "한은미",
-        "jdName": "",
-        "sdName": "경상북도",
-        "sggName": "경상북도",
-        "sgTypecode": "11",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김왕중",
-        "jdName": "조국혁신당",
-        "sdName": "전북특별자치도",
-        "sggName": "임실군",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "허인환",
-        "jdName": "더불어민주당",
-        "sdName": "인천광역시",
-        "sggName": "제물포구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "노창래",
-        "jdName": "더불어민주당",
-        "sdName": "인천광역시",
-        "sggName": "연수구라선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "여문규",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "사상구가선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김인엽",
-        "jdName": "",
-        "sdName": "세종특별자치시",
-        "sggName": "세종특별자치시",
-        "sgTypecode": "11",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "이해남",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "북구나선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김대영",
-        "jdName": "더불어민주당",
-        "sdName": "충청남도",
-        "sggName": "계룡시",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김양희",
-        "jdName": "더불어민주당",
-        "sdName": "서울특별시",
-        "sggName": "서대문구제4선거구",
-        "sgTypecode": "5",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "이삼수",
-        "jdName": "국민의힘",
-        "sdName": "경상남도",
-        "sggName": "사천시다선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "최남선",
-        "jdName": "더불어민주당",
-        "sdName": "전남광주통합특별시",
-        "sggName": "여수시제5선거구",
-        "sgTypecode": "5",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김진명",
-        "jdName": "더불어민주당",
-        "sdName": "전북특별자치도",
-        "sggName": "임실군",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김동승",
-        "jdName": "국민의힘",
-        "sdName": "서울특별시",
-        "sggName": "중랑구라선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김양우",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "안산시라선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "장호준",
-        "jdName": "더불어민주당",
-        "sdName": "충청남도",
-        "sggName": "계룡시가선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김선아",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "용인시자선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김규진",
-        "jdName": "더불어민주당",
-        "sdName": "서울특별시",
-        "sggName": "서대문구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김한곤",
-        "jdName": "무소속",
-        "sdName": "경상남도",
-        "sggName": "함양군",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "정지영",
-        "jdName": "더불어민주당",
-        "sdName": "서울특별시",
-        "sggName": "영등포구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김영림",
-        "jdName": "개혁신당",
-        "sdName": "서울특별시",
-        "sggName": "동작구마선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "최호진",
-        "jdName": "국민의힘",
-        "sdName": "대전광역시",
-        "sggName": "대덕구제3선거구",
-        "sgTypecode": "5",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
@@ -668,118 +389,91 @@
         "status_now": "등록무효"
       },
       {
-        "name": "강동엽",
-        "jdName": "더불어민주당",
-        "sdName": "대구광역시",
-        "sggName": "달성군라선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "정장수",
-        "jdName": "국민의힘",
-        "sdName": "대구광역시",
-        "sggName": "중구",
+        "name": "김한곤",
+        "jdName": "무소속",
+        "sdName": "경상남도",
+        "sggName": "함양군",
         "sgTypecode": "4",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "오정환",
-        "jdName": "국민의힘",
-        "sdName": "대전광역시",
-        "sggName": "서구제2선거구",
-        "sgTypecode": "5",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "박영록",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "북구나선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "백종민",
+        "name": "김선아",
         "jdName": "더불어민주당",
         "sdName": "경기도",
-        "sggName": "가평군나선거구",
+        "sggName": "용인시자선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "김성하",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "부산진구바선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "양현수",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "화성시다선거구",
-        "sgTypecode": "6",
+        "name": "한은미",
+        "jdName": "",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "11",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "최영만",
-        "jdName": "국민의힘",
-        "sdName": "부산광역시",
-        "sggName": "사하구다선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김동령",
+        "name": "목혜빈",
         "jdName": "더불어민주당",
         "sdName": "서울특별시",
-        "sggName": "구로구마선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "박광래",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "부산진구바선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "하현재",
-        "jdName": "무소속",
-        "sdName": "대구광역시",
-        "sggName": "북구제2선거구",
+        "sggName": "강서구제1선거구",
         "sgTypecode": "5",
         "status_prev": "등록",
-        "status_now": "사퇴"
+        "status_now": "등록무효"
       },
       {
-        "name": "임재완",
-        "jdName": "무소속",
-        "sdName": "경상북도",
-        "sggName": "영주시가선거구",
+        "name": "김미나",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "창원시파선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "강문봉",
+        "name": "김왕중",
+        "jdName": "조국혁신당",
+        "sdName": "전북특별자치도",
+        "sggName": "임실군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김규진",
         "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "사하구다선거구",
+        "sdName": "서울특별시",
+        "sggName": "서대문구",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "조영욱",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "수성구가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "이진규",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "용인시나선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김동승",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "중랑구라선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "사퇴"
@@ -794,11 +488,137 @@
         "status_now": "사퇴"
       },
       {
-        "name": "조영욱",
+        "name": "김대영",
+        "jdName": "더불어민주당",
+        "sdName": "충청남도",
+        "sggName": "계룡시",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김상권",
+        "jdName": "",
+        "sdName": "경상남도",
+        "sggName": "경상남도",
+        "sgTypecode": "11",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "방병욱",
+        "jdName": "무소속",
+        "sdName": "충청남도",
+        "sggName": "홍성군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김동령",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "구로구마선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "이삼수",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "사천시다선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "이영경",
+        "jdName": "더불어민주당",
+        "sdName": "부산광역시",
+        "sggName": "남구나선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "정장수",
         "jdName": "국민의힘",
         "sdName": "대구광역시",
-        "sggName": "수성구가선거구",
+        "sggName": "중구",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "임형률",
+        "jdName": "더불어민주당",
+        "sdName": "전남광주통합특별시",
+        "sggName": "순천시제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "오정환",
+        "jdName": "국민의힘",
+        "sdName": "대전광역시",
+        "sggName": "서구제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "최영만",
+        "jdName": "국민의힘",
+        "sdName": "부산광역시",
+        "sggName": "사하구다선거구",
         "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "송선기",
+        "jdName": "더불어민주당",
+        "sdName": "부산광역시",
+        "sggName": "사상구다선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "하현재",
+        "jdName": "무소속",
+        "sdName": "대구광역시",
+        "sggName": "북구제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "강진규",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "남구가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "강문봉",
+        "jdName": "더불어민주당",
+        "sdName": "부산광역시",
+        "sggName": "사하구다선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "허인환",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구",
+        "sgTypecode": "4",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
@@ -812,19 +632,136 @@
         "status_now": "사퇴"
       },
       {
-        "name": "윤진호",
+        "name": "안용화",
         "jdName": "더불어민주당",
+        "sdName": "경기도",
+        "sggName": "남양주시제8선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "박광래",
+        "jdName": "더불어민주당",
+        "sdName": "부산광역시",
+        "sggName": "부산진구바선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "박영록",
+        "jdName": "더불어민주당",
+        "sdName": "부산광역시",
+        "sggName": "북구나선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "김철희",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "달서구아선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "강을석",
+        "jdName": "무소속",
         "sdName": "서울특별시",
-        "sggName": "성북구",
+        "sggName": "강남구다선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김영림",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "동작구마선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "이윤미",
+        "jdName": "더불어민주당",
+        "sdName": "경기도",
+        "sggName": "용인시아선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "최진석",
+        "jdName": "더불어민주당",
+        "sdName": "부산광역시",
+        "sggName": "부산진구가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "양현수",
+        "jdName": "더불어민주당",
+        "sdName": "경기도",
+        "sggName": "화성시다선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "백종민",
+        "jdName": "더불어민주당",
+        "sdName": "경기도",
+        "sggName": "가평군나선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "여문규",
+        "jdName": "더불어민주당",
+        "sdName": "부산광역시",
+        "sggName": "사상구가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "김성하",
+        "jdName": "더불어민주당",
+        "sdName": "부산광역시",
+        "sggName": "부산진구바선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "김진명",
+        "jdName": "더불어민주당",
+        "sdName": "전북특별자치도",
+        "sggName": "임실군",
         "sgTypecode": "4",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "강진규",
-        "jdName": "국민의힘",
-        "sdName": "대구광역시",
-        "sggName": "남구가선거구",
+        "name": "임재완",
+        "jdName": "무소속",
+        "sdName": "경상북도",
+        "sggName": "영주시가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "장호준",
+        "jdName": "더불어민주당",
+        "sdName": "충청남도",
+        "sggName": "계룡시가선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "사퇴"
@@ -839,22 +776,103 @@
         "status_now": "등록무효"
       },
       {
-        "name": "김상권",
+        "name": "김양우",
+        "jdName": "더불어민주당",
+        "sdName": "경기도",
+        "sggName": "안산시라선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "노창래",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구라선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "정지영",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "영등포구",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "최남선",
+        "jdName": "더불어민주당",
+        "sdName": "전남광주통합특별시",
+        "sggName": "여수시제5선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "강경진",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "구로구가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "최호진",
+        "jdName": "국민의힘",
+        "sdName": "대전광역시",
+        "sggName": "대덕구제3선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "이창식",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "용인시자선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "김인엽",
         "jdName": "",
-        "sdName": "경상남도",
-        "sggName": "경상남도",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시",
         "sgTypecode": "11",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "김미나",
-        "jdName": "국민의힘",
-        "sdName": "경상남도",
-        "sggName": "창원시파선거구",
+        "name": "강동엽",
+        "jdName": "더불어민주당",
+        "sdName": "대구광역시",
+        "sggName": "달성군라선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
-        "status_now": "사퇴"
+        "status_now": "등록무효"
+      },
+      {
+        "name": "박동웅",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "구로구",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "백승흥",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "진주시제4선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "등록무효"
       },
       {
         "name": "이승훈",
@@ -866,51 +884,33 @@
         "status_now": "등록무효"
       },
       {
-        "name": "이윤미",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "용인시아선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "목혜빈",
+        "name": "김정태",
         "jdName": "더불어민주당",
         "sdName": "서울특별시",
-        "sggName": "강서구제1선거구",
-        "sgTypecode": "5",
+        "sggName": "영등포구",
+        "sgTypecode": "4",
         "status_prev": "등록",
         "status_now": "등록무효"
       },
       {
-        "name": "임형률",
+        "name": "이해남",
         "jdName": "더불어민주당",
-        "sdName": "전남광주통합특별시",
-        "sggName": "순천시제2선거구",
+        "sdName": "부산광역시",
+        "sggName": "북구나선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "김양희",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제4선거구",
         "sgTypecode": "5",
         "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김철희",
-        "jdName": "국민의힘",
-        "sdName": "대구광역시",
-        "sggName": "달서구아선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "이진규",
-        "jdName": "국민의힘",
-        "sdName": "경기도",
-        "sggName": "용인시나선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
+        "status_now": "등록무효"
       }
     ]
   },
-  "generated_at": "2026-05-14T05:08:21+09:00"
+  "generated_at": "2026-05-15T05:06:56+09:00"
 }
