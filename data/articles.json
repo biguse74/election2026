@@ -1,9 +1,43 @@
 {
-  "updated_at": "2026-05-15T12:40:51+09:00",
+  "updated_at": "2026-05-15T17:52:00+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 310,
+  "count": 312,
   "articles": [
+    {
+      "date": "2026-05-15",
+      "title": "박민식이 지운 백선엽 친일 흔적, 두 동생도 만행 가득",
+      "url": "https://newtamsa.org/news/05R8tL",
+      "category": "역사탐사",
+      "tags": [
+        "박민식",
+        "백선엽",
+        "친일",
+        "국립대전현충원",
+        "국가보훈부",
+        "백인엽",
+        "백희엽",
+        "페니실린",
+        "성찬호"
+      ],
+      "author": "배기성, 김은도, 김시몬, 강진구"
+    },
+    {
+      "date": "2026-05-15",
+      "title": "수의계약 몰아준 매체, 선거때 단체장 방어막",
+      "url": "https://newtamsa.org/news/-hjUYK",
+      "category": "미디어비평",
+      "tags": [
+        "영광군",
+        "영광신문",
+        "어바웃영광",
+        "신창선",
+        "장세일",
+        "영광함평장성인터넷뉴스",
+        "수의계약"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-05-14",
       "title": "코스피 폭락은 블룸버그 영문 송고보다 빨랐다",
