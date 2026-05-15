@@ -89,10 +89,13 @@ function renderScheduleFull() {
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
-// 광주광역시·전라남도는 시도지사 선거에서만 '전남광주통합특별시' 하나로 통합됨
+// 광주광역시·전라남도 일부 후보 데이터는 API에서 '전남광주통합특별시'로 반환됨.
+// 선거구 코드와 대조해 시도의원은 실제 시도로 되돌리고, 단일 통합 선거는 alias로 양쪽 페이지에 노출한다.
+const JOINT_SIDO = '전남광주통합특별시';
+const JOINT_SIDO_MEMBERS = ['광주광역시', '전라남도'];
 const SIDO_ALIASES = {
-  '광주광역시': '전남광주통합특별시',
-  '전라남도': '전남광주통합특별시',
+  '광주광역시': JOINT_SIDO,
+  '전라남도': JOINT_SIDO,
 };
 
 // 행정안전부 표준 시도 정렬 순서 (서울 → 광역시 → 도 → 제주)
@@ -125,7 +128,7 @@ const SECTIONS = [
   { id: 'head',     sgTypecode: '4',  title: '기초단체장',     card: true, detail: { layout: 'grid', groupBy: c => c.sggName || c.wiwName } },
   { id: 'sidoMp',   sgTypecode: '5',  title: '시도의원',       card: true, detail: { layout: 'collapsible', groupBy: c => c.sggName || c.wiwName || '(미지정)' } },
   { id: 'wiwMp',    sgTypecode: '6',  title: '구시군의회의원', card: true, detail: { layout: 'collapsible', groupBy: c => c.sggName || c.wiwName || '(미지정)' } },
-  { id: 'educator', sgTypecode: '11', title: '교육감',         card: true, detail: { layout: 'single' } },
+  { id: 'educator', sgTypecode: '11', title: '교육감',         useAlias: true, card: true, detail: { layout: 'single' } },
 ];
 
 // 행정구조상 선거 자체가 없는 경우의 컨텍스트 메시지.
@@ -141,7 +144,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, changelog: null, timeseries: null, history: null, historyTurnout: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -157,6 +160,29 @@ function dedupeByHuboid(list) {
     out.push(c);
   }
   return out;
+}
+
+function jointConstituencyKey(item) {
+  return `${item.sgTypecode}|${item.sggName}`;
+}
+
+function buildJointConstituencySdMap(constituencies) {
+  const out = {};
+  for (const s of constituencies || []) {
+    if (JOINT_SIDO_MEMBERS.includes(s.sdName) || s.sggName === JOINT_SIDO) {
+      out[jointConstituencyKey(s)] = s.sdName;
+    }
+  }
+  return out;
+}
+
+function normalizeCandidateRegions(candidates, constituencies) {
+  const jointMap = buildJointConstituencySdMap(constituencies);
+  return candidates.map(c => {
+    if (c.sdName !== JOINT_SIDO || c.sggName === JOINT_SIDO) return c;
+    const sdName = jointMap[jointConstituencyKey(c)];
+    return sdName ? { ...c, sdName, sourceSdName: c.sdName } : c;
+  });
 }
 
 // 시도·정당 약칭 사전 (시트 태그가 줄임말로 적힌 케이스 매칭용)
@@ -343,7 +369,7 @@ const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
 
 // 라우팅용: 통합특별시는 광주/전남 중 광주로 진입 (alias 매핑이 양쪽 수용)
-const sidoFor = obj => obj.sdName === '전남광주통합특별시' || obj.sd === '전남광주통합특별시'
+const sidoFor = obj => obj.sdName === JOINT_SIDO || obj.sd === JOINT_SIDO
   ? '광주광역시'
   : (obj.sdName || obj.sd);
 
@@ -366,13 +392,18 @@ function formatRegionLabel(item) {
   const sgg = item.sggName || item.sgg || '';
   if (!sgg || sgg === sd) return sd || sgg;
   const sdShort = (SIDO_TAGS[sd] || [sd])[0] || sd;
-  // 통합특별시 같은 특수 케이스는 그냥 sd 표시
-  if (sd === '전남광주통합특별시') return sgg;
+  // 통합특별시 같은 특수 케이스는 합쳐진 이름 그대로 표시
+  if (sd === JOINT_SIDO || sgg === JOINT_SIDO) return sgg || sd;
   return `${sdShort} ${sgg}`;
 }
 
 // 경쟁률(후보 수 / 의석 수) 계산. SECTIONS의 sgTypecode만 대상.
-const seatKey = c => `${c.sgTypecode}|${c.sdName}|${c.sggName}`;
+const seatKey = c => {
+  const sdName = c.sdName === JOINT_SIDO
+    ? (state.jointConstituencySdMap[jointConstituencyKey(c)] || c.sdName)
+    : c.sdName;
+  return `${c.sgTypecode}|${sdName}|${c.sggName}`;
+};
 
 // 의석수 인덱스 + 선거구별 후보 수. 경쟁률·무투표 두 박스에서 공유.
 // 사퇴·등록무효·사망은 '활성 후보'에서 제외(실질 경쟁률 정확도).
@@ -411,7 +442,7 @@ function buildCompetitionRanking() {
 }
 
 // 이대로 가면 무투표 당선될 가능성이 있는 곳 (정원 = 후보 수).
-// 정원 > 후보(미달)·0명도 함께 수집 — 사용자는 박스 안에서 카테고리별로 본다.
+// 일부 미달(1명 이상·정원 미만)·0명도 함께 수집 — 사용자는 박스 안에서 카테고리별로 본다.
 function buildUncontestedList() {
   const stats = buildSeatStats();
   if (!stats) return { tied: [], short: [], zero: [] };
@@ -1291,8 +1322,8 @@ function renderHome() {
   const countBy = sgType => activeCands.filter(c => String(c.sgTypecode) === sgType).length;
   const totalParties = new Set(activeCands.map(c => c.jdName)).size;
 
-  // 시도 목록 (sdName 기준, '전국' 제외)
-  const sidos = Array.from(new Set(cands.map(c => c.sdName).filter(s => s && s !== '전국'))).sort(sidoSort);
+  // 시도 목록 (sdName 기준, '전국'·통합 alias 제외)
+  const sidos = Array.from(new Set(cands.map(c => c.sdName).filter(s => s && s !== '전국' && s !== JOINT_SIDO))).sort(sidoSort);
 
   const nomActive = state.nominations
     && state.source !== 'candidates'
@@ -1328,7 +1359,7 @@ function renderHome() {
         <a class="summary-card" href="#uncontested">
           <span class="summary-card-label">경쟁 없는 선거구</span>
           <span class="summary-card-value"><strong>${ucTotal.toLocaleString()}</strong>곳</span>
-          <span class="summary-card-sub">단독 ${uc.tied.length} · 미달 ${uc.short.length} · 0명 ${uc.zero.length} · 모두 보기 →</span>
+          <span class="summary-card-sub">단독 ${uc.tied.length} · 일부 미달 ${uc.short.length} · 0명 ${uc.zero.length} · 모두 보기 →</span>
         </a>` : ''}
     </div>` : '';
 
@@ -1530,7 +1561,7 @@ function renderUncontestedFull(category) {
   const uc = buildUncontestedList();
   const cats = [
     { key: 'tied',  label: '단독 출마·정원 충원 (후보 수 = 정원)',  items: uc.tied,  cls: 'tied' },
-    { key: 'short', label: '정원 미달 (후보 수 < 정원)',          items: uc.short, cls: 'short' },
+    { key: 'short', label: '정원 일부 미달 (1명 이상·후보 수 < 정원)', items: uc.short, cls: 'short' },
     { key: 'zero',  label: '후보 0명',                            items: uc.zero,  cls: 'zero' },
   ];
   const filtered = category ? cats.filter(c => c.key === category) : cats;
@@ -1603,9 +1634,9 @@ const candidatesFilter = { sd: new Set(), sg: new Set(), jd: new Set(), st: new 
 
 function buildFacets() {
   const cs = state.data.candidates;
-  // 통합특별시는 시도지사 선거에서만 사용되는 가상 시도 — 광주·전남으로 흡수해 17개로 일관성 유지.
+  // 통합특별시는 API 보정용 가상 시도 — 광주·전남으로 흡수해 17개로 일관성 유지.
   const sds = Array.from(new Set(cs.map(c => c.sdName)
-    .filter(s => s && s !== '전국' && s !== '전남광주통합특별시'))).sort(sidoSort);
+    .filter(s => s && s !== '전국' && s !== JOINT_SIDO))).sort(sidoSort);
   const sgs = SECTIONS.map(s => ({ code: s.sgTypecode, title: s.title }));
   // 정당: 등장 빈도 내림차순
   const partyCount = {};
@@ -1624,7 +1655,7 @@ function applyCandidatesFilter() {
     ? new Set([
         ...candidatesFilter.sd,
         ...(candidatesFilter.sd.has('광주광역시') || candidatesFilter.sd.has('전라남도')
-            ? ['전남광주통합특별시'] : []),
+            ? [JOINT_SIDO] : []),
       ])
     : null;
   return state.data.candidates.filter(c => {
@@ -1644,8 +1675,8 @@ function renderCandidatesFull() {
     `<button type="button" class="filter-chip${active ? ' active' : ''}" data-kind="${kind}" data-key="${encodeURIComponent(key)}">${label}<small>${count.toLocaleString()}</small></button>`;
 
   const sdChips = facets.sds.map(sd => {
-    // 광주·전남 칩은 통합특별시(시도지사) 후보까지 카운트에 포함
-    const extra = (sd === '광주광역시' || sd === '전라남도') ? '전남광주통합특별시' : null;
+    // 광주·전남 칩은 통합특별시 단일 선거 후보까지 카운트에 포함
+    const extra = (sd === '광주광역시' || sd === '전라남도') ? JOINT_SIDO : null;
     const n = state.data.candidates.filter(c => c.sdName === sd || c.sdName === extra).length;
     return chip('sd', sd, sd, n, candidatesFilter.sd.has(sd));
   }).join('');
@@ -1831,15 +1862,17 @@ async function main() {
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
       loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(),
     ]);
-    // 로딩 시점에 단 한 번 dedup. 이후 모든 화면은 깨끗한 데이터를 본다.
-    state.data = { ...data, candidates: dedupeByHuboid(data.candidates) };
+    state.constituencies = constituencies;
+    state.jointConstituencySdMap = buildJointConstituencySdMap(constituencies);
+    // 로딩 시점에 단 한 번 dedup + 지역 보정. 이후 모든 화면은 깨끗한 데이터를 본다.
+    const candidates = normalizeCandidateRegions(dedupeByHuboid(data.candidates), constituencies);
+    state.data = { ...data, candidates };
     state.parties = parties;
     state.nominations = nominations;
     state.dateStr = dateStr;
     state.source = source;
     state.articles = articles;
     state.articleMap = buildArticleMap(articles?.articles, state.data.candidates);
-    state.constituencies = constituencies;
     state.changelog = changelog;
     state.timeseries = timeseries;
     state.history = history;
