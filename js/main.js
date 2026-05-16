@@ -658,7 +658,17 @@ function formatRegdate(s) {
   return s && s.length >= 8 ? `${s.slice(0,4)}.${s.slice(4,6)}.${s.slice(6,8)}` : '';
 }
 function moneyDisclosure(value) {
-  return value ? `${value}천원` : '';
+  const thousandKrw = parseDisclosureNumber(value);
+  if (thousandKrw == null) return '';
+  if (thousandKrw === 0) return '0원';
+  const abs = Math.abs(thousandKrw);
+  if (abs >= 100000) return formatEok(thousandKrw);
+  if (abs >= 10) {
+    const manwon = thousandKrw / 10;
+    const digits = Number.isInteger(manwon) || Math.abs(manwon) >= 100 ? 0 : 1;
+    return `${manwon.toLocaleString('ko-KR', { maximumFractionDigits: digits })}만원`;
+  }
+  return `${(thousandKrw * 1000).toLocaleString('ko-KR')}원`;
 }
 
 function canShowCriminalScanLinks(now = new Date()) {
@@ -719,7 +729,7 @@ async function openCandidateModal(huboid) {
     ['병역',   disclosures.military || ''],
     ['납부액', moneyDisclosure(disclosures.tax_paid_thousand_krw)],
     ['체납',   disclosures.tax_arrears_5y_thousand_krw || disclosures.tax_arrears_current_thousand_krw
-      ? `최근 5년 ${moneyDisclosure(disclosures.tax_arrears_5y_thousand_krw) || '0천원'} · 현재 ${moneyDisclosure(disclosures.tax_arrears_current_thousand_krw) || '0천원'}`
+      ? `최근 5년 ${moneyDisclosure(disclosures.tax_arrears_5y_thousand_krw) || '0원'} · 현재 ${moneyDisclosure(disclosures.tax_arrears_current_thousand_krw) || '0원'}`
       : ''],
     ['전과',   disclosures.criminal_record || ''],
     ['입후보', disclosures.candidacy_count || ''],
