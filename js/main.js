@@ -698,7 +698,6 @@ const CRIME_CATEGORY_META = {
   '절도': { group: '공직 검증', tone: 'priority', order: 28 },
   '조세': { group: '공직 검증', tone: 'priority', order: 29 },
   '보조금': { group: '공직 검증', tone: 'priority', order: 30 },
-  '마약': { group: '마약류', tone: 'standard', order: 31 },
   '폭력': { group: '폭력·질서', tone: 'standard', order: 40 },
   '공무집행방해': { group: '폭력·질서', tone: 'standard', order: 41 },
   '업무방해': { group: '폭력·질서', tone: 'standard', order: 42 },
@@ -726,7 +725,8 @@ const CRIME_CATEGORY_META = {
   '명예훼손': { group: '기타', tone: 'standard', order: 100 },
   '모욕': { group: '기타', tone: 'standard', order: 101 },
   '저작권법': { group: '기타', tone: 'standard', order: 102 },
-  '도박': { group: '기타', tone: 'standard', order: 103 },
+  '마약': { group: '기타', tone: 'standard', order: 103 },
+  '도박': { group: '기타', tone: 'standard', order: 104 },
 };
 
 function crimeCategoryMeta(category) {
@@ -2943,7 +2943,6 @@ function criminalCategoryChipsHtml(currentCategory = '') {
   if (!items.length) return '';
   const groups = [
     { group: '공직 검증', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 허위공문서·문서위조, 성범죄, 음주·위험운전 등' },
-    { group: '마약류', note: '마약류관리법·대마·향정 등 마약류 관련 법규 위반' },
     { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
     { group: '교통·안전 법규', note: '일반 교통사고·도로교통·자동차 관련 법규 위반' },
     { group: '경제·금융 법규', note: '보험·대부·수표·전자금융 등 경제거래 관련 법규 위반' },
@@ -2951,7 +2950,7 @@ function criminalCategoryChipsHtml(currentCategory = '') {
     { group: '공직·행정 법규', note: '국가공무원법·지방공무원법 등 행정·공직 관련 법규 위반' },
     { group: '시국·안보 관련', note: '국가보안법은 시대·사건 맥락 확인 필요' },
     { group: '집회·시위 관련', note: '집시법 등 집회·시위 관련 법규 위반' },
-    { group: '기타', note: '' },
+    { group: '기타', note: '명예훼손·모욕·저작권·마약·도박 등' },
   ].map(def => ({ ...def, items: items.filter(item => crimeCategoryMeta(item.category).group === def.group) }))
     .filter(def => def.items.length);
 
@@ -2979,7 +2978,7 @@ function criminalOcrOverviewHtml() {
         ${crimeAuditLeadersHtml(rows)}
         ${chips}
       </div>
-      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시하고, 일반 교통사고·보험/금융 법규·마약류는 공직 검증 묶음과 분리했습니다. 정당·직책·지역 구성은 공직 검증 유형 후보 안에서의 비중입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
+      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시하고, 일반 교통사고·보험/금융 법규 등은 공직 검증 묶음과 분리했습니다. 정당·직책·지역 구성은 공직 검증 유형 후보 안에서의 비중입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
     </section>`;
 }
 

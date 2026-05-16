@@ -1,8 +1,8 @@
 {
   "meta": {
-    "generated_at": "2026-05-16T23:01:12.845732+00:00",
+    "generated_at": "2026-05-16T23:10:15.379031+00:00",
     "engine": "tesseract",
-    "classification_version": 11,
+    "classification_version": 12,
     "processed": 2627,
     "failures": 0,
     "selected_candidates": 2627,
@@ -121,13 +121,6 @@
       "group": "공직 검증",
       "tone": "priority",
       "order": 30
-    },
-    {
-      "category": "마약",
-      "count": 2,
-      "group": "마약류",
-      "tone": "standard",
-      "order": 31
     },
     {
       "category": "폭력",
@@ -319,11 +312,18 @@
       "order": 102
     },
     {
+      "category": "마약",
+      "count": 2,
+      "group": "기타",
+      "tone": "standard",
+      "order": 103
+    },
+    {
       "category": "도박",
       "count": 33,
       "group": "기타",
       "tone": "standard",
-      "order": 103
+      "order": 104
     }
   ],
   "offense_categories": [
@@ -438,13 +438,6 @@
       "group": "공직 검증",
       "tone": "priority",
       "order": 30
-    },
-    {
-      "category": "마약",
-      "count": 1,
-      "group": "마약류",
-      "tone": "standard",
-      "order": 31
     },
     {
       "category": "폭력",
@@ -636,11 +629,18 @@
       "order": 102
     },
     {
+      "category": "마약",
+      "count": 1,
+      "group": "기타",
+      "tone": "standard",
+      "order": 103
+    },
+    {
       "category": "도박",
       "count": 25,
       "group": "기타",
       "tone": "standard",
-      "order": 103
+      "order": 104
     }
   ],
   "records": [

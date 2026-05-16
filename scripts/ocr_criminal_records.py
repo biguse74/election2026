@@ -30,7 +30,7 @@ DETAILS_FILE = ROOT / "data" / "candidate_details.json"
 CANDIDATE_DIR = ROOT / "data" / "candidates" / "20260603"
 OUT_FILE = ROOT / "data" / "criminal_ocr.json"
 CACHE_DIR = ROOT / "data" / ".criminal_ocr_cache"
-CLASSIFICATION_VERSION = 11
+CLASSIFICATION_VERSION = 12
 PDF_HEADERS = {
     "User-Agent": "newtamsa-election2026/1.0 (+https://github.com/biguse74/election2026)",
     "Referer": "https://info.nec.go.kr/",
@@ -125,7 +125,6 @@ CATEGORY_META = {
     "절도": {"group": "공직 검증", "tone": "priority", "order": 28},
     "조세": {"group": "공직 검증", "tone": "priority", "order": 29},
     "보조금": {"group": "공직 검증", "tone": "priority", "order": 30},
-    "마약": {"group": "마약류", "tone": "standard", "order": 31},
     "폭력": {"group": "폭력·질서", "tone": "standard", "order": 40},
     "공무집행방해": {"group": "폭력·질서", "tone": "standard", "order": 41},
     "업무방해": {"group": "폭력·질서", "tone": "standard", "order": 42},
@@ -153,7 +152,8 @@ CATEGORY_META = {
     "명예훼손": {"group": "기타", "tone": "standard", "order": 100},
     "모욕": {"group": "기타", "tone": "standard", "order": 101},
     "저작권법": {"group": "기타", "tone": "standard", "order": 102},
-    "도박": {"group": "기타", "tone": "standard", "order": 103},
+    "마약": {"group": "기타", "tone": "standard", "order": 103},
+    "도박": {"group": "기타", "tone": "standard", "order": 104},
 }
 
 WIN_OCR_SCRIPT = r"""
