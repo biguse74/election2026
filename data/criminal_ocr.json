@@ -1,10 +1,10 @@
 {
   "meta": {
-    "generated_at": "2026-05-16T22:17:53.194009+00:00",
+    "generated_at": "2026-05-16T22:21:04.326404+00:00",
     "engine": "tesseract",
     "classification_version": 8,
-    "processed": 2622,
-    "failures": 5,
+    "processed": 2624,
+    "failures": 3,
     "selected_candidates": 2627,
     "total_candidates_with_criminal_pdf": 2627,
     "partial": true
@@ -110,7 +110,7 @@
     },
     {
       "category": "절도",
-      "count": 13,
+      "count": 14,
       "group": "공직 검증 중점",
       "tone": "priority",
       "order": 28
@@ -131,14 +131,14 @@
     },
     {
       "category": "폭력",
-      "count": 450,
+      "count": 451,
       "group": "폭력·질서",
       "tone": "standard",
       "order": 40
     },
     {
       "category": "공무집행방해",
-      "count": 169,
+      "count": 170,
       "group": "폭력·질서",
       "tone": "standard",
       "order": 41
@@ -194,7 +194,7 @@
     },
     {
       "category": "도로교통",
-      "count": 1203,
+      "count": 1204,
       "group": "교통·안전 법규",
       "tone": "standard",
       "order": 51
@@ -504,7 +504,7 @@
     },
     {
       "category": "도로교통",
-      "count": 903,
+      "count": 904,
       "group": "교통·안전 법규",
       "tone": "standard",
       "order": 51
@@ -72807,6 +72807,40 @@
       ]
     },
     {
+      "huboid": "100161542",
+      "name": "원정식",
+      "party": "국민의힘",
+      "sdName": "인천광역시",
+      "sggName": "검단구제1선거구",
+      "wiwName": "검단구",
+      "criminal_record": "1건",
+      "categories": [
+        "절도"
+      ],
+      "matched_terms": {
+        "절도": [
+          "절도"
+        ]
+      },
+      "offenses": [
+        {
+          "date": "2002-03-04",
+          "offense": "|ied—||||||ㅣ",
+          "sentence": "",
+          "categories": [],
+          "matched_terms": {},
+          "raw": "|ied—||||||ㅣ"
+        }
+      ],
+      "offense_text": "형량(처분결과)처분일자드수절도|벌금3,000,000원|2002/03/04|ied—||||||ㅣ",
+      "ocr_text": "|                    전과기록증명에 관한 제출서                    |\nhe      ee\n| 인천광역시의회의원        eal     seen\nAA 명       서거     선기구명 ㅣ 4에5선거구 [은 의.\n|   소속정당명 국민의힘  | 후보자성명   원정식 |\n               전 과 기록               | ㆍ\ni        000\n죄 명       형량(처분결과)       처분일자\n드수절도                |           벌금3,000,000원           |               2002/03/04               |\nied   — |         |\n|             |\n|                                      |\nㅣ 첨부서류 : 범죄경력조회 희보서 1부.                                 |\n|                         갑딘극게 |          /션영보\n20264 6월 3일 싶시하는 인천광역시의회의원선거@#구*\\5선거구)에서 [공직선 | oe Hea\nAled bay\n거범] AZAR 따라 전과기록에 관한 증명서를 위와 같이 제출합니다. |     @\n|                     2026년 4 월  2일       |\n|                                fay\n             위 예비후보자 원정식 Gays)\n|                                Bo\n|                                      |\n| 검단구선거관리위원회 귀중                     |\n|                                      |\ni",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100161542",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg2814/Hb100161542/junkwa/20260516132152098_7.PDF"
+      ]
+    },
+    {
       "huboid": "100161544",
       "name": "황인홍",
       "party": "더불어민주당",
@@ -73992,6 +74026,54 @@
       "pdf_count": 1,
       "pdf_urls": [
         "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4803/Hb100161649/junkwa/20260403172111310_1.PDF"
+      ]
+    },
+    {
+      "huboid": "100161656",
+      "name": "이익선",
+      "party": "국민의힘",
+      "sdName": "경기도",
+      "sggName": "파주시마선거구",
+      "wiwName": "파주시",
+      "criminal_record": "1건",
+      "categories": [
+        "폭력",
+        "공무집행방해",
+        "도로교통"
+      ],
+      "matched_terms": {
+        "폭력": [
+          "폭력행위"
+        ],
+        "공무집행방해": [
+          "공무집행방해"
+        ],
+        "도로교통": [
+          "도로교통법"
+        ]
+      },
+      "offenses": [
+        {
+          "date": "2003-03-11",
+          "offense": "도로교통법위반(음주측정거부」ㅣ",
+          "sentence": "",
+          "categories": [
+            "도로교통"
+          ],
+          "matched_terms": {
+            "도로교통": [
+              "도로교통법"
+            ]
+          },
+          "raw": "도로교통법위반(음주측정거부」ㅣ"
+        }
+      ],
+      "offense_text": "aaa11처분일자ee2공무집행방해||폭력행위등처벌에관한법률위반|벌금3.000,000원|2003.03.11.도로교통법위반(음주측정거부」ㅣ",
+      "ocr_text": "[규칙 별지 제12호서식의에]\n전과기록중명에 관한 제출서\n선 거 명      . 파주시의회의원선거 ㅣ 선거구명 ㅣ 파주시마선거구\n소속정당명 ㅣ 국민의힘 후보자성명 ： 이익선\n전 과 기 록\n죄 명         aaa 11      처분일자\n      ee    2\n공무집행방해    |          |\n폭력행위등처벌에관한법률위반 |  벌금 3.000,000원  |     2003.03.11.\n도로교통법위반(음주측정거부  」ㅣ\n첨부서류 : 범죄경력조회 By 1부.\n2026년 6월 3일 실시하는 과주시의회의원선거에서 [공직선거법 제60조의2\n제2항에 따라 전과기록에 관한 증명서를 위와 같이 제출합니다.\n2026년 04 월 03 일\n위 예비후보자     이익선 (BE\nBE\n파주시선거관리위원회 AS\n주: 1. 지방자치단체의 장선거에서는 \"선거구명\"란은 작성하지 아니합니다.\n2. 첨부하는 범죄경력조회 회보서는 \"공직선거후보자용\"으로 발급된 회보서를 제출하여야 합니다.\n3. 전과기록은 선거기간개시일 전 150일 이후에 발급받은 범죄경력조회 회보서에 의하여 작성\n하여야 합니다.",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100161656",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4132/Hb100161656/junkwa/20260516095401155_9.PDF"
       ]
     },
     {
@@ -112059,14 +112141,6 @@
     }
   ],
   "failures": [
-    {
-      "huboid": "100161542",
-      "error": "<urlopen error timed out>"
-    },
-    {
-      "huboid": "100161656",
-      "error": "<urlopen error timed out>"
-    },
     {
       "huboid": "100162133",
       "error": "<urlopen error timed out>"
