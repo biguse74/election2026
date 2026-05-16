@@ -30,7 +30,7 @@ DETAILS_FILE = ROOT / "data" / "candidate_details.json"
 CANDIDATE_DIR = ROOT / "data" / "candidates" / "20260603"
 OUT_FILE = ROOT / "data" / "criminal_ocr.json"
 CACHE_DIR = ROOT / "data" / ".criminal_ocr_cache"
-CLASSIFICATION_VERSION = 5
+CLASSIFICATION_VERSION = 6
 PDF_HEADERS = {
     "User-Agent": "newtamsa-election2026/1.0 (+https://github.com/biguse74/election2026)",
     "Referer": "https://info.nec.go.kr/",
@@ -76,7 +76,20 @@ CRIME_KEYWORDS = {
     "교육·청소년": ["영유아보육법", "청소년보호법", "학원의설립", "과외교습"],
     "노동": ["근로기준법", "고용보험법"],
     "농수산": ["농수산물의원산지표시", "원산지표시"],
-    "건축·부동산": ["건축법", "부동산", "농지법", "산지관리", "국토의계획", "개발제한구역", "건설산업기본법", "소방시설공사업법"],
+    "건축·건설·부동산": [
+        "건축법",
+        "건축위반법",
+        "부동산",
+        "농지법",
+        "산지관리",
+        "국토의계획",
+        "개발제한구역",
+        "건설업법",
+        "건설산업기본법",
+        "건설기계관리법",
+        "주택건설촉진법",
+        "소방시설공사업법",
+    ],
     "총포·화약": ["총포", "도검", "화약류"],
     "야생생물": ["야생생물보호"],
     "저작권법": ["저작권법"],
@@ -128,7 +141,7 @@ CATEGORY_META = {
     "교육·청소년": {"group": "생활·안전 법규", "tone": "standard", "order": 72},
     "노동": {"group": "생활·안전 법규", "tone": "standard", "order": 73},
     "농수산": {"group": "생활·안전 법규", "tone": "standard", "order": 74},
-    "건축·부동산": {"group": "생활·안전 법규", "tone": "standard", "order": 75},
+    "건축·건설·부동산": {"group": "생활·안전 법규", "tone": "standard", "order": 75},
     "총포·화약": {"group": "생활·안전 법규", "tone": "standard", "order": 76},
     "야생생물": {"group": "생활·안전 법규", "tone": "standard", "order": 77},
     "국가공무원법": {"group": "공직·행정 법규", "tone": "standard", "order": 80},

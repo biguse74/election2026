@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170345', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170650', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -721,7 +721,7 @@ const CRIME_CATEGORY_META = {
   '교육·청소년': { group: '생활·안전 법규', tone: 'standard', order: 72 },
   '노동': { group: '생활·안전 법규', tone: 'standard', order: 73 },
   '농수산': { group: '생활·안전 법규', tone: 'standard', order: 74 },
-  '건축·부동산': { group: '생활·안전 법규', tone: 'standard', order: 75 },
+  '건축·건설·부동산': { group: '생활·안전 법규', tone: 'standard', order: 75 },
   '총포·화약': { group: '생활·안전 법규', tone: 'standard', order: 76 },
   '야생생물': { group: '생활·안전 법규', tone: 'standard', order: 77 },
   '국가공무원법': { group: '공직·행정 법규', tone: 'standard', order: 80 },
@@ -2657,7 +2657,7 @@ function criminalCategoryChipsHtml(currentCategory = '') {
     { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
     { group: '교통·안전 법규', note: '일반 교통사고·도로교통·자동차 관련 법규 위반' },
     { group: '경제·금융 법규', note: '보험·대부·수표·전자금융 등 경제거래 관련 법규 위반' },
-    { group: '생활·안전 법규', note: '환경·식품·건축 관련 법규 위반' },
+    { group: '생활·안전 법규', note: '환경·식품·건축·건설 관련 법규 위반' },
     { group: '공직·행정 법규', note: '국가공무원법 등 행정·공직 관련 법규 위반' },
     { group: '시국·안보 관련', note: '국가보안법은 시대·사건 맥락 확인 필요' },
     { group: '집회·시위 관련', note: '집시법 등 집회·시위 관련 법규 위반' },
@@ -2778,7 +2778,7 @@ function renderCriminalCategoryFull(category) {
         <span>${groups.length.toLocaleString()}개 시도</span>
       </div>
     </div>
-    <p class="page-intro">전과 PDF의 죄명 영역에서 ${escapeHtml(categoryLabel || '선택한 유형')} 관련 표현이 확인된 후보입니다. 기계 판독 결과라 오분류 가능성이 있고, 법적·보도 판단에는 반드시 선관위 후보자 상세 페이지에서 원문 확인이 필요합니다.</p>
+    <p class="page-intro">전과 PDF의 죄명 영역에서 ${escapeHtml(categoryLabel || '선택한 유형')} 관련 표현이 확인된 후보입니다. 인용·보도 시에는 선관위 후보자 상세 페이지의 원문을 함께 확인해 주세요.</p>
     ${allChips}
     ${auditPanel}
     ${bodyHtml}`;
