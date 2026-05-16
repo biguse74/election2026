@@ -496,6 +496,73 @@ footer a:hover { text-decoration: underline; }
   display: block; font-family: var(--sans); font-weight: 400;
   font-size: 0.68rem; color: var(--ink-sub);
 }
+.candidate-leader-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.2rem; margin-bottom: 1.1rem;
+}
+.candidate-leader-card { min-width: 0; }
+.candidate-rank-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: 0.35rem;
+}
+.candidate-rank-item {
+  display: grid; grid-template-columns: 28px minmax(82px, 0.8fr) auto minmax(120px, 1fr) auto;
+  align-items: center; gap: 0.55rem;
+  padding: 0.55rem 0; border-bottom: 1px solid var(--rule);
+}
+.candidate-rank-item:last-child { border-bottom: none; }
+.candidate-rank-no {
+  font-family: var(--serif); font-weight: 900; color: var(--accent);
+  text-align: center; font-size: 0.95rem;
+}
+.candidate-rank-name {
+  min-width: 0; border: none; background: none; padding: 0;
+  font-family: var(--serif); font-weight: 800; font-size: 0.98rem;
+  color: var(--ink); text-align: left; cursor: pointer;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.candidate-rank-name:hover { color: var(--accent); }
+.candidate-rank-party {
+  max-width: 86px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  border-left: 4px solid var(--rule); padding-left: 0.45rem;
+  color: var(--ink-sub); font-size: 0.76rem;
+}
+.candidate-rank-context {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: var(--ink-sub); font-size: 0.76rem;
+}
+.candidate-rank-value {
+  font-family: var(--serif); font-weight: 900; font-size: 0.95rem;
+  color: var(--ink); text-align: right; white-space: nowrap;
+}
+.region-rank-heading { margin-top: 0.6rem; }
+.region-rank-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 0.6rem;
+}
+.region-rank {
+  border: 1px solid var(--rule); background: var(--bg);
+}
+.region-rank summary {
+  cursor: pointer; padding: 0.7rem 0.9rem;
+  font-family: var(--serif); font-weight: 800; color: var(--ink);
+}
+.region-rank summary span {
+  font-family: var(--sans); font-weight: 400; color: var(--ink-sub);
+  font-size: 0.74rem; margin-left: 0.35rem;
+}
+.region-rank-body {
+  display: grid; grid-template-columns: 1fr; gap: 0.75rem;
+  padding: 0.85rem 0.9rem 0.95rem; border-top: 1px solid var(--rule);
+}
+.rank-subtitle {
+  font-family: var(--serif); font-size: 0.9rem; margin: 0 0 0.35rem;
+}
+.region-rank .candidate-rank-item {
+  grid-template-columns: 24px minmax(76px, 0.9fr) auto minmax(70px, 1fr) auto;
+  gap: 0.42rem; padding: 0.42rem 0;
+}
+.region-rank .candidate-rank-context { font-size: 0.7rem; }
 .competition-overview {
   display: grid; grid-template-columns: minmax(220px, 0.7fr) 2fr;
   gap: 1.2rem; align-items: start;
@@ -1049,12 +1116,24 @@ body.modal-open { overflow: hidden; }
   .cl-list { grid-template-columns: 1fr; }
   .disclosure-overview,
   .metric-grid,
+  .candidate-leader-grid,
   .competition-overview { grid-template-columns: 1fr; }
   .disclosure-card { border-right: none; border-bottom: 1px solid var(--rule); }
   .disclosure-card:last-child { border-bottom: none; }
   .metric-bar { grid-template-columns: 100px 1fr 92px; gap: 0.5rem; }
   .metric-bar-label { font-size: 0.82rem; }
   .metric-bar-value { font-size: 0.84rem; }
+  .candidate-rank-item,
+  .region-rank .candidate-rank-item {
+    grid-template-columns: 24px minmax(76px, 1fr) auto;
+    gap: 0.4rem 0.5rem;
+  }
+  .candidate-rank-context {
+    grid-column: 2 / -1; white-space: normal; line-height: 1.35;
+  }
+  .candidate-rank-value { grid-column: 3; grid-row: 1; }
+  .candidate-rank-party { max-width: 76px; }
+  .region-rank-grid { grid-template-columns: 1fr; }
   .modal-dialog { padding: 1.25rem 1.1rem 1rem; }
   .modal-profile { grid-template-columns: 72px 1fr; gap: 0.75rem; }
   .modal-photo { width: 72px; }

@@ -1684,6 +1684,35 @@ function rankedMilitaryGroups(rows, keyFn, minEligible = 10) {
     .sort((a, b) => b.rate - a.rate || b.notServed - a.notServed);
 }
 
+function sortCandidateRows(a, b) {
+  const sdDiff = sidoSort(a.sd, b.sd);
+  if (sdDiff) return sdDiff;
+  const regionDiff = koSort(a.candidate?.sggName || '', b.candidate?.sggName || '');
+  if (regionDiff) return regionDiff;
+  return koSort(a.candidate?.name || '', b.candidate?.name || '');
+}
+
+function rankedAssetCandidates(rows, limit = 5) {
+  return rows
+    .filter(r => Number.isFinite(r.assets))
+    .sort((a, b) => b.assets - a.assets || sortCandidateRows(a, b))
+    .slice(0, limit);
+}
+
+function rankedCriminalCandidates(rows, limit = 5) {
+  return rows
+    .filter(r => r.criminal > 0)
+    .sort((a, b) => b.criminal - a.criminal || sortCandidateRows(a, b))
+    .slice(0, limit);
+}
+
+function rankedCandidateRegions(rows, rankFn, limit = 5) {
+  return Object.entries(groupDisclosureRows(rows, r => r.sd))
+    .map(([label, items]) => ({ label, items: rankFn(items, limit) }))
+    .filter(r => r.items.length)
+    .sort((a, b) => sidoSort(a.label, b.label));
+}
+
 function buildDisclosureStats() {
   const rows = disclosureRows();
   const assetRows = rows.filter(r => Number.isFinite(r.assets));
@@ -1722,6 +1751,12 @@ function buildDisclosureStats() {
       assets: rankedAssetGroups(rows, r => r.sd),
       criminal: rankedCriminalGroups(rows, r => r.sd),
       military: rankedMilitaryGroups(rows, r => r.sd),
+    },
+    leaders: {
+      assetsOverall: rankedAssetCandidates(rows, 5),
+      criminalOverall: rankedCriminalCandidates(rows, 5),
+      assetsByRegion: rankedCandidateRegions(rows, rankedAssetCandidates, 5),
+      criminalByRegion: rankedCandidateRegions(rows, rankedCriminalCandidates, 5),
     },
   };
 }
@@ -1813,9 +1848,91 @@ function militaryBars(items) {
   return shown.map(x => metricBar(x.label, x.rate, max, '#2c5d8f', formatPct(x.rate), `남성 ${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명`)).join('');
 }
 
+function candidateRankContext(c, includeRegion = true) {
+  const parts = [
+    includeRegion ? sidoFor(c) : '',
+    SG_TITLE[String(c.sgTypecode)] || '',
+    c.sggName && c.sggName !== c.sdName ? c.sggName : '',
+    c.wiwName && c.wiwName !== c.sggName ? c.wiwName : '',
+  ].filter(Boolean);
+  return [...new Set(parts)].join(' · ');
+}
+
+function candidateRankList(items, type, includeRegion = true) {
+  if (!items?.length) return '<p class="trend-meta">표시할 후보가 없습니다.</p>';
+  return `
+    <ol class="candidate-rank-list">
+      ${items.map((r, i) => {
+        const c = r.candidate || {};
+        const value = type === 'asset' ? formatEok(r.assets) : `${r.criminal.toLocaleString()}건`;
+        const context = candidateRankContext(c, includeRegion);
+        return `
+          <li class="candidate-rank-item">
+            <span class="candidate-rank-no">${i + 1}</span>
+            <button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(c.name)} 상세 정보">${escapeHtml(c.name)}</button>
+            <span class="candidate-rank-party" style="border-color:${partyColor(c.jdName)}">${escapeHtml(c.jdName || '무소속')}</span>
+            <span class="candidate-rank-context">${escapeHtml(context)}</span>
+            <strong class="candidate-rank-value">${value}</strong>
+          </li>`;
+      }).join('')}
+    </ol>`;
+}
+
+function findRegionRank(regions, label) {
+  return regions.find(r => r.label === label)?.items || [];
+}
+
+function candidateRegionRanksHtml(ds) {
+  const labels = [...new Set([
+    ...ds.leaders.assetsByRegion.map(r => r.label),
+    ...ds.leaders.criminalByRegion.map(r => r.label),
+  ])].sort(sidoSort);
+  if (!labels.length) return '';
+  return `
+    <div class="region-rank-grid">
+      ${labels.map(label => `
+        <details class="region-rank">
+          <summary>${escapeHtml(label)} <span>재산·전과 TOP 5</span></summary>
+          <div class="region-rank-body">
+            <div>
+              <h5 class="rank-subtitle">재산 1~5위</h5>
+              ${candidateRankList(findRegionRank(ds.leaders.assetsByRegion, label), 'asset', false)}
+            </div>
+            <div>
+              <h5 class="rank-subtitle">전과 1~5위</h5>
+              ${candidateRankList(findRegionRank(ds.leaders.criminalByRegion, label), 'criminal', false)}
+            </div>
+          </div>
+        </details>`).join('')}
+    </div>`;
+}
+
+function disclosureLeaderHtml(ds) {
+  if (!ds.rows.length) return '';
+  return `
+    <section class="trend-section">
+      <h3 class="trend-section-title">후보별 최다 순위 <small>전체·지역별 1~5위</small></h3>
+      <div class="candidate-leader-grid">
+        <div class="candidate-leader-card">
+          <h4 class="metric-title">전체 재산 1~5위</h4>
+          ${candidateRankList(ds.leaders.assetsOverall, 'asset', true)}
+        </div>
+        <div class="candidate-leader-card">
+          <h4 class="metric-title">전체 전과 1~5위</h4>
+          ${candidateRankList(ds.leaders.criminalOverall, 'criminal', true)}
+        </div>
+      </div>
+      <h4 class="metric-title region-rank-heading">지역별 후보 순위 <small>시도별 1~5위</small></h4>
+      ${candidateRegionRanksHtml(ds)}
+      <p class="trend-meta">재산은 선관위 재산신고액 기준, 전과는 전과기록유무(건수)의 건수 기준입니다. 후보 이름을 누르면 상세 공개정보를 볼 수 있습니다.</p>
+    </section>`;
+}
+
 function disclosureStatsHtml(ds) {
   if (!ds.rows.length) return '';
   return `
+    ${disclosureLeaderHtml(ds)}
+
     <section class="trend-section">
       <h3 class="trend-section-title">재산 통계 <small>전체·정당별·지역별</small></h3>
       <div class="metric-grid">
