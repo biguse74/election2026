@@ -155,7 +155,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: [], jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: [], jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null, criminalOcr: null, criminalOcrMap: {} };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -388,6 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605161540', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -682,6 +683,37 @@ function criminalDisclosureValue(record, files) {
   return `<a class="modal-field-link" href="${escapeHtml(firstPdf)}" target="_blank" rel="noopener" title="전과기록 원문 PDF 상세보기">${escapeHtml(text)} 상세보기</a>`;
 }
 
+function buildCriminalOcrMap(payload) {
+  return Object.fromEntries((payload?.records || [])
+    .filter(r => r?.huboid)
+    .map(r => [String(r.huboid), r]));
+}
+
+function criminalOcrRecords() {
+  return Array.isArray(state.criminalOcr?.records) ? state.criminalOcr.records : [];
+}
+
+function criminalOcrRecordFor(huboid) {
+  return state.criminalOcrMap[String(huboid || '')] || null;
+}
+
+function criminalCategoryHref(category) {
+  return `#criminal/${encodeURIComponent(category)}`;
+}
+
+function criminalOcrCategoriesHtml(record, currentCategory = '') {
+  const categories = (record?.categories || []).filter(Boolean);
+  if (!categories.length) return '';
+  return `<span class="crime-tags">${categories.map(cat => `
+    <a class="crime-tag${cat === currentCategory ? ' active' : ''}" href="${criminalCategoryHref(cat)}">${escapeHtml(cat)}</a>
+  `).join('')}</span>`;
+}
+
+function findCandidateByHuboid(huboid) {
+  const id = String(huboid || '');
+  return (state.data?.candidates || []).find(c => String(c.huboid) === id) || null;
+}
+
 async function openCandidateModal(huboid) {
   const c = state.data.candidates.find(x => x.huboid === huboid);
   if (!c) return;
@@ -716,6 +748,7 @@ async function openCandidateModal(huboid) {
     </figure>` : '';
   const allCriminalFiles = nec?.scan_files?.criminal || [];
   const criminalFiles = canShowCriminalScanLinks() ? allCriminalFiles : [];
+  const criminalOcrRecord = criminalOcrRecordFor(c.huboid);
 
   // 필드 정의: 값이 있는 것만 표시
   const fields = [
@@ -739,6 +772,7 @@ async function openCandidateModal(huboid) {
       ? `최근 5년 ${moneyDisclosure(disclosures.tax_arrears_5y_thousand_krw) || '0원'} · 현재 ${moneyDisclosure(disclosures.tax_arrears_current_thousand_krw) || '0원'}`
       : ''],
     ['전과',   criminalDisclosureValue(disclosures.criminal_record, criminalFiles)],
+    ['전과 유형', criminalOcrCategoriesHtml(criminalOcrRecord)],
     ['입후보', disclosures.candidacy_count || ''],
   ].filter(([, v]) => v);
 
@@ -2287,6 +2321,147 @@ function disclosureStatsHtml(ds) {
     </section>`;
 }
 
+function criminalOcrCategoryItems() {
+  const fromPayload = Array.isArray(state.criminalOcr?.categories)
+    ? state.criminalOcr.categories
+        .filter(item => item?.category && item.count > 0)
+        .map(item => ({ category: item.category, count: item.count }))
+    : [];
+  if (fromPayload.length) return fromPayload;
+
+  const counts = {};
+  for (const record of criminalOcrRecords()) {
+    for (const category of record.categories || []) {
+      counts[category] = (counts[category] || 0) + 1;
+    }
+  }
+  return Object.entries(counts)
+    .map(([category, count]) => ({ category, count }))
+    .sort((a, b) => b.count - a.count || koSort(a.category, b.category));
+}
+
+function criminalCategoryChipsHtml(currentCategory = '') {
+  const items = criminalOcrCategoryItems();
+  if (!items.length) return '';
+  return `<div class="crime-chip-list">${items.map(item => `
+    <a class="crime-chip${item.category === currentCategory ? ' active' : ''}" href="${criminalCategoryHref(item.category)}">
+      <strong>${escapeHtml(item.category)}</strong>
+      <span>${item.count.toLocaleString()}명</span>
+    </a>
+  `).join('')}</div>`;
+}
+
+function criminalOcrOverviewHtml() {
+  const records = criminalOcrRecords();
+  const chips = criminalCategoryChipsHtml();
+  if (!records.length || !chips) return '';
+
+  const meta = state.criminalOcr?.meta || {};
+  const processed = meta.processed || records.length;
+  const failureText = meta.failures ? ` · 실패 ${meta.failures.toLocaleString()}건` : '';
+  const partialText = meta.partial ? ' 현재 일부 PDF만 처리된 부분 색인입니다.' : '';
+  return `
+    <section class="trend-section">
+      <h3 class="trend-section-title">범죄 유형별 전과 <small>PDF OCR 기반</small></h3>
+      <div class="crime-overview">
+        <div class="crime-summary">
+          <strong>${processed.toLocaleString()}명</strong>
+          <small>전과 PDF OCR 처리${failureText}</small>
+        </div>
+        ${chips}
+      </div>
+      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 OCR로 읽어 넓은 범죄 유형으로 묶었습니다. OCR 오인식 가능성이 있으므로 후보 상세의 선관위 원문 PDF로 최종 확인하세요.${partialText}</p>
+    </section>`;
+}
+
+function criminalFallbackCandidateRow(record) {
+  return `
+    <div class="candidate">
+      <div class="candidate-color" style="background:var(--ink-sub)"></div>
+      <span class="candidate-name">${escapeHtml(record.name || record.huboid || '후보')}</span>
+      <div class="candidate-party">${escapeHtml(record.party || '정당 미상')}</div>
+      <span class="candidate-actions"></span>
+    </div>`;
+}
+
+function criminalCandidateEntry(item, category) {
+  const record = item.record;
+  const candidate = item.candidate;
+  const terms = (record.matched_terms?.[category] || []).filter(Boolean);
+  const pdfUrl = record.pdf_urls?.[0] || '';
+  const pdfLink = pdfUrl && canShowCriminalScanLinks()
+    ? `<a class="crime-source-link" href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener">원문 PDF 확인</a>`
+    : '';
+  const termText = terms.length
+    ? `OCR 감지어: ${terms.map(escapeHtml).join(', ')}`
+    : 'OCR로 죄명 영역에서 감지';
+  return `
+    <div class="crime-candidate-entry">
+      ${candidate ? candidateRow(candidate) : criminalFallbackCandidateRow(record)}
+      <div class="crime-row-detail">
+        <span>${termText}</span>
+        ${criminalOcrCategoriesHtml(record, category)}
+        ${pdfLink}
+      </div>
+    </div>`;
+}
+
+function renderCriminalCategoryFull(category) {
+  const app = document.getElementById('app');
+  app.className = '';
+  const categoryLabel = String(category || '').trim();
+  const records = criminalOcrRecords();
+  const allChips = criminalCategoryChipsHtml(categoryLabel);
+  const matches = records
+    .filter(record => (record.categories || []).includes(categoryLabel))
+    .map(record => ({ record, candidate: findCandidateByHuboid(record.huboid) }));
+
+  const byRegion = matches.reduce((acc, item) => {
+    const region = sidoFor(item.candidate || item.record) || '지역 미상';
+    (acc[region] ||= []).push(item);
+    return acc;
+  }, {});
+  const groups = Object.entries(byRegion).sort((a, b) => sidoSort(a[0], b[0]) || b[1].length - a[1].length);
+  for (const [, items] of groups) {
+    items.sort((a, b) => {
+      const aRegion = formatRegionLabel(a.candidate || a.record);
+      const bRegion = formatRegionLabel(b.candidate || b.record);
+      return koSort(aRegion, bRegion) || koSort(a.candidate?.name || a.record.name || '', b.candidate?.name || b.record.name || '');
+    });
+  }
+
+  const groupsHtml = groups.map(([region, items]) => `
+    <section class="candidate-card crime-region-card">
+      <div class="cc-header">
+        <div class="cc-name">${escapeHtml(region)}</div>
+        <div class="cc-count">${items.length.toLocaleString()}명</div>
+      </div>
+      ${items.map(item => criminalCandidateEntry(item, categoryLabel)).join('')}
+    </section>
+  `).join('');
+
+  const bodyHtml = records.length
+    ? (matches.length ? groupsHtml : `<p class="absence-note">${escapeHtml(categoryLabel)} 유형으로 분류된 후보가 아직 없습니다.</p>`)
+    : '<p class="absence-note">전과 PDF OCR 색인이 아직 생성되지 않았습니다.</p>';
+
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">범죄 유형별 전과</span></nav>
+    <div class="detail-head">
+      <div>
+        <h1 class="detail-title">${escapeHtml(categoryLabel || '범죄 유형')} 전과 후보</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(categoryLabel || '범죄 유형')} 전과 후보 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+      </div>
+      <div class="detail-inline-stats">
+        <span>${matches.length.toLocaleString()}명</span>
+        <span>${groups.length.toLocaleString()}개 시도</span>
+      </div>
+    </div>
+    <p class="page-intro">전과 PDF의 죄명 영역에서 ${escapeHtml(categoryLabel || '선택한 유형')} 관련 표현이 OCR로 감지된 후보입니다. 기계 인식 결과라 오분류 가능성이 있고, 법적·보도 판단에는 반드시 선관위 원문 PDF 확인이 필요합니다.</p>
+    ${allChips}
+    ${bodyHtml}`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 // 출마자 한눈에 페이지 (#trend) — 정당·연령·성별·직업 통계
 function renderTrendFull() {
   const app = document.getElementById('app');
@@ -2348,6 +2523,7 @@ function renderTrendFull() {
 
     ${disclosureOverviewHtml(ds)}
     ${disclosureStatsHtml(ds)}
+    ${criminalOcrOverviewHtml()}
 
     <section class="trend-section">
       <h3 class="trend-section-title">정당별 분포 <small>상위 10</small></h3>
@@ -2688,6 +2864,7 @@ function updateSidoNavActive(hash) {
 
 function route() {
   const hash = decodeURIComponent(location.hash.slice(1));
+  if (!hash.startsWith('cand/')) closeCandidateModal();
   updateSidoNavActive(hash);
   if (!hash) return renderHome();
   if (hash === 'address') {
@@ -2702,6 +2879,7 @@ function route() {
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'trend') return renderTrendFull();
+  if (hash.startsWith('criminal/')) return renderCriminalCategoryFull(hash.slice('criminal/'.length));
   if (hash.startsWith('trend/')) {
     const parts = hash.split('/');
     if (parts.length >= 3) return renderTrendLocalFull(parts[1], parts.slice(2).join('/'));
@@ -3088,9 +3266,9 @@ async function main() {
   calculateDDay();
   renderScheduleBar();
   try {
-    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, addressIndex, changelog, timeseries, history, historyTurnout, candidateDetailsPayload] = await Promise.all([
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, addressIndex, changelog, timeseries, history, historyTurnout, candidateDetailsPayload, criminalOcr] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
-      loadAddressIndex(), loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(), loadCandidateDetails(),
+      loadAddressIndex(), loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(), loadCandidateDetails(), loadCriminalOcr(),
     ]);
     state.constituencies = constituencies;
     state.addressIndex = addressIndex || [];
@@ -3108,6 +3286,8 @@ async function main() {
     state.timeseries = timeseries;
     state.history = history;
     state.historyTurnout = historyTurnout;
+    state.criminalOcr = criminalOcr;
+    state.criminalOcrMap = buildCriminalOcrMap(criminalOcr);
     if (candidateDetailsPayload) {
       state.candidateDetails = buildCandidateDetailsMap(candidateDetailsPayload);
       state.candidateDetailsMeta = candidateDetailsPayload;

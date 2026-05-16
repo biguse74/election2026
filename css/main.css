@@ -471,6 +471,57 @@ footer a:hover { text-decoration: underline; }
   display: block; color: var(--ink-sub); font-size: 0.78rem;
   line-height: 1.45; margin-top: 0.35rem;
 }
+.crime-overview {
+  display: grid; grid-template-columns: minmax(150px, 0.28fr) 1fr;
+  gap: 1rem; align-items: start;
+}
+.crime-summary {
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  padding: 0.75rem 0;
+}
+.crime-summary strong {
+  display: block; font-family: var(--serif); font-weight: 900;
+  font-size: 1.45rem; line-height: 1.05; color: var(--accent);
+}
+.crime-summary small { display: block; color: var(--ink-sub); font-size: 0.78rem; line-height: 1.45; margin-top: 0.35rem; }
+.crime-chip-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1rem; }
+.crime-chip {
+  display: inline-flex; align-items: baseline; gap: 0.45rem;
+  padding: 0.42rem 0.68rem; border: 1px solid var(--rule); border-radius: 8px;
+  background: var(--bg); color: var(--ink); text-decoration: none;
+  transition: all 0.12s ease;
+}
+.crime-chip strong { font-family: var(--serif); font-size: 0.95rem; }
+.crime-chip span { color: var(--ink-sub); font-size: 0.78rem; }
+.crime-chip:hover,
+.crime-chip.active { border-color: var(--accent); color: var(--accent); background: #fff7f7; }
+.crime-chip:hover span,
+.crime-chip.active span { color: var(--accent); }
+.crime-tags { display: inline-flex; flex-wrap: wrap; gap: 0.28rem; vertical-align: middle; }
+.crime-tag {
+  display: inline-flex; align-items: center;
+  padding: 0.12rem 0.45rem; border: 1px solid var(--rule); border-radius: 8px;
+  background: var(--bg); color: var(--ink); text-decoration: none;
+  font-size: 0.76rem; line-height: 1.4;
+}
+.crime-tag:hover,
+.crime-tag.active { border-color: var(--accent); color: var(--accent); background: #fff7f7; }
+.crime-region-card { margin-bottom: 0.85rem; }
+.crime-candidate-entry {
+  border-top: 1px solid var(--rule);
+  margin-top: 0.45rem; padding-top: 0.45rem;
+}
+.cc-header + .crime-candidate-entry { border-top: none; margin-top: 0; padding-top: 0; }
+.crime-row-detail {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.6rem;
+  margin: 0.25rem 0 0.55rem 1.05rem;
+  color: var(--ink-sub); font-size: 0.78rem; line-height: 1.45;
+}
+.crime-source-link {
+  color: var(--accent); font-weight: 700; text-decoration: none;
+  border-bottom: 1px solid rgba(196, 30, 58, 0.35);
+}
+.crime-source-link:hover { border-bottom-color: var(--accent); }
 .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
 .metric-grid-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .metric-title {
@@ -1130,6 +1181,9 @@ body.modal-open { overflow: hidden; }
   .competition-overview { grid-template-columns: 1fr; }
   .disclosure-card { border-right: none; border-bottom: 1px solid var(--rule); }
   .disclosure-card:last-child { border-bottom: none; }
+  .crime-overview { grid-template-columns: 1fr; }
+  .crime-chip-list { margin-bottom: 0.6rem; }
+  .crime-row-detail { margin-left: 0; }
   .metric-bar { grid-template-columns: 100px 1fr 92px; gap: 0.5rem; }
   .metric-bar-label { font-size: 0.82rem; }
   .metric-bar-value { font-size: 0.84rem; }
