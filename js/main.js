@@ -1798,11 +1798,18 @@ function statBar(label, count, max, color) {
     </div>`;
 }
 
-function metricBar(label, value, max, color, valueText, subText) {
+function trendRegionHref(label) {
+  return `#trend/${encodeURIComponent(label)}`;
+}
+
+function metricBar(label, value, max, color, valueText, subText, href = '') {
   const pct = max > 0 ? Math.min(100, Math.max(0, value / max * 100)) : 0;
+  const labelHtml = href
+    ? `<a class="metric-bar-label metric-bar-link" href="${href}">${escapeHtml(label)}</a>`
+    : `<div class="metric-bar-label">${escapeHtml(label)}</div>`;
   return `
     <div class="metric-bar">
-      <div class="metric-bar-label">${escapeHtml(label)}</div>
+      ${labelHtml}
       <div class="metric-bar-track"><div class="metric-bar-fill" style="width: ${pct.toFixed(1)}%; background: ${color || 'var(--accent)'}"></div></div>
       <div class="metric-bar-value">${valueText}${subText ? `<small>${subText}</small>` : ''}</div>
     </div>`;
@@ -1830,22 +1837,46 @@ function disclosureOverviewHtml(ds) {
     </div>`;
 }
 
-function assetBars(items) {
-  const shown = items.slice(0, 10);
+function assetBars(items, options = {}) {
+  const shown = items.slice(0, options.limit ?? 10);
   const max = Math.max(...shown.map(x => x.avg), 1);
-  return shown.map(x => metricBar(x.label, x.avg, max, 'var(--accent)', formatEok(x.avg), `${x.count.toLocaleString()}명`)).join('');
+  return shown.map(x => metricBar(
+    x.label,
+    x.avg,
+    max,
+    'var(--accent)',
+    formatEok(x.avg),
+    `${x.count.toLocaleString()}명`,
+    options.regionLinks ? trendRegionHref(x.label) : ''
+  )).join('');
 }
 
-function criminalBars(items) {
-  const shown = items.slice(0, 10);
+function criminalBars(items, options = {}) {
+  const shown = items.slice(0, options.limit ?? 10);
   const max = Math.max(...shown.map(x => x.rate), 1);
-  return shown.map(x => metricBar(x.label, x.rate, max, '#b25c00', oneInText(x.rate), `${x.holders.toLocaleString()}/${x.count.toLocaleString()}명 · ${formatPct(x.rate)}`)).join('');
+  return shown.map(x => metricBar(
+    x.label,
+    x.rate,
+    max,
+    '#b25c00',
+    oneInText(x.rate),
+    `${x.holders.toLocaleString()}/${x.count.toLocaleString()}명 · ${formatPct(x.rate)}`,
+    options.regionLinks ? trendRegionHref(x.label) : ''
+  )).join('');
 }
 
-function militaryBars(items) {
-  const shown = items.slice(0, 10);
+function militaryBars(items, options = {}) {
+  const shown = items.slice(0, options.limit ?? 10);
   const max = Math.max(...shown.map(x => x.rate), 1);
-  return shown.map(x => metricBar(x.label, x.rate, max, '#2c5d8f', oneInText(x.rate), `남성 ${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명 · ${formatPct(x.rate)}`)).join('');
+  return shown.map(x => metricBar(
+    x.label,
+    x.rate,
+    max,
+    '#2c5d8f',
+    oneInText(x.rate),
+    `남성 ${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명 · ${formatPct(x.rate)}`,
+    options.regionLinks ? trendRegionHref(x.label) : ''
+  )).join('');
 }
 
 function candidateRankContext(c, includeRegion = true) {
@@ -1856,6 +1887,62 @@ function candidateRankContext(c, includeRegion = true) {
     c.wiwName && c.wiwName !== c.sggName ? c.wiwName : '',
   ].filter(Boolean);
   return [...new Set(parts)].join(' · ');
+}
+
+function normalizeLocalDistrictName(name) {
+  const raw = String(name || '').trim();
+  if (!raw) return '';
+  const tokenDistrict = raw.split(/\s+/).reverse().find(token =>
+    /(시|군|구)$/.test(token) && !/(특별시|광역시|특별자치시)$/.test(token)
+  );
+  if (tokenDistrict) return tokenDistrict;
+  const numberedDistrict = raw.match(/^(.+(?:시|군|구))(?:제?\d+|[가-힣])선거구$/);
+  if (numberedDistrict) return numberedDistrict[1];
+  const plainDistrict = raw.match(/^(.+(?:시|군|구))선거구$/);
+  if (plainDistrict) return plainDistrict[1];
+  return raw;
+}
+
+function isBaseLocalDistrictName(name) {
+  return !!name && /(시|군|구)$/.test(name) && !name.includes('선거구');
+}
+
+function localDistrictName(row) {
+  const c = row?.candidate || {};
+  const sgg = normalizeLocalDistrictName(c.sggName);
+  if (isBaseLocalDistrictName(sgg) && sgg !== c.sdName && sgg !== row.sd) return sgg;
+  const wiw = normalizeLocalDistrictName(c.wiwName);
+  if (isBaseLocalDistrictName(wiw) && wiw !== c.sdName && wiw !== row.sd) return wiw;
+  return '';
+}
+
+function disclosureSummaryFromRows(rows) {
+  const assetRows = rows.filter(r => Number.isFinite(r.assets));
+  const militaryRows = rows.filter(r => r.candidate?.gender === '남');
+  const criminalHolders = rows.filter(r => r.hasCriminal).length;
+  const criminalCases = rows.reduce((sum, r) => sum + r.criminal, 0);
+  const served = militaryRows.filter(r => r.military === 'served').length;
+  const notServed = militaryRows.filter(r => r.military === 'notServed').length;
+  const nonTarget = militaryRows.filter(r => r.military === 'nonTarget').length;
+  const militaryEligible = served + notServed;
+  return {
+    rows,
+    assets: summarizeNumbers(assetRows.map(r => r.assets)),
+    criminal: {
+      count: rows.length,
+      holders: criminalHolders,
+      cases: criminalCases,
+      rate: rows.length ? criminalHolders / rows.length * 100 : 0,
+    },
+    military: {
+      count: militaryRows.length,
+      served,
+      notServed,
+      nonTarget,
+      eligible: militaryEligible,
+      notServedRate: militaryEligible ? notServed / militaryEligible * 100 : 0,
+    },
+  };
 }
 
 function candidateRankList(items, type, includeRegion = true) {
@@ -1928,6 +2015,103 @@ function disclosureLeaderHtml(ds) {
     </section>`;
 }
 
+function disclosureRegionOverviewHtml(sd, summary) {
+  return `
+    <div class="disclosure-overview">
+      <div class="disclosure-card">
+        <span class="disclosure-label">${escapeHtml(sd)} 재산</span>
+        <strong>${formatEok(summary.assets.median)}</strong>
+        <small>중앙값 · 평균 ${formatEok(summary.assets.avg)} · ${summary.assets.count.toLocaleString()}명</small>
+      </div>
+      <div class="disclosure-card">
+        <span class="disclosure-label">${escapeHtml(sd)} 전과</span>
+        <strong>${oneInText(summary.criminal.rate)}</strong>
+        <small>전과 1건 이상 ${summary.criminal.holders.toLocaleString()}명 / ${summary.criminal.count.toLocaleString()}명 (${formatPct(summary.criminal.rate)}) · 총 ${summary.criminal.cases.toLocaleString()}건</small>
+      </div>
+      <div class="disclosure-card">
+        <span class="disclosure-label">${escapeHtml(sd)} 병역</span>
+        <strong>${oneInText(summary.military.notServedRate)}</strong>
+        <small>병역 대상 남성 ${summary.military.eligible.toLocaleString()}명 중 ${summary.military.notServed.toLocaleString()}명이 미필 (${formatPct(summary.military.notServedRate)})</small>
+      </div>
+    </div>`;
+}
+
+function renderTrendRegionFull(sd) {
+  const app = document.getElementById('app');
+  app.className = '';
+  if (!state.data) {
+    app.innerHTML = '<div class="loading">불러오는 중…</div>';
+    return;
+  }
+  const ds = buildDisclosureStats();
+  const rows = ds.rows.filter(r => r.sd === sd);
+  if (!rows.length) {
+    app.innerHTML = `
+      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">${escapeHtml(sd || '지역')}</span></nav>
+      <div class="error-banner"><strong>지역 통계를 찾지 못했습니다.</strong> 다시 지역을 선택해 주세요.</div>`;
+    return;
+  }
+
+  const summary = disclosureSummaryFromRows(rows);
+  const localRows = rows.filter(localDistrictName);
+  const sggAssets = rankedAssetGroups(localRows, localDistrictName, 1);
+  const sggCriminal = rankedCriminalGroups(localRows, localDistrictName, 1);
+  const sggMilitary = rankedMilitaryGroups(localRows, localDistrictName, 1);
+  const maxLocalItems = 99;
+
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">${escapeHtml(sd)} 상세 통계</span></nav>
+    <div class="detail-head">
+      <div>
+        <h1 class="detail-title">${escapeHtml(sd)} 공개정보 상세</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sd)} 공개정보 상세 — 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+      </div>
+      <div class="detail-inline-stats">
+        <span>공개정보 ${summary.rows.length.toLocaleString()}명</span>
+        <span>전과 ${oneInText(summary.criminal.rate)}</span>
+        <span>병역 미필 ${oneInText(summary.military.notServedRate)}</span>
+      </div>
+    </div>
+    <p class="page-intro">시도별 막대에서 한 단계 내려온 화면입니다. 먼저 ${escapeHtml(sd)} 전체 요약을 보고, 아래에서 시군구별 차이와 후보별 최다 순위를 함께 확인할 수 있습니다.</p>
+
+    ${disclosureRegionOverviewHtml(sd, summary)}
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(sd)} 후보별 최다 순위 <small>재산·전과 1~5위</small></h3>
+      <div class="candidate-leader-grid">
+        <div class="candidate-leader-card">
+          <h4 class="metric-title">재산 1~5위</h4>
+          ${candidateRankList(rankedAssetCandidates(rows, 5), 'asset', false)}
+        </div>
+        <div class="candidate-leader-card">
+          <h4 class="metric-title">전과 1~5위</h4>
+          ${candidateRankList(rankedCriminalCandidates(rows, 5), 'criminal', false)}
+        </div>
+      </div>
+      <p class="trend-meta">후보 이름을 누르면 선관위 공개정보와 후보 상세를 볼 수 있습니다.</p>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">시군구별 통계 <small>재산·전과·병역</small></h3>
+      <div class="metric-grid metric-grid-three">
+        <div>
+          <h4 class="metric-title">시군구별 평균 재산</h4>
+          <div class="bar-list">${assetBars(sggAssets, { limit: maxLocalItems }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
+        </div>
+        <div>
+          <h4 class="metric-title">시군구별 전과 보유율</h4>
+          <div class="bar-list">${criminalBars(sggCriminal, { limit: maxLocalItems }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
+        </div>
+        <div>
+          <h4 class="metric-title">시군구별 병역 미필률</h4>
+          <div class="bar-list">${militaryBars(sggMilitary, { limit: maxLocalItems }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
+        </div>
+      </div>
+      <p class="trend-meta">시군구별 통계는 해당 시군구 선거구로 분류되는 후보 기준입니다. 시도지사·교육감처럼 시도 전체 선거 후보는 시군구 막대에서는 제외했습니다.</p>
+    </section>`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 function disclosureStatsHtml(ds) {
   if (!ds.rows.length) return '';
   return `
@@ -1941,11 +2125,11 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${assetBars(ds.byParty.assets) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
         </div>
         <div>
-          <h4 class="metric-title">지역별 평균 재산</h4>
-          <div class="bar-list">${assetBars(ds.byRegion.assets) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+          <h4 class="metric-title">지역별 평균 재산 <small>지역명 클릭</small></h4>
+          <div class="bar-list">${assetBars(ds.byRegion.assets, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
-      <p class="trend-meta">선관위 재산신고액(천원)을 억원으로 환산. 막대는 평균 재산 기준입니다.</p>
+      <p class="trend-meta">선관위 재산신고액(천원)을 억원으로 환산. 막대는 평균 재산 기준입니다. 지역명을 누르면 시군구별 상세 통계로 이동합니다.</p>
     </section>
 
     <section class="trend-section">
@@ -1956,8 +2140,8 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${criminalBars(ds.byParty.criminal) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
         </div>
         <div>
-          <h4 class="metric-title">지역별 전과 보유율</h4>
-          <div class="bar-list">${criminalBars(ds.byRegion.criminal) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+          <h4 class="metric-title">지역별 전과 보유율 <small>지역명 클릭</small></h4>
+          <div class="bar-list">${criminalBars(ds.byRegion.criminal, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
       <p class="trend-meta">전과 있음은 전과기록유무(건수)가 1건 이상인 후보입니다. 예: 전체 전과 ${oneInText(ds.criminal.rate)}은 전체 ${ds.criminal.count.toLocaleString()}명 중 ${ds.criminal.holders.toLocaleString()}명이 전과 1건 이상이라는 뜻입니다.</p>
@@ -1971,8 +2155,8 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${militaryBars(ds.byParty.military) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
         </div>
         <div>
-          <h4 class="metric-title">지역별 미필률</h4>
-          <div class="bar-list">${militaryBars(ds.byRegion.military) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+          <h4 class="metric-title">지역별 미필률 <small>지역명 클릭</small></h4>
+          <div class="bar-list">${militaryBars(ds.byRegion.military, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
       <p class="trend-meta">전체 병역 ${oneInText(ds.military.notServedRate)}은 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필이라는 뜻입니다. 여성 후보는 병역 통계에서 제외했고, 남성 후보 중 병역 비대상도 분모에서 제외했습니다.</p>
@@ -2394,6 +2578,7 @@ function route() {
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'trend') return renderTrendFull();
+  if (hash.startsWith('trend/')) return renderTrendRegionFull(hash.slice('trend/'.length));
   if (hash === 'history') return renderHistoryFull();
   if (hash === 'schedule') return renderScheduleFull();
   if (hash === 'candidates') return renderCandidatesFull();

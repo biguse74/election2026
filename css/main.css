@@ -472,6 +472,7 @@ footer a:hover { text-decoration: underline; }
   line-height: 1.45; margin-top: 0.35rem;
 }
 .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.metric-grid-three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .metric-title {
   font-family: var(--serif); font-size: 0.95rem; font-weight: 700;
   margin: 0 0 0.6rem; padding-bottom: 0.3rem;
@@ -486,6 +487,11 @@ footer a:hover { text-decoration: underline; }
   align-items: center; gap: 0.7rem;
 }
 .metric-bar-label { font-size: 0.86rem; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.metric-bar-link {
+  text-decoration: none; font-weight: 700;
+  border-bottom: 1px solid rgba(196, 30, 58, 0.35);
+}
+.metric-bar-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
 .metric-bar-track { height: 16px; background: var(--bg); border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; }
 .metric-bar-fill { height: 100%; transition: width 0.3s ease; }
 .metric-bar-value {
@@ -1116,6 +1122,7 @@ body.modal-open { overflow: hidden; }
   .cl-list { grid-template-columns: 1fr; }
   .disclosure-overview,
   .metric-grid,
+  .metric-grid-three,
   .candidate-leader-grid,
   .competition-overview { grid-template-columns: 1fr; }
   .disclosure-card { border-right: none; border-bottom: 1px solid var(--rule); }
