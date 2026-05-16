@@ -57,6 +57,8 @@ data/
 pip install -r requirements.txt
 export NEC_API_KEY=<공공데이터포털_인증키>
 python scripts/fetch_codes.py
+python scripts/fetch_candidates.py
+python scripts/fetch_candidate_details.py
 ```
 
 ## API 명세
@@ -73,3 +75,13 @@ python scripts/fetch_codes.py
 
 - 로컬 개발: `.env` 파일에 저장 (커밋 금지, `.gitignore`에 포함됨)
 - GitHub Actions: 레포 Settings → Secrets and variables → Actions → `NEC_API_KEY` 등록
+
+## 후보자 상세 공개정보
+
+`scripts/fetch_candidate_details.py`는 선관위 선거통계시스템 후보자 상세 팝업을 `huboid` 기준으로 조회해 사진 URL, 재산·병역·납세·전과 요약, 전과 PDF 경로를 `data/candidate_details.json`에 저장한다.
+
+```bash
+python scripts/fetch_candidate_details.py              # 전체 후보
+python scripts/fetch_candidate_details.py --limit 20   # 일부 확인
+python scripts/fetch_candidate_details.py --huboid 100163255
+```

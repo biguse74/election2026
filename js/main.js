@@ -144,7 +144,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, constituencies: null, jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -183,6 +183,14 @@ function normalizeCandidateRegions(candidates, constituencies) {
     const sdName = jointMap[jointConstituencyKey(c)];
     return sdName ? { ...c, sdName, sourceSdName: c.sdName } : c;
   });
+}
+
+function buildCandidateDetailsMap(payload) {
+  const out = {};
+  for (const d of payload?.details || []) {
+    if (d.huboid) out[String(d.huboid)] = d;
+  }
+  return out;
 }
 
 // 시도·정당 약칭 사전 (시트 태그가 줄임말로 적힌 케이스 매칭용)
@@ -362,11 +370,25 @@ const safeJson = async (url, fallback) => {
 const loadParties = () => safeJson('data/parties.json', {});
 const loadNominations = () => safeJson('data/nominations.json', null);
 const loadArticles = () => safeJson('data/articles.json', null);
+const loadCandidateDetails = () => safeJson('data/candidate_details.json', null);
 const loadConstituencies = () => safeJson('data/constituencies.json', null);
 const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
+let candidateDetailsPromise = null;
+
+async function ensureCandidateDetails() {
+  if (state.candidateDetailsMeta) return state.candidateDetailsMeta;
+  if (!candidateDetailsPromise) {
+    candidateDetailsPromise = loadCandidateDetails().then(payload => {
+      state.candidateDetails = buildCandidateDetailsMap(payload);
+      state.candidateDetailsMeta = payload;
+      return payload;
+    });
+  }
+  return candidateDetailsPromise;
+}
 
 // 라우팅용: 통합특별시는 광주/전남 중 광주로 진입 (alias 매핑이 양쪽 수용)
 const sidoFor = obj => obj.sdName === JOINT_SIDO || obj.sd === JOINT_SIDO
@@ -586,12 +608,24 @@ function formatBirthday(s) {
 function formatRegdate(s) {
   return s && s.length >= 8 ? `${s.slice(0,4)}.${s.slice(4,6)}.${s.slice(6,8)}` : '';
 }
+function moneyDisclosure(value) {
+  return value ? `${value}천원` : '';
+}
 
-function openCandidateModal(huboid) {
+async function openCandidateModal(huboid) {
   const c = state.data.candidates.find(x => x.huboid === huboid);
   if (!c) return;
   const root = document.getElementById('modal-root');
   if (!root) return;
+  root.innerHTML = `
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true">
+      <button type="button" class="modal-close" data-modal-close aria-label="닫기">×</button>
+      <p class="loading">후보자 공개정보를 불러오는 중입니다.</p>
+    </div>`;
+  root.hidden = false;
+  document.body.classList.add('modal-open');
+  await ensureCandidateDetails();
 
   const confirmed = isConfirmed(c);
   const articles = state.articleMap?.[c.huboid] || [];
@@ -600,6 +634,17 @@ function openCandidateModal(huboid) {
   const region = formatRegionLabel(c);
   const birth = formatBirthday(c.birthday);
   const regdate = formatRegdate(c.regdate);
+  const nec = state.candidateDetails?.[String(c.huboid)] || null;
+  const disclosures = nec?.disclosures || {};
+  const photo = nec?.photo || {};
+  const photoUrl = photo.url || photo.thumbnail_url || '';
+  const photoHtml = photo.thumbnail_url ? `
+    <figure class="modal-photo">
+      <a href="${photoUrl}" target="_blank" rel="noopener" title="선관위 후보자 사진 원본 보기">
+        <img src="${photo.thumbnail_url}" alt="${c.name} 후보자 사진" loading="lazy">
+      </a>
+    </figure>` : '';
+  const criminalFiles = nec?.scan_files?.criminal || [];
 
   // 필드 정의: 값이 있는 것만 표시
   const fields = [
@@ -616,6 +661,14 @@ function openCandidateModal(huboid) {
     ['경력 ②', c.career2 || ''],
     ['주소',   c.addr || ''],
     ['등록일', regdate],
+    ['재산',   moneyDisclosure(disclosures.assets_thousand_krw)],
+    ['병역',   disclosures.military || ''],
+    ['납부액', moneyDisclosure(disclosures.tax_paid_thousand_krw)],
+    ['체납',   disclosures.tax_arrears_5y_thousand_krw || disclosures.tax_arrears_current_thousand_krw
+      ? `최근 5년 ${moneyDisclosure(disclosures.tax_arrears_5y_thousand_krw) || '0천원'} · 현재 ${moneyDisclosure(disclosures.tax_arrears_current_thousand_krw) || '0천원'}`
+      : ''],
+    ['전과',   disclosures.criminal_record || ''],
+    ['입후보', disclosures.candidacy_count || ''],
   ].filter(([, v]) => v);
 
   const fieldsHtml = fields.map(([k, v]) =>
@@ -627,28 +680,43 @@ function openCandidateModal(huboid) {
       <h3 class="modal-section-title">관련 보도 <span class="modal-section-sub">${articles.length}건 · 뉴탐사 공천대란 매칭</span></h3>
       <ul class="modal-articles">${articleListHtml(articles)}</ul>
     </section>` : '';
+  const criminalHtml = criminalFiles.length ? `
+    <section class="modal-section">
+      <h3 class="modal-section-title">전과 원문 <span class="modal-section-sub">선관위 스캔 PDF</span></h3>
+      <ul class="modal-articles">
+        ${criminalFiles.map((f, i) => `<li><a href="${f.pdf_url}" target="_blank" rel="noopener">전과기록 증명서 ${i + 1}</a></li>`).join('')}
+      </ul>
+    </section>` : '';
 
   const tipUrl = tipoffUrl(c);
+  const necLink = nec?.nec_detail_url
+    ? `<a class="modal-share modal-link" href="${nec.nec_detail_url}" target="_blank" rel="noopener">선관위 상세</a>`
+    : '';
 
   root.innerHTML = `
     <div class="modal-backdrop" data-modal-close></div>
     <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-name">
       <button type="button" class="modal-close" data-modal-close aria-label="닫기">×</button>
-      <header class="modal-head" style="border-left-color:${partyColor(c.jdName)}">
-        <p class="modal-region">${region} · ${sectionTitle}</p>
-        <h2 id="modal-name" class="modal-name">${c.name}
-          ${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}
-        </h2>
-        <p class="modal-subline">${c.jdName || '무소속'}${c.status ? ` · ${c.status}` : ''}</p>
-      </header>
+      <div class="modal-profile">
+        ${photoHtml}
+        <header class="modal-head" style="border-left-color:${partyColor(c.jdName)}">
+          <p class="modal-region">${region} · ${sectionTitle}</p>
+          <h2 id="modal-name" class="modal-name">${c.name}
+            ${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}
+          </h2>
+          <p class="modal-subline">${c.jdName || '무소속'}${c.status ? ` · ${c.status}` : ''}</p>
+        </header>
+      </div>
       <dl class="modal-fields">${fieldsHtml}</dl>
       ${articlesHtml}
+      ${criminalHtml}
       <footer class="modal-foot">
         <div class="modal-actions">
           <a class="modal-tip" href="${tipUrl}" target="_blank" rel="noopener">📮 이 후보 제보하기</a>
+          ${necLink}
           <button type="button" class="modal-share" data-share-cand="${c.huboid}" data-share-title="${c.name} (${c.jdName || '무소속'}) — ${region}">🔗 링크 공유</button>
         </div>
-        <p class="modal-source">기준: 중앙선관위 OpenAPI · ${state.dateStr ? `${state.dateStr.slice(0,4)}.${state.dateStr.slice(4,6)}.${state.dateStr.slice(6,8)} ${SOURCE_LABEL[state.source] || state.source}` : ''}</p>
+        <p class="modal-source">기준: 중앙선관위 OpenAPI · 선거통계시스템 후보자 정보공개 · ${state.dateStr ? `${state.dateStr.slice(0,4)}.${state.dateStr.slice(4,6)}.${state.dateStr.slice(6,8)} ${SOURCE_LABEL[state.source] || state.source}` : ''}</p>
       </footer>
     </div>`;
   root.hidden = false;
