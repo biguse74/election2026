@@ -449,6 +449,60 @@ footer a:hover { text-decoration: underline; }
 .trend-chart { width: 100%; height: auto; display: block; }
 .trend-meta { font-size: 0.82rem; color: var(--ink-sub); margin-top: 0.8rem; }
 .trend-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; }
+.disclosure-overview {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  margin: 0 0 1.2rem;
+}
+.disclosure-card {
+  padding: 0.9rem 1rem;
+  border-right: 1px solid var(--rule);
+}
+.disclosure-card:last-child { border-right: none; }
+.disclosure-label {
+  display: block; font-size: 0.72rem; color: var(--ink-sub);
+  letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.2rem;
+}
+.disclosure-card strong {
+  display: block; font-family: var(--serif); font-size: 1.45rem;
+  font-weight: 900; line-height: 1.1; color: var(--accent);
+}
+.disclosure-card small {
+  display: block; color: var(--ink-sub); font-size: 0.78rem;
+  line-height: 1.45; margin-top: 0.35rem;
+}
+.metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.metric-title {
+  font-family: var(--serif); font-size: 0.95rem; font-weight: 700;
+  margin: 0 0 0.6rem; padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--rule);
+}
+.metric-title small {
+  font-family: var(--sans); font-weight: 400; color: var(--ink-sub);
+  font-size: 0.75rem; margin-left: 0.35rem;
+}
+.metric-bar {
+  display: grid; grid-template-columns: 130px 1fr 118px;
+  align-items: center; gap: 0.7rem;
+}
+.metric-bar-label { font-size: 0.86rem; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.metric-bar-track { height: 16px; background: var(--bg); border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; }
+.metric-bar-fill { height: 100%; transition: width 0.3s ease; }
+.metric-bar-value {
+  font-family: var(--serif); font-weight: 700; font-size: 0.9rem;
+  text-align: right; color: var(--ink); line-height: 1.25;
+}
+.metric-bar-value small {
+  display: block; font-family: var(--sans); font-weight: 400;
+  font-size: 0.68rem; color: var(--ink-sub);
+}
+.competition-overview {
+  display: grid; grid-template-columns: minmax(220px, 0.7fr) 2fr;
+  gap: 1.2rem; align-items: start;
+}
+.competition-overview .disclosure-card {
+  border-right: none; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+}
 
 /* 가로 막대 — 정당·성별·직업 */
 .bar-list { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -965,6 +1019,14 @@ body.modal-open { overflow: hidden; }
   .address-result-head { align-items: flex-start; }
   .address-result-grid { grid-template-columns: 1fr; }
   .cl-list { grid-template-columns: 1fr; }
+  .disclosure-overview,
+  .metric-grid,
+  .competition-overview { grid-template-columns: 1fr; }
+  .disclosure-card { border-right: none; border-bottom: 1px solid var(--rule); }
+  .disclosure-card:last-child { border-bottom: none; }
+  .metric-bar { grid-template-columns: 100px 1fr 92px; gap: 0.5rem; }
+  .metric-bar-label { font-size: 0.82rem; }
+  .metric-bar-value { font-size: 0.84rem; }
   .modal-dialog { padding: 1.25rem 1.1rem 1rem; }
   .modal-profile { grid-template-columns: 72px 1fr; gap: 0.75rem; }
   .modal-photo { width: 72px; }

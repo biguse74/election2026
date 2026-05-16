@@ -473,6 +473,43 @@ function buildCompetitionRanking() {
   return rows;
 }
 
+function buildCompetitionSummary() {
+  const stats = buildSeatStats();
+  if (!stats) return null;
+  const bySido = {};
+  let seats = 0;
+  let candidates = 0;
+  let districts = 0;
+
+  for (const [k, seat] of Object.entries(stats.seats)) {
+    const [, sd] = k.split('|');
+    const count = stats.counts[k] || 0;
+    seats += seat;
+    candidates += count;
+    districts += 1;
+    const row = bySido[sd] || { sd, seats: 0, candidates: 0, districts: 0 };
+    row.seats += seat;
+    row.candidates += count;
+    row.districts += 1;
+    bySido[sd] = row;
+  }
+
+  const regions = Object.values(bySido).map(r => ({
+    ...r,
+    ratio: r.seats ? r.candidates / r.seats : 0,
+  })).sort((a, b) => b.ratio - a.ratio || sidoSort(a.sd, b.sd));
+
+  return {
+    national: {
+      seats,
+      candidates,
+      districts,
+      ratio: seats ? candidates / seats : 0,
+    },
+    regions,
+  };
+}
+
 // 이대로 가면 무투표 당선될 가능성이 있는 곳 (정원 = 후보 수).
 // 일부 미달(1명 이상·정원 미만)·0명도 함께 수집 — 사용자는 박스 안에서 카테고리별로 본다.
 function buildUncontestedList() {
@@ -1399,21 +1436,187 @@ function buildProfileStats() {
   return { total: cs.length, parties, ageBuckets, ageAvg, ageCount, byGender, jobs };
 }
 
+function parseDisclosureNumber(value) {
+  if (value == null || value === '') return null;
+  const n = Number(String(value).replace(/,/g, '').trim());
+  return Number.isFinite(n) ? n : null;
+}
+
+function parseCriminalCount(value) {
+  const text = String(value || '').trim();
+  if (!text || text === '없음') return 0;
+  const m = text.match(/-?\d+/);
+  return m ? Math.max(0, parseInt(m[0], 10)) : 0;
+}
+
+function militaryBucket(value) {
+  const text = String(value || '').trim();
+  if (!text) return 'unknown';
+  if (text.includes('해당없음')) return 'nonTarget';
+  if (text.includes('마치지 아니') || text.includes('병적기록')) return 'notServed';
+  if (text.includes('마친')) return 'served';
+  return 'unknown';
+}
+
+function formatEok(thousandKrw) {
+  if (thousandKrw == null || !Number.isFinite(thousandKrw)) return '-';
+  const eok = thousandKrw / 100000;
+  const abs = Math.abs(eok);
+  const digits = abs >= 100 ? 0 : 1;
+  return `${eok.toLocaleString('ko-KR', { maximumFractionDigits: digits, minimumFractionDigits: digits })}억`;
+}
+
+function formatPct(value, digits = 1) {
+  return `${(value || 0).toFixed(digits)}%`;
+}
+
+function summarizeNumbers(values) {
+  const nums = values.filter(v => Number.isFinite(v)).sort((a, b) => a - b);
+  if (!nums.length) return { count: 0, avg: 0, median: 0, min: 0, max: 0 };
+  const sum = nums.reduce((a, b) => a + b, 0);
+  const mid = Math.floor(nums.length / 2);
+  const median = nums.length % 2 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+  return {
+    count: nums.length,
+    avg: sum / nums.length,
+    median,
+    min: nums[0],
+    max: nums[nums.length - 1],
+  };
+}
+
+function disclosureRows() {
+  return (state.data?.candidates || [])
+    .filter(isActiveCandidate)
+    .map(c => {
+      const detail = state.candidateDetails?.[String(c.huboid)] || null;
+      const disclosures = detail?.disclosures || {};
+      const assets = parseDisclosureNumber(disclosures.assets_thousand_krw);
+      const criminal = parseCriminalCount(disclosures.criminal_record);
+      const military = militaryBucket(disclosures.military);
+      return {
+        candidate: c,
+        party: c.jdName || '무소속',
+        sd: sidoFor(c),
+        disclosures,
+        assets,
+        criminal,
+        hasCriminal: criminal > 0,
+        military,
+      };
+    })
+    .filter(r => r.disclosures && Object.keys(r.disclosures).length);
+}
+
+function groupDisclosureRows(rows, keyFn) {
+  return rows.reduce((acc, row) => {
+    const key = keyFn(row) || '미기재';
+    (acc[key] ||= []).push(row);
+    return acc;
+  }, {});
+}
+
+function rankedAssetGroups(rows, keyFn, minCount = 20) {
+  return Object.entries(groupDisclosureRows(rows.filter(r => Number.isFinite(r.assets)), keyFn))
+    .map(([label, items]) => ({ label, count: items.length, ...summarizeNumbers(items.map(r => r.assets)) }))
+    .filter(r => r.count >= minCount)
+    .sort((a, b) => b.avg - a.avg || b.count - a.count);
+}
+
+function rankedCriminalGroups(rows, keyFn, minCount = 20) {
+  return Object.entries(groupDisclosureRows(rows, keyFn))
+    .map(([label, items]) => {
+      const holders = items.filter(r => r.hasCriminal).length;
+      const cases = items.reduce((sum, r) => sum + r.criminal, 0);
+      return { label, count: items.length, holders, cases, rate: items.length ? holders / items.length * 100 : 0 };
+    })
+    .filter(r => r.count >= minCount)
+    .sort((a, b) => b.rate - a.rate || b.holders - a.holders);
+}
+
+function rankedMilitaryGroups(rows, keyFn, minEligible = 10) {
+  return Object.entries(groupDisclosureRows(rows, keyFn))
+    .map(([label, items]) => {
+      const served = items.filter(r => r.military === 'served').length;
+      const notServed = items.filter(r => r.military === 'notServed').length;
+      const nonTarget = items.filter(r => r.military === 'nonTarget').length;
+      const eligible = served + notServed;
+      return {
+        label,
+        count: items.length,
+        served,
+        notServed,
+        nonTarget,
+        eligible,
+        rate: eligible ? notServed / eligible * 100 : 0,
+      };
+    })
+    .filter(r => r.eligible >= minEligible)
+    .sort((a, b) => b.rate - a.rate || b.notServed - a.notServed);
+}
+
+function buildDisclosureStats() {
+  const rows = disclosureRows();
+  const assetRows = rows.filter(r => Number.isFinite(r.assets));
+  const assets = summarizeNumbers(assetRows.map(r => r.assets));
+  const criminalHolders = rows.filter(r => r.hasCriminal).length;
+  const criminalCases = rows.reduce((sum, r) => sum + r.criminal, 0);
+  const served = rows.filter(r => r.military === 'served').length;
+  const notServed = rows.filter(r => r.military === 'notServed').length;
+  const nonTarget = rows.filter(r => r.military === 'nonTarget').length;
+  const militaryEligible = served + notServed;
+
+  return {
+    rows,
+    assets,
+    criminal: {
+      count: rows.length,
+      holders: criminalHolders,
+      cases: criminalCases,
+      rate: rows.length ? criminalHolders / rows.length * 100 : 0,
+    },
+    military: {
+      count: rows.length,
+      served,
+      notServed,
+      nonTarget,
+      eligible: militaryEligible,
+      notServedRate: militaryEligible ? notServed / militaryEligible * 100 : 0,
+    },
+    byParty: {
+      assets: rankedAssetGroups(rows, r => r.party),
+      criminal: rankedCriminalGroups(rows, r => r.party),
+      military: rankedMilitaryGroups(rows, r => r.party),
+    },
+    byRegion: {
+      assets: rankedAssetGroups(rows, r => r.sd),
+      criminal: rankedCriminalGroups(rows, r => r.sd),
+      military: rankedMilitaryGroups(rows, r => r.sd),
+    },
+  };
+}
+
 function renderTrendBox() {
   if (!state.data) return '';
   const s = buildProfileStats();
+  const ds = buildDisclosureStats();
   const womenPct = s.byGender['여'] ? (s.byGender['여'] / s.total * 100) : 0;
   const topParty = s.parties[0];
+  const detailBits = ds.rows.length ? `
+        <div class="trend-summary-stat"><strong>${formatEok(ds.assets.median)}</strong><small>재산 중앙값</small></div>
+        <div class="trend-summary-stat"><strong>${formatPct(ds.criminal.rate, 0)}</strong><small>전과 있음</small></div>
+        <div class="trend-summary-stat"><strong>${formatPct(ds.military.notServedRate, 0)}</strong><small>병역 미필</small></div>` : '';
   return `
     <a class="trend-card" href="#trend">
       <div class="trend-card-head">
         <span class="trend-card-label">출마자 한눈에</span>
-        <span class="trend-card-period">정당·연령·성별</span>
+        <span class="trend-card-period">정당·연령·재산·전과·병역</span>
       </div>
       <div class="trend-summary">
         <div class="trend-summary-stat"><strong>${s.ageAvg.toFixed(1)}</strong>세<small>평균 연령</small></div>
         <div class="trend-summary-stat"><strong>${womenPct.toFixed(0)}</strong>%<small>여성 비율</small></div>
         <div class="trend-summary-stat"><strong>${topParty ? topParty[1].toLocaleString() : 0}</strong>명<small>${topParty ? topParty[0] : '-'}</small></div>
+        ${detailBits}
         <span class="trend-card-link">전체 통계 →</span>
       </div>
     </a>`;
@@ -1430,6 +1633,105 @@ function statBar(label, count, max, color) {
     </div>`;
 }
 
+function metricBar(label, value, max, color, valueText, subText) {
+  const pct = max > 0 ? Math.min(100, Math.max(0, value / max * 100)) : 0;
+  return `
+    <div class="metric-bar">
+      <div class="metric-bar-label">${escapeHtml(label)}</div>
+      <div class="metric-bar-track"><div class="metric-bar-fill" style="width: ${pct.toFixed(1)}%; background: ${color || 'var(--accent)'}"></div></div>
+      <div class="metric-bar-value">${valueText}${subText ? `<small>${subText}</small>` : ''}</div>
+    </div>`;
+}
+
+function disclosureOverviewHtml(ds) {
+  if (!ds.rows.length) return '<p class="absence-note">후보자 상세 공개정보를 아직 불러오지 못했습니다.</p>';
+  return `
+    <div class="disclosure-overview">
+      <div class="disclosure-card">
+        <span class="disclosure-label">전체 재산</span>
+        <strong>${formatEok(ds.assets.median)}</strong>
+        <small>중앙값 · 평균 ${formatEok(ds.assets.avg)} · ${ds.assets.count.toLocaleString()}명</small>
+      </div>
+      <div class="disclosure-card">
+        <span class="disclosure-label">전체 전과</span>
+        <strong>${formatPct(ds.criminal.rate)}</strong>
+        <small>${ds.criminal.holders.toLocaleString()}명 · 총 ${ds.criminal.cases.toLocaleString()}건</small>
+      </div>
+      <div class="disclosure-card">
+        <span class="disclosure-label">전체 병역</span>
+        <strong>${formatPct(ds.military.notServedRate)}</strong>
+        <small>미필 ${ds.military.notServed.toLocaleString()}명 / 대상 ${ds.military.eligible.toLocaleString()}명 · 비대상 ${ds.military.nonTarget.toLocaleString()}명</small>
+      </div>
+    </div>`;
+}
+
+function assetBars(items) {
+  const shown = items.slice(0, 10);
+  const max = Math.max(...shown.map(x => x.avg), 1);
+  return shown.map(x => metricBar(x.label, x.avg, max, 'var(--accent)', formatEok(x.avg), `${x.count.toLocaleString()}명`)).join('');
+}
+
+function criminalBars(items) {
+  const shown = items.slice(0, 10);
+  const max = Math.max(...shown.map(x => x.rate), 1);
+  return shown.map(x => metricBar(x.label, x.rate, max, '#b25c00', formatPct(x.rate), `${x.holders.toLocaleString()}/${x.count.toLocaleString()}명 · ${x.cases.toLocaleString()}건`)).join('');
+}
+
+function militaryBars(items) {
+  const shown = items.slice(0, 10);
+  const max = Math.max(...shown.map(x => x.rate), 1);
+  return shown.map(x => metricBar(x.label, x.rate, max, '#2c5d8f', formatPct(x.rate), `${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명`)).join('');
+}
+
+function disclosureStatsHtml(ds) {
+  if (!ds.rows.length) return '';
+  return `
+    <section class="trend-section">
+      <h3 class="trend-section-title">재산 통계 <small>전체·정당별·지역별</small></h3>
+      <div class="metric-grid">
+        <div>
+          <h4 class="metric-title">정당별 평균 재산 <small>20명 이상</small></h4>
+          <div class="bar-list">${assetBars(ds.byParty.assets) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
+        </div>
+        <div>
+          <h4 class="metric-title">지역별 평균 재산</h4>
+          <div class="bar-list">${assetBars(ds.byRegion.assets) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+        </div>
+      </div>
+      <p class="trend-meta">선관위 재산신고액(천원)을 억원으로 환산. 막대는 평균 재산 기준입니다.</p>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">전과 통계 <small>전체·정당별·지역별</small></h3>
+      <div class="metric-grid">
+        <div>
+          <h4 class="metric-title">정당별 전과 보유율 <small>20명 이상</small></h4>
+          <div class="bar-list">${criminalBars(ds.byParty.criminal) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
+        </div>
+        <div>
+          <h4 class="metric-title">지역별 전과 보유율</h4>
+          <div class="bar-list">${criminalBars(ds.byRegion.criminal) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+        </div>
+      </div>
+      <p class="trend-meta">전과기록유무(건수) 기준. 비율은 전과 1건 이상 후보 비중입니다.</p>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">병역 통계 <small>전체·정당별·지역별</small></h3>
+      <div class="metric-grid">
+        <div>
+          <h4 class="metric-title">정당별 미필률 <small>병역 대상 10명 이상</small></h4>
+          <div class="bar-list">${militaryBars(ds.byParty.military) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
+        </div>
+        <div>
+          <h4 class="metric-title">지역별 미필률</h4>
+          <div class="bar-list">${militaryBars(ds.byRegion.military) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+        </div>
+      </div>
+      <p class="trend-meta">병역 비대상은 분모에서 제외. "군복무를 마치지 아니한 사람"과 병적기록 없음 항목을 미필로 집계했습니다.</p>
+    </section>`;
+}
+
 // 출마자 한눈에 페이지 (#trend) — 정당·연령·성별·직업 통계
 function renderTrendFull() {
   const app = document.getElementById('app');
@@ -1439,6 +1741,7 @@ function renderTrendFull() {
     return;
   }
   const s = buildProfileStats();
+  const ds = buildDisclosureStats();
   const womenPct = s.byGender['여'] ? (s.byGender['여'] / s.total * 100) : 0;
 
   // 정당 (상위 10) — horizontal bar
@@ -1510,7 +1813,10 @@ function renderTrendFull() {
         <span>총 ${s.total.toLocaleString()}명 · 평균 ${s.ageAvg.toFixed(1)}세 · 여성 ${womenPct.toFixed(0)}%</span>
       </div>
     </div>
-    <p class="page-intro">선관위 등록 데이터를 기반으로 정당·연령·성별·직업 분포를 정리했습니다. 재산·전과·병역 정보는 후보 등록(5/14) 이후 추가 공개될 예정.</p>
+    <p class="page-intro">선관위 등록 데이터와 후보자 정보공개 자료를 기반으로 정당·연령·성별·직업·재산·전과·병역 분포를 정리했습니다.</p>
+
+    ${disclosureOverviewHtml(ds)}
+    ${disclosureStatsHtml(ds)}
 
     <section class="trend-section">
       <h3 class="trend-section-title">정당별 분포 <small>상위 10</small></h3>
@@ -1686,13 +1992,28 @@ function renderHome() {
   const totalLabel = state.source === 'candidates' ? '총 후보자' : '총 예비후보자';
   const candidateSuffix = state.source === 'candidates' ? '후보' : '예비후보';
 
-  // 관전 포인트 — 디테일은 별도 페이지로 위임. 홈은 한눈에 보이는 카드 2개.
+  // 관전 포인트 — 디테일은 별도 페이지로 위임하고, 홈에는 핵심 카드만 둔다.
   const ranking = buildCompetitionRanking();
   const top = ranking[0];
+  const competition = buildCompetitionSummary();
+  const regionTop = competition?.regions?.[0];
+  const regionNext = competition?.regions?.slice(1, 4) || [];
   const uc = buildUncontestedList();
   const ucTotal = uc.tied.length + uc.short.length + uc.zero.length;
-  const summaryBox = (top || ucTotal) ? `
+  const summaryBox = (top || ucTotal || competition) ? `
     <div class="summary-row">
+      ${competition ? `
+        <a class="summary-card" href="#competition">
+          <span class="summary-card-label">전체 평균 경쟁률</span>
+          <span class="summary-card-value"><strong>${competition.national.ratio.toFixed(1)}</strong><span class="summary-card-unit">:1</span></span>
+          <span class="summary-card-sub">${competition.national.candidates.toLocaleString()}명 / ${competition.national.seats.toLocaleString()}석 · ${competition.national.districts.toLocaleString()}개 선거구 전체 기준 →</span>
+        </a>` : ''}
+      ${regionTop ? `
+        <a class="summary-card" href="#competition">
+          <span class="summary-card-label">지역별 평균 경쟁률</span>
+          <span class="summary-card-value"><strong>${regionTop.ratio.toFixed(1)}</strong><span class="summary-card-unit">:1</span></span>
+          <span class="summary-card-sub">1위 ${regionTop.sd} · ${regionNext.map(r => `${r.sd} ${r.ratio.toFixed(1)}:1`).join(' · ')} →</span>
+        </a>` : ''}
       ${top ? `
         <a class="summary-card" href="#competition">
           <span class="summary-card-label">경쟁이 가장 치열한 선거구</span>
@@ -1952,6 +2273,12 @@ function renderUncontestedFull(category) {
 // 경쟁률 전체 페이지 (#competition)
 function renderCompetitionFull() {
   const ranking = buildCompetitionRanking();
+  const summary = buildCompetitionSummary();
+  const regionRows = summary?.regions || [];
+  const maxRegionRatio = Math.max(...regionRows.map(r => r.ratio), 1);
+  const regionBars = regionRows.map(r =>
+    metricBar(r.sd, r.ratio, maxRegionRatio, 'var(--accent)', `${r.ratio.toFixed(1)}:1`, `${r.candidates.toLocaleString()}명 / ${r.seats.toLocaleString()}석`)
+  ).join('');
   const rows = ranking.map((r, i) => {
     const target = r.sgg || r.sd;
     const href = `#${encodeURIComponent(sidoFor(r))}::${encodeURIComponent(target)}`;
@@ -1976,6 +2303,21 @@ function renderCompetitionFull() {
         <span>의석 1자리당 후보 수 기준 · ${ranking.length.toLocaleString()}개 선거구</span>
       </div>
     </div>
+    ${summary ? `
+      <section class="trend-section">
+        <h3 class="trend-section-title">전체·지역별 경쟁률</h3>
+        <div class="competition-overview">
+          <div class="disclosure-card">
+            <span class="disclosure-label">전체 평균</span>
+            <strong>${summary.national.ratio.toFixed(1)}:1</strong>
+            <small>${summary.national.candidates.toLocaleString()}명 / ${summary.national.seats.toLocaleString()}석 · ${summary.national.districts.toLocaleString()}개 선거구</small>
+          </div>
+          <div class="competition-region-bars">
+            <h4 class="metric-title">지역별 평균 경쟁률</h4>
+            <div class="bar-list">${regionBars}</div>
+          </div>
+        </div>
+      </section>` : ''}
     <ol class="competition-list">${rows}</ol>`;
   const app = document.getElementById('app');
   app.className = '';
@@ -2212,9 +2554,9 @@ async function main() {
   calculateDDay();
   renderScheduleBar();
   try {
-    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries, history, historyTurnout] = await Promise.all([
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries, history, historyTurnout, candidateDetailsPayload] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
-      loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(),
+      loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(), loadCandidateDetails(),
     ]);
     state.constituencies = constituencies;
     state.jointConstituencySdMap = buildJointConstituencySdMap(constituencies);
@@ -2231,6 +2573,11 @@ async function main() {
     state.timeseries = timeseries;
     state.history = history;
     state.historyTurnout = historyTurnout;
+    if (candidateDetailsPayload) {
+      state.candidateDetails = buildCandidateDetailsMap(candidateDetailsPayload);
+      state.candidateDetailsMeta = candidateDetailsPayload;
+      candidateDetailsPromise = Promise.resolve(candidateDetailsPayload);
+    }
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
