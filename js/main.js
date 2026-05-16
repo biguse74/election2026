@@ -1,4 +1,5 @@
 const ELECTION_DATE = '2026-06-03T00:00:00';
+const DISCLOSURE_LINK_END = '2026-06-04T00:00:00+09:00';
 
 // 제9회 전국동시지방선거 공식 일정 (선관위 안내 기준)
 const ELECTION_SCHEDULE = [
@@ -660,6 +661,10 @@ function moneyDisclosure(value) {
   return value ? `${value}천원` : '';
 }
 
+function canShowCriminalScanLinks(now = new Date()) {
+  return now < new Date(DISCLOSURE_LINK_END);
+}
+
 async function openCandidateModal(huboid) {
   const c = state.data.candidates.find(x => x.huboid === huboid);
   if (!c) return;
@@ -692,7 +697,8 @@ async function openCandidateModal(huboid) {
         <img src="${photo.thumbnail_url}" alt="${c.name} 후보자 사진" loading="lazy">
       </a>
     </figure>` : '';
-  const criminalFiles = nec?.scan_files?.criminal || [];
+  const allCriminalFiles = nec?.scan_files?.criminal || [];
+  const criminalFiles = canShowCriminalScanLinks() ? allCriminalFiles : [];
 
   // 필드 정의: 값이 있는 것만 표시
   const fields = [
@@ -730,10 +736,14 @@ async function openCandidateModal(huboid) {
     </section>` : '';
   const criminalHtml = criminalFiles.length ? `
     <section class="modal-section">
-      <h3 class="modal-section-title">전과 원문 <span class="modal-section-sub">선관위 스캔 PDF</span></h3>
+      <h3 class="modal-section-title">전과 원문 <span class="modal-section-sub">선관위 공개 PDF</span></h3>
       <ul class="modal-articles">
         ${criminalFiles.map((f, i) => `<li><a href="${f.pdf_url}" target="_blank" rel="noopener">전과기록 증명서 ${i + 1}</a></li>`).join('')}
       </ul>
+    </section>` : allCriminalFiles.length ? `
+    <section class="modal-section">
+      <h3 class="modal-section-title">전과 원문 <span class="modal-section-sub">선거일 후 비공개</span></h3>
+      <p class="trend-meta">공직선거법상 후보자등록서류 공개는 선거일 후 제한되므로 원문 PDF 바로가기는 표시하지 않습니다.</p>
     </section>` : '';
 
   const tipUrl = tipoffUrl(c);
@@ -1837,6 +1847,16 @@ function trendRegionHref(label) {
   return `#trend/${encodeURIComponent(label)}`;
 }
 
+function trendLocalHref(sd, label) {
+  return `#trend/${encodeURIComponent(sd)}/${encodeURIComponent(label)}`;
+}
+
+function metricLinkHref(label, options = {}) {
+  if (options.localLinksSd) return trendLocalHref(options.localLinksSd, label);
+  if (options.regionLinks) return trendRegionHref(label);
+  return '';
+}
+
 function metricBar(label, value, max, color, valueText, subText, href = '') {
   const pct = max > 0 ? Math.min(100, Math.max(0, value / max * 100)) : 0;
   const labelHtml = href
@@ -1882,7 +1902,7 @@ function assetBars(items, options = {}) {
     'var(--accent)',
     formatEok(x.avg),
     `${x.count.toLocaleString()}명`,
-    options.regionLinks ? trendRegionHref(x.label) : ''
+    metricLinkHref(x.label, options)
   )).join('');
 }
 
@@ -1896,7 +1916,7 @@ function criminalBars(items, options = {}) {
     '#b25c00',
     oneInText(x.rate),
     `${x.holders.toLocaleString()}/${x.count.toLocaleString()}명 · ${formatPct(x.rate)}`,
-    options.regionLinks ? trendRegionHref(x.label) : ''
+    metricLinkHref(x.label, options)
   )).join('');
 }
 
@@ -1910,7 +1930,7 @@ function militaryBars(items, options = {}) {
     '#2c5d8f',
     oneInText(x.rate),
     `남성 ${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명 · ${formatPct(x.rate)}`,
-    options.regionLinks ? trendRegionHref(x.label) : ''
+    metricLinkHref(x.label, options)
   )).join('');
 }
 
@@ -2130,19 +2150,71 @@ function renderTrendRegionFull(sd) {
       <h3 class="trend-section-title">시군구별 통계 <small>재산·전과·병역</small></h3>
       <div class="metric-grid metric-grid-three">
         <div>
-          <h4 class="metric-title">시군구별 평균 재산</h4>
-          <div class="bar-list">${assetBars(sggAssets, { limit: maxLocalItems }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
+          <h4 class="metric-title">시군구별 평균 재산 <small>지역명 클릭</small></h4>
+          <div class="bar-list">${assetBars(sggAssets, { limit: maxLocalItems, localLinksSd: sd }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
         </div>
         <div>
-          <h4 class="metric-title">시군구별 전과 보유율</h4>
-          <div class="bar-list">${criminalBars(sggCriminal, { limit: maxLocalItems }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
+          <h4 class="metric-title">시군구별 전과 보유율 <small>지역명 클릭</small></h4>
+          <div class="bar-list">${criminalBars(sggCriminal, { limit: maxLocalItems, localLinksSd: sd }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
         </div>
         <div>
-          <h4 class="metric-title">시군구별 병역 미필률</h4>
-          <div class="bar-list">${militaryBars(sggMilitary, { limit: maxLocalItems }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
+          <h4 class="metric-title">시군구별 병역 미필률 <small>지역명 클릭</small></h4>
+          <div class="bar-list">${militaryBars(sggMilitary, { limit: maxLocalItems, localLinksSd: sd }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
         </div>
       </div>
       <p class="trend-meta">시군구별 통계는 해당 시군구 선거구로 분류되는 후보 기준입니다. 시도지사·교육감처럼 시도 전체 선거 후보는 시군구 막대에서는 제외했습니다.</p>
+    </section>`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function renderTrendLocalFull(sd, local) {
+  const app = document.getElementById('app');
+  app.className = '';
+  if (!state.data) {
+    app.innerHTML = '<div class="loading">불러오는 중…</div>';
+    return;
+  }
+  const ds = buildDisclosureStats();
+  const rows = ds.rows.filter(r => r.sd === sd && localDistrictName(r) === local);
+  if (!rows.length) {
+    app.innerHTML = `
+      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="${trendRegionHref(sd)}">${escapeHtml(sd || '지역')}</a><span class="sep">›</span><span class="current">${escapeHtml(local || '시군구')}</span></nav>
+      <div class="error-banner"><strong>시군구 통계를 찾지 못했습니다.</strong> 다시 지역을 선택해 주세요.</div>`;
+    return;
+  }
+
+  const summary = disclosureSummaryFromRows(rows);
+  const title = `${sd} ${local}`;
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="${trendRegionHref(sd)}">${escapeHtml(sd)} 상세 통계</a><span class="sep">›</span><span class="current">${escapeHtml(local)}</span></nav>
+    <div class="detail-head">
+      <div>
+        <h1 class="detail-title">${escapeHtml(title)} 공개정보 상세</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(title)} 공개정보 상세 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+      </div>
+      <div class="detail-inline-stats">
+        <span>공개정보 ${summary.rows.length.toLocaleString()}명</span>
+        <span>재산 중앙값 ${formatEok(summary.assets.median)}</span>
+        <span>전과 ${oneInText(summary.criminal.rate)}</span>
+      </div>
+    </div>
+    <p class="page-intro">${escapeHtml(sd)} 상세 통계에서 한 단계 내려온 시군구 화면입니다. 해당 시군구 선거구로 분류되는 후보 중 재산과 전과 상위 1~5위를 바로 확인할 수 있습니다.</p>
+
+    ${disclosureRegionOverviewHtml(title, summary)}
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(local)} 후보별 최다 순위 <small>재산·전과 1~5위</small></h3>
+      <div class="candidate-leader-grid">
+        <div class="candidate-leader-card">
+          <h4 class="metric-title">재산 1~5위</h4>
+          ${candidateRankList(rankedAssetCandidates(rows, 5), 'asset', false)}
+        </div>
+        <div class="candidate-leader-card">
+          <h4 class="metric-title">전과 1~5위</h4>
+          ${candidateRankList(rankedCriminalCandidates(rows, 5), 'criminal', false)}
+        </div>
+      </div>
+      <p class="trend-meta">시도지사·교육감처럼 시도 전체 선거 후보는 시군구 후보 순위에서 제외됩니다. 후보 이름을 누르면 선관위 공개정보와 후보 상세를 볼 수 있습니다.</p>
     </section>`;
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
@@ -2613,7 +2685,11 @@ function route() {
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'trend') return renderTrendFull();
-  if (hash.startsWith('trend/')) return renderTrendRegionFull(hash.slice('trend/'.length));
+  if (hash.startsWith('trend/')) {
+    const parts = hash.split('/');
+    if (parts.length >= 3) return renderTrendLocalFull(parts[1], parts.slice(2).join('/'));
+    return renderTrendRegionFull(parts[1]);
+  }
   if (hash === 'history') return renderHistoryFull();
   if (hash === 'schedule') return renderScheduleFull();
   if (hash === 'candidates') return renderCandidatesFull();
