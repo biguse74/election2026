@@ -2004,7 +2004,7 @@ function renderTrendBox() {
   const detailBits = ds.rows.length ? `
         <div class="trend-summary-stat"><strong>${formatEok(ds.assets.median)}</strong><small>재산 중앙값</small></div>
         <div class="trend-summary-stat"><strong>${formatPct(ds.criminal.rate)}</strong><small>전과 보유율</small></div>
-        <div class="trend-summary-stat"><strong>${ds.taxArrears.currentHolders.toLocaleString()}</strong>명<small>현 체납</small></div>
+        <div class="trend-summary-stat"><strong>${ds.taxArrears.holders.toLocaleString()}</strong>명<small>최근 5년 체납</small></div>
         <div class="trend-summary-stat"><strong>${formatPct(ds.military.notServedRate)}</strong><small>남성 병역 미필률</small></div>` : '';
   return `
     <a class="trend-card" href="#trend">
@@ -2076,8 +2076,8 @@ function disclosureOverviewHtml(ds) {
       </div>
       <div class="disclosure-card">
         <span class="disclosure-label">전체 체납</span>
-        <strong>${ds.taxArrears.currentHolders.toLocaleString()}명</strong>
-        <small>현 체납 · 최근 5년 체납 ${ds.taxArrears.holders.toLocaleString()}명 / 전체 ${ds.taxArrears.count.toLocaleString()}명</small>
+        <strong>${ds.taxArrears.holders.toLocaleString()}명</strong>
+        <small>최근 5년 체납 · 현 체납 ${ds.taxArrears.currentHolders.toLocaleString()}명 / 전체 ${ds.taxArrears.count.toLocaleString()}명</small>
       </div>
       <div class="disclosure-card">
         <span class="disclosure-label">남성 병역 미필률</span>
@@ -2106,14 +2106,14 @@ function disclosureFocusCardsHtml(ds) {
       label: '전과',
       value: formatPct(ds.criminal.rate),
       detail: `전과 1건 이상 ${ds.criminal.holders.toLocaleString()}명`,
-      note: '전과 건수와 OCR 범죄 유형',
+      note: '전과 건수와 범죄 유형',
     },
     {
       kind: 'tax',
       label: '체납',
-      value: `${ds.taxArrears.currentHolders.toLocaleString()}명`,
-      detail: `현 체납 · 최근 5년 ${ds.taxArrears.holders.toLocaleString()}명`,
-      note: '현 체납과 최근 5년 체납 분리',
+      value: `${ds.taxArrears.holders.toLocaleString()}명`,
+      detail: `최근 5년 체납 · 현 체납 ${ds.taxArrears.currentHolders.toLocaleString()}명`,
+      note: '최근 5년 이력과 현 체납 분리',
     },
     {
       kind: 'military',
@@ -2549,22 +2549,22 @@ function taxArrearsFocusHtml(ds) {
   return `
     <section class="trend-section">
       <div class="section-title-row">
-        <h3 class="trend-section-title">체납 상위 후보 <small>현 체납·최근 5년</small></h3>
+        <h3 class="trend-section-title">체납 상위 후보 <small>최근 5년·현 체납</small></h3>
         <div class="section-actions">
-          <a href="${taxArrearsListHref('current')}">현 체납 전체보기</a>
           <a href="${taxArrearsListHref('5y')}">최근 5년 전체보기</a>
+          <a href="${taxArrearsListHref('current')}">현 체납 전체보기</a>
         </div>
       </div>
       <div class="candidate-leader-grid">
         <div class="candidate-leader-card">
-          <h4 class="metric-title">현 체납 상위 1~5위</h4>
-          ${candidateRankList(ds.leaders.taxArrearsCurrentOverall, 'taxCurrent', true)}
-          <a class="rank-more-link" href="${taxArrearsListHref('current')}">현 체납 후보 ${ds.taxArrears.currentHolders.toLocaleString()}명 전체보기</a>
-        </div>
-        <div class="candidate-leader-card">
           <h4 class="metric-title">최근 5년 체납 상위 1~5위</h4>
           ${candidateRankList(ds.leaders.taxArrears5yOverall, 'tax5y', true)}
           <a class="rank-more-link" href="${taxArrearsListHref('5y')}">최근 5년 체납 후보 ${ds.taxArrears.holders.toLocaleString()}명 전체보기</a>
+        </div>
+        <div class="candidate-leader-card">
+          <h4 class="metric-title">현 체납 상위 1~5위</h4>
+          ${candidateRankList(ds.leaders.taxArrearsCurrentOverall, 'taxCurrent', true)}
+          <a class="rank-more-link" href="${taxArrearsListHref('current')}">현 체납 후보 ${ds.taxArrears.currentHolders.toLocaleString()}명 전체보기</a>
         </div>
       </div>
     </section>
@@ -2637,8 +2637,8 @@ function disclosureFocusPageConfig(kind, ds) {
     tax: {
       key: 'tax',
       title: '체납 집중 보기',
-      stats: [`현 체납 ${ds.taxArrears.currentHolders.toLocaleString()}명`, `최근 5년 ${ds.taxArrears.holders.toLocaleString()}명`, `현 체납 합계 ${moneyDisclosure(ds.taxArrears.totalCurrent) || '0원'}`],
-      intro: '체납은 전과와 별도의 검증 축입니다. 현 체납과 최근 5년 체납을 나눠 보고, 정당별·지역별 차이도 두 기준으로 함께 봅니다.',
+      stats: [`최근 5년 ${ds.taxArrears.holders.toLocaleString()}명`, `현 체납 ${ds.taxArrears.currentHolders.toLocaleString()}명`, `최근 5년 합계 ${moneyDisclosure(ds.taxArrears.total5y) || '0원'}`],
+      intro: '체납은 전과와 별도의 검증 축입니다. 최근 5년 체납 이력을 먼저 보고, 현재 남아 있는 체납액도 함께 확인합니다.',
       body: taxArrearsFocusHtml(ds),
     },
     military: {
@@ -2876,7 +2876,7 @@ function crimeAuditSnapshotHtml(rows, records, meta) {
   return `
     <div class="crime-stat-grid">
       <div class="crime-stat">
-        <span>판독 완료</span>
+        <span>분류 대상</span>
         <strong>${processed.toLocaleString()}명</strong>
         <small>전과 PDF 대상 ${totalTarget.toLocaleString()}명 중${failures ? ` · 미확인 ${failures.toLocaleString()}건` : ''}</small>
       </div>
@@ -2970,16 +2970,16 @@ function criminalOcrOverviewHtml() {
 
   const meta = state.criminalOcr?.meta || {};
   const rows = criminalAuditRows();
-  const partialText = meta.partial ? ' 일부 PDF는 선관위 오류 응답 등으로 원문 판독에서 제외됐습니다.' : '';
+  const partialText = meta.partial ? ' 일부 PDF는 선관위 오류 응답 등으로 분류에서 제외됐습니다.' : '';
   return `
     <section class="trend-section">
-      <h3 class="trend-section-title">전과 원문 분류 <small>PDF 판독 기반</small></h3>
+      <h3 class="trend-section-title">전과 원문 분류 <small>선관위 PDF 기준</small></h3>
       <div class="crime-overview">
         ${crimeAuditSnapshotHtml(rows, records, meta)}
         ${crimeAuditLeadersHtml(rows)}
         ${chips}
       </div>
-      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 기계 판독해 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시하고, 일반 교통사고·보험/금융 법규·마약류는 공직 검증 묶음과 분리했습니다. 정당·직책·지역 구성은 공직 검증 유형 후보 안에서의 비중입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
+      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시하고, 일반 교통사고·보험/금융 법규·마약류는 공직 검증 묶음과 분리했습니다. 정당·직책·지역 구성은 공직 검증 유형 후보 안에서의 비중입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
     </section>`;
 }
 
@@ -3077,8 +3077,8 @@ function renderCriminalCategoryFull(category) {
 
 function taxArrearsTabsHtml(ds, currentSlug) {
   const tabs = [
-    { mode: 'current', count: ds.taxArrears.currentHolders },
     { mode: '5y', count: ds.taxArrears.holders },
+    { mode: 'current', count: ds.taxArrears.currentHolders },
   ];
   return `
     <div class="tax-mode-tabs" aria-label="체납 전체보기 기준">
@@ -3670,7 +3670,7 @@ function route() {
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'trend') return renderTrendFull();
   if (hash.startsWith('disclosure/')) return renderDisclosureFocusFull(hash.slice('disclosure/'.length));
-  if (hash === 'tax-arrears') return renderTaxArrearsFull('current');
+  if (hash === 'tax-arrears') return renderTaxArrearsFull('5y');
   if (hash.startsWith('tax-arrears/')) return renderTaxArrearsFull(hash.slice('tax-arrears/'.length));
   if (hash.startsWith('criminal/')) return renderCriminalCategoryFull(hash.slice('criminal/'.length));
   if (hash.startsWith('trend/')) {
