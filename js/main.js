@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170315', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170345', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -688,18 +688,22 @@ const CRIME_CATEGORY_META = {
   '뇌물': { group: '공직 검증 중점', tone: 'priority', order: 13 },
   '정치자금법': { group: '공직 검증 중점', tone: 'priority', order: 14 },
   '공직선거법': { group: '공직 검증 중점', tone: 'priority', order: 15 },
-  '직권남용': { group: '공직 검증 중점', tone: 'priority', order: 16 },
-  '성범죄': { group: '공직 검증 중점', tone: 'priority', order: 17 },
-  '마약': { group: '공직 검증 중점', tone: 'priority', order: 18 },
-  '특가법': { group: '공직 검증 중점', tone: 'priority', order: 19 },
-  '음주운전': { group: '공직 검증 중점', tone: 'priority', order: 20 },
-  '무면허운전': { group: '공직 검증 중점', tone: 'priority', order: 21 },
-  '교통사고': { group: '공직 검증 중점', tone: 'priority', order: 22 },
-  '절도': { group: '공직 검증 중점', tone: 'priority', order: 23 },
-  '조세': { group: '공직 검증 중점', tone: 'priority', order: 24 },
-  '보조금': { group: '공직 검증 중점', tone: 'priority', order: 25 },
-  '보험·금융': { group: '공직 검증 중점', tone: 'priority', order: 26 },
-  '문서·인장': { group: '공직 검증 중점', tone: 'priority', order: 27 },
+  '청탁금지법': { group: '공직 검증 중점', tone: 'priority', order: 16 },
+  '직권남용': { group: '공직 검증 중점', tone: 'priority', order: 17 },
+  '허위공문서작성': { group: '공직 검증 중점', tone: 'priority', order: 18 },
+  '허위작성공문서행사': { group: '공직 검증 중점', tone: 'priority', order: 19 },
+  '공용서류손상': { group: '공직 검증 중점', tone: 'priority', order: 20 },
+  '공용서류은닉': { group: '공직 검증 중점', tone: 'priority', order: 21 },
+  '성범죄': { group: '공직 검증 중점', tone: 'priority', order: 22 },
+  '마약': { group: '공직 검증 중점', tone: 'priority', order: 23 },
+  '특가법': { group: '공직 검증 중점', tone: 'priority', order: 24 },
+  '음주운전': { group: '공직 검증 중점', tone: 'priority', order: 25 },
+  '무면허운전': { group: '공직 검증 중점', tone: 'priority', order: 26 },
+  '위험운전치사상': { group: '공직 검증 중점', tone: 'priority', order: 27 },
+  '절도': { group: '공직 검증 중점', tone: 'priority', order: 28 },
+  '조세': { group: '공직 검증 중점', tone: 'priority', order: 29 },
+  '보조금': { group: '공직 검증 중점', tone: 'priority', order: 30 },
+  '문서·인장': { group: '공직 검증 중점', tone: 'priority', order: 31 },
   '폭력': { group: '폭력·질서', tone: 'standard', order: 40 },
   '공무집행방해': { group: '폭력·질서', tone: 'standard', order: 41 },
   '업무방해': { group: '폭력·질서', tone: 'standard', order: 42 },
@@ -708,23 +712,25 @@ const CRIME_CATEGORY_META = {
   '범인도피': { group: '폭력·질서', tone: 'standard', order: 45 },
   '사법방해': { group: '폭력·질서', tone: 'standard', order: 46 },
   '입찰방해': { group: '폭력·질서', tone: 'standard', order: 47 },
-  '도로교통': { group: '생활·안전 법규', tone: 'standard', order: 60 },
-  '자동차관리': { group: '생활·안전 법규', tone: 'standard', order: 61 },
-  '환경': { group: '생활·안전 법규', tone: 'standard', order: 62 },
-  '식품·보건': { group: '생활·안전 법규', tone: 'standard', order: 63 },
-  '교육·청소년': { group: '생활·안전 법규', tone: 'standard', order: 64 },
-  '노동': { group: '생활·안전 법규', tone: 'standard', order: 65 },
-  '농수산': { group: '생활·안전 법규', tone: 'standard', order: 66 },
-  '건축·부동산': { group: '생활·안전 법규', tone: 'standard', order: 67 },
-  '총포·화약': { group: '생활·안전 법규', tone: 'standard', order: 68 },
-  '야생생물': { group: '생활·안전 법규', tone: 'standard', order: 69 },
-  '국가공무원법': { group: '공직·행정 법규', tone: 'standard', order: 70 },
-  '국가보안법': { group: '집회·표현 관련', tone: 'context', order: 80 },
-  '집시법': { group: '집회·표현 관련', tone: 'context', order: 81 },
-  '명예훼손': { group: '기타', tone: 'standard', order: 90 },
-  '모욕': { group: '기타', tone: 'standard', order: 91 },
-  '저작권법': { group: '기타', tone: 'standard', order: 92 },
-  '도박': { group: '기타', tone: 'standard', order: 93 },
+  '교통사고': { group: '교통·안전 법규', tone: 'standard', order: 50 },
+  '도로교통': { group: '교통·안전 법규', tone: 'standard', order: 51 },
+  '자동차관리': { group: '교통·안전 법규', tone: 'standard', order: 52 },
+  '보험·금융': { group: '경제·금융 법규', tone: 'standard', order: 60 },
+  '환경': { group: '생활·안전 법규', tone: 'standard', order: 70 },
+  '식품·보건': { group: '생활·안전 법규', tone: 'standard', order: 71 },
+  '교육·청소년': { group: '생활·안전 법규', tone: 'standard', order: 72 },
+  '노동': { group: '생활·안전 법규', tone: 'standard', order: 73 },
+  '농수산': { group: '생활·안전 법규', tone: 'standard', order: 74 },
+  '건축·부동산': { group: '생활·안전 법규', tone: 'standard', order: 75 },
+  '총포·화약': { group: '생활·안전 법규', tone: 'standard', order: 76 },
+  '야생생물': { group: '생활·안전 법규', tone: 'standard', order: 77 },
+  '국가공무원법': { group: '공직·행정 법규', tone: 'standard', order: 80 },
+  '국가보안법': { group: '시국·안보 관련', tone: 'context', order: 90 },
+  '집시법': { group: '집회·시위 관련', tone: 'context', order: 91 },
+  '명예훼손': { group: '기타', tone: 'standard', order: 100 },
+  '모욕': { group: '기타', tone: 'standard', order: 101 },
+  '저작권법': { group: '기타', tone: 'standard', order: 102 },
+  '도박': { group: '기타', tone: 'standard', order: 103 },
 };
 
 function crimeCategoryMeta(category) {
@@ -2588,7 +2594,7 @@ function crimeAuditSnapshotHtml(rows, records, meta) {
       <div class="crime-stat">
         <span>중점 유형</span>
         <strong>${priority.toLocaleString()}명</strong>
-        <small>사기, 횡령, 배임, 뇌물, 선거법, 음주운전 등</small>
+        <small>부패·공직윤리·마약·성범죄·음주운전 등</small>
       </div>
       <div class="crime-stat">
         <span>분류 완료</span>
@@ -2600,18 +2606,16 @@ function crimeAuditSnapshotHtml(rows, records, meta) {
 
 function crimeAuditLeadersHtml(rows) {
   if (!rows.length) return '';
-  const byParty = summarizeCrimeAuditGroups(rows, row => row.party, 20);
-  const byRegion = summarizeCrimeAuditGroups(rows, row => row.sd, 50);
+  const priorityRows = rows.filter(row => row.priority);
+  if (!priorityRows.length) return '';
+  const byParty = summarizeCrimeComposition(priorityRows, row => row.party, { limit: 8, colorFor: label => partyColor(label) });
+  const byOffice = summarizeCrimeComposition(priorityRows, row => row.officeType, { limit: 6 });
+  const byRegion = summarizeCrimeComposition(priorityRows, row => row.sd, { limit: 8 });
   return `
-    <div class="metric-grid crime-audit-grid">
-      <div>
-        <h4 class="metric-title">정당별 중점 전과율 <small>후보 20명 이상</small></h4>
-        <div class="bar-list">${crimeAuditBars(byParty) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
-      </div>
-      <div>
-        <h4 class="metric-title">지역별 중점 전과율 <small>후보 50명 이상</small></h4>
-        <div class="bar-list">${crimeAuditBars(byRegion, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
-      </div>
+    <div class="crime-share-grid">
+      ${crimeCompositionPanelHtml('중점 유형 정당 구성', byParty)}
+      ${crimeCompositionPanelHtml('중점 유형 직책 구성', byOffice)}
+      ${crimeCompositionPanelHtml('중점 유형 지역 구성', byRegion, { regionLinks: true })}
     </div>`;
 }
 
@@ -2649,11 +2653,14 @@ function criminalCategoryChipsHtml(currentCategory = '') {
   const items = criminalOcrCategoryItems();
   if (!items.length) return '';
   const groups = [
-    { group: '공직 검증 중점', note: '사기, 횡령, 배임, 뇌물, 선거법, 성범죄, 마약, 음주운전 등' },
+    { group: '공직 검증 중점', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 마약, 음주운전 등' },
     { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
-    { group: '생활·안전 법규', note: '교통·환경·식품·건축 관련 법규 위반' },
+    { group: '교통·안전 법규', note: '일반 교통사고·도로교통·자동차 관련 법규 위반' },
+    { group: '경제·금융 법규', note: '보험·대부·수표·전자금융 등 경제거래 관련 법규 위반' },
+    { group: '생활·안전 법규', note: '환경·식품·건축 관련 법규 위반' },
     { group: '공직·행정 법규', note: '국가공무원법 등 행정·공직 관련 법규 위반' },
-    { group: '집회·표현 관련', note: '국가보안법·집시법 등은 원문 맥락 확인 필요' },
+    { group: '시국·안보 관련', note: '국가보안법은 시대·사건 맥락 확인 필요' },
+    { group: '집회·시위 관련', note: '집시법 등 집회·시위 관련 법규 위반' },
     { group: '기타', note: '' },
   ].map(def => ({ ...def, items: items.filter(item => crimeCategoryMeta(item.category).group === def.group) }))
     .filter(def => def.items.length);
@@ -2682,7 +2689,7 @@ function criminalOcrOverviewHtml() {
         ${crimeAuditLeadersHtml(rows)}
         ${chips}
       </div>
-      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 기계 판독해 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시해 실제 원문에 없는 죄명이 붙지 않도록 했습니다. 정당·지역 비율은 해당 집단 전체 후보 중 중점 유형으로 분류된 후보 비율입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
+      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 기계 판독해 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시하고, 일반 교통사고·보험/금융 법규는 중점 유형에서 분리했습니다. 정당·직책·지역 구성은 중점 유형 후보 안에서의 비중입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
     </section>`;
 }
 
