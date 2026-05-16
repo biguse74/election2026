@@ -1770,7 +1770,7 @@ function renderTrendBox() {
   const detailBits = ds.rows.length ? `
         <div class="trend-summary-stat"><strong>${formatEok(ds.assets.median)}</strong><small>재산 중앙값</small></div>
         <div class="trend-summary-stat"><strong>${oneInText(ds.criminal.rate)}</strong><small>전과 1건 이상</small></div>
-        <div class="trend-summary-stat"><strong>${formatPct(ds.military.notServedRate, 0)}</strong><small>남성 후보 미필</small></div>` : '';
+        <div class="trend-summary-stat"><strong>${oneInText(ds.military.notServedRate)}</strong><small>병역 대상 남성 미필</small></div>` : '';
   return `
     <a class="trend-card" href="#trend">
       <div class="trend-card-head">
@@ -1824,8 +1824,8 @@ function disclosureOverviewHtml(ds) {
       </div>
       <div class="disclosure-card">
         <span class="disclosure-label">전체 병역</span>
-        <strong>${formatPct(ds.military.notServedRate)}</strong>
-        <small>남성 후보 기준 · 미필 ${ds.military.notServed.toLocaleString()}명 / 병역 대상 ${ds.military.eligible.toLocaleString()}명</small>
+        <strong>${oneInText(ds.military.notServedRate)}</strong>
+        <small>병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필 (${formatPct(ds.military.notServedRate)})</small>
       </div>
     </div>`;
 }
@@ -1845,7 +1845,7 @@ function criminalBars(items) {
 function militaryBars(items) {
   const shown = items.slice(0, 10);
   const max = Math.max(...shown.map(x => x.rate), 1);
-  return shown.map(x => metricBar(x.label, x.rate, max, '#2c5d8f', formatPct(x.rate), `남성 ${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명`)).join('');
+  return shown.map(x => metricBar(x.label, x.rate, max, '#2c5d8f', oneInText(x.rate), `남성 ${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명 · ${formatPct(x.rate)}`)).join('');
 }
 
 function candidateRankContext(c, includeRegion = true) {
@@ -1975,7 +1975,7 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${militaryBars(ds.byRegion.military) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
-      <p class="trend-meta">여성 후보는 병역 통계에서 제외했습니다. 남성 후보 중 병역 비대상도 분모에서 제외하고, "군복무를 마치지 아니한 사람"과 병적기록 없음 항목을 미필로 집계했습니다.</p>
+      <p class="trend-meta">전체 병역 ${oneInText(ds.military.notServedRate)}은 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필이라는 뜻입니다. 여성 후보는 병역 통계에서 제외했고, 남성 후보 중 병역 비대상도 분모에서 제외했습니다.</p>
     </section>`;
 }
 
@@ -2028,30 +2028,6 @@ function renderTrendFull() {
   const jobMax = s.jobs[0] ? s.jobs[0][1] : 1;
   const jobBars = s.jobs.map(([j, n]) => statBar(j || '미기재', n, jobMax, 'var(--ink-sub)')).join('');
 
-  // 시계열 — 페이지 하단에 작은 sparkline으로 유지(완전 제거 X, 보조 정보)
-  const ts = state.timeseries;
-  let trendSparkline = '';
-  if (ts?.series?.length >= 2) {
-    const series = ts.series;
-    const totals = series.map(r => r.total);
-    const first = series[0].date, last = series[series.length - 1].date;
-    const fmt = d => `${d.slice(4,6)}/${d.slice(6,8)}`;
-    const min = Math.min(...totals), max = Math.max(...totals), range = max - min || 1;
-    const w = 600, h = 80;
-    const stepX = w / (totals.length - 1);
-    const pts = totals.map((v, i) =>
-      `${(i*stepX).toFixed(1)},${(h - ((v-min)/range)*(h-10) - 5).toFixed(1)}`
-    ).join(' ');
-    trendSparkline = `
-      <section class="trend-section">
-        <h3 class="trend-section-title">최근 ${series.length}일 출마자 수 추이</h3>
-        <svg viewBox="0 0 ${w} ${h}" class="trend-chart" aria-label="출마자 수 변화">
-          <polyline fill="none" stroke="#c41e3a" stroke-width="2" points="${pts}"/>
-        </svg>
-        <p class="trend-meta">${fmt(first)} ${totals[0].toLocaleString()}명 → ${fmt(last)} ${totals[totals.length-1].toLocaleString()}명</p>
-      </section>`;
-  }
-
   app.innerHTML = `
     <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">출마자 한눈에</span></nav>
     <div class="detail-head">
@@ -2086,9 +2062,7 @@ function renderTrendFull() {
     <section class="trend-section">
       <h3 class="trend-section-title">직업 분포 <small>상위 10</small></h3>
       <div class="bar-list">${jobBars}</div>
-    </section>
-
-    ${trendSparkline}`;
+    </section>`;
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
