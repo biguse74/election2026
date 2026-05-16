@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170650', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170705', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -690,20 +690,15 @@ const CRIME_CATEGORY_META = {
   '공직선거법': { group: '공직 검증 중점', tone: 'priority', order: 15 },
   '청탁금지법': { group: '공직 검증 중점', tone: 'priority', order: 16 },
   '직권남용': { group: '공직 검증 중점', tone: 'priority', order: 17 },
-  '허위공문서작성': { group: '공직 검증 중점', tone: 'priority', order: 18 },
-  '허위작성공문서행사': { group: '공직 검증 중점', tone: 'priority', order: 19 },
-  '공용서류손상': { group: '공직 검증 중점', tone: 'priority', order: 20 },
-  '공용서류은닉': { group: '공직 검증 중점', tone: 'priority', order: 21 },
+  '문서·인장·공용서류': { group: '공직 검증 중점', tone: 'priority', order: 18 },
   '성범죄': { group: '공직 검증 중점', tone: 'priority', order: 22 },
   '마약': { group: '공직 검증 중점', tone: 'priority', order: 23 },
   '특가법': { group: '공직 검증 중점', tone: 'priority', order: 24 },
-  '음주운전': { group: '공직 검증 중점', tone: 'priority', order: 25 },
+  '음주·위험운전': { group: '공직 검증 중점', tone: 'priority', order: 25 },
   '무면허운전': { group: '공직 검증 중점', tone: 'priority', order: 26 },
-  '위험운전치사상': { group: '공직 검증 중점', tone: 'priority', order: 27 },
   '절도': { group: '공직 검증 중점', tone: 'priority', order: 28 },
   '조세': { group: '공직 검증 중점', tone: 'priority', order: 29 },
   '보조금': { group: '공직 검증 중점', tone: 'priority', order: 30 },
-  '문서·인장': { group: '공직 검증 중점', tone: 'priority', order: 31 },
   '폭력': { group: '폭력·질서', tone: 'standard', order: 40 },
   '공무집행방해': { group: '폭력·질서', tone: 'standard', order: 41 },
   '업무방해': { group: '폭력·질서', tone: 'standard', order: 42 },
@@ -2594,7 +2589,7 @@ function crimeAuditSnapshotHtml(rows, records, meta) {
       <div class="crime-stat">
         <span>중점 유형</span>
         <strong>${priority.toLocaleString()}명</strong>
-        <small>부패·공직윤리·마약·성범죄·음주운전 등</small>
+        <small>부패·공직윤리·마약·성범죄·음주·위험운전 등</small>
       </div>
       <div class="crime-stat">
         <span>분류 완료</span>
@@ -2653,7 +2648,7 @@ function criminalCategoryChipsHtml(currentCategory = '') {
   const items = criminalOcrCategoryItems();
   if (!items.length) return '';
   const groups = [
-    { group: '공직 검증 중점', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 마약, 음주운전 등' },
+    { group: '공직 검증 중점', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 문서·공용서류, 마약, 음주·위험운전 등' },
     { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
     { group: '교통·안전 법규', note: '일반 교통사고·도로교통·자동차 관련 법규 위반' },
     { group: '경제·금융 법규', note: '보험·대부·수표·전자금융 등 경제거래 관련 법규 위반' },
