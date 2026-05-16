@@ -432,6 +432,15 @@ function formatRegionLabel(item) {
   return `${sdShort} ${sgg}`;
 }
 
+function canonicalSidoName(label) {
+  const value = String(label || '').trim();
+  if (!value) return value;
+  if (SIDO_ORDER.includes(value) || value === JOINT_SIDO) return value;
+  const hit = Object.entries(SIDO_TAGS)
+    .find(([sd, tags]) => tags.includes(value) || shortLocalName(sd) === value);
+  return hit ? hit[0] : value;
+}
+
 // 경쟁률(후보 수 / 의석 수) 계산. SECTIONS의 sgTypecode만 대상.
 const seatKey = c => {
   const sdName = c.sdName === JOINT_SIDO
@@ -1924,11 +1933,11 @@ function statBar(label, count, max, color) {
 }
 
 function trendRegionHref(label) {
-  return `#trend/${encodeURIComponent(label)}`;
+  return `#trend/${encodeURIComponent(canonicalSidoName(label))}`;
 }
 
 function trendLocalHref(sd, label) {
-  return `#trend/${encodeURIComponent(sd)}/${encodeURIComponent(label)}`;
+  return `#trend/${encodeURIComponent(canonicalSidoName(sd))}/${encodeURIComponent(label)}`;
 }
 
 function metricLinkHref(label, options = {}) {
@@ -1973,7 +1982,8 @@ function disclosureOverviewHtml(ds) {
 }
 
 function assetBars(items, options = {}) {
-  const shown = items.slice(0, options.limit ?? 10);
+  const defaultLimit = options.regionLinks ? items.length : 10;
+  const shown = items.slice(0, options.limit ?? defaultLimit);
   const max = Math.max(...shown.map(x => x.avg), 1);
   return shown.map(x => metricBar(
     x.label,
@@ -1987,7 +1997,8 @@ function assetBars(items, options = {}) {
 }
 
 function criminalBars(items, options = {}) {
-  const shown = items.slice(0, options.limit ?? 10);
+  const defaultLimit = options.regionLinks ? items.length : 10;
+  const shown = items.slice(0, options.limit ?? defaultLimit);
   const max = Math.max(...shown.map(x => x.rate), 1);
   return shown.map(x => metricBar(
     x.label,
@@ -2001,7 +2012,8 @@ function criminalBars(items, options = {}) {
 }
 
 function militaryBars(items, options = {}) {
-  const shown = items.slice(0, options.limit ?? 10);
+  const defaultLimit = options.regionLinks ? items.length : 10;
+  const shown = items.slice(0, options.limit ?? defaultLimit);
   const max = Math.max(...shown.map(x => x.rate), 1);
   return shown.map(x => metricBar(
     x.label,
@@ -2172,6 +2184,7 @@ function disclosureRegionOverviewHtml(sd, summary) {
 }
 
 function renderTrendRegionFull(sd) {
+  sd = canonicalSidoName(sd);
   const app = document.getElementById('app');
   app.className = '';
   if (!state.data) {
@@ -2248,6 +2261,7 @@ function renderTrendRegionFull(sd) {
 }
 
 function renderTrendLocalFull(sd, local) {
+  sd = canonicalSidoName(sd);
   const app = document.getElementById('app');
   app.className = '';
   if (!state.data) {
@@ -2826,6 +2840,7 @@ function renderHome() {
 
 // ============ Render: 상세 ============
 function renderSidoDetail(sidoName, focusSgg) {
+  sidoName = canonicalSidoName(sidoName);
 
   // 상세에서 그릴 섹션들의 후보 데이터를 한 번에 준비
   const sectionData = SECTIONS
