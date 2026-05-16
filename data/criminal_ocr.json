@@ -1,10 +1,10 @@
 {
   "meta": {
-    "generated_at": "2026-05-16T18:15:41.823706+00:00",
+    "generated_at": "2026-05-16T22:07:11.296681+00:00",
     "engine": "tesseract",
     "classification_version": 6,
-    "processed": 2616,
-    "failures": 11,
+    "processed": 2618,
+    "failures": 9,
     "selected_candidates": 2627,
     "total_candidates_with_criminal_pdf": 2627,
     "partial": true
@@ -117,7 +117,7 @@
     },
     {
       "category": "음주운전",
-      "count": 945,
+      "count": 946,
       "group": "공직 검증 중점",
       "tone": "priority",
       "order": 25
@@ -222,14 +222,14 @@
     },
     {
       "category": "교통사고",
-      "count": 323,
+      "count": 322,
       "group": "교통·안전 법규",
       "tone": "standard",
       "order": 50
     },
     {
       "category": "도로교통",
-      "count": 1201,
+      "count": 1202,
       "group": "교통·안전 법규",
       "tone": "standard",
       "order": 51
@@ -32330,6 +32330,25 @@
       ]
     },
     {
+      "huboid": "100157644",
+      "name": "최용식",
+      "party": "더불어민주당",
+      "sdName": "충청남도",
+      "sggName": "보령시나선거구",
+      "wiwName": "보령시",
+      "criminal_record": "2건",
+      "categories": [],
+      "matched_terms": {},
+      "offenses": [],
+      "offense_text": "고__|전과기록증명에관한제출서AAR보령시의회의원선거보령시나선거구|||소속정당명더불어민주당후보자성명aga전과기록ae,eer,",
+      "ocr_text": "고         _     _\n|         전과기록증명에 관한 제출서\n AAR      보령시의회의원선거   보령시나선거구\n|\n|\n|    소속정당명        더불어민주당        후보자성명          aga\n전과기록\nae,\neer,\n첨부서류 : 범죄경력조회 회보서 1부.\n2026년 6월 3일 AAS 보령시의회의원선거에서 『공직선거법』 제60조의2제2항에 따\n라 전과기록에 관한 증명서를 위와 같이 제출합니다.\n2026년 3월 9일\n위 예비후보자  (89)\nies)\n보령시선거관리위원회 AS",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100157644",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4403/Hb100157644/junkwa/20260516133843980_7.PDF"
+      ]
+    },
+    {
       "huboid": "100157649",
       "name": "최경운",
       "party": "국민의힘",
@@ -34493,6 +34512,25 @@
       ]
     },
     {
+      "huboid": "100157928",
+      "name": "박원서",
+      "party": "더불어민주당",
+      "sdName": "서울특별시",
+      "sggName": "강동구다선거구",
+      "wiwName": "강동구",
+      "criminal_record": "1건",
+      "categories": [],
+      "matched_terms": {},
+      "offenses": [],
+      "offense_text": "형량어분결패|처분일자||\"관한특별조치범위반|“FF3000008ㅣ200.0110|",
+      "ocr_text": "|                   전과기록중명에 관한 제출서                   |\n\nee eee ee ee ee |뽀0\n소속정당명      . ： 더불어민주당 ㅣ 후보자성명 ㅣ 박원서     ae\n\ner                         ,  @\n\n|        죄 명             형량어분결패 |       처분일자       |\n\n|\" 관한특별조치범위반 | “FF 3000008 ㅣ 200.0110       |\n\n첨부서류 :       조    보서 ]부.                              a   |\n\n점부서류 : 범죄경력조희 회보서 Le                    nna Yang |\n\nch sige) 직진 A 2 a) |\n\n20264 6월 38 실시하는 강동구의회의원선거(강동구쿼선거구)에서 [공직선\n\nAW) 제60조의2제2항에 따라 전과기록에 관한 증명서를 위와 같이 계출합니다.   |\n\n|\n\n2026년 3 월 11 일           |\n\n|                         위 예비후보자 wal (449) |\n\n|\n\n| 강동구선거관리위원회 AS                                    |\n\n주: 1. 지방자치단체의 장선거 및 교육감선거에서는 “선거구명\"란은 작성하지 아니합니다.\n2. 점부하는 범죄경력조희 희보서는 \"공직선거후보자용“으로 받급된 희보서를 제출하여야 합니다.\n8. 전과기록은 선거기간개시일 전 150일 이후에 발급받은 범죄경력조회 회보서에 의하여 작성\n하여야 합니다.",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100157928",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg1125/Hb100157928/junkwa/20260516112049102_1.PDF"
+      ]
+    },
+    {
       "huboid": "100157932",
       "name": "이수의",
       "party": "무소속",
@@ -35832,6 +35870,44 @@
       "pdf_count": 1,
       "pdf_urls": [
         "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4414/Hb100158025/junkwa/20260323171840362_1.PDF"
+      ]
+    },
+    {
+      "huboid": "100158027",
+      "name": "정은철",
+      "party": "더불어민주당",
+      "sdName": "경기도",
+      "sggName": "구리시가선거구",
+      "wiwName": "구리시",
+      "criminal_record": "1건",
+      "categories": [
+        "음주운전",
+        "도로교통"
+      ],
+      "matched_terms": {
+        "음주운전": [
+          "음주운전"
+        ],
+        "도로교통": [
+          "도로교통법"
+        ]
+      },
+      "offenses": [
+        {
+          "date": "2003-11-17",
+          "offense": "||",
+          "sentence": "",
+          "categories": [],
+          "matched_terms": {},
+          "raw": "||"
+        }
+      ],
+      "offense_text": "|전과기록증명에관한제출서|aa구리시의회의원선거Pe구리시가선거구ㅣ|소속정당명더블어민주당|후브자성명정은철|전과기록|ay형량(처분결과)치분일자||도로교통법위반(음주운전)벌금1,500,000원2003/11/17||",
+      "ocr_text": "| 전과기록증명에 관한 제출서               |\naa    구리시의회의원선거 Pe 구리시가선거구 ㅣ\n|     소속정당명        더블어민주당 | 후브자성명      정은철    |\n               전 과 기 록               |\n       ay           형량(처분결과)          치분일자      |\n|\n\n 도로교통법위반(음주운전)     벌금 1,500,000 원         2003/11/17     |\n| 첨부서류 : 범죄경력조희 희보서 1부.\n   20264 6월 3일 실시하는 구리시의회희원선거에서 [공직선거법. 제60조의2제\n2항에 따라 전과기록에 관한 증명서를 위와 같이 제출합니다.                  |\n20264 321 12a              |\n\n위 예비후보자 Aca 개\n\n| 구리시선거관리위원회 귀중                                  |",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100158027",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4125/Hb100158027/junkwa/20260516140948260_1.PDF"
       ]
     },
     {
@@ -111794,32 +111870,6 @@
       ]
     },
     {
-      "huboid": "100165844",
-      "name": "김기성",
-      "party": "무소속",
-      "sdName": "경기도",
-      "sggName": "안양시바선거구",
-      "wiwName": "안양시동안구",
-      "criminal_record": "1건",
-      "categories": [
-        "교통사고"
-      ],
-      "matched_terms": {
-        "교통사고": [
-          "교통사고처리특례법",
-          "교통사고처리특례"
-        ]
-      },
-      "offenses": [],
-      "offense_text": "전과기록증명에관한제출서안양시의회의원선거선거구명후보자성명1그2~소전과기록형량(처분결과)업무상과실•자농차추릭-법금2,500,000원교통사고처리특례법위반",
-      "ocr_text": "[별지 제12호서식의(카)] 선 거 명 소속;성당명 죄 명 전과기록증명에 관한 제출서 안양시의회의원선거 선거구명 후보자성명 1그 2~ 소 전 과 기 록 형량(처분결과) 업 무상과실•자농차추릭- 법금 2,500,000원 교통사고처리특례법위반 첨부서류 : 범죄경력조회 회보서 1부 2026년 6월 3일 실시하는 안양시의회의원선거에서 전과기록에 관한 증명서를 위와 같이 제출합니다 안양시동안구선거관리위원회 귀중 」공직선기법』 안(챵入]바선거구 김기성 처분일자 1989-5.10 제49조제10항에 따라 2026년 5월 15일 위 후보자 김기성",
-      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100165844",
-      "pdf_count": 1,
-      "pdf_urls": [
-        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4110/Hb100165844/junkwa/20260515180612064_6.PDF"
-      ]
-    },
-    {
       "huboid": "100165850",
       "name": "정연상",
       "party": "무소속",
@@ -112021,24 +112071,12 @@
   ],
   "failures": [
     {
-      "huboid": "100157644",
-      "error": "non-PDF response from NEC (3,335 bytes): <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.or"
-    },
-    {
-      "huboid": "100157928",
-      "error": "non-PDF response from NEC (3,335 bytes): <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.or"
-    },
-    {
-      "huboid": "100158027",
-      "error": "non-PDF response from NEC (3,335 bytes): <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.or"
-    },
-    {
       "huboid": "100158217",
-      "error": "non-PDF response from NEC (3,335 bytes): <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.or"
+      "error": "<urlopen error timed out>"
     },
     {
       "huboid": "100158525",
-      "error": "non-PDF response from NEC (3,335 bytes): <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.or"
+      "error": "<urlopen error timed out>"
     },
     {
       "huboid": "100158612",
@@ -112062,6 +112100,10 @@
     },
     {
       "huboid": "100164179",
+      "error": "<urlopen error timed out>"
+    },
+    {
+      "huboid": "100165639",
       "error": "<urlopen error timed out>"
     }
   ]
