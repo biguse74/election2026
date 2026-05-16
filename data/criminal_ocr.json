@@ -1,8 +1,8 @@
 {
   "meta": {
-    "generated_at": "2026-05-16T22:30:49.328469+00:00",
+    "generated_at": "2026-05-16T22:50:15.442562+00:00",
     "engine": "tesseract",
-    "classification_version": 9,
+    "classification_version": 10,
     "processed": 2627,
     "failures": 0,
     "selected_candidates": 2627,
@@ -83,7 +83,7 @@
     {
       "category": "마약",
       "count": 2,
-      "group": "공직 검증 중점",
+      "group": "공직 신뢰 중점",
       "tone": "priority",
       "order": 23
     },
@@ -400,7 +400,7 @@
     {
       "category": "마약",
       "count": 1,
-      "group": "공직 검증 중점",
+      "group": "공직 신뢰 중점",
       "tone": "priority",
       "order": 23
     },

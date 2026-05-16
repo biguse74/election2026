@@ -30,7 +30,7 @@ DETAILS_FILE = ROOT / "data" / "candidate_details.json"
 CANDIDATE_DIR = ROOT / "data" / "candidates" / "20260603"
 OUT_FILE = ROOT / "data" / "criminal_ocr.json"
 CACHE_DIR = ROOT / "data" / ".criminal_ocr_cache"
-CLASSIFICATION_VERSION = 9
+CLASSIFICATION_VERSION = 10
 PDF_HEADERS = {
     "User-Agent": "newtamsa-election2026/1.0 (+https://github.com/biguse74/election2026)",
     "Referer": "https://info.nec.go.kr/",
@@ -119,7 +119,7 @@ CATEGORY_META = {
     "직권남용": {"group": "공직 검증 중점", "tone": "priority", "order": 17},
     "허위공문서·문서위조·공용서류": {"group": "공직 검증 중점", "tone": "priority", "order": 18},
     "성범죄": {"group": "공직 검증 중점", "tone": "priority", "order": 22},
-    "마약": {"group": "공직 검증 중점", "tone": "priority", "order": 23},
+    "마약": {"group": "공직 신뢰 중점", "tone": "priority", "order": 23},
     "특가법": {"group": "공직 검증 중점", "tone": "priority", "order": 24},
     "음주·위험운전": {"group": "공직 검증 중점", "tone": "priority", "order": 25},
     "무면허운전": {"group": "공직 검증 중점", "tone": "priority", "order": 26},

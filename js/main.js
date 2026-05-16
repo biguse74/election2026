@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170745', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170935', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -692,7 +692,7 @@ const CRIME_CATEGORY_META = {
   '직권남용': { group: '공직 검증 중점', tone: 'priority', order: 17 },
   '허위공문서·문서위조·공용서류': { group: '공직 검증 중점', tone: 'priority', order: 18 },
   '성범죄': { group: '공직 검증 중점', tone: 'priority', order: 22 },
-  '마약': { group: '공직 검증 중점', tone: 'priority', order: 23 },
+  '마약': { group: '공직 신뢰 중점', tone: 'priority', order: 23 },
   '특가법': { group: '공직 검증 중점', tone: 'priority', order: 24 },
   '음주·위험운전': { group: '공직 검증 중점', tone: 'priority', order: 25 },
   '무면허운전': { group: '공직 검증 중점', tone: 'priority', order: 26 },
@@ -2004,6 +2004,7 @@ function renderTrendBox() {
   const detailBits = ds.rows.length ? `
         <div class="trend-summary-stat"><strong>${formatEok(ds.assets.median)}</strong><small>재산 중앙값</small></div>
         <div class="trend-summary-stat"><strong>${formatPct(ds.criminal.rate)}</strong><small>전과 보유율</small></div>
+        <div class="trend-summary-stat"><strong>${ds.taxArrears.currentHolders.toLocaleString()}</strong>명<small>현 체납</small></div>
         <div class="trend-summary-stat"><strong>${formatPct(ds.military.notServedRate)}</strong><small>남성 병역 미필률</small></div>` : '';
   return `
     <a class="trend-card" href="#trend">
@@ -2084,6 +2085,57 @@ function disclosureOverviewHtml(ds) {
         <small>미필 ${ds.military.notServed.toLocaleString()}명 / 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명</small>
       </div>
     </div>`;
+}
+
+function disclosureFocusHref(kind) {
+  return `#disclosure/${encodeURIComponent(kind)}`;
+}
+
+function disclosureFocusCardsHtml(ds) {
+  if (!ds.rows.length) return '';
+  const cards = [
+    {
+      kind: 'assets',
+      label: '재산',
+      value: formatEok(ds.assets.median),
+      detail: `중앙값 · 평균 ${formatEok(ds.assets.avg)}`,
+      note: '정당별·지역별 재산 분포',
+    },
+    {
+      kind: 'criminal',
+      label: '전과',
+      value: formatPct(ds.criminal.rate),
+      detail: `전과 1건 이상 ${ds.criminal.holders.toLocaleString()}명`,
+      note: '전과 건수와 OCR 범죄 유형',
+    },
+    {
+      kind: 'tax',
+      label: '체납',
+      value: `${ds.taxArrears.currentHolders.toLocaleString()}명`,
+      detail: `현 체납 · 최근 5년 ${ds.taxArrears.holders.toLocaleString()}명`,
+      note: '현 체납과 최근 5년 체납 분리',
+    },
+    {
+      kind: 'military',
+      label: '병역',
+      value: formatPct(ds.military.notServedRate),
+      detail: `미필 ${ds.military.notServed.toLocaleString()}명 / 대상 ${ds.military.eligible.toLocaleString()}명`,
+      note: '남성 병역 대상 기준',
+    },
+  ];
+  return `
+    <section class="trend-section disclosure-focus-section">
+      <h3 class="trend-section-title">공개정보별로 보기 <small>재산·전과·체납·병역</small></h3>
+      <div class="disclosure-focus-grid">
+        ${cards.map(card => `
+          <a class="disclosure-focus-card disclosure-focus-${card.kind}" href="${disclosureFocusHref(card.kind)}">
+            <span>${escapeHtml(card.label)}</span>
+            <strong>${card.value}</strong>
+            <small>${escapeHtml(card.detail)}</small>
+            <em>${escapeHtml(card.note)} →</em>
+          </a>`).join('')}
+      </div>
+    </section>`;
 }
 
 function assetBars(items, options = {}) {
@@ -2441,11 +2493,19 @@ function renderTrendLocalFull(sd, local) {
 
 function disclosureStatsHtml(ds) {
   if (!ds.rows.length) return '';
+  return `${assetFocusHtml(ds)}${criminalFocusHtml(ds)}${taxArrearsFocusHtml(ds)}${militaryFocusHtml(ds)}`;
+}
+
+function assetFocusHtml(ds) {
   return `
-    ${disclosureLeaderHtml(ds)}
+    <section class="trend-section">
+      <h3 class="trend-section-title">재산 상위 후보 <small>전체 1~5위</small></h3>
+      ${candidateRankList(ds.leaders.assetsOverall, 'asset', true)}
+      <p class="trend-meta">재산은 선관위 재산신고액(천원)을 억원으로 환산했습니다. 후보 이름을 누르면 후보 상세 공개정보를 볼 수 있습니다.</p>
+    </section>
 
     <section class="trend-section">
-      <h3 class="trend-section-title">재산 통계 <small>전체·정당별·지역별</small></h3>
+      <h3 class="trend-section-title">재산 통계 <small>정당별·지역별</small></h3>
       <div class="metric-grid">
         <div>
           <h4 class="metric-title">정당별 평균 재산 <small>20명 이상</small></h4>
@@ -2456,11 +2516,19 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${assetBars(ds.byRegion.assets, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
-      <p class="trend-meta">선관위 재산신고액(천원)을 억원으로 환산. 막대는 평균 재산 기준입니다. 지역명을 누르면 시군구별 상세 통계로 이동합니다.</p>
+    </section>`;
+}
+
+function criminalFocusHtml(ds) {
+  return `
+    <section class="trend-section">
+      <h3 class="trend-section-title">전과 상위 후보 <small>전체 1~5위</small></h3>
+      ${candidateRankList(ds.leaders.criminalOverall, 'criminal', true)}
+      <p class="trend-meta">전과 건수는 선관위 후보자 정보공개의 전과기록유무(건수) 기준입니다. 범죄 유형은 아래 전과 원문 분류에서 따로 확인할 수 있습니다.</p>
     </section>
 
     <section class="trend-section">
-      <h3 class="trend-section-title">전과 통계 <small>전체·정당별·지역별</small></h3>
+      <h3 class="trend-section-title">전과 통계 <small>정당별·지역별</small></h3>
       <div class="metric-grid">
         <div>
           <h4 class="metric-title">정당별 전과 보유율 <small>20명 이상</small></h4>
@@ -2474,9 +2542,14 @@ function disclosureStatsHtml(ds) {
       <p class="trend-meta">전과 보유율은 전과기록유무(건수)가 1건 이상인 후보 비율입니다. 예: 전체 전과 ${formatPct(ds.criminal.rate)}는 전체 ${ds.criminal.count.toLocaleString()}명 중 ${ds.criminal.holders.toLocaleString()}명이 전과 1건 이상이라는 뜻입니다.</p>
     </section>
 
+    ${criminalOcrOverviewHtml()}`;
+}
+
+function taxArrearsFocusHtml(ds) {
+  return `
     <section class="trend-section">
       <div class="section-title-row">
-        <h3 class="trend-section-title">체납 통계 <small>최근 5년·현 체납</small></h3>
+        <h3 class="trend-section-title">체납 상위 후보 <small>현 체납·최근 5년</small></h3>
         <div class="section-actions">
           <a href="${taxArrearsListHref('current')}">현 체납 전체보기</a>
           <a href="${taxArrearsListHref('5y')}">최근 5년 전체보기</a>
@@ -2494,21 +2567,42 @@ function disclosureStatsHtml(ds) {
           <a class="rank-more-link" href="${taxArrearsListHref('5y')}">최근 5년 체납 후보 ${ds.taxArrears.holders.toLocaleString()}명 전체보기</a>
         </div>
       </div>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">정당별 체납 후보율 <small>좌: 현 체납 · 우: 최근 5년</small></h3>
       <div class="metric-grid">
+        <div>
+          <h4 class="metric-title">정당별 현 체납 후보율 <small>20명 이상</small></h4>
+          <div class="bar-list">${taxArrearsBars(ds.byParty.taxArrearsCurrent) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
+        </div>
         <div>
           <h4 class="metric-title">정당별 최근 5년 체납 후보율 <small>20명 이상</small></h4>
           <div class="bar-list">${taxArrearsBars(ds.byParty.taxArrears5y) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
         </div>
+      </div>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">지역별 체납 후보율 <small>좌: 현 체납 · 우: 최근 5년</small></h3>
+      <div class="metric-grid">
         <div>
           <h4 class="metric-title">지역별 현 체납 후보율 <small>지역명 클릭</small></h4>
           <div class="bar-list">${taxArrearsBars(ds.byRegion.taxArrearsCurrent, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
+        <div>
+          <h4 class="metric-title">지역별 최근 5년 체납 후보율 <small>지역명 클릭</small></h4>
+          <div class="bar-list">${taxArrearsBars(ds.byRegion.taxArrears5y, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+        </div>
       </div>
-      <p class="trend-meta">체납은 선관위 후보자 정보공개의 납세 자료 기준입니다. 최근 5년 체납은 과거 체납 이력을, 현 체납은 현재 남아 있는 체납액을 뜻하므로 전과와 별도의 검증 축으로 보아야 합니다.</p>
-    </section>
+      <p class="trend-meta">체납은 선관위 후보자 정보공개의 납세 자료 기준입니다. 현 체납은 현재 남아 있는 체납액, 최근 5년 체납은 과거 체납 이력을 뜻하므로 둘을 나누어 봐야 합니다.</p>
+    </section>`;
+}
 
+function militaryFocusHtml(ds) {
+  return `
     <section class="trend-section">
-      <h3 class="trend-section-title">병역 통계 <small>전체·정당별·지역별</small></h3>
+      <h3 class="trend-section-title">병역 통계 <small>정당별·지역별</small></h3>
       <div class="metric-grid">
         <div>
           <h4 class="metric-title">정당별 미필률 <small>병역 대상 10명 이상</small></h4>
@@ -2521,6 +2615,67 @@ function disclosureStatsHtml(ds) {
       </div>
       <p class="trend-meta">남성 병역 미필률 ${formatPct(ds.military.notServedRate)}는 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필이라는 뜻입니다. 여성 후보는 병역 통계에서 제외했고, 남성 후보 중 병역 비대상도 분모에서 제외했습니다.</p>
     </section>`;
+}
+
+function disclosureFocusPageConfig(kind, ds) {
+  const key = String(kind || 'assets').toLowerCase();
+  const configs = {
+    assets: {
+      key: 'assets',
+      title: '재산 집중 보기',
+      stats: [`중앙값 ${formatEok(ds.assets.median)}`, `평균 ${formatEok(ds.assets.avg)}`, `${ds.assets.count.toLocaleString()}명`],
+      intro: '선관위 후보자 정보공개의 재산신고액을 정당별·지역별 평균과 후보별 상위 순위로 분리해 봅니다.',
+      body: assetFocusHtml(ds),
+    },
+    criminal: {
+      key: 'criminal',
+      title: '전과 집중 보기',
+      stats: [`전과 ${formatPct(ds.criminal.rate)}`, `${ds.criminal.holders.toLocaleString()}명`, `총 ${ds.criminal.cases.toLocaleString()}건`],
+      intro: '전과 보유율과 전과 PDF 죄명 영역 분류를 한 화면에서 봅니다. 직책과 범죄 유형을 함께 확인해야 합니다.',
+      body: criminalFocusHtml(ds),
+    },
+    tax: {
+      key: 'tax',
+      title: '체납 집중 보기',
+      stats: [`현 체납 ${ds.taxArrears.currentHolders.toLocaleString()}명`, `최근 5년 ${ds.taxArrears.holders.toLocaleString()}명`, `현 체납 합계 ${moneyDisclosure(ds.taxArrears.totalCurrent) || '0원'}`],
+      intro: '체납은 전과와 별도의 검증 축입니다. 현 체납과 최근 5년 체납을 나눠 보고, 정당별·지역별 차이도 두 기준으로 함께 봅니다.',
+      body: taxArrearsFocusHtml(ds),
+    },
+    military: {
+      key: 'military',
+      title: '병역 집중 보기',
+      stats: [`미필 ${formatPct(ds.military.notServedRate)}`, `대상 ${ds.military.eligible.toLocaleString()}명`, `미필 ${ds.military.notServed.toLocaleString()}명`],
+      intro: '남성 후보 중 병역 대상자를 기준으로 정당별·지역별 미필률을 분리해 봅니다.',
+      body: militaryFocusHtml(ds),
+    },
+  };
+  return configs[key] || configs.assets;
+}
+
+function renderDisclosureFocusFull(kind = 'assets') {
+  const app = document.getElementById('app');
+  app.className = '';
+  if (!state.data) {
+    app.innerHTML = '<div class="loading">불러오는 중…</div>';
+    return;
+  }
+  const ds = buildDisclosureStats();
+  const config = disclosureFocusPageConfig(kind, ds);
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">${escapeHtml(config.title)}</span></nav>
+    <div class="detail-head">
+      <div>
+        <h1 class="detail-title">${escapeHtml(config.title)}</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(config.title)} - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+      </div>
+      <div class="detail-inline-stats">
+        ${config.stats.map(stat => `<span>${escapeHtml(stat)}</span>`).join('')}
+      </div>
+    </div>
+    <p class="page-intro">${escapeHtml(config.intro)}</p>
+    ${disclosureFocusCardsHtml(ds)}
+    ${config.body}`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 function criminalOcrCategoryItems() {
@@ -2728,7 +2883,7 @@ function crimeAuditSnapshotHtml(rows, records, meta) {
       <div class="crime-stat">
         <span>중점 유형</span>
         <strong>${priority.toLocaleString()}명</strong>
-        <small>부패·공직윤리·마약·성범죄·음주·위험운전 등</small>
+        <small>부패·공직윤리·공직 신뢰·음주·위험운전 등</small>
       </div>
       <div class="crime-stat">
         <span>분류 완료</span>
@@ -2787,7 +2942,8 @@ function criminalCategoryChipsHtml(currentCategory = '') {
   const items = criminalOcrCategoryItems();
   if (!items.length) return '';
   const groups = [
-    { group: '공직 검증 중점', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 허위공문서·문서위조, 마약, 음주·위험운전 등' },
+    { group: '공직 검증 중점', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 허위공문서·문서위조, 음주·위험운전 등' },
+    { group: '공직 신뢰 중점', note: '마약처럼 공직 신뢰와 직무 적합성을 따로 확인할 중대 유형' },
     { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
     { group: '교통·안전 법규', note: '일반 교통사고·도로교통·자동차 관련 법규 위반' },
     { group: '경제·금융 법규', note: '보험·대부·수표·전자금융 등 경제거래 관련 법규 위반' },
@@ -3114,8 +3270,7 @@ function renderTrendFull() {
     <p class="page-intro">선관위 등록 데이터와 후보자 정보공개 자료를 기반으로 정당·연령·성별·직업·재산·전과·체납·병역 분포를 정리했습니다.</p>
 
     ${disclosureOverviewHtml(ds)}
-    ${disclosureStatsHtml(ds)}
-    ${criminalOcrOverviewHtml()}
+    ${disclosureFocusCardsHtml(ds)}
 
     <section class="trend-section">
       <h3 class="trend-section-title">정당별 분포 <small>상위 10</small></h3>
@@ -3472,6 +3627,7 @@ function route() {
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'trend') return renderTrendFull();
+  if (hash.startsWith('disclosure/')) return renderDisclosureFocusFull(hash.slice('disclosure/'.length));
   if (hash === 'tax-arrears') return renderTaxArrearsFull('current');
   if (hash.startsWith('tax-arrears/')) return renderTaxArrearsFull(hash.slice('tax-arrears/'.length));
   if (hash.startsWith('criminal/')) return renderCriminalCategoryFull(hash.slice('criminal/'.length));
