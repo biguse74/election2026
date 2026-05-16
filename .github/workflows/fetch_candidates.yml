@@ -50,7 +50,7 @@ jobs:
 
       - name: 후보자 사진 캐시 생성
         if: steps.start_check.outputs.skip != 'true'
-        run: python scripts/cache_candidate_photos.py
+        run: python scripts/cache_candidate_photos.py --allow-failures
 
       - name: 어제·오늘 변화 로그 생성
         if: steps.start_check.outputs.skip != 'true'

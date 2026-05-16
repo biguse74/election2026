@@ -43,9 +43,9 @@ jobs:
           fi
 
           if [ "$LIMIT" = "0" ]; then
-            python scripts/cache_candidate_photos.py
+            python scripts/cache_candidate_photos.py --allow-failures
           else
-            python scripts/cache_candidate_photos.py --limit "$LIMIT"
+            python scripts/cache_candidate_photos.py --limit "$LIMIT" --allow-failures
           fi
 
       - name: 변경사항 커밋·푸시

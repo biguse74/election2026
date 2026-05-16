@@ -219,6 +219,7 @@ def main() -> None:
     parser.add_argument("--refresh", action="store_true", help="기존 캐시를 지우고 다시 받기")
     parser.add_argument("--delay", type=float, default=0.0, help="후보별 대기 초")
     parser.add_argument("--workers", type=int, default=16, help="동시 다운로드 worker 수")
+    parser.add_argument("--allow-failures", action="store_true", help="일부 사진 다운로드 실패가 있어도 성공 종료")
     args = parser.parse_args()
 
     cached, skipped, failed = cache_photos(
@@ -232,7 +233,7 @@ def main() -> None:
         workers=args.workers,
     )
     print(f"완료: 신규 {cached:,}명, 기존 {skipped:,}명, 실패 {failed:,}명")
-    if failed:
+    if failed and not args.allow_failures:
         sys.exit(1)
 
 
