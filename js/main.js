@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170215', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170230', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -2399,6 +2399,158 @@ function criminalOcrCategoryItems() {
     .sort(compareCrimeCategories);
 }
 
+function crimeHasPriority(categories = []) {
+  return categories.some(category => crimeCategoryMeta(category).tone === 'priority');
+}
+
+function criminalAuditRows() {
+  return (state.data?.candidates || [])
+    .filter(isActiveCandidate)
+    .map(candidate => {
+      const id = String(candidate.huboid || '');
+      const detail = state.candidateDetails?.[id] || null;
+      const disclosures = detail?.disclosures || {};
+      const record = criminalOcrRecordFor(id);
+      const categories = (record?.categories || []).filter(Boolean);
+      const criminal = parseCriminalCount(disclosures.criminal_record);
+      return {
+        candidate,
+        record,
+        party: candidate.jdName || '무소속',
+        sd: sidoFor(candidate) || '지역 미상',
+        criminal,
+        hasCriminal: criminal > 0,
+        categories,
+        categorized: categories.length > 0,
+        priority: crimeHasPriority(categories),
+      };
+    });
+}
+
+function summarizeCrimeAuditGroups(rows, keyFn, minCount = 20, category = '') {
+  return Object.entries(groupDisclosureRows(rows, keyFn))
+    .map(([label, items]) => {
+      const criminalHolders = items.filter(row => row.hasCriminal).length;
+      const categorized = items.filter(row => row.categorized).length;
+      const priority = items.filter(row => row.priority).length;
+      const categoryHits = category
+        ? items.filter(row => row.categories.includes(category)).length
+        : 0;
+      const categoryCounts = {};
+      for (const row of items) {
+        for (const cat of row.categories) categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      }
+      const topCategories = Object.entries(categoryCounts)
+        .map(([cat, count]) => ({ cat, count }))
+        .sort((a, b) => b.count - a.count || compareCrimeCategories(a.cat, b.cat))
+        .slice(0, 3);
+      return {
+        label,
+        count: items.length,
+        criminalHolders,
+        categorized,
+        priority,
+        categoryHits,
+        criminalRate: items.length ? criminalHolders / items.length * 100 : 0,
+        priorityRate: items.length ? priority / items.length * 100 : 0,
+        categoryRate: items.length ? categoryHits / items.length * 100 : 0,
+        topCategories,
+      };
+    })
+    .filter(row => row.count >= minCount)
+    .sort((a, b) => {
+      const aMetric = category ? a.categoryRate : a.priorityRate;
+      const bMetric = category ? b.categoryRate : b.priorityRate;
+      return bMetric - aMetric || b.priority - a.priority || b.criminalRate - a.criminalRate || b.count - a.count;
+    });
+}
+
+function crimeAuditBars(items, options = {}) {
+  const shown = items.slice(0, options.limit ?? 8);
+  const metric = options.category ? 'categoryRate' : 'priorityRate';
+  const max = Math.max(...shown.map(x => x[metric]), 1);
+  return shown.map(x => {
+    const subText = options.category
+      ? `${x.categoryHits.toLocaleString()}명 / ${x.count.toLocaleString()}명 · 전과 ${formatPct(x.criminalRate)}`
+      : `중점 ${x.priority.toLocaleString()}명 · 전과 ${formatPct(x.criminalRate)} · ${x.count.toLocaleString()}명`;
+    return metricBar(
+      x.label,
+      x[metric],
+      max,
+      options.category ? '#7a4a00' : 'var(--accent)',
+      formatPct(x[metric]),
+      subText,
+      metricLinkHref(x.label, options)
+    );
+  }).join('');
+}
+
+function crimeAuditSnapshotHtml(rows, records, meta) {
+  const processed = meta.processed || records.length;
+  const failures = meta.failures || 0;
+  const totalTarget = Number(meta.total_candidates_with_criminal_pdf) || processed;
+  const categorized = records.filter(record => (record.categories || []).length).length;
+  const priority = records.filter(record => crimeHasPriority(record.categories || [])).length;
+  const unclassified = Math.max(0, processed - categorized);
+  return `
+    <div class="crime-stat-grid">
+      <div class="crime-stat">
+        <span>판독 완료</span>
+        <strong>${processed.toLocaleString()}명</strong>
+        <small>전과 PDF 대상 ${totalTarget.toLocaleString()}명 중${failures ? ` · 미확인 ${failures.toLocaleString()}건` : ''}</small>
+      </div>
+      <div class="crime-stat">
+        <span>중점 유형</span>
+        <strong>${priority.toLocaleString()}명</strong>
+        <small>사기·횡령·뇌물·선거법·음주운전 등</small>
+      </div>
+      <div class="crime-stat">
+        <span>분류 완료</span>
+        <strong>${categorized.toLocaleString()}명</strong>
+        <small>미분류 ${unclassified.toLocaleString()}명은 원문 확인 우선</small>
+      </div>
+    </div>`;
+}
+
+function crimeAuditLeadersHtml(rows) {
+  if (!rows.length) return '';
+  const byParty = summarizeCrimeAuditGroups(rows, row => row.party, 20);
+  const byRegion = summarizeCrimeAuditGroups(rows, row => row.sd, 50);
+  return `
+    <div class="metric-grid crime-audit-grid">
+      <div>
+        <h4 class="metric-title">정당별 중점 전과율 <small>후보 20명 이상</small></h4>
+        <div class="bar-list">${crimeAuditBars(byParty) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
+      </div>
+      <div>
+        <h4 class="metric-title">지역별 중점 전과율 <small>후보 50명 이상</small></h4>
+        <div class="bar-list">${crimeAuditBars(byRegion, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+      </div>
+    </div>`;
+}
+
+function crimeCategoryAuditPanelHtml(category) {
+  if (!category) return '';
+  const rows = criminalAuditRows();
+  const byParty = summarizeCrimeAuditGroups(rows, row => row.party, 20, category);
+  const byRegion = summarizeCrimeAuditGroups(rows, row => row.sd, 50, category);
+  if (!byParty.length && !byRegion.length) return '';
+  return `
+    <section class="trend-section crime-category-audit">
+      <h3 class="trend-section-title">${escapeHtml(category)} 분포 <small>정당·지역별 후보 대비</small></h3>
+      <div class="metric-grid crime-audit-grid">
+        <div>
+          <h4 class="metric-title">정당별 비율 <small>후보 20명 이상</small></h4>
+          <div class="bar-list">${crimeAuditBars(byParty, { category }) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
+        </div>
+        <div>
+          <h4 class="metric-title">지역별 비율 <small>후보 50명 이상</small></h4>
+          <div class="bar-list">${crimeAuditBars(byRegion, { category, regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+        </div>
+      </div>
+    </section>`;
+}
+
 function crimeChipHtml(item, currentCategory = '') {
   const meta = crimeCategoryMeta(item.category);
   const badge = meta.tone === 'priority' ? '중점' : meta.tone === 'context' ? '시국' : '';
@@ -2436,20 +2588,17 @@ function criminalOcrOverviewHtml() {
   if (!records.length || !chips) return '';
 
   const meta = state.criminalOcr?.meta || {};
-  const processed = meta.processed || records.length;
-  const failureText = meta.failures ? ` · 실패 ${meta.failures.toLocaleString()}건` : '';
-  const partialText = meta.partial ? ' 현재 일부 PDF만 처리된 부분 색인입니다.' : '';
+  const rows = criminalAuditRows();
+  const partialText = meta.partial ? ' 일부 PDF는 선관위 오류 응답 등으로 원문 판독에서 제외됐습니다.' : '';
   return `
     <section class="trend-section">
-      <h3 class="trend-section-title">범죄 유형별 전과 <small>PDF OCR 기반</small></h3>
+      <h3 class="trend-section-title">전과 원문 분류 <small>PDF 판독 기반</small></h3>
       <div class="crime-overview">
-        <div class="crime-summary">
-          <strong>${processed.toLocaleString()}명</strong>
-          <small>전과 PDF OCR 처리${failureText}</small>
-        </div>
+        ${crimeAuditSnapshotHtml(rows, records, meta)}
+        ${crimeAuditLeadersHtml(rows)}
         ${chips}
       </div>
-      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 OCR로 읽어 넓은 범죄 유형으로 묶었습니다. 사기·횡령·뇌물·선거법 위반처럼 공직 검증에 직접 걸리는 유형을 먼저 배치하고, 국가보안법·집시법 등은 시국·집회 관련 유형으로 분리했습니다. OCR 오인식 가능성이 있으므로 후보 상세의 선관위 링크에서 최종 확인하세요.${partialText}</p>
+      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 기계 판독해 넓은 범죄 유형으로 묶었습니다. 사기·횡령·뇌물·선거법 위반처럼 공직 검증에 직접 걸리는 유형을 먼저 배치하고, 국가보안법·집시법 등은 시국·집회 관련 유형으로 분리했습니다. 정당·지역 비율은 해당 집단 전체 후보 중 중점 유형으로 분류된 후보 비율입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
     </section>`;
 }
 
@@ -2472,8 +2621,8 @@ function criminalCandidateEntry(item, category) {
     ? `<a class="crime-source-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위 상세 확인</a>`
     : '';
   const termText = terms.length
-    ? `OCR 감지어: ${terms.map(escapeHtml).join(', ')}`
-    : 'OCR로 죄명 영역에서 감지';
+    ? `분류 근거: ${terms.map(escapeHtml).join(', ')}`
+    : '죄명 영역 기준 분류';
   return `
     <div class="crime-candidate-entry">
       ${candidate ? candidateRow(candidate) : criminalFallbackCandidateRow(record)}
@@ -2491,6 +2640,7 @@ function renderCriminalCategoryFull(category) {
   const categoryLabel = String(category || '').trim();
   const records = criminalOcrRecords();
   const allChips = criminalCategoryChipsHtml(categoryLabel);
+  const auditPanel = crimeCategoryAuditPanelHtml(categoryLabel);
   const matches = records
     .filter(record => (record.categories || []).includes(categoryLabel))
     .map(record => ({ record, candidate: findCandidateByHuboid(record.huboid) }));
@@ -2521,7 +2671,7 @@ function renderCriminalCategoryFull(category) {
 
   const bodyHtml = records.length
     ? (matches.length ? groupsHtml : `<p class="absence-note">${escapeHtml(categoryLabel)} 유형으로 분류된 후보가 아직 없습니다.</p>`)
-    : '<p class="absence-note">전과 PDF OCR 색인이 아직 생성되지 않았습니다.</p>';
+    : '<p class="absence-note">전과 원문 분류 색인이 아직 생성되지 않았습니다.</p>';
 
   app.innerHTML = `
     <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">범죄 유형별 전과</span></nav>
@@ -2535,8 +2685,9 @@ function renderCriminalCategoryFull(category) {
         <span>${groups.length.toLocaleString()}개 시도</span>
       </div>
     </div>
-    <p class="page-intro">전과 PDF의 죄명 영역에서 ${escapeHtml(categoryLabel || '선택한 유형')} 관련 표현이 OCR로 감지된 후보입니다. 기계 인식 결과라 오분류 가능성이 있고, 법적·보도 판단에는 반드시 선관위 후보자 상세 페이지에서 원문 확인이 필요합니다.</p>
+    <p class="page-intro">전과 PDF의 죄명 영역에서 ${escapeHtml(categoryLabel || '선택한 유형')} 관련 표현이 확인된 후보입니다. 기계 판독 결과라 오분류 가능성이 있고, 법적·보도 판단에는 반드시 선관위 후보자 상세 페이지에서 원문 확인이 필요합니다.</p>
     ${allChips}
+    ${auditPanel}
     ${bodyHtml}`;
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
