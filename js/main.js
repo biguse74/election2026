@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170935', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605171015', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -682,23 +682,23 @@ function moneyDisclosure(value) {
 }
 
 const CRIME_CATEGORY_META = {
-  '사기': { group: '공직 검증 중점', tone: 'priority', order: 10 },
-  '횡령': { group: '공직 검증 중점', tone: 'priority', order: 11 },
-  '배임': { group: '공직 검증 중점', tone: 'priority', order: 12 },
-  '뇌물': { group: '공직 검증 중점', tone: 'priority', order: 13 },
-  '정치자금법': { group: '공직 검증 중점', tone: 'priority', order: 14 },
-  '공직선거법': { group: '공직 검증 중점', tone: 'priority', order: 15 },
-  '청탁금지법': { group: '공직 검증 중점', tone: 'priority', order: 16 },
-  '직권남용': { group: '공직 검증 중점', tone: 'priority', order: 17 },
-  '허위공문서·문서위조·공용서류': { group: '공직 검증 중점', tone: 'priority', order: 18 },
-  '성범죄': { group: '공직 검증 중점', tone: 'priority', order: 22 },
-  '마약': { group: '공직 신뢰 중점', tone: 'priority', order: 23 },
-  '특가법': { group: '공직 검증 중점', tone: 'priority', order: 24 },
-  '음주·위험운전': { group: '공직 검증 중점', tone: 'priority', order: 25 },
-  '무면허운전': { group: '공직 검증 중점', tone: 'priority', order: 26 },
-  '절도': { group: '공직 검증 중점', tone: 'priority', order: 28 },
-  '조세': { group: '공직 검증 중점', tone: 'priority', order: 29 },
-  '보조금': { group: '공직 검증 중점', tone: 'priority', order: 30 },
+  '사기': { group: '공직 검증', tone: 'priority', order: 10 },
+  '횡령': { group: '공직 검증', tone: 'priority', order: 11 },
+  '배임': { group: '공직 검증', tone: 'priority', order: 12 },
+  '뇌물': { group: '공직 검증', tone: 'priority', order: 13 },
+  '정치자금법': { group: '공직 검증', tone: 'priority', order: 14 },
+  '공직선거법': { group: '공직 검증', tone: 'priority', order: 15 },
+  '청탁금지법': { group: '공직 검증', tone: 'priority', order: 16 },
+  '직권남용': { group: '공직 검증', tone: 'priority', order: 17 },
+  '허위공문서·문서위조·공용서류': { group: '공직 검증', tone: 'priority', order: 18 },
+  '성범죄': { group: '공직 검증', tone: 'priority', order: 22 },
+  '특가법': { group: '공직 검증', tone: 'priority', order: 24 },
+  '음주·위험운전': { group: '공직 검증', tone: 'priority', order: 25 },
+  '무면허운전': { group: '공직 검증', tone: 'priority', order: 26 },
+  '절도': { group: '공직 검증', tone: 'priority', order: 28 },
+  '조세': { group: '공직 검증', tone: 'priority', order: 29 },
+  '보조금': { group: '공직 검증', tone: 'priority', order: 30 },
+  '마약': { group: '마약류', tone: 'standard', order: 31 },
   '폭력': { group: '폭력·질서', tone: 'standard', order: 40 },
   '공무집행방해': { group: '폭력·질서', tone: 'standard', order: 41 },
   '업무방해': { group: '폭력·질서', tone: 'standard', order: 42 },
@@ -2782,7 +2782,7 @@ function crimeAuditBars(items, options = {}) {
   return shown.map(x => {
     const subText = options.category
       ? `${x.categoryHits.toLocaleString()}명 / ${x.count.toLocaleString()}명 · 전과 ${formatPct(x.criminalRate)}`
-      : `중점 ${x.priority.toLocaleString()}명 · 전과 ${formatPct(x.criminalRate)} · ${x.count.toLocaleString()}명`;
+      : `검증 ${x.priority.toLocaleString()}명 · 전과 ${formatPct(x.criminalRate)} · ${x.count.toLocaleString()}명`;
     return metricBar(
       x.label,
       x[metric],
@@ -2881,9 +2881,9 @@ function crimeAuditSnapshotHtml(rows, records, meta) {
         <small>전과 PDF 대상 ${totalTarget.toLocaleString()}명 중${failures ? ` · 미확인 ${failures.toLocaleString()}건` : ''}</small>
       </div>
       <div class="crime-stat">
-        <span>중점 유형</span>
+        <span>검증 유형</span>
         <strong>${priority.toLocaleString()}명</strong>
-        <small>부패·공직윤리·공직 신뢰·음주·위험운전 등</small>
+        <small>부패·공직윤리·성범죄·음주·위험운전 등</small>
       </div>
       <div class="crime-stat">
         <span>분류 완료</span>
@@ -2902,9 +2902,9 @@ function crimeAuditLeadersHtml(rows) {
   const byRegion = summarizeCrimeComposition(priorityRows, row => row.sd, { limit: 8 });
   return `
     <div class="crime-share-grid">
-      ${crimeCompositionPanelHtml('중점 유형 정당 구성', byParty)}
-      ${crimeCompositionPanelHtml('중점 유형 직책 구성', byOffice)}
-      ${crimeCompositionPanelHtml('중점 유형 지역 구성', byRegion, { regionLinks: true })}
+      ${crimeCompositionPanelHtml('검증 유형 정당 구성', byParty)}
+      ${crimeCompositionPanelHtml('검증 유형 직책 구성', byOffice)}
+      ${crimeCompositionPanelHtml('검증 유형 지역 구성', byRegion, { regionLinks: true })}
     </div>`;
 }
 
@@ -2929,7 +2929,7 @@ function crimeCategoryAuditPanelHtml(category) {
 
 function crimeChipHtml(item, currentCategory = '') {
   const meta = crimeCategoryMeta(item.category);
-  const badge = meta.tone === 'priority' ? '중점' : meta.tone === 'context' ? '맥락' : '';
+  const badge = meta.tone === 'context' ? '맥락' : '';
   return `
     <a class="crime-chip crime-chip-${meta.tone}${item.category === currentCategory ? ' active' : ''}" href="${criminalCategoryHref(item.category)}">
       <strong>${escapeHtml(item.category)}</strong>
@@ -2942,8 +2942,8 @@ function criminalCategoryChipsHtml(currentCategory = '') {
   const items = criminalOcrCategoryItems();
   if (!items.length) return '';
   const groups = [
-    { group: '공직 검증 중점', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 허위공문서·문서위조, 음주·위험운전 등' },
-    { group: '공직 신뢰 중점', note: '마약처럼 공직 신뢰와 직무 적합성을 따로 확인할 중대 유형' },
+    { group: '공직 검증', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 허위공문서·문서위조, 성범죄, 음주·위험운전 등' },
+    { group: '마약류', note: '마약류관리법·대마·향정 등 마약류 관련 법규 위반' },
     { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
     { group: '교통·안전 법규', note: '일반 교통사고·도로교통·자동차 관련 법규 위반' },
     { group: '경제·금융 법규', note: '보험·대부·수표·전자금융 등 경제거래 관련 법규 위반' },
@@ -2979,7 +2979,7 @@ function criminalOcrOverviewHtml() {
         ${crimeAuditLeadersHtml(rows)}
         ${chips}
       </div>
-      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 기계 판독해 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시하고, 일반 교통사고·보험/금융 법규는 중점 유형에서 분리했습니다. 정당·직책·지역 구성은 중점 유형 후보 안에서의 비중입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
+      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 기계 판독해 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시하고, 일반 교통사고·보험/금융 법규·마약류는 공직 검증 묶음과 분리했습니다. 정당·직책·지역 구성은 공직 검증 유형 후보 안에서의 비중입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
     </section>`;
 }
 
@@ -3089,6 +3089,25 @@ function taxArrearsTabsHtml(ds, currentSlug) {
     </div>`;
 }
 
+function taxArrearsAmountBands(rows, field) {
+  const bands = [
+    { label: '1억원 이상', min: 100000, max: Infinity },
+    { label: '5천만~1억원', min: 50000, max: 100000 },
+    { label: '1천만~5천만원', min: 10000, max: 50000 },
+    { label: '100만~1천만원', min: 1000, max: 10000 },
+    { label: '100만원 미만', min: 0, max: 1000 },
+  ];
+  return bands.map(band => {
+    const items = rows.filter(row => {
+      const value = row[field] || 0;
+      return value >= band.min && value < band.max;
+    });
+    const total = items.reduce((sum, row) => sum + (row[field] || 0), 0);
+    const max = items[0]?.[field] || 0;
+    return { ...band, items, total, max };
+  }).filter(band => band.items.length);
+}
+
 function taxArrearsCandidateTableHtml(rows, config) {
   if (!rows.length) return '<p class="absence-note">표시할 체납 후보가 없습니다.</p>';
   const rowsHtml = rows.map((row, index) => {
@@ -3105,7 +3124,7 @@ function taxArrearsCandidateTableHtml(rows, config) {
       : '';
     return `
       <tr>
-        <td class="tax-rank">${(index + 1).toLocaleString()}</td>
+        <td class="tax-rank">${(row.taxRank || index + 1).toLocaleString()}</td>
         <td>
           <button type="button" class="tax-candidate-name candidate-detail-trigger" data-huboid="${escapeHtml(huboid)}" title="${escapeHtml(c.name || '후보')} 상세 정보">${escapeHtml(c.name || '후보')}</button>
         </td>
@@ -3136,6 +3155,29 @@ function taxArrearsCandidateTableHtml(rows, config) {
         </thead>
         <tbody>${rowsHtml}</tbody>
       </table>
+    </div>`;
+}
+
+function taxArrearsTieredTablesHtml(rows, config) {
+  if (!rows.length) return '<p class="absence-note">표시할 체납 후보가 없습니다.</p>';
+  const rankedRows = rows.map((row, index) => ({ ...row, taxRank: index + 1 }));
+  const bands = taxArrearsAmountBands(rankedRows, config.field);
+  let opened = false;
+  return `
+    <div class="tax-tier-list">
+      ${bands.map(band => {
+        const isOpen = !opened;
+        if (isOpen) opened = true;
+        return `
+          <details class="tax-tier" ${isOpen ? 'open' : ''}>
+            <summary>
+              <span class="tax-tier-label">${escapeHtml(band.label)}</span>
+              <strong>${band.items.length.toLocaleString()}명</strong>
+              <small>합계 ${moneyDisclosure(band.total) || '0원'} · 최고 ${moneyDisclosure(band.max) || '0원'}</small>
+            </summary>
+            ${taxArrearsCandidateTableHtml(band.items, config)}
+          </details>`;
+      }).join('')}
     </div>`;
 }
 
@@ -3204,8 +3246,8 @@ function renderTaxArrearsFull(mode = 'current') {
     </section>
 
     <section class="trend-section">
-      <h3 class="trend-section-title">${escapeHtml(config.label)} 명단 <small>${rows.length.toLocaleString()}명 전체</small></h3>
-      ${taxArrearsCandidateTableHtml(rows, config)}
+      <h3 class="trend-section-title">${escapeHtml(config.label)} 명단 <small>${rows.length.toLocaleString()}명 전체 · 체납액 규모별</small></h3>
+      ${taxArrearsTieredTablesHtml(rows, config)}
     </section>`;
   window.scrollTo({ top: 0, behavior: 'instant' });
 }

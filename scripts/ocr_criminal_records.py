@@ -30,7 +30,7 @@ DETAILS_FILE = ROOT / "data" / "candidate_details.json"
 CANDIDATE_DIR = ROOT / "data" / "candidates" / "20260603"
 OUT_FILE = ROOT / "data" / "criminal_ocr.json"
 CACHE_DIR = ROOT / "data" / ".criminal_ocr_cache"
-CLASSIFICATION_VERSION = 10
+CLASSIFICATION_VERSION = 11
 PDF_HEADERS = {
     "User-Agent": "newtamsa-election2026/1.0 (+https://github.com/biguse74/election2026)",
     "Referer": "https://info.nec.go.kr/",
@@ -109,23 +109,23 @@ CRIME_KEYWORDS = {
 }
 
 CATEGORY_META = {
-    "사기": {"group": "공직 검증 중점", "tone": "priority", "order": 10},
-    "횡령": {"group": "공직 검증 중점", "tone": "priority", "order": 11},
-    "배임": {"group": "공직 검증 중점", "tone": "priority", "order": 12},
-    "뇌물": {"group": "공직 검증 중점", "tone": "priority", "order": 13},
-    "정치자금법": {"group": "공직 검증 중점", "tone": "priority", "order": 14},
-    "공직선거법": {"group": "공직 검증 중점", "tone": "priority", "order": 15},
-    "청탁금지법": {"group": "공직 검증 중점", "tone": "priority", "order": 16},
-    "직권남용": {"group": "공직 검증 중점", "tone": "priority", "order": 17},
-    "허위공문서·문서위조·공용서류": {"group": "공직 검증 중점", "tone": "priority", "order": 18},
-    "성범죄": {"group": "공직 검증 중점", "tone": "priority", "order": 22},
-    "마약": {"group": "공직 신뢰 중점", "tone": "priority", "order": 23},
-    "특가법": {"group": "공직 검증 중점", "tone": "priority", "order": 24},
-    "음주·위험운전": {"group": "공직 검증 중점", "tone": "priority", "order": 25},
-    "무면허운전": {"group": "공직 검증 중점", "tone": "priority", "order": 26},
-    "절도": {"group": "공직 검증 중점", "tone": "priority", "order": 28},
-    "조세": {"group": "공직 검증 중점", "tone": "priority", "order": 29},
-    "보조금": {"group": "공직 검증 중점", "tone": "priority", "order": 30},
+    "사기": {"group": "공직 검증", "tone": "priority", "order": 10},
+    "횡령": {"group": "공직 검증", "tone": "priority", "order": 11},
+    "배임": {"group": "공직 검증", "tone": "priority", "order": 12},
+    "뇌물": {"group": "공직 검증", "tone": "priority", "order": 13},
+    "정치자금법": {"group": "공직 검증", "tone": "priority", "order": 14},
+    "공직선거법": {"group": "공직 검증", "tone": "priority", "order": 15},
+    "청탁금지법": {"group": "공직 검증", "tone": "priority", "order": 16},
+    "직권남용": {"group": "공직 검증", "tone": "priority", "order": 17},
+    "허위공문서·문서위조·공용서류": {"group": "공직 검증", "tone": "priority", "order": 18},
+    "성범죄": {"group": "공직 검증", "tone": "priority", "order": 22},
+    "특가법": {"group": "공직 검증", "tone": "priority", "order": 24},
+    "음주·위험운전": {"group": "공직 검증", "tone": "priority", "order": 25},
+    "무면허운전": {"group": "공직 검증", "tone": "priority", "order": 26},
+    "절도": {"group": "공직 검증", "tone": "priority", "order": 28},
+    "조세": {"group": "공직 검증", "tone": "priority", "order": 29},
+    "보조금": {"group": "공직 검증", "tone": "priority", "order": 30},
+    "마약": {"group": "마약류", "tone": "standard", "order": 31},
     "폭력": {"group": "폭력·질서", "tone": "standard", "order": 40},
     "공무집행방해": {"group": "폭력·질서", "tone": "standard", "order": 41},
     "업무방해": {"group": "폭력·질서", "tone": "standard", "order": 42},

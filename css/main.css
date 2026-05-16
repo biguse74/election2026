@@ -729,6 +729,30 @@ footer a:hover { text-decoration: underline; }
 .tax-mode-tabs strong {
   margin-left: 0.35rem; font-family: var(--serif); font-size: 0.94rem;
 }
+.tax-tier-list {
+  display: flex; flex-direction: column; gap: 0.65rem;
+}
+.tax-tier {
+  border: 1px solid var(--rule); background: var(--bg-card);
+}
+.tax-tier summary {
+  cursor: pointer; padding: 0.78rem 0.95rem;
+  display: grid; grid-template-columns: minmax(130px, 1fr) auto minmax(220px, auto);
+  align-items: center; gap: 0.85rem;
+}
+.tax-tier summary:hover { background: rgba(196,30,58,0.045); }
+.tax-tier-label {
+  font-family: var(--serif); font-weight: 900; font-size: 1rem;
+}
+.tax-tier summary strong {
+  font-family: var(--serif); color: var(--accent); font-size: 1.05rem;
+}
+.tax-tier summary small {
+  color: var(--ink-sub); font-size: 0.78rem; text-align: right;
+}
+.tax-tier .table-scroll {
+  border-top: 1px solid var(--rule);
+}
 .tax-table {
   width: 100%; min-width: 980px; border-collapse: collapse;
   font-size: 0.84rem; background: var(--bg-card);
@@ -1408,6 +1432,12 @@ body.modal-open { overflow: hidden; }
   .section-actions a,
   .rank-more-link,
   .tax-mode-tabs a { flex: 1 1 150px; }
+  .tax-tier summary {
+    grid-template-columns: 1fr auto; gap: 0.35rem 0.7rem;
+  }
+  .tax-tier summary small {
+    grid-column: 1 / -1; text-align: left;
+  }
   .tax-table { min-width: 860px; font-size: 0.8rem; }
   .tax-table th,
   .tax-table td { padding: 0.5rem 0.55rem; }

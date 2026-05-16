@@ -1,8 +1,8 @@
 {
   "meta": {
-    "generated_at": "2026-05-16T22:53:19.182574+00:00",
+    "generated_at": "2026-05-16T22:59:56.437864+00:00",
     "engine": "tesseract",
-    "classification_version": 10,
+    "classification_version": 11,
     "processed": 2627,
     "failures": 0,
     "selected_candidates": 2627,
@@ -13,121 +13,121 @@
     {
       "category": "사기",
       "count": 100,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 10
     },
     {
       "category": "횡령",
       "count": 50,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 11
     },
     {
       "category": "배임",
       "count": 22,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 12
     },
     {
       "category": "뇌물",
       "count": 19,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 13
     },
     {
       "category": "정치자금법",
       "count": 11,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 14
     },
     {
       "category": "공직선거법",
       "count": 150,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 15
     },
     {
       "category": "청탁금지법",
       "count": 3,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 16
     },
     {
       "category": "직권남용",
       "count": 6,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 17
     },
     {
       "category": "허위공문서·문서위조·공용서류",
       "count": 54,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 18
     },
     {
       "category": "성범죄",
       "count": 3,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 22
     },
     {
-      "category": "마약",
-      "count": 2,
-      "group": "공직 신뢰 중점",
-      "tone": "priority",
-      "order": 23
-    },
-    {
       "category": "특가법",
       "count": 40,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 24
     },
     {
       "category": "음주·위험운전",
       "count": 949,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 25
     },
     {
       "category": "무면허운전",
       "count": 95,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 26
     },
     {
       "category": "절도",
       "count": 14,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 28
     },
     {
       "category": "조세",
       "count": 8,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 29
     },
     {
       "category": "보조금",
       "count": 28,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 30
+    },
+    {
+      "category": "마약",
+      "count": 2,
+      "group": "마약류",
+      "tone": "standard",
+      "order": 31
     },
     {
       "category": "폭력",
@@ -330,121 +330,121 @@
     {
       "category": "사기",
       "count": 72,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 10
     },
     {
       "category": "횡령",
       "count": 39,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 11
     },
     {
       "category": "배임",
       "count": 13,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 12
     },
     {
       "category": "뇌물",
       "count": 14,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 13
     },
     {
       "category": "정치자금법",
       "count": 6,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 14
     },
     {
       "category": "공직선거법",
       "count": 119,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 15
     },
     {
       "category": "청탁금지법",
       "count": 3,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 16
     },
     {
       "category": "직권남용",
       "count": 6,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 17
     },
     {
       "category": "허위공문서·문서위조·공용서류",
       "count": 42,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 18
     },
     {
       "category": "성범죄",
       "count": 3,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 22
     },
     {
-      "category": "마약",
-      "count": 1,
-      "group": "공직 신뢰 중점",
-      "tone": "priority",
-      "order": 23
-    },
-    {
       "category": "특가법",
       "count": 34,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 24
     },
     {
       "category": "음주·위험운전",
       "count": 715,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 25
     },
     {
       "category": "무면허운전",
       "count": 60,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 26
     },
     {
       "category": "절도",
       "count": 9,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 28
     },
     {
       "category": "조세",
       "count": 6,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 29
     },
     {
       "category": "보조금",
       "count": 22,
-      "group": "공직 검증 중점",
+      "group": "공직 검증",
       "tone": "priority",
       "order": 30
+    },
+    {
+      "category": "마약",
+      "count": 1,
+      "group": "마약류",
+      "tone": "standard",
+      "order": 31
     },
     {
       "category": "폭력",
