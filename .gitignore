@@ -7,6 +7,8 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+data/.criminal_ocr_cache/
+tmp/
 
 # IDE
 .vscode/

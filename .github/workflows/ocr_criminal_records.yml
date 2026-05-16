@@ -1,0 +1,55 @@
+name: 전과 OCR 색인 생성
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: '처리할 후보 수 제한. 전체 처리하려면 0'
+        required: false
+        default: '0'
+
+jobs:
+  ocr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: OCR 엔진 설치
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-kor
+
+      - name: 전과 PDF OCR
+        run: |
+          LIMIT='${{ github.event.inputs.limit }}'
+          if [ -z "$LIMIT" ] || [ "$LIMIT" = "0" ]; then
+            python scripts/ocr_criminal_records.py
+          else
+            python scripts/ocr_criminal_records.py --limit "$LIMIT"
+          fi
+
+      - name: 변경사항 커밋·푸시
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/criminal_ocr.json
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+            exit 0
+          fi
+          git commit -m "data: 전과 OCR 색인 $(date -u +%Y-%m-%d-%H%M)"
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "push reject — pull --rebase 후 재시도 ($attempt/3)"
+            git pull --rebase origin main
+          done
+          echo "push 3회 실패"; exit 1
