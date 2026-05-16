@@ -1728,11 +1728,6 @@ function formatPct(value, digits = 1) {
   return `${(value || 0).toFixed(digits)}%`;
 }
 
-function oneInText(rate) {
-  if (!rate) return '해당 없음';
-  return `${Math.max(1, Math.round(100 / rate)).toLocaleString()}명 중 1명`;
-}
-
 function summarizeNumbers(values) {
   const nums = values.filter(v => Number.isFinite(v)).sort((a, b) => a - b);
   if (!nums.length) return { count: 0, avg: 0, median: 0, min: 0, max: 0 };
@@ -1904,8 +1899,8 @@ function renderTrendBox() {
   const topParty = s.parties[0];
   const detailBits = ds.rows.length ? `
         <div class="trend-summary-stat"><strong>${formatEok(ds.assets.median)}</strong><small>재산 중앙값</small></div>
-        <div class="trend-summary-stat"><strong>${oneInText(ds.criminal.rate)}</strong><small>전과 1건 이상</small></div>
-        <div class="trend-summary-stat"><strong>${oneInText(ds.military.notServedRate)}</strong><small>병역 대상 남성 미필</small></div>` : '';
+        <div class="trend-summary-stat"><strong>${formatPct(ds.criminal.rate)}</strong><small>전과 보유율</small></div>
+        <div class="trend-summary-stat"><strong>${formatPct(ds.military.notServedRate)}</strong><small>남성 병역 미필률</small></div>` : '';
   return `
     <a class="trend-card" href="#trend">
       <div class="trend-card-head">
@@ -1971,13 +1966,13 @@ function disclosureOverviewHtml(ds) {
       </div>
       <div class="disclosure-card">
         <span class="disclosure-label">전체 전과</span>
-        <strong>${oneInText(ds.criminal.rate)}</strong>
-        <small>전과 1건 이상 ${ds.criminal.holders.toLocaleString()}명 / 전체 ${ds.criminal.count.toLocaleString()}명 (${formatPct(ds.criminal.rate)}) · 총 ${ds.criminal.cases.toLocaleString()}건</small>
+        <strong>${formatPct(ds.criminal.rate)}</strong>
+        <small>전과 1건 이상 ${ds.criminal.holders.toLocaleString()}명 / 전체 ${ds.criminal.count.toLocaleString()}명 · 총 ${ds.criminal.cases.toLocaleString()}건</small>
       </div>
       <div class="disclosure-card">
-        <span class="disclosure-label">남성 병역 미필</span>
-        <strong>${oneInText(ds.military.notServedRate)}</strong>
-        <small>병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필 (${formatPct(ds.military.notServedRate)})</small>
+        <span class="disclosure-label">남성 병역 미필률</span>
+        <strong>${formatPct(ds.military.notServedRate)}</strong>
+        <small>미필 ${ds.military.notServed.toLocaleString()}명 / 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명</small>
       </div>
     </div>`;
 }
@@ -2006,8 +2001,8 @@ function criminalBars(items, options = {}) {
     x.rate,
     max,
     '#b25c00',
-    oneInText(x.rate),
-    `${x.holders.toLocaleString()}/${x.count.toLocaleString()}명 · ${formatPct(x.rate)}`,
+    formatPct(x.rate),
+    `전과 ${x.holders.toLocaleString()}명 / ${x.count.toLocaleString()}명`,
     metricLinkHref(x.label, options)
   )).join('');
 }
@@ -2021,8 +2016,8 @@ function militaryBars(items, options = {}) {
     x.rate,
     max,
     '#2c5d8f',
-    oneInText(x.rate),
-    `남성 ${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명 · ${formatPct(x.rate)}`,
+    formatPct(x.rate),
+    `미필 ${x.notServed.toLocaleString()}명 / 대상 남성 ${x.eligible.toLocaleString()}명`,
     metricLinkHref(x.label, options)
   )).join('');
 }
@@ -2173,13 +2168,13 @@ function disclosureRegionOverviewHtml(sd, summary) {
       </div>
       <div class="disclosure-card">
         <span class="disclosure-label">${escapeHtml(sd)} 전과</span>
-        <strong>${oneInText(summary.criminal.rate)}</strong>
-        <small>전과 1건 이상 ${summary.criminal.holders.toLocaleString()}명 / ${summary.criminal.count.toLocaleString()}명 (${formatPct(summary.criminal.rate)}) · 총 ${summary.criminal.cases.toLocaleString()}건</small>
+        <strong>${formatPct(summary.criminal.rate)}</strong>
+        <small>전과 1건 이상 ${summary.criminal.holders.toLocaleString()}명 / ${summary.criminal.count.toLocaleString()}명 · 총 ${summary.criminal.cases.toLocaleString()}건</small>
       </div>
       <div class="disclosure-card">
-        <span class="disclosure-label">${escapeHtml(sd)} 남성 병역 미필</span>
-        <strong>${oneInText(summary.military.notServedRate)}</strong>
-        <small>병역 대상 남성 ${summary.military.eligible.toLocaleString()}명 중 ${summary.military.notServed.toLocaleString()}명이 미필 (${formatPct(summary.military.notServedRate)})</small>
+        <span class="disclosure-label">${escapeHtml(sd)} 남성 병역 미필률</span>
+        <strong>${formatPct(summary.military.notServedRate)}</strong>
+        <small>미필 ${summary.military.notServed.toLocaleString()}명 / 병역 대상 남성 ${summary.military.eligible.toLocaleString()}명</small>
       </div>
     </div>`;
 }
@@ -2217,8 +2212,8 @@ function renderTrendRegionFull(sd) {
       </div>
       <div class="detail-inline-stats">
         <span>공개정보 ${summary.rows.length.toLocaleString()}명</span>
-        <span>전과 ${oneInText(summary.criminal.rate)}</span>
-        <span>병역 미필 ${oneInText(summary.military.notServedRate)}</span>
+        <span>전과 ${formatPct(summary.criminal.rate)}</span>
+        <span>병역 미필 ${formatPct(summary.military.notServedRate)}</span>
       </div>
     </div>
     <p class="page-intro">시도별 막대에서 한 단계 내려온 화면입니다. 먼저 ${escapeHtml(sd)} 전체 요약을 보고, 아래에서 시군구별 차이와 후보별 최다 순위를 함께 확인할 수 있습니다.</p>
@@ -2290,7 +2285,7 @@ function renderTrendLocalFull(sd, local) {
       <div class="detail-inline-stats">
         <span>공개정보 ${summary.rows.length.toLocaleString()}명</span>
         <span>재산 중앙값 ${formatEok(summary.assets.median)}</span>
-        <span>전과 ${oneInText(summary.criminal.rate)}</span>
+        <span>전과 ${formatPct(summary.criminal.rate)}</span>
       </div>
     </div>
     <p class="page-intro">${escapeHtml(sd)} 상세 통계에서 한 단계 내려온 시군구 화면입니다. 해당 시군구 선거구로 분류되는 후보 중 재산과 전과 상위 1~5위를 바로 확인할 수 있습니다.</p>
@@ -2346,7 +2341,7 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${criminalBars(ds.byRegion.criminal, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
-      <p class="trend-meta">전과 있음은 전과기록유무(건수)가 1건 이상인 후보입니다. 예: 전체 전과 ${oneInText(ds.criminal.rate)}은 전체 ${ds.criminal.count.toLocaleString()}명 중 ${ds.criminal.holders.toLocaleString()}명이 전과 1건 이상이라는 뜻입니다.</p>
+      <p class="trend-meta">전과 보유율은 전과기록유무(건수)가 1건 이상인 후보 비율입니다. 예: 전체 전과 ${formatPct(ds.criminal.rate)}는 전체 ${ds.criminal.count.toLocaleString()}명 중 ${ds.criminal.holders.toLocaleString()}명이 전과 1건 이상이라는 뜻입니다.</p>
     </section>
 
     <section class="trend-section">
@@ -2361,7 +2356,7 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${militaryBars(ds.byRegion.military, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
-      <p class="trend-meta">남성 병역 미필 ${oneInText(ds.military.notServedRate)}은 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필이라는 뜻입니다. 여성 후보는 병역 통계에서 제외했고, 남성 후보 중 병역 비대상도 분모에서 제외했습니다.</p>
+      <p class="trend-meta">남성 병역 미필률 ${formatPct(ds.military.notServedRate)}는 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필이라는 뜻입니다. 여성 후보는 병역 통계에서 제외했고, 남성 후보 중 병역 비대상도 분모에서 제외했습니다.</p>
     </section>`;
 }
 
