@@ -1,6 +1,11 @@
 name: 전과 OCR 색인 생성
 
 on:
+  push:
+    paths:
+      - 'data/candidate_details.json'
+      - 'scripts/ocr_criminal_records.py'
+      - '.github/workflows/ocr_criminal_records.yml'
   workflow_dispatch:
     inputs:
       limit:
@@ -30,7 +35,7 @@ jobs:
 
       - name: 전과 PDF OCR
         run: |
-          LIMIT='${{ github.event.inputs.limit }}'
+          LIMIT='${{ github.event.inputs.limit || '0' }}'
           if [ -z "$LIMIT" ] || [ "$LIMIT" = "0" ]; then
             python scripts/ocr_criminal_records.py
           else
