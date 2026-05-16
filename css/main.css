@@ -554,14 +554,10 @@ footer a:hover { text-decoration: underline; }
 }
 .crime-share-panel { min-width: 0; }
 .crime-share-head {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: 0.7rem; margin-bottom: 0.55rem;
+  display: flex; align-items: baseline;
+  margin-bottom: 0.55rem;
 }
 .crime-share-head .metric-title { margin-bottom: 0; flex: 1; }
-.crime-share-head > span {
-  color: var(--ink-sub); font-size: 0.74rem;
-  white-space: nowrap;
-}
 .crime-share-body {
   display: grid; grid-template-columns: 112px minmax(0, 1fr);
   gap: 0.85rem; align-items: center;

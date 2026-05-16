@@ -2837,8 +2837,6 @@ function crimePieStyle(items) {
 function crimeCompositionPanelHtml(title, composition, options = {}) {
   const { total, items } = composition;
   if (!total || !items.length) return '';
-  const leader = items[0];
-  const leaderText = `${leader.label} ${leader.count.toLocaleString()}명 (${formatPct(leader.pct)})`;
   const list = items.map(item => {
     const href = options.regionLinks && !item.other ? metricLinkHref(item.label, { regionLinks: true }) : '';
     const labelHtml = href
@@ -2855,7 +2853,6 @@ function crimeCompositionPanelHtml(title, composition, options = {}) {
     <div class="crime-share-panel">
       <div class="crime-share-head">
         <h4 class="metric-title">${escapeHtml(title)}</h4>
-        <span>${leaderText}</span>
       </div>
       <div class="crime-share-body">
         <div class="crime-pie" style="${crimePieStyle(items)}" role="img" aria-label="${escapeHtml(title)} 구성 파이 차트">
