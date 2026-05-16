@@ -1881,10 +1881,44 @@ function rankedCriminalCandidates(rows, limit = 5) {
 }
 
 function rankedTaxArrearsCandidates(rows, limit = 5, field = 'taxArrearsCurrent') {
-  return rows
+  const ranked = rows
     .filter(r => (r[field] || 0) > 0)
-    .sort((a, b) => (b[field] || 0) - (a[field] || 0) || sortCandidateRows(a, b))
-    .slice(0, limit);
+    .sort((a, b) => (b[field] || 0) - (a[field] || 0) || sortCandidateRows(a, b));
+  return limit == null ? ranked : ranked.slice(0, limit);
+}
+
+function taxArrearsModeConfig(mode = 'current') {
+  const key = String(mode || '').toLowerCase();
+  if (['5y', 'five-year', 'recent'].includes(key)) {
+    return {
+      slug: '5y',
+      field: 'taxArrears5y',
+      title: '최근 5년 체납 후보 전체',
+      label: '최근 5년 체납',
+      amountLabel: '최근 5년 체납액',
+      otherLabel: '현 체납',
+      otherField: 'taxArrearsCurrent',
+      holdersKey: 'holders',
+      totalKey: 'total5y',
+      rateKey: 'rate',
+    };
+  }
+  return {
+    slug: 'current',
+    field: 'taxArrearsCurrent',
+    title: '현 체납 후보 전체',
+    label: '현 체납',
+    amountLabel: '현 체납액',
+    otherLabel: '최근 5년 체납',
+    otherField: 'taxArrears5y',
+    holdersKey: 'currentHolders',
+    totalKey: 'totalCurrent',
+    rateKey: 'currentRate',
+  };
+}
+
+function taxArrearsListHref(mode = 'current') {
+  return `#tax-arrears/${taxArrearsModeConfig(mode).slug}`;
 }
 
 function rankedCandidateRegions(rows, rankFn, limit = 5) {
@@ -2441,15 +2475,23 @@ function disclosureStatsHtml(ds) {
     </section>
 
     <section class="trend-section">
-      <h3 class="trend-section-title">체납 통계 <small>최근 5년·현 체납</small></h3>
+      <div class="section-title-row">
+        <h3 class="trend-section-title">체납 통계 <small>최근 5년·현 체납</small></h3>
+        <div class="section-actions">
+          <a href="${taxArrearsListHref('current')}">현 체납 전체보기</a>
+          <a href="${taxArrearsListHref('5y')}">최근 5년 전체보기</a>
+        </div>
+      </div>
       <div class="candidate-leader-grid">
         <div class="candidate-leader-card">
           <h4 class="metric-title">현 체납 상위 1~5위</h4>
           ${candidateRankList(ds.leaders.taxArrearsCurrentOverall, 'taxCurrent', true)}
+          <a class="rank-more-link" href="${taxArrearsListHref('current')}">현 체납 후보 ${ds.taxArrears.currentHolders.toLocaleString()}명 전체보기</a>
         </div>
         <div class="candidate-leader-card">
           <h4 class="metric-title">최근 5년 체납 상위 1~5위</h4>
           ${candidateRankList(ds.leaders.taxArrears5yOverall, 'tax5y', true)}
+          <a class="rank-more-link" href="${taxArrearsListHref('5y')}">최근 5년 체납 후보 ${ds.taxArrears.holders.toLocaleString()}명 전체보기</a>
         </div>
       </div>
       <div class="metric-grid">
@@ -2877,6 +2919,141 @@ function renderCriminalCategoryFull(category) {
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
+function taxArrearsTabsHtml(ds, currentSlug) {
+  const tabs = [
+    { mode: 'current', count: ds.taxArrears.currentHolders },
+    { mode: '5y', count: ds.taxArrears.holders },
+  ];
+  return `
+    <div class="tax-mode-tabs" aria-label="체납 전체보기 기준">
+      ${tabs.map(tab => {
+        const cfg = taxArrearsModeConfig(tab.mode);
+        return `<a href="${taxArrearsListHref(tab.mode)}" class="${cfg.slug === currentSlug ? 'active' : ''}">${cfg.label} <strong>${tab.count.toLocaleString()}명</strong></a>`;
+      }).join('')}
+    </div>`;
+}
+
+function taxArrearsCandidateTableHtml(rows, config) {
+  if (!rows.length) return '<p class="absence-note">표시할 체납 후보가 없습니다.</p>';
+  const rowsHtml = rows.map((row, index) => {
+    const c = row.candidate || {};
+    const huboid = String(c.huboid || '');
+    const amount = moneyDisclosure(row[config.field]) || '0원';
+    const otherAmount = moneyDisclosure(row[config.otherField]) || '0원';
+    const paid = moneyDisclosure(row.taxPaid) || '-';
+    const office = electionOfficeTitle(c) || '-';
+    const region = formatRegionLabel(c) || '-';
+    const necDetailUrl = necDetailUrlForHuboid(huboid);
+    const sourceLink = necDetailUrl
+      ? `<a class="crime-source-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위</a>`
+      : '';
+    return `
+      <tr>
+        <td class="tax-rank">${(index + 1).toLocaleString()}</td>
+        <td>
+          <button type="button" class="tax-candidate-name candidate-detail-trigger" data-huboid="${escapeHtml(huboid)}" title="${escapeHtml(c.name || '후보')} 상세 정보">${escapeHtml(c.name || '후보')}</button>
+        </td>
+        <td><span class="tax-party" style="border-color:${partyColor(c.jdName)}">${escapeHtml(c.jdName || '무소속')}</span></td>
+        <td>${escapeHtml(office)}</td>
+        <td>${escapeHtml(region)}</td>
+        <td class="tax-amount"><strong>${amount}</strong></td>
+        <td class="tax-secondary"><span>${escapeHtml(config.otherLabel)}</span>${otherAmount}</td>
+        <td>${paid}</td>
+        <td>${sourceLink}</td>
+      </tr>`;
+  }).join('');
+  return `
+    <div class="table-scroll">
+      <table class="tax-table">
+        <thead>
+          <tr>
+            <th>순위</th>
+            <th>후보</th>
+            <th>정당</th>
+            <th>직책</th>
+            <th>선거구</th>
+            <th>${escapeHtml(config.amountLabel)}</th>
+            <th>함께 볼 체납</th>
+            <th>납부액</th>
+            <th>확인</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>`;
+}
+
+function renderTaxArrearsFull(mode = 'current') {
+  const app = document.getElementById('app');
+  app.className = '';
+  if (!state.data) {
+    app.innerHTML = '<div class="loading">불러오는 중…</div>';
+    return;
+  }
+
+  const ds = buildDisclosureStats();
+  const config = taxArrearsModeConfig(mode);
+  const rows = rankedTaxArrearsCandidates(ds.rows, null, config.field);
+  const total = ds.taxArrears[config.totalKey] || 0;
+  const holderCount = ds.taxArrears[config.holdersKey] || rows.length;
+  const rate = ds.taxArrears[config.rateKey] || 0;
+  const leader = rows[0];
+  const partyComposition = summarizeCrimeComposition(rows, row => row.party, { limit: 8, colorFor: label => partyColor(label) });
+  const officeComposition = summarizeCrimeComposition(rows, row => electionOfficeTitle(row.candidate) || '선거 구분 미상', { limit: 6 });
+  const regionComposition = summarizeCrimeComposition(rows, row => row.sd || '지역 미상', { limit: 8 });
+
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">체납 전체보기</span></nav>
+    <div class="detail-head">
+      <div>
+        <h1 class="detail-title">${escapeHtml(config.title)}</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(config.title)} - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+      </div>
+      <div class="detail-inline-stats">
+        <span>${holderCount.toLocaleString()}명</span>
+        <span>합계 ${moneyDisclosure(total) || '0원'}</span>
+        <span>전체 ${formatPct(rate)}</span>
+      </div>
+    </div>
+    <p class="page-intro">선관위 후보자 정보공개의 납세 자료에서 ${escapeHtml(config.label)} 금액이 0원보다 큰 후보 전체입니다. 이름만 나열하지 않고 직책·선거구·정당·선관위 상세 링크를 함께 붙여 공직 검증 맥락을 바로 볼 수 있게 했습니다.</p>
+
+    ${taxArrearsTabsHtml(ds, config.slug)}
+
+    <div class="disclosure-overview">
+      <div class="disclosure-card">
+        <span class="disclosure-label">${escapeHtml(config.label)} 후보</span>
+        <strong>${holderCount.toLocaleString()}명</strong>
+        <small>공개정보 ${ds.taxArrears.count.toLocaleString()}명 중 ${formatPct(rate)}</small>
+      </div>
+      <div class="disclosure-card">
+        <span class="disclosure-label">체납 합계</span>
+        <strong>${moneyDisclosure(total) || '0원'}</strong>
+        <small>선관위 공개 금액 합산</small>
+      </div>
+      <div class="disclosure-card">
+        <span class="disclosure-label">최고액</span>
+        <strong>${leader ? moneyDisclosure(leader[config.field]) : '0원'}</strong>
+        <small>${leader ? `${escapeHtml(leader.candidate?.name || '')} · ${escapeHtml(candidateRankContext(leader.candidate, true))}` : '표시할 후보 없음'}</small>
+      </div>
+    </div>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(config.label)} 구성 <small>해당 후보 안에서의 비중</small></h3>
+      <div class="crime-share-grid">
+        ${crimeCompositionPanelHtml('정당별 구성', partyComposition)}
+        ${crimeCompositionPanelHtml('직책별 구성', officeComposition)}
+        ${crimeCompositionPanelHtml('지역별 구성', regionComposition, { regionLinks: true })}
+      </div>
+      <p class="trend-meta">아래 명단은 ${escapeHtml(config.amountLabel)} 내림차순입니다. 최근 5년 체납은 과거 이력, 현 체납은 현재 남아 있는 체납액이므로 두 기준을 함께 봐야 합니다.</p>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(config.label)} 명단 <small>${rows.length.toLocaleString()}명 전체</small></h3>
+      ${taxArrearsCandidateTableHtml(rows, config)}
+    </section>`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 // 출마자 한눈에 페이지 (#trend) — 정당·연령·성별·직업 통계
 function renderTrendFull() {
   const app = document.getElementById('app');
@@ -3295,6 +3472,8 @@ function route() {
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'trend') return renderTrendFull();
+  if (hash === 'tax-arrears') return renderTaxArrearsFull('current');
+  if (hash.startsWith('tax-arrears/')) return renderTaxArrearsFull(hash.slice('tax-arrears/'.length));
   if (hash.startsWith('criminal/')) return renderCriminalCategoryFull(hash.slice('criminal/'.length));
   if (hash.startsWith('trend/')) {
     const parts = hash.split('/');

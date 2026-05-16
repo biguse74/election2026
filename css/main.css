@@ -694,6 +694,81 @@ footer a:hover { text-decoration: underline; }
   font-family: var(--serif); font-weight: 900; font-size: 0.95rem;
   color: var(--ink); text-align: right; white-space: nowrap;
 }
+.section-title-row {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 1rem; margin-bottom: 0.8rem;
+}
+.section-title-row .trend-section-title { margin-bottom: 0; }
+.section-actions {
+  display: flex; flex-wrap: wrap; gap: 0.45rem; justify-content: flex-end;
+}
+.section-actions a,
+.rank-more-link,
+.tax-mode-tabs a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 34px; padding: 0.38rem 0.7rem;
+  border: 1px solid var(--rule); background: var(--bg-card);
+  color: var(--ink); text-decoration: none; font-size: 0.78rem;
+  font-weight: 700; border-radius: 2px;
+}
+.section-actions a:hover,
+.rank-more-link:hover,
+.tax-mode-tabs a:hover {
+  border-color: var(--accent); color: var(--accent);
+}
+.rank-more-link {
+  width: 100%; margin-top: 0.65rem;
+}
+.tax-mode-tabs {
+  display: flex; flex-wrap: wrap; gap: 0.55rem;
+  margin: 1rem 0 1.2rem;
+}
+.tax-mode-tabs a.active {
+  background: var(--ink); border-color: var(--ink); color: #fff;
+}
+.tax-mode-tabs strong {
+  margin-left: 0.35rem; font-family: var(--serif); font-size: 0.94rem;
+}
+.tax-table {
+  width: 100%; min-width: 980px; border-collapse: collapse;
+  font-size: 0.84rem; background: var(--bg-card);
+}
+.tax-table th,
+.tax-table td {
+  padding: 0.58rem 0.65rem; border-bottom: 1px solid var(--rule);
+  text-align: left; vertical-align: middle;
+}
+.tax-table th {
+  font-size: 0.74rem; color: var(--ink-sub); font-weight: 700;
+  border-bottom: 2px solid var(--ink); background: var(--bg);
+}
+.tax-table tbody tr:hover { background: rgba(196,30,58,0.045); }
+.tax-rank {
+  font-family: var(--serif); font-weight: 900; color: var(--accent);
+  text-align: right; white-space: nowrap;
+}
+.tax-candidate-name {
+  border: none; background: none; padding: 0;
+  font-family: var(--serif); font-weight: 800; font-size: 0.95rem;
+  color: var(--ink); cursor: pointer; white-space: nowrap;
+}
+.tax-candidate-name:hover { color: var(--accent); }
+.tax-party {
+  display: inline-block; max-width: 110px; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+  border-left: 4px solid var(--rule); padding-left: 0.45rem;
+  color: var(--ink-sub); font-size: 0.76rem;
+}
+.tax-amount strong {
+  font-family: var(--serif); font-size: 1rem; color: var(--ink);
+  white-space: nowrap;
+}
+.tax-secondary {
+  color: var(--ink-sub); white-space: nowrap;
+}
+.tax-secondary span {
+  display: block; font-size: 0.68rem; color: var(--ink-sub);
+}
 .region-rank-heading { margin-top: 0.6rem; }
 .region-rank-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -1292,6 +1367,14 @@ body.modal-open { overflow: hidden; }
   .crime-share-body { grid-template-columns: 96px minmax(0, 1fr); }
   .crime-pie { width: 96px; }
   .crime-pie::after { inset: 24px; }
+  .section-title-row { flex-direction: column; align-items: stretch; gap: 0.55rem; }
+  .section-actions { justify-content: flex-start; }
+  .section-actions a,
+  .rank-more-link,
+  .tax-mode-tabs a { flex: 1 1 150px; }
+  .tax-table { min-width: 860px; font-size: 0.8rem; }
+  .tax-table th,
+  .tax-table td { padding: 0.5rem 0.55rem; }
   .metric-bar { grid-template-columns: 100px 1fr 92px; gap: 0.5rem; }
   .metric-bar-label { font-size: 0.82rem; }
   .metric-bar-value { font-size: 0.84rem; }
