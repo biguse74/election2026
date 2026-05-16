@@ -573,6 +573,88 @@ footer a:hover { text-decoration: underline; }
 .summary-card-unit { font-family: var(--sans); font-size: 1.1rem; font-weight: 400; color: var(--ink-sub); margin-left: 0.1rem; }
 .summary-card-sub { font-size: 0.82rem; color: var(--ink-sub); line-height: 1.5; }
 
+/* 내 주소로 후보 찾기 */
+.address-finder {
+  background: var(--bg-card);
+  border: 1px solid var(--ink);
+  padding: 1.3rem 1.45rem;
+  margin: 0 0 2.5rem;
+}
+.address-finder-head {
+  display: flex; justify-content: space-between; align-items: end;
+  gap: 1.5rem; margin-bottom: 1rem;
+}
+.address-kicker {
+  font-size: 0.72rem; color: var(--accent);
+  letter-spacing: 0.08em; font-weight: 700;
+  text-transform: uppercase; margin-bottom: 0.25rem;
+}
+.address-finder h2 {
+  font-family: var(--serif); font-size: 1.45rem; line-height: 1.2;
+}
+.address-finder-head p:last-child {
+  max-width: 520px; color: var(--ink-sub); font-size: 0.88rem;
+  line-height: 1.55; text-align: right;
+}
+.address-form {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.6rem;
+}
+.address-form input {
+  width: 100%; min-width: 0;
+  border: 1px solid var(--rule); background: var(--bg);
+  padding: 0.75rem 0.9rem; font-family: inherit; font-size: 1rem;
+  color: var(--ink); border-radius: 2px; outline: none;
+}
+.address-form input:focus { border-color: var(--ink); }
+.address-form button {
+  font-family: inherit; font-weight: 700; font-size: 0.95rem;
+  border: 1px solid var(--ink); background: var(--ink); color: #fff;
+  padding: 0.75rem 1.15rem; border-radius: 2px; cursor: pointer;
+}
+.address-form button:hover { background: var(--accent); border-color: var(--accent); }
+.address-results {
+  margin-top: 1.2rem; padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+.address-result-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 1rem; margin-bottom: 0.5rem;
+}
+.address-result-label {
+  font-size: 0.72rem; color: var(--ink-sub);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.address-result-head h3 {
+  font-family: var(--serif); font-size: 1.2rem; line-height: 1.25;
+}
+.address-result-head > span {
+  font-family: var(--serif); font-weight: 900; font-size: 1.35rem;
+  color: var(--accent); white-space: nowrap;
+}
+.address-note {
+  color: var(--ink-sub); font-size: 0.84rem; line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.address-error {
+  background: #fff5f5; border-left: 3px solid var(--accent);
+  padding: 0.85rem 1rem; color: var(--ink); font-size: 0.9rem;
+}
+.address-result-block { margin: 1.1rem 0 0; }
+.address-result-title {
+  font-family: var(--serif); font-size: 1rem; font-weight: 700;
+  padding-bottom: 0.35rem; margin-bottom: 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+.address-result-title span {
+  font-family: var(--sans); font-weight: 400; font-size: 0.78rem;
+  color: var(--ink-sub); margin-left: 0.4rem;
+}
+.address-result-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.7rem;
+}
+
 /* 경쟁이 가장 치열한 선거구 박스 (전체 페이지에서 사용) */
 .competition { margin-bottom: 2.5rem; }
 .competition-list {
@@ -876,6 +958,12 @@ body.modal-open { overflow: hidden; }
   .article-list { margin-left: 0.8rem; padding-left: 0.6rem; }
   .changes-row { grid-template-columns: repeat(2, 1fr); }
   .changes-arrow { grid-column: 1 / -1; text-align: right; }
+  .address-finder { padding: 1.05rem 1rem; }
+  .address-finder-head { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+  .address-finder-head p:last-child { text-align: left; }
+  .address-form { grid-template-columns: 1fr; }
+  .address-result-head { align-items: flex-start; }
+  .address-result-grid { grid-template-columns: 1fr; }
   .cl-list { grid-template-columns: 1fr; }
   .modal-dialog { padding: 1.25rem 1.1rem 1rem; }
   .modal-profile { grid-template-columns: 72px 1fr; gap: 0.75rem; }

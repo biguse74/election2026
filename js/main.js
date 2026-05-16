@@ -130,6 +130,16 @@ const SECTIONS = [
   { id: 'wiwMp',    sgTypecode: '6',  title: '구시군의회의원', card: true, detail: { layout: 'collapsible', groupBy: c => c.sggName || c.wiwName || '(미지정)' } },
   { id: 'educator', sgTypecode: '11', title: '교육감',         useAlias: true, card: true, detail: { layout: 'single' } },
 ];
+const SG_TITLE = {
+  '2': '국회의원(재·보궐)',
+  '3': '시도지사',
+  '4': '기초단체장',
+  '5': '시도의원',
+  '6': '구시군의회의원',
+  '8': '광역의원비례',
+  '9': '기초의원비례',
+  '11': '교육감',
+};
 
 // 행정구조상 선거 자체가 없는 경우의 컨텍스트 메시지.
 // (데이터가 0이라서 단순 숨기면 "누락된 건가?" 오해 소지가 있는 케이스)
@@ -742,6 +752,272 @@ function candidateCard(label, list) {
       </div>
       ${list.length === 0 ? '<div class="cc-empty">등록된 후보가 없습니다.</div>' : list.map(candidateRow).join('')}
     </div>`;
+}
+
+// ============ 내 주소로 후보 찾기 ============
+function compactAddressText(value) {
+  return String(value || '')
+    .replace(/[()\[\],.·ㆍ-]/g, '')
+    .replace(/\s+/g, '')
+    .trim();
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[ch]));
+}
+
+function shortLocalName(name) {
+  return String(name || '').replace(/(특별시|광역시|특별자치시|특별자치도|자치도|시|군|구)$/g, '');
+}
+
+function localNameVariants(name) {
+  const raw = String(name || '').trim();
+  if (!raw) return [];
+  const compact = compactAddressText(raw);
+  const out = new Set([compact]);
+  out.add(shortLocalName(compact));
+
+  const cityWard = compact.match(/^(.+시)(.+구)$/);
+  if (cityWard) {
+    const cityShort = shortLocalName(cityWard[1]);
+    out.add(`${cityShort}${cityWard[2]}`);
+    out.add(cityWard[2]);
+    out.add(shortLocalName(cityWard[2]));
+  }
+
+  return [...out].filter(Boolean).sort((a, b) => b.length - a.length);
+}
+
+function buildAddressUnits() {
+  const bySd = {};
+  const add = (sd, kind, name) => {
+    if (!sd || !name || sd === JOINT_SIDO) return;
+    (bySd[sd] ||= { base: new Set(), wiw: new Set() });
+    bySd[sd][kind].add(name);
+  };
+
+  for (const s of state.constituencies || []) {
+    const code = String(s.sgTypecode || '');
+    if (code === '4' || code === '9') add(s.sdName, 'base', s.sggName);
+    if (s.wiwName) add(s.sdName, 'wiw', s.wiwName);
+  }
+  for (const c of state.data?.candidates || []) {
+    const code = String(c.sgTypecode || '');
+    if (code === '4' || code === '9') add(c.sdName, 'base', c.sggName);
+    if (c.wiwName) add(c.sdName, 'wiw', c.wiwName);
+  }
+
+  for (const units of Object.values(bySd)) {
+    for (const base of units.base) units.wiw.add(base);
+  }
+  return bySd;
+}
+
+function findSidoInAddress(query) {
+  const compact = compactAddressText(query);
+  let best = null;
+  for (const sd of SIDO_ORDER) {
+    const aliases = [sd, ...(SIDO_TAGS[sd] || [])];
+    for (const alias of aliases) {
+      const hit = compactAddressText(alias);
+      if (!hit || !compact.includes(hit)) continue;
+      if (!best || hit.length > best.len) best = { sd, len: hit.length };
+    }
+  }
+  return best?.sd || '';
+}
+
+function findBestLocalName(names, query) {
+  const compact = compactAddressText(query);
+  let best = null;
+  for (const name of names || []) {
+    for (const variant of localNameVariants(name)) {
+      if (!variant || !compact.includes(variant)) continue;
+      const score = variant.length * 10 + compactAddressText(name).length;
+      if (!best || score > best.score) best = { name, score };
+    }
+  }
+  return best?.name || '';
+}
+
+function inferBaseWiw(units, detailWiw, query) {
+  const bases = [...(units?.base || [])].sort((a, b) => b.length - a.length);
+  if (!bases.length) return detailWiw || '';
+  if (detailWiw) {
+    const exact = bases.find(b => b === detailWiw);
+    if (exact) return exact;
+    const prefix = bases.find(b => compactAddressText(detailWiw).startsWith(compactAddressText(b)));
+    if (prefix) return prefix;
+  }
+  return findBestLocalName(bases, query) || '';
+}
+
+function extractEmdName(query, sd, detailWiw, baseWiw) {
+  let text = String(query || '');
+  for (const part of [sd, ...(SIDO_TAGS[sd] || []), detailWiw, baseWiw]) {
+    if (part) text = text.replace(part, ' ');
+  }
+  const tokens = text.split(/\s+/).map(t => t.trim()).filter(Boolean);
+  const hit = [...tokens].reverse().find(t => /[읍면동가리]$/.test(t));
+  return hit || '';
+}
+
+function parseAddressQuery(query) {
+  const sd = findSidoInAddress(query);
+  const unitsBySd = buildAddressUnits();
+  const units = sd ? unitsBySd[sd] : null;
+  const detailWiw = units ? findBestLocalName([...(units.wiw || [])], query) : '';
+  const baseWiw = units ? inferBaseWiw(units, detailWiw, query) : '';
+  return {
+    raw: String(query || '').trim(),
+    sd,
+    detailWiw,
+    baseWiw,
+    emd: extractEmdName(query, sd, detailWiw, baseWiw),
+  };
+}
+
+function matchSidoCandidate(c, sd) {
+  const alias = SIDO_ALIASES[sd];
+  const region = c.sggName || c.sdName;
+  return c.sdName === sd || region === sd || (alias && (c.sdName === alias || region === alias));
+}
+
+function matchBaseCandidate(c, lookup) {
+  if (!lookup.baseWiw || !matchSidoCandidate(c, lookup.sd)) return false;
+  const base = compactAddressText(lookup.baseWiw);
+  return [c.sggName, c.wiwName]
+    .filter(Boolean)
+    .some(name => compactAddressText(name) === base || compactAddressText(name).startsWith(base));
+}
+
+function matchDetailWiwCandidate(c, lookup) {
+  if (!lookup.detailWiw && !lookup.baseWiw) return false;
+  if (!matchSidoCandidate(c, lookup.sd)) return false;
+  const target = compactAddressText(lookup.detailWiw || lookup.baseWiw);
+  const base = compactAddressText(lookup.baseWiw);
+  const hasSubWiw = lookup.detailWiw && lookup.baseWiw
+    && compactAddressText(lookup.detailWiw) !== compactAddressText(lookup.baseWiw);
+  if (hasSubWiw) {
+    const wiw = compactAddressText(c.wiwName);
+    return wiw === target || wiw.startsWith(target);
+  }
+  return [c.wiwName, c.sggName]
+    .filter(Boolean)
+    .some(name => {
+      const n = compactAddressText(name);
+      return n === target || (base && n.startsWith(base));
+    });
+}
+
+function groupCandidatesByDistrict(list) {
+  return list.reduce((acc, c) => {
+    const key = c.sggName || c.wiwName || c.sdName || '(미지정)';
+    (acc[key] ||= []).push(c);
+    return acc;
+  }, {});
+}
+
+function buildAddressCandidateSections(lookup) {
+  const candidates = (state.data?.candidates || []).filter(isActiveCandidate);
+  const byCode = code => candidates.filter(c => String(c.sgTypecode) === code);
+  const sections = [
+    { code: '3', title: SG_TITLE['3'], note: '시도 단위', list: byCode('3').filter(c => matchSidoCandidate(c, lookup.sd)) },
+    { code: '11', title: SG_TITLE['11'], note: '시도 단위', list: byCode('11').filter(c => matchSidoCandidate(c, lookup.sd)) },
+    { code: '8', title: SG_TITLE['8'], note: '정당명부 · 시도 단위', list: byCode('8').filter(c => matchSidoCandidate(c, lookup.sd)) },
+  ];
+
+  if (lookup.baseWiw) {
+    sections.push(
+      { code: '4', title: SG_TITLE['4'], note: lookup.baseWiw, list: byCode('4').filter(c => matchBaseCandidate(c, lookup)) },
+      { code: '9', title: SG_TITLE['9'], note: `${lookup.baseWiw} 정당명부`, list: byCode('9').filter(c => matchBaseCandidate(c, lookup)) },
+      { code: '5', title: SG_TITLE['5'], note: `${lookup.detailWiw || lookup.baseWiw} 관할 선거구`, list: byCode('5').filter(c => matchDetailWiwCandidate(c, lookup)), grouped: true },
+      { code: '6', title: SG_TITLE['6'], note: `${lookup.detailWiw || lookup.baseWiw} 관할 선거구`, list: byCode('6').filter(c => matchDetailWiwCandidate(c, lookup)), grouped: true },
+      { code: '2', title: SG_TITLE['2'], note: '동시 재·보궐이 있는 경우만', list: byCode('2').filter(c => matchBaseCandidate(c, lookup)), grouped: true }
+    );
+  }
+
+  return sections.filter(s => s.list.length > 0);
+}
+
+function addressSectionHtml(section) {
+  if (section.grouped) {
+    const groups = groupCandidatesByDistrict(section.list);
+    const keys = Object.keys(groups).sort(koSort);
+    return `
+      <section class="address-result-block">
+        <h3 class="address-result-title">${section.title}
+          <span>${section.note} · ${section.list.length.toLocaleString()}명 · ${keys.length}개 선거구</span>
+        </h3>
+        <div class="address-result-grid">${keys.map(k => candidateCard(k, groups[k])).join('')}</div>
+      </section>`;
+  }
+  const label = section.code === '8' || section.code === '9' ? section.note : section.title;
+  return `
+    <section class="address-result-block">
+      <h3 class="address-result-title">${section.title}
+        <span>${section.note} · ${section.list.length.toLocaleString()}명</span>
+      </h3>
+      <div class="address-result-grid">${candidateCard(label, section.list)}</div>
+    </section>`;
+}
+
+function renderAddressFinder() {
+  return `
+    <section id="address-finder" class="address-finder">
+      <div class="address-finder-head">
+        <div>
+          <p class="address-kicker">내 투표용지에 가까운 후보 보기</p>
+          <h2>주소로 후보 찾기</h2>
+        </div>
+        <p>시도·시군구를 포함해 입력하면 해당 지역의 출마자를 선거별로 모아 보여줍니다.</p>
+      </div>
+      <form class="address-form" data-address-form>
+        <input id="address-input" name="address" type="search" autocomplete="street-address" placeholder="예: 서울특별시 종로구 사직동" aria-label="주소 입력">
+        <button type="submit">후보 보기</button>
+      </form>
+      <div id="address-lookup-results" class="address-results" hidden></div>
+    </section>`;
+}
+
+function renderAddressLookup(query) {
+  const out = document.getElementById('address-lookup-results');
+  if (!out) return;
+  const lookup = parseAddressQuery(query);
+  if (!lookup.raw) {
+    out.hidden = false;
+    out.innerHTML = '<p class="address-error">주소를 입력해 주세요. 예: 서울특별시 종로구 사직동</p>';
+    return;
+  }
+  if (!lookup.sd) {
+    out.hidden = false;
+    out.innerHTML = '<p class="address-error">시도를 찾지 못했습니다. 시도와 시군구를 함께 입력해 주세요.</p>';
+    return;
+  }
+
+  const sections = buildAddressCandidateSections(lookup);
+  const addressBits = [lookup.sd, lookup.detailWiw || lookup.baseWiw, lookup.emd].filter(Boolean);
+  const addressLabel = addressBits.map(escapeHtml).join(' ');
+  const candidateCount = sections.reduce((sum, s) => sum + s.list.length, 0);
+  const localNote = lookup.baseWiw
+    ? '광역·기초의원은 현재 공개된 읍면동별 선거구 매핑이 확정 전이라, 입력한 시군구/구 관할 선거구를 함께 보여줍니다.'
+    : '시군구까지 입력하면 기초단체장·지방의원 후보도 함께 볼 수 있습니다.';
+
+  out.hidden = false;
+  out.innerHTML = `
+    <div class="address-result-head">
+      <div>
+        <p class="address-result-label">조회 주소</p>
+        <h3>${addressLabel}</h3>
+      </div>
+      <span>${candidateCount.toLocaleString()}명</span>
+    </div>
+    <p class="address-note">${localNote}</p>
+    ${sections.length
+      ? sections.map(addressSectionHtml).join('')
+      : '<p class="address-error">이 주소 조건에 맞는 후보를 찾지 못했습니다.</p>'}`;
 }
 
 // ============ Render: 상세 섹션 ============
@@ -1441,6 +1717,7 @@ function renderHome() {
         </div>`).join('')}
       <div class="stat"><div class="stat-label">참여 정당</div><div class="stat-value">${totalParties}개</div><div class="stat-sub">무소속 포함</div></div>
     </div>
+    ${renderAddressFinder()}
     ${summaryBox}
     ${renderTrendBox()}
     ${renderChangesBox()}
@@ -1563,6 +1840,15 @@ function route() {
   const hash = decodeURIComponent(location.hash.slice(1));
   updateSidoNavActive(hash);
   if (!hash) return renderHome();
+  if (hash === 'address') {
+    renderHome();
+    requestAnimationFrame(() => {
+      const finder = document.getElementById('address-finder');
+      finder?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      finder?.querySelector('input')?.focus();
+    });
+    return;
+  }
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
   if (hash === 'trend') return renderTrendFull();
@@ -2010,6 +2296,13 @@ async function main() {
         expandBtn.dataset.open = opening ? 'true' : 'false';
         expandBtn.textContent = opening ? '모두 접기' : '모두 펼치기';
       }
+    });
+    document.addEventListener('submit', e => {
+      const form = e.target.closest('[data-address-form]');
+      if (!form) return;
+      e.preventDefault();
+      const input = form.querySelector('[name="address"]');
+      renderAddressLookup(input?.value || '');
     });
     // ESC로 모달 닫기
     document.addEventListener('keydown', e => {
