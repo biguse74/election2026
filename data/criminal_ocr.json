@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-05-16T17:43:18.505705+00:00",
+    "generated_at": "2026-05-16T17:51:37.002807+00:00",
     "engine": "tesseract",
     "classification_version": 4,
     "processed": 2616,
@@ -111733,7 +111733,7 @@
     },
     {
       "huboid": "100158612",
-      "error": "<urlopen error timed out>"
+      "error": "non-PDF response from NEC (3,335 bytes): <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.or"
     },
     {
       "huboid": "100161122",
