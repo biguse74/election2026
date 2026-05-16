@@ -154,7 +154,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: [], jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -382,6 +382,7 @@ const loadNominations = () => safeJson('data/nominations.json', null);
 const loadArticles = () => safeJson('data/articles.json', null);
 const loadCandidateDetails = () => safeJson('data/candidate_details.json', null);
 const loadConstituencies = () => safeJson('data/constituencies.json', null);
+const loadAddressIndex = () => safeJson('data/address_index.json', []);
 const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
@@ -916,6 +917,113 @@ function parseAddressQuery(query) {
   };
 }
 
+function emdShortName(name) {
+  return String(name || '').replace(/(읍|면|동|리)$/g, '');
+}
+
+function addressSearchEntries(unit) {
+  const sdNames = [unit.sdName, ...(SIDO_TAGS[unit.sdName] || []), shortLocalName(unit.sdName)];
+  const sggNames = [unit.sggName, ...localNameVariants(unit.sggName)];
+  const emdNames = [unit.emdName, emdShortName(unit.emdName)];
+  const entries = [];
+  const add = (value, weight) => {
+    const text = compactAddressText(value);
+    if (text) entries.push({ text, weight });
+  };
+
+  for (const emd of emdNames) add(emd, 10000);
+  for (const sgg of sggNames) {
+    for (const emd of emdNames) add(`${sgg}${emd}`, 8200);
+  }
+  for (const sd of sdNames) {
+    for (const emd of emdNames) add(`${sd}${emd}`, 7600);
+    for (const sgg of sggNames) {
+      for (const emd of emdNames) add(`${sd}${sgg}${emd}`, 7000);
+    }
+  }
+  add(unit.fullName, 6400);
+
+  return entries;
+}
+
+function addressSuggestionScore(unit, query) {
+  const q = compactAddressText(query);
+  if (q.length < 2) return 0;
+  let best = 0;
+  for (const { text, weight } of addressSearchEntries(unit)) {
+    if (text === q) best = Math.max(best, weight + 1000);
+    else if (text.startsWith(q)) best = Math.max(best, weight - text.length);
+    else {
+      const idx = text.indexOf(q);
+      if (idx >= 0) best = Math.max(best, weight - 2000 - idx);
+    }
+  }
+  return best;
+}
+
+function searchAddressUnits(query, limit = 8) {
+  const q = compactAddressText(query);
+  if (q.length < 2 || !Array.isArray(state.addressIndex)) return [];
+  return state.addressIndex
+    .map(unit => ({ unit, score: addressSuggestionScore(unit, q) }))
+    .filter(x => x.score > 0)
+    .sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      const sdDiff = sidoSort(a.unit.sdName, b.unit.sdName);
+      if (sdDiff) return sdDiff;
+      const sggDiff = koSort(a.unit.sggName, b.unit.sggName);
+      if (sggDiff) return sggDiff;
+      return koSort(a.unit.emdName, b.unit.emdName);
+    })
+    .slice(0, limit);
+}
+
+function addressSuggestionHtml(unit) {
+  return `
+    <button type="button" class="address-suggestion" data-address-full="${escapeHtml(unit.fullName)}">
+      <strong>${escapeHtml(unit.emdName)}</strong>
+      <span>${escapeHtml(unit.fullName)}</span>
+    </button>`;
+}
+
+function clearAddressSuggestions() {
+  const box = document.getElementById('address-suggestions');
+  if (!box) return;
+  box.hidden = true;
+  box.innerHTML = '';
+}
+
+function renderAddressSuggestions(query, force = false) {
+  const box = document.getElementById('address-suggestions');
+  if (!box) return [];
+  const matches = searchAddressUnits(query, force ? 12 : 8);
+  if (!matches.length || (!force && compactAddressText(query).length < 2)) {
+    clearAddressSuggestions();
+    return [];
+  }
+  box.hidden = false;
+  box.innerHTML = matches.map(x => addressSuggestionHtml(x.unit)).join('');
+  return matches.map(x => x.unit);
+}
+
+function chooseAddressSuggestion(fullName) {
+  const input = document.getElementById('address-input');
+  if (input) input.value = fullName;
+  clearAddressSuggestions();
+  renderAddressLookup(fullName);
+}
+
+function resolveAddressLookup(query) {
+  const raw = String(query || '').trim();
+  const lookup = parseAddressQuery(raw);
+  if (lookup.sd || !raw) return { raw, lookup, matches: [] };
+  const matches = searchAddressUnits(raw, 12).map(x => x.unit);
+  if (matches.length === 1) {
+    return { raw: matches[0].fullName, lookup: parseAddressQuery(matches[0].fullName), matches: [], matchedUnit: matches[0] };
+  }
+  return { raw, lookup, matches };
+}
+
 function matchSidoCandidate(c, sd) {
   const alias = SIDO_ALIASES[sd];
   const region = c.sggName || c.sdName;
@@ -1009,10 +1117,13 @@ function renderAddressFinder() {
           <p class="address-kicker">내 투표용지에 가까운 후보 보기</p>
           <h2>주소로 후보 찾기</h2>
         </div>
-        <p>시도·시군구를 포함해 입력하면 해당 지역의 출마자를 선거별로 모아 보여줍니다.</p>
+        <p>동 이름만 입력해도 후보 지역을 추천합니다. 같은 동명이 여러 곳이면 전체 주소를 골라 주세요.</p>
       </div>
       <form class="address-form" data-address-form>
-        <input id="address-input" name="address" type="search" autocomplete="street-address" placeholder="예: 서울특별시 종로구 사직동" aria-label="주소 입력">
+        <div class="address-input-wrap">
+          <input id="address-input" name="address" type="search" autocomplete="off" placeholder="예: 사직동, 정자동, 서울 종로구 사직동" aria-label="주소 또는 동 이름 입력" aria-controls="address-suggestions">
+          <div id="address-suggestions" class="address-suggestions" hidden></div>
+        </div>
         <button type="submit">후보 보기</button>
       </form>
       <div id="address-lookup-results" class="address-results" hidden></div>
@@ -1022,17 +1133,29 @@ function renderAddressFinder() {
 function renderAddressLookup(query) {
   const out = document.getElementById('address-lookup-results');
   if (!out) return;
-  const lookup = parseAddressQuery(query);
+  const resolved = resolveAddressLookup(query);
+  const { lookup, matches, matchedUnit } = resolved;
+  if (matchedUnit) {
+    const input = document.getElementById('address-input');
+    if (input) input.value = matchedUnit.fullName;
+  }
   if (!lookup.raw) {
     out.hidden = false;
-    out.innerHTML = '<p class="address-error">주소를 입력해 주세요. 예: 서울특별시 종로구 사직동</p>';
+    out.innerHTML = '<p class="address-error">주소나 동 이름을 입력해 주세요. 예: 사직동, 서울 종로구 사직동</p>';
     return;
   }
   if (!lookup.sd) {
     out.hidden = false;
-    out.innerHTML = '<p class="address-error">시도를 찾지 못했습니다. 시도와 시군구를 함께 입력해 주세요.</p>';
+    if (matches.length) {
+      renderAddressSuggestions(query, true);
+      out.innerHTML = `<p class="address-error">같은 이름의 지역이 여러 곳입니다. 추천 목록에서 전체 주소를 선택해 주세요.</p>`;
+      return;
+    }
+    clearAddressSuggestions();
+    out.innerHTML = '<p class="address-error">지역을 찾지 못했습니다. 동 이름이나 시군구를 조금 더 정확히 입력해 주세요.</p>';
     return;
   }
+  clearAddressSuggestions();
 
   const sections = buildAddressCandidateSections(lookup);
   const addressBits = [lookup.sd, lookup.detailWiw || lookup.baseWiw, lookup.emd].filter(Boolean);
@@ -1470,6 +1593,11 @@ function formatPct(value, digits = 1) {
   return `${(value || 0).toFixed(digits)}%`;
 }
 
+function oneInText(rate) {
+  if (!rate) return '해당 없음';
+  return `${Math.max(1, Math.round(100 / rate)).toLocaleString()}명 중 1명`;
+}
+
 function summarizeNumbers(values) {
   const nums = values.filter(v => Number.isFinite(v)).sort((a, b) => a - b);
   if (!nums.length) return { count: 0, avg: 0, median: 0, min: 0, max: 0 };
@@ -1535,7 +1663,8 @@ function rankedCriminalGroups(rows, keyFn, minCount = 20) {
 }
 
 function rankedMilitaryGroups(rows, keyFn, minEligible = 10) {
-  return Object.entries(groupDisclosureRows(rows, keyFn))
+  const militaryRows = rows.filter(r => r.candidate?.gender === '남');
+  return Object.entries(groupDisclosureRows(militaryRows, keyFn))
     .map(([label, items]) => {
       const served = items.filter(r => r.military === 'served').length;
       const notServed = items.filter(r => r.military === 'notServed').length;
@@ -1558,12 +1687,13 @@ function rankedMilitaryGroups(rows, keyFn, minEligible = 10) {
 function buildDisclosureStats() {
   const rows = disclosureRows();
   const assetRows = rows.filter(r => Number.isFinite(r.assets));
+  const militaryRows = rows.filter(r => r.candidate?.gender === '남');
   const assets = summarizeNumbers(assetRows.map(r => r.assets));
   const criminalHolders = rows.filter(r => r.hasCriminal).length;
   const criminalCases = rows.reduce((sum, r) => sum + r.criminal, 0);
-  const served = rows.filter(r => r.military === 'served').length;
-  const notServed = rows.filter(r => r.military === 'notServed').length;
-  const nonTarget = rows.filter(r => r.military === 'nonTarget').length;
+  const served = militaryRows.filter(r => r.military === 'served').length;
+  const notServed = militaryRows.filter(r => r.military === 'notServed').length;
+  const nonTarget = militaryRows.filter(r => r.military === 'nonTarget').length;
   const militaryEligible = served + notServed;
 
   return {
@@ -1576,7 +1706,7 @@ function buildDisclosureStats() {
       rate: rows.length ? criminalHolders / rows.length * 100 : 0,
     },
     military: {
-      count: rows.length,
+      count: militaryRows.length,
       served,
       notServed,
       nonTarget,
@@ -1604,8 +1734,8 @@ function renderTrendBox() {
   const topParty = s.parties[0];
   const detailBits = ds.rows.length ? `
         <div class="trend-summary-stat"><strong>${formatEok(ds.assets.median)}</strong><small>재산 중앙값</small></div>
-        <div class="trend-summary-stat"><strong>${formatPct(ds.criminal.rate, 0)}</strong><small>전과 있음</small></div>
-        <div class="trend-summary-stat"><strong>${formatPct(ds.military.notServedRate, 0)}</strong><small>병역 미필</small></div>` : '';
+        <div class="trend-summary-stat"><strong>${oneInText(ds.criminal.rate)}</strong><small>전과 1건 이상</small></div>
+        <div class="trend-summary-stat"><strong>${formatPct(ds.military.notServedRate, 0)}</strong><small>남성 후보 미필</small></div>` : '';
   return `
     <a class="trend-card" href="#trend">
       <div class="trend-card-head">
@@ -1654,13 +1784,13 @@ function disclosureOverviewHtml(ds) {
       </div>
       <div class="disclosure-card">
         <span class="disclosure-label">전체 전과</span>
-        <strong>${formatPct(ds.criminal.rate)}</strong>
-        <small>${ds.criminal.holders.toLocaleString()}명 · 총 ${ds.criminal.cases.toLocaleString()}건</small>
+        <strong>${oneInText(ds.criminal.rate)}</strong>
+        <small>전과 1건 이상 ${ds.criminal.holders.toLocaleString()}명 / 전체 ${ds.criminal.count.toLocaleString()}명 (${formatPct(ds.criminal.rate)}) · 총 ${ds.criminal.cases.toLocaleString()}건</small>
       </div>
       <div class="disclosure-card">
         <span class="disclosure-label">전체 병역</span>
         <strong>${formatPct(ds.military.notServedRate)}</strong>
-        <small>미필 ${ds.military.notServed.toLocaleString()}명 / 대상 ${ds.military.eligible.toLocaleString()}명 · 비대상 ${ds.military.nonTarget.toLocaleString()}명</small>
+        <small>남성 후보 기준 · 미필 ${ds.military.notServed.toLocaleString()}명 / 병역 대상 ${ds.military.eligible.toLocaleString()}명</small>
       </div>
     </div>`;
 }
@@ -1674,13 +1804,13 @@ function assetBars(items) {
 function criminalBars(items) {
   const shown = items.slice(0, 10);
   const max = Math.max(...shown.map(x => x.rate), 1);
-  return shown.map(x => metricBar(x.label, x.rate, max, '#b25c00', formatPct(x.rate), `${x.holders.toLocaleString()}/${x.count.toLocaleString()}명 · ${x.cases.toLocaleString()}건`)).join('');
+  return shown.map(x => metricBar(x.label, x.rate, max, '#b25c00', oneInText(x.rate), `${x.holders.toLocaleString()}/${x.count.toLocaleString()}명 · ${formatPct(x.rate)}`)).join('');
 }
 
 function militaryBars(items) {
   const shown = items.slice(0, 10);
   const max = Math.max(...shown.map(x => x.rate), 1);
-  return shown.map(x => metricBar(x.label, x.rate, max, '#2c5d8f', formatPct(x.rate), `${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명`)).join('');
+  return shown.map(x => metricBar(x.label, x.rate, max, '#2c5d8f', formatPct(x.rate), `남성 ${x.notServed.toLocaleString()}/${x.eligible.toLocaleString()}명`)).join('');
 }
 
 function disclosureStatsHtml(ds) {
@@ -1713,7 +1843,7 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${criminalBars(ds.byRegion.criminal) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
-      <p class="trend-meta">전과기록유무(건수) 기준. 비율은 전과 1건 이상 후보 비중입니다.</p>
+      <p class="trend-meta">전과 있음은 전과기록유무(건수)가 1건 이상인 후보입니다. 예: 전체 전과 ${oneInText(ds.criminal.rate)}은 전체 ${ds.criminal.count.toLocaleString()}명 중 ${ds.criminal.holders.toLocaleString()}명이 전과 1건 이상이라는 뜻입니다.</p>
     </section>
 
     <section class="trend-section">
@@ -1728,7 +1858,7 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${militaryBars(ds.byRegion.military) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
-      <p class="trend-meta">병역 비대상은 분모에서 제외. "군복무를 마치지 아니한 사람"과 병적기록 없음 항목을 미필로 집계했습니다.</p>
+      <p class="trend-meta">여성 후보는 병역 통계에서 제외했습니다. 남성 후보 중 병역 비대상도 분모에서 제외하고, "군복무를 마치지 아니한 사람"과 병적기록 없음 항목을 미필로 집계했습니다.</p>
     </section>`;
 }
 
@@ -2554,11 +2684,12 @@ async function main() {
   calculateDDay();
   renderScheduleBar();
   try {
-    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries, history, historyTurnout, candidateDetailsPayload] = await Promise.all([
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, addressIndex, changelog, timeseries, history, historyTurnout, candidateDetailsPayload] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
-      loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(), loadCandidateDetails(),
+      loadAddressIndex(), loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(), loadCandidateDetails(),
     ]);
     state.constituencies = constituencies;
+    state.addressIndex = addressIndex || [];
     state.jointConstituencySdMap = buildJointConstituencySdMap(constituencies);
     // 로딩 시점에 단 한 번 dedup + 지역 보정. 이후 모든 화면은 깨끗한 데이터를 본다.
     const candidates = normalizeCandidateRegions(dedupeByHuboid(data.candidates), constituencies);
@@ -2608,6 +2739,12 @@ async function main() {
         openCandidateModal(detail.dataset.huboid);
         return;
       }
+      const addressSuggestion = e.target.closest('.address-suggestion');
+      if (addressSuggestion) {
+        e.preventDefault();
+        chooseAddressSuggestion(addressSuggestion.dataset.addressFull);
+        return;
+      }
       const articleBtn = e.target.closest('.article-toggle');
       if (articleBtn) {
         e.preventDefault();
@@ -2650,6 +2787,9 @@ async function main() {
       e.preventDefault();
       const input = form.querySelector('[name="address"]');
       renderAddressLookup(input?.value || '');
+    });
+    document.addEventListener('input', e => {
+      if (e.target.matches('#address-input')) renderAddressSuggestions(e.target.value);
     });
     // ESC로 모달 닫기
     document.addEventListener('keydown', e => {

@@ -654,6 +654,9 @@ footer a:hover { text-decoration: underline; }
   display: grid; grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.6rem;
 }
+.address-input-wrap {
+  position: relative; min-width: 0;
+}
 .address-form input {
   width: 100%; min-width: 0;
   border: 1px solid var(--rule); background: var(--bg);
@@ -661,6 +664,29 @@ footer a:hover { text-decoration: underline; }
   color: var(--ink); border-radius: 2px; outline: none;
 }
 .address-form input:focus { border-color: var(--ink); }
+.address-suggestions {
+  position: absolute; left: 0; right: 0; top: calc(100% + 0.35rem);
+  z-index: 30; max-height: 280px; overflow: auto;
+  background: var(--bg-card); border: 1px solid var(--ink);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.14);
+}
+.address-suggestion {
+  width: 100%; display: grid; grid-template-columns: 92px minmax(0, 1fr);
+  gap: 0.75rem; align-items: baseline; text-align: left;
+  border: 0; border-bottom: 1px solid var(--rule);
+  background: transparent; color: var(--ink);
+  padding: 0.68rem 0.85rem; font-family: inherit; cursor: pointer;
+}
+.address-suggestion:last-child { border-bottom: 0; }
+.address-suggestion:hover,
+.address-suggestion:focus { background: #f7f2ed; outline: none; }
+.address-suggestion strong {
+  font-size: 0.92rem; font-weight: 800; white-space: nowrap;
+}
+.address-suggestion span {
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: var(--ink-sub); font-size: 0.86rem;
+}
 .address-form button {
   font-family: inherit; font-weight: 700; font-size: 0.95rem;
   border: 1px solid var(--ink); background: var(--ink); color: #fff;
@@ -1016,6 +1042,8 @@ body.modal-open { overflow: hidden; }
   .address-finder-head { flex-direction: column; align-items: stretch; gap: 0.6rem; }
   .address-finder-head p:last-child { text-align: left; }
   .address-form { grid-template-columns: 1fr; }
+  .address-suggestions { position: static; margin-top: 0.4rem; max-height: 220px; }
+  .address-suggestion { grid-template-columns: 78px minmax(0, 1fr); }
   .address-result-head { align-items: flex-start; }
   .address-result-grid { grid-template-columns: 1fr; }
   .cl-list { grid-template-columns: 1fr; }
