@@ -3651,10 +3651,31 @@ function updateSidoNavActive(hash) {
   });
 }
 
+function siteNavSectionForHash(hash) {
+  if (hash === 'address') return 'address';
+  if (hash === 'candidates' || hash.startsWith('cand/')) return 'candidates';
+  if (hash === 'trend' || hash.startsWith('trend/')) return 'trend';
+  if (hash === 'disclosure/criminal' || hash.startsWith('criminal/')) return 'criminal';
+  if (hash === 'disclosure/tax' || hash === 'tax-arrears' || hash.startsWith('tax-arrears/')) return 'tax';
+  if (hash.startsWith('disclosure/')) return 'trend';
+  if (hash === 'changes') return 'changes';
+  if (hash === 'history') return 'history';
+  if (hash === 'schedule') return 'schedule';
+  return '';
+}
+
+function updateSiteNavActive(hash) {
+  const section = siteNavSectionForHash(hash);
+  document.querySelectorAll('.site-nav-link').forEach(el => {
+    el.classList.toggle('active', el.dataset.siteSection === section && section !== '');
+  });
+}
+
 function route() {
   const hash = decodeURIComponent(location.hash.slice(1));
   if (!hash.startsWith('cand/')) closeCandidateModal();
   updateSidoNavActive(hash);
+  updateSiteNavActive(hash);
   if (!hash) return renderHome();
   if (hash === 'address') {
     renderHome();
