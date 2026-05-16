@@ -1,0 +1,66 @@
+name: 후보자 사진 캐시
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+on:
+  push:
+    paths:
+      - 'data/candidate_details.json'
+      - 'scripts/cache_candidate_photos.py'
+      - '.github/workflows/cache_candidate_photos.yml'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: '처리할 후보 수 제한. 전체 처리하려면 0'
+        required: false
+        default: '0'
+
+concurrency:
+  group: candidate-photo-cache
+  cancel-in-progress: true
+
+jobs:
+  cache:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 후보자 사진 캐시 생성
+        run: |
+          LIMIT="${{ github.event.inputs.limit }}"
+          if [ -z "$LIMIT" ]; then
+            LIMIT=0
+          fi
+
+          if [ "$LIMIT" = "0" ]; then
+            python scripts/cache_candidate_photos.py
+          else
+            python scripts/cache_candidate_photos.py --limit "$LIMIT"
+          fi
+
+      - name: 변경사항 커밋·푸시
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/candidate_details.json data/photos/20260603
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+            exit 0
+          fi
+          git commit -m "data: 후보자 사진 캐시 갱신"
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "push reject — pull --rebase 후 재시도 ($attempt/3)"
+            git pull --rebase origin main
+          done
+          echo "push 3회 실패"; exit 1

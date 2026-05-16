@@ -780,11 +780,12 @@ async function openCandidateModal(huboid) {
   const nec = state.candidateDetails?.[String(c.huboid)] || null;
   const disclosures = nec?.disclosures || {};
   const photo = nec?.photo || {};
-  const photoUrl = photo.url || photo.thumbnail_url || '';
-  const photoHtml = photo.thumbnail_url ? `
+  const photoSrc = photo.cached_thumbnail_url || photo.thumbnail_url || '';
+  const photoUrl = photo.url || photo.thumbnail_url || photoSrc;
+  const photoHtml = photoSrc ? `
     <figure class="modal-photo">
-      <a href="${photoUrl}" target="_blank" rel="noopener" title="선관위 후보자 사진 원본 보기">
-        <img src="${photo.thumbnail_url}" alt="${c.name} 후보자 사진" loading="lazy">
+      <a href="${photoUrl}" target="_blank" rel="noopener" title="후보자 사진 보기">
+        <img src="${photoSrc}" alt="${c.name} 후보자 사진" loading="eager" decoding="async" fetchpriority="high">
       </a>
     </figure>` : '';
   const necDetailUrl = nec?.nec_detail_url || '';
