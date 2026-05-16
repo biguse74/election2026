@@ -15,6 +15,7 @@ import json
 import mimetypes
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from urllib.error import URLError
 from urllib.parse import urlparse
@@ -119,6 +120,7 @@ def cache_photos(
     huboids: set[str],
     refresh: bool,
     delay: float,
+    workers: int,
 ) -> tuple[int, int, int]:
     payload = json.loads(details_file.read_text(encoding="utf-8"))
     details = payload.get("details") or []
@@ -148,39 +150,58 @@ def cache_photos(
     failed = 0
     total = len(targets)
 
-    for idx, row in enumerate(targets, 1):
-        hubo_id = str(row.get("huboid") or "")
+    def record_success(row: dict, source_url: str, cached_path: Path) -> None:
         photo = row.setdefault("photo", {})
-        source_url = photo.get("thumbnail_url") or ""
-        dest_base = photo_dir / hubo_id
+        rel_path = relative_path(cached_path)
+        photo["cached_thumbnail_url"] = rel_path
+        manifest_photos[str(row.get("huboid") or "")] = {
+            "source": source_url,
+            "path": rel_path,
+            "bytes": cached_path.stat().st_size,
+        }
 
-        try:
+    def report(processed: int) -> None:
+        if processed % 100 == 0 or processed == total:
+            print(f"사진 캐시 {processed:,}/{total:,}명 · 신규 {cached:,} · 기존 {skipped:,} · 실패 {failed:,}")
+
+    processed = 0
+    futures = {}
+    max_workers = max(workers, 1)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        for idx, row in enumerate(targets, 1):
+            hubo_id = str(row.get("huboid") or "")
+            photo = row.setdefault("photo", {})
+            source_url = photo.get("thumbnail_url") or ""
+            dest_base = photo_dir / hubo_id
+
             manifest_entry = manifest_photos.get(hubo_id) or {}
             source_changed = bool(manifest_entry.get("source") and manifest_entry.get("source") != source_url)
             cached_path = None if refresh else cached_file_from_manifest(manifest, hubo_id, source_url)
-            if cached_path is None:
-                cached_path = download_photo(source_url, dest_base, refresh=refresh or source_changed)
-                cached += 1
-            else:
+            if cached_path is not None:
+                record_success(row, source_url, cached_path)
                 skipped += 1
+                processed += 1
+                report(processed)
+                continue
 
-            rel_path = relative_path(cached_path)
-            photo["cached_thumbnail_url"] = rel_path
-            manifest_photos[hubo_id] = {
-                "source": source_url,
-                "path": rel_path,
-                "bytes": cached_path.stat().st_size,
-            }
-        except (OSError, TimeoutError, URLError, RuntimeError) as exc:
-            failed += 1
-            print(f"[{idx:,}/{total:,}] 실패 {hubo_id}: {exc}", file=sys.stderr)
-            continue
+            future = executor.submit(download_photo, source_url, dest_base, refresh or source_changed)
+            futures[future] = (idx, row, hubo_id, source_url)
 
-        if idx % 100 == 0 or idx == total:
-            print(f"사진 캐시 {idx:,}/{total:,}명 · 신규 {cached:,} · 기존 {skipped:,} · 실패 {failed:,}")
+            if delay > 0:
+                time.sleep(delay)
 
-        if delay > 0:
-            time.sleep(delay)
+        for future in as_completed(futures):
+            _idx, row, hubo_id, source_url = futures[future]
+            try:
+                cached_path = future.result()
+                record_success(row, source_url, cached_path)
+                cached += 1
+            except (OSError, TimeoutError, URLError, RuntimeError) as exc:
+                failed += 1
+                print(f"실패 {hubo_id}: {exc}", file=sys.stderr)
+
+            processed += 1
+            report(processed)
 
     manifest_path = photo_dir / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -197,6 +218,7 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=0, help="앞에서 N명만 처리. 0이면 전체")
     parser.add_argument("--refresh", action="store_true", help="기존 캐시를 지우고 다시 받기")
     parser.add_argument("--delay", type=float, default=0.0, help="후보별 대기 초")
+    parser.add_argument("--workers", type=int, default=16, help="동시 다운로드 worker 수")
     args = parser.parse_args()
 
     cached, skipped, failed = cache_photos(
@@ -207,6 +229,7 @@ def main() -> None:
         huboids={str(x) for x in args.huboid},
         refresh=args.refresh,
         delay=args.delay,
+        workers=args.workers,
     )
     print(f"완료: 신규 {cached:,}명, 기존 {skipped:,}명, 실패 {failed:,}명")
     if failed:
