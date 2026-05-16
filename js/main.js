@@ -382,7 +382,7 @@ const loadNominations = () => safeJson('data/nominations.json', null);
 const loadArticles = () => safeJson('data/articles.json', null);
 const loadCandidateDetails = () => safeJson('data/candidate_details.json', null);
 const loadConstituencies = () => safeJson('data/constituencies.json', null);
-const loadAddressIndex = () => safeJson('data/address_index.json', []);
+const loadAddressIndex = () => safeJson('data/address_index.json?v=202605161025', []);
 const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
