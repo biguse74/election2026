@@ -484,7 +484,18 @@ footer a:hover { text-decoration: underline; }
   font-size: 1.45rem; line-height: 1.05; color: var(--accent);
 }
 .crime-summary small { display: block; color: var(--ink-sub); font-size: 0.78rem; line-height: 1.45; margin-top: 0.35rem; }
-.crime-chip-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1rem; }
+.crime-chip-groups { display: flex; flex-direction: column; gap: 0.8rem; }
+.crime-chip-group { min-width: 0; }
+.crime-chip-heading {
+  margin: 0 0 0.35rem; font-family: var(--serif);
+  font-size: 0.95rem; font-weight: 800; color: var(--ink);
+}
+.crime-chip-heading small {
+  display: inline; margin-left: 0.45rem;
+  font-family: var(--sans); font-weight: 400; font-size: 0.74rem;
+  color: var(--ink-sub);
+}
+.crime-chip-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.2rem; }
 .crime-chip {
   display: inline-flex; align-items: baseline; gap: 0.45rem;
   padding: 0.42rem 0.68rem; border: 1px solid var(--rule); border-radius: 8px;
@@ -493,10 +504,18 @@ footer a:hover { text-decoration: underline; }
 }
 .crime-chip strong { font-family: var(--serif); font-size: 0.95rem; }
 .crime-chip span { color: var(--ink-sub); font-size: 0.78rem; }
+.crime-chip em {
+  font-style: normal; font-size: 0.68rem; font-weight: 800;
+  color: #fff; background: var(--accent); border-radius: 6px;
+  padding: 0.08rem 0.32rem;
+}
 .crime-chip:hover,
 .crime-chip.active { border-color: var(--accent); color: var(--accent); background: #fff7f7; }
 .crime-chip:hover span,
 .crime-chip.active span { color: var(--accent); }
+.crime-chip-priority { border-color: rgba(196, 30, 58, 0.45); background: #fff9f9; }
+.crime-chip-context em { background: var(--ink-sub); }
+.crime-chip-context { background: #fbfaf7; }
 .crime-tags { display: inline-flex; flex-wrap: wrap; gap: 0.28rem; vertical-align: middle; }
 .crime-tag {
   display: inline-flex; align-items: center;
@@ -506,6 +525,8 @@ footer a:hover { text-decoration: underline; }
 }
 .crime-tag:hover,
 .crime-tag.active { border-color: var(--accent); color: var(--accent); background: #fff7f7; }
+.crime-tag-priority { border-color: rgba(196, 30, 58, 0.45); color: var(--accent); background: #fff9f9; }
+.crime-tag-context { color: var(--ink-sub); background: #fbfaf7; }
 .crime-region-card { margin-bottom: 0.85rem; }
 .crime-candidate-entry {
   border-top: 1px solid var(--rule);

@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605161540', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605161610', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -672,15 +672,47 @@ function moneyDisclosure(value) {
   return `${(thousandKrw * 1000).toLocaleString('ko-KR')}원`;
 }
 
-function canShowCriminalScanLinks(now = new Date()) {
-  return now < new Date(DISCLOSURE_LINK_END);
+const CRIME_CATEGORY_META = {
+  '사기': { group: '공직 검증 중점', tone: 'priority', order: 10 },
+  '횡령·배임': { group: '공직 검증 중점', tone: 'priority', order: 11 },
+  '뇌물': { group: '공직 검증 중점', tone: 'priority', order: 12 },
+  '정치자금법': { group: '공직 검증 중점', tone: 'priority', order: 13 },
+  '공직선거법': { group: '공직 검증 중점', tone: 'priority', order: 14 },
+  '성범죄': { group: '공직 검증 중점', tone: 'priority', order: 15 },
+  '마약': { group: '공직 검증 중점', tone: 'priority', order: 16 },
+  '음주운전': { group: '공직 검증 중점', tone: 'priority', order: 17 },
+  '무면허운전': { group: '공직 검증 중점', tone: 'priority', order: 18 },
+  '절도': { group: '공직 검증 중점', tone: 'priority', order: 19 },
+  '폭력': { group: '폭력·질서', tone: 'standard', order: 40 },
+  '공무집행방해': { group: '폭력·질서', tone: 'standard', order: 41 },
+  '업무방해': { group: '폭력·질서', tone: 'standard', order: 42 },
+  '재물손괴': { group: '폭력·질서', tone: 'standard', order: 43 },
+  '주거침입': { group: '폭력·질서', tone: 'standard', order: 44 },
+  '도로교통': { group: '기타', tone: 'standard', order: 60 },
+  '국가보안법': { group: '시국·집회 관련', tone: 'context', order: 80 },
+  '집시법': { group: '시국·집회 관련', tone: 'context', order: 81 },
+  '국가공무원법': { group: '시국·집회 관련', tone: 'context', order: 82 },
+  '명예훼손·모욕': { group: '기타', tone: 'standard', order: 90 },
+};
+
+function crimeCategoryMeta(category) {
+  return CRIME_CATEGORY_META[category] || { group: '기타', tone: 'standard', order: 999 };
 }
 
-function criminalDisclosureValue(record, files) {
+function compareCrimeCategories(a, b) {
+  const am = crimeCategoryMeta(a.category || a);
+  const bm = crimeCategoryMeta(b.category || b);
+  return am.order - bm.order || (b.count || 0) - (a.count || 0) || koSort(a.category || a, b.category || b);
+}
+
+function necDetailUrlForHuboid(huboid) {
+  return state.candidateDetails?.[String(huboid || '')]?.nec_detail_url || '';
+}
+
+function criminalDisclosureValue(record, necDetailUrl) {
   const text = String(record || '').trim();
-  const firstPdf = files?.[0]?.pdf_url || '';
-  if (!text || parseCriminalCount(text) <= 0 || !firstPdf) return text;
-  return `<a class="modal-field-link" href="${escapeHtml(firstPdf)}" target="_blank" rel="noopener" title="전과기록 원문 PDF 상세보기">${escapeHtml(text)} 상세보기</a>`;
+  if (!text || parseCriminalCount(text) <= 0 || !necDetailUrl) return text;
+  return `<a class="modal-field-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener" title="선관위 후보자 정보공개에서 전과 상세 확인">${escapeHtml(text)} 선관위에서 확인</a>`;
 }
 
 function buildCriminalOcrMap(payload) {
@@ -702,10 +734,10 @@ function criminalCategoryHref(category) {
 }
 
 function criminalOcrCategoriesHtml(record, currentCategory = '') {
-  const categories = (record?.categories || []).filter(Boolean);
+  const categories = (record?.categories || []).filter(Boolean).sort(compareCrimeCategories);
   if (!categories.length) return '';
   return `<span class="crime-tags">${categories.map(cat => `
-    <a class="crime-tag${cat === currentCategory ? ' active' : ''}" href="${criminalCategoryHref(cat)}">${escapeHtml(cat)}</a>
+    <a class="crime-tag crime-tag-${crimeCategoryMeta(cat).tone}${cat === currentCategory ? ' active' : ''}" href="${criminalCategoryHref(cat)}">${escapeHtml(cat)}</a>
   `).join('')}</span>`;
 }
 
@@ -746,9 +778,9 @@ async function openCandidateModal(huboid) {
         <img src="${photo.thumbnail_url}" alt="${c.name} 후보자 사진" loading="lazy">
       </a>
     </figure>` : '';
-  const allCriminalFiles = nec?.scan_files?.criminal || [];
-  const criminalFiles = canShowCriminalScanLinks() ? allCriminalFiles : [];
+  const necDetailUrl = nec?.nec_detail_url || '';
   const criminalOcrRecord = criminalOcrRecordFor(c.huboid);
+  const hasCriminalRecord = parseCriminalCount(disclosures.criminal_record) > 0;
 
   // 필드 정의: 값이 있는 것만 표시
   const fields = [
@@ -771,7 +803,7 @@ async function openCandidateModal(huboid) {
     ['체납',   disclosures.tax_arrears_5y_thousand_krw || disclosures.tax_arrears_current_thousand_krw
       ? `최근 5년 ${moneyDisclosure(disclosures.tax_arrears_5y_thousand_krw) || '0원'} · 현재 ${moneyDisclosure(disclosures.tax_arrears_current_thousand_krw) || '0원'}`
       : ''],
-    ['전과',   criminalDisclosureValue(disclosures.criminal_record, criminalFiles)],
+    ['전과',   criminalDisclosureValue(disclosures.criminal_record, necDetailUrl)],
     ['전과 유형', criminalOcrCategoriesHtml(criminalOcrRecord)],
     ['입후보', disclosures.candidacy_count || ''],
   ].filter(([, v]) => v);
@@ -785,21 +817,18 @@ async function openCandidateModal(huboid) {
       <h3 class="modal-section-title">관련 보도 <span class="modal-section-sub">${articles.length}건 · 뉴탐사 공천대란 매칭</span></h3>
       <ul class="modal-articles">${articleListHtml(articles)}</ul>
     </section>` : '';
-  const criminalHtml = criminalFiles.length ? `
+  const criminalHtml = hasCriminalRecord && necDetailUrl ? `
     <section class="modal-section">
-      <h3 class="modal-section-title">전과 원문 <span class="modal-section-sub">선관위 공개 PDF</span></h3>
+      <h3 class="modal-section-title">전과 상세 <span class="modal-section-sub">선관위 후보자 정보공개</span></h3>
+      <p class="trend-meta">PDF 파일을 직접 제공하지 않고 선관위 후보자 상세 페이지로 연결합니다. 원문 열람 여부와 공개 범위는 선관위 페이지 기준입니다.</p>
       <ul class="modal-articles">
-        ${criminalFiles.map((f, i) => `<li><a href="${f.pdf_url}" target="_blank" rel="noopener">전과기록 증명서 ${i + 1}</a></li>`).join('')}
+        <li><a href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위에서 전과 원문 확인</a></li>
       </ul>
-    </section>` : allCriminalFiles.length ? `
-    <section class="modal-section">
-      <h3 class="modal-section-title">전과 원문 <span class="modal-section-sub">선거일 후 비공개</span></h3>
-      <p class="trend-meta">공직선거법상 후보자등록서류 공개는 선거일 후 제한되므로 원문 PDF 바로가기는 표시하지 않습니다.</p>
     </section>` : '';
 
   const tipUrl = tipoffUrl(c);
-  const necLink = nec?.nec_detail_url
-    ? `<a class="modal-share modal-link" href="${nec.nec_detail_url}" target="_blank" rel="noopener">선관위 상세</a>`
+  const necLink = necDetailUrl
+    ? `<a class="modal-share modal-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위 상세</a>`
     : '';
 
   root.innerHTML = `
@@ -2325,9 +2354,9 @@ function criminalOcrCategoryItems() {
   const fromPayload = Array.isArray(state.criminalOcr?.categories)
     ? state.criminalOcr.categories
         .filter(item => item?.category && item.count > 0)
-        .map(item => ({ category: item.category, count: item.count }))
+        .map(item => ({ ...crimeCategoryMeta(item.category), ...item, count: item.count }))
     : [];
-  if (fromPayload.length) return fromPayload;
+  if (fromPayload.length) return fromPayload.sort(compareCrimeCategories);
 
   const counts = {};
   for (const record of criminalOcrRecords()) {
@@ -2336,18 +2365,37 @@ function criminalOcrCategoryItems() {
     }
   }
   return Object.entries(counts)
-    .map(([category, count]) => ({ category, count }))
-    .sort((a, b) => b.count - a.count || koSort(a.category, b.category));
+    .map(([category, count]) => ({ ...crimeCategoryMeta(category), category, count }))
+    .sort(compareCrimeCategories);
+}
+
+function crimeChipHtml(item, currentCategory = '') {
+  const meta = crimeCategoryMeta(item.category);
+  const badge = meta.tone === 'priority' ? '중점' : meta.tone === 'context' ? '시국' : '';
+  return `
+    <a class="crime-chip crime-chip-${meta.tone}${item.category === currentCategory ? ' active' : ''}" href="${criminalCategoryHref(item.category)}">
+      <strong>${escapeHtml(item.category)}</strong>
+      <span>${item.count.toLocaleString()}명</span>
+      ${badge ? `<em>${badge}</em>` : ''}
+    </a>`;
 }
 
 function criminalCategoryChipsHtml(currentCategory = '') {
   const items = criminalOcrCategoryItems();
   if (!items.length) return '';
-  return `<div class="crime-chip-list">${items.map(item => `
-    <a class="crime-chip${item.category === currentCategory ? ' active' : ''}" href="${criminalCategoryHref(item.category)}">
-      <strong>${escapeHtml(item.category)}</strong>
-      <span>${item.count.toLocaleString()}명</span>
-    </a>
+  const groups = [
+    { group: '공직 검증 중점', note: '사기·횡령·뇌물·선거법·성범죄·마약·음주운전 등' },
+    { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
+    { group: '시국·집회 관련', note: '국가보안법·집시법 등은 맥락 확인 필요' },
+    { group: '기타', note: '' },
+  ].map(def => ({ ...def, items: items.filter(item => crimeCategoryMeta(item.category).group === def.group) }))
+    .filter(def => def.items.length);
+
+  return `<div class="crime-chip-groups">${groups.map(def => `
+    <div class="crime-chip-group">
+      <h4 class="crime-chip-heading">${escapeHtml(def.group)}${def.note ? ` <small>${escapeHtml(def.note)}</small>` : ''}</h4>
+      <div class="crime-chip-list">${def.items.map(item => crimeChipHtml(item, currentCategory)).join('')}</div>
+    </div>
   `).join('')}</div>`;
 }
 
@@ -2370,7 +2418,7 @@ function criminalOcrOverviewHtml() {
         </div>
         ${chips}
       </div>
-      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 OCR로 읽어 넓은 범죄 유형으로 묶었습니다. OCR 오인식 가능성이 있으므로 후보 상세의 선관위 원문 PDF로 최종 확인하세요.${partialText}</p>
+      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 OCR로 읽어 넓은 범죄 유형으로 묶었습니다. 사기·횡령·뇌물·선거법 위반처럼 공직 검증에 직접 걸리는 유형을 먼저 배치하고, 국가보안법·집시법 등은 시국·집회 관련 유형으로 분리했습니다. OCR 오인식 가능성이 있으므로 후보 상세의 선관위 링크에서 최종 확인하세요.${partialText}</p>
     </section>`;
 }
 
@@ -2388,9 +2436,9 @@ function criminalCandidateEntry(item, category) {
   const record = item.record;
   const candidate = item.candidate;
   const terms = (record.matched_terms?.[category] || []).filter(Boolean);
-  const pdfUrl = record.pdf_urls?.[0] || '';
-  const pdfLink = pdfUrl && canShowCriminalScanLinks()
-    ? `<a class="crime-source-link" href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener">원문 PDF 확인</a>`
+  const necDetailUrl = record.nec_detail_url || necDetailUrlForHuboid(record.huboid);
+  const sourceLink = necDetailUrl
+    ? `<a class="crime-source-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위 상세 확인</a>`
     : '';
   const termText = terms.length
     ? `OCR 감지어: ${terms.map(escapeHtml).join(', ')}`
@@ -2401,7 +2449,7 @@ function criminalCandidateEntry(item, category) {
       <div class="crime-row-detail">
         <span>${termText}</span>
         ${criminalOcrCategoriesHtml(record, category)}
-        ${pdfLink}
+        ${sourceLink}
       </div>
     </div>`;
 }
@@ -2456,7 +2504,7 @@ function renderCriminalCategoryFull(category) {
         <span>${groups.length.toLocaleString()}개 시도</span>
       </div>
     </div>
-    <p class="page-intro">전과 PDF의 죄명 영역에서 ${escapeHtml(categoryLabel || '선택한 유형')} 관련 표현이 OCR로 감지된 후보입니다. 기계 인식 결과라 오분류 가능성이 있고, 법적·보도 판단에는 반드시 선관위 원문 PDF 확인이 필요합니다.</p>
+    <p class="page-intro">전과 PDF의 죄명 영역에서 ${escapeHtml(categoryLabel || '선택한 유형')} 관련 표현이 OCR로 감지된 후보입니다. 기계 인식 결과라 오분류 가능성이 있고, 법적·보도 판단에는 반드시 선관위 후보자 상세 페이지에서 원문 확인이 필요합니다.</p>
     ${allChips}
     ${bodyHtml}`;
   window.scrollTo({ top: 0, behavior: 'instant' });

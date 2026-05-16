@@ -33,24 +33,48 @@ CACHE_DIR = ROOT / "data" / ".criminal_ocr_cache"
 
 CRIME_KEYWORDS = {
     "사기": ["사기"],
-    "음주운전": ["음주운전"],
-    "무면허운전": ["무면허운전"],
-    "도로교통": ["도로교통법"],
-    "폭력": ["폭력행위", "공동폭행", "폭행", "상해"],
-    "공무집행방해": ["공무집행방해"],
-    "집시법": ["집회및시위", "집회 및 시위"],
-    "공직선거법": ["공직선거법"],
-    "정치자금법": ["정치자금법"],
-    "뇌물": ["뇌물"],
     "횡령·배임": ["횡령", "배임"],
-    "절도": ["절도"],
+    "뇌물": ["뇌물", "수뢰", "알선수재"],
+    "정치자금법": ["정치자금법"],
+    "공직선거법": ["공직선거법"],
     "성범죄": ["성폭력", "강제추행", "성매매", "아동청소년"],
     "마약": ["마약", "향정"],
-    "명예훼손·모욕": ["명예훼손", "모욕"],
+    "음주운전": ["음주운전"],
+    "무면허운전": ["무면허운전"],
+    "절도": ["절도"],
+    "폭력": ["폭력행위", "공동폭행", "폭행", "상해"],
+    "공무집행방해": ["공무집행방해"],
     "업무방해": ["업무방해"],
     "재물손괴": ["재물손괴"],
     "주거침입": ["주거침입"],
+    "도로교통": ["도로교통법"],
+    "국가보안법": ["국가보안법", "국보법"],
+    "집시법": ["집회및시위", "집회 및 시위"],
     "국가공무원법": ["국가공무원법"],
+    "명예훼손·모욕": ["명예훼손", "모욕"],
+}
+
+CATEGORY_META = {
+    "사기": {"group": "공직 검증 중점", "tone": "priority", "order": 10},
+    "횡령·배임": {"group": "공직 검증 중점", "tone": "priority", "order": 11},
+    "뇌물": {"group": "공직 검증 중점", "tone": "priority", "order": 12},
+    "정치자금법": {"group": "공직 검증 중점", "tone": "priority", "order": 13},
+    "공직선거법": {"group": "공직 검증 중점", "tone": "priority", "order": 14},
+    "성범죄": {"group": "공직 검증 중점", "tone": "priority", "order": 15},
+    "마약": {"group": "공직 검증 중점", "tone": "priority", "order": 16},
+    "음주운전": {"group": "공직 검증 중점", "tone": "priority", "order": 17},
+    "무면허운전": {"group": "공직 검증 중점", "tone": "priority", "order": 18},
+    "절도": {"group": "공직 검증 중점", "tone": "priority", "order": 19},
+    "폭력": {"group": "폭력·질서", "tone": "standard", "order": 40},
+    "공무집행방해": {"group": "폭력·질서", "tone": "standard", "order": 41},
+    "업무방해": {"group": "폭력·질서", "tone": "standard", "order": 42},
+    "재물손괴": {"group": "폭력·질서", "tone": "standard", "order": 43},
+    "주거침입": {"group": "폭력·질서", "tone": "standard", "order": 44},
+    "도로교통": {"group": "기타", "tone": "standard", "order": 60},
+    "국가보안법": {"group": "시국·집회 관련", "tone": "context", "order": 80},
+    "집시법": {"group": "시국·집회 관련", "tone": "context", "order": 81},
+    "국가공무원법": {"group": "시국·집회 관련", "tone": "context", "order": 82},
+    "명예훼손·모욕": {"group": "기타", "tone": "standard", "order": 90},
 }
 
 WIN_OCR_SCRIPT = r"""
@@ -183,6 +207,11 @@ def classify(text: str) -> tuple[list[str], dict[str, list[str]]]:
     return categories, matched
 
 
+def category_sort_key(item: tuple[str, int]) -> tuple[int, int, str]:
+    category, count = item
+    return (CATEGORY_META.get(category, {}).get("order", 999), -count, category)
+
+
 def load_details() -> list[dict]:
     payload = json.loads(DETAILS_FILE.read_text(encoding="utf-8"))
     return payload.get("details", [])
@@ -212,7 +241,8 @@ def candidate_row(detail: dict, candidate_map: dict[str, dict], text: str, categ
         "matched_terms": matched,
         "offense_text": offense_section(text),
         "ocr_text": text,
-        "pdf_urls": pdf_urls,
+        "nec_detail_url": detail.get("nec_detail_url") or "",
+        "pdf_count": len(pdf_urls),
     }
 
 
@@ -275,8 +305,8 @@ def main() -> None:
             "partial": bool(args.limit or args.huboid),
         },
         "categories": [
-            {"category": category, "count": count}
-            for category, count in sorted(category_counts.items(), key=lambda x: (-x[1], x[0]))
+            {"category": category, "count": count, **CATEGORY_META.get(category, {})}
+            for category, count in sorted(category_counts.items(), key=category_sort_key)
         ],
         "records": records,
         "failures": failures,
