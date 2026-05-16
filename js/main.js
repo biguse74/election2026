@@ -675,6 +675,13 @@ function canShowCriminalScanLinks(now = new Date()) {
   return now < new Date(DISCLOSURE_LINK_END);
 }
 
+function criminalDisclosureValue(record, files) {
+  const text = String(record || '').trim();
+  const firstPdf = files?.[0]?.pdf_url || '';
+  if (!text || parseCriminalCount(text) <= 0 || !firstPdf) return text;
+  return `<a class="modal-field-link" href="${escapeHtml(firstPdf)}" target="_blank" rel="noopener" title="전과기록 원문 PDF 상세보기">${escapeHtml(text)} 상세보기</a>`;
+}
+
 async function openCandidateModal(huboid) {
   const c = state.data.candidates.find(x => x.huboid === huboid);
   if (!c) return;
@@ -731,7 +738,7 @@ async function openCandidateModal(huboid) {
     ['체납',   disclosures.tax_arrears_5y_thousand_krw || disclosures.tax_arrears_current_thousand_krw
       ? `최근 5년 ${moneyDisclosure(disclosures.tax_arrears_5y_thousand_krw) || '0원'} · 현재 ${moneyDisclosure(disclosures.tax_arrears_current_thousand_krw) || '0원'}`
       : ''],
-    ['전과',   disclosures.criminal_record || ''],
+    ['전과',   criminalDisclosureValue(disclosures.criminal_record, criminalFiles)],
     ['입후보', disclosures.candidacy_count || ''],
   ].filter(([, v]) => v);
 

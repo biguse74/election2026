@@ -1023,6 +1023,8 @@ body.modal-open { overflow: hidden; }
 .modal-field { display: contents; }
 .modal-field dt { font-size: 0.78rem; color: var(--ink-sub); letter-spacing: 0.03em; padding-top: 0.15rem; }
 .modal-field dd { font-size: 0.95rem; color: var(--ink); line-height: 1.5; word-break: keep-all; }
+.modal-field-link { color: var(--accent); text-decoration: none; font-weight: 700; }
+.modal-field-link:hover { text-decoration: underline; }
 .modal-section { margin: 1.2rem 0; padding-top: 1rem; border-top: 1px solid var(--rule); }
 .modal-section-title { font-family: var(--serif); font-weight: 700; font-size: 1rem; margin-bottom: 0.6rem; }
 .modal-section-sub { font-family: var(--sans); font-weight: 400; font-size: 0.78rem; color: var(--ink-sub); margin-left: 0.4rem; }
