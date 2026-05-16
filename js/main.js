@@ -382,7 +382,7 @@ const loadNominations = () => safeJson('data/nominations.json', null);
 const loadArticles = () => safeJson('data/articles.json', null);
 const loadCandidateDetails = () => safeJson('data/candidate_details.json', null);
 const loadConstituencies = () => safeJson('data/constituencies.json', null);
-const loadAddressIndex = () => safeJson('data/address_index.json?v=202605161025', []);
+const loadAddressIndex = () => safeJson('data/address_index.json?v=202605161245', []);
 const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
@@ -902,6 +902,24 @@ function extractEmdName(query, sd, detailWiw, baseWiw) {
   return hit || '';
 }
 
+function isRoadNameToken(token) {
+  const text = compactAddressText(token);
+  if (text.length < 2) return false;
+  return /(대로|로|길)$/.test(text)
+    || /(대로|로)\d/.test(text)
+    || /(대로|로)[가-힣A-Za-z]*\d.*길$/.test(text);
+}
+
+function extractRoadName(query, sd, detailWiw, baseWiw) {
+  let text = String(query || '');
+  for (const part of [sd, ...(SIDO_TAGS[sd] || []), detailWiw, baseWiw]) {
+    if (part) text = text.replace(part, ' ');
+  }
+  const tokens = text.split(/\s+/).map(t => t.trim()).filter(Boolean);
+  const hit = [...tokens].reverse().find(isRoadNameToken);
+  return hit || '';
+}
+
 function parseAddressQuery(query) {
   const sd = findSidoInAddress(query);
   const unitsBySd = buildAddressUnits();
@@ -914,6 +932,7 @@ function parseAddressQuery(query) {
     detailWiw,
     baseWiw,
     emd: extractEmdName(query, sd, detailWiw, baseWiw),
+    road: extractRoadName(query, sd, detailWiw, baseWiw),
   };
 }
 
@@ -921,27 +940,41 @@ function emdShortName(name) {
   return String(name || '').replace(/(읍|면|동|리)$/g, '');
 }
 
+function addressUnitKind(unit) {
+  return unit?.kind === 'road' ? 'road' : 'emd';
+}
+
+function addressUnitName(unit) {
+  return addressUnitKind(unit) === 'road'
+    ? (unit.roadName || unit.emdName || '')
+    : (unit.emdName || '');
+}
+
 function addressSearchEntries(unit) {
   const sdNames = [unit.sdName, ...(SIDO_TAGS[unit.sdName] || []), shortLocalName(unit.sdName)];
   const sggNames = [unit.sggName, ...localNameVariants(unit.sggName)];
-  const emdNames = [unit.emdName, emdShortName(unit.emdName)];
+  const isRoad = addressUnitKind(unit) === 'road';
+  const unitName = addressUnitName(unit);
+  const unitNames = isRoad
+    ? [unitName]
+    : [unitName, emdShortName(unitName)];
   const entries = [];
   const add = (value, weight) => {
     const text = compactAddressText(value);
     if (text) entries.push({ text, weight });
   };
 
-  for (const emd of emdNames) add(emd, 10000);
+  for (const name of unitNames) add(name, isRoad ? 11000 : 10000);
   for (const sgg of sggNames) {
-    for (const emd of emdNames) add(`${sgg}${emd}`, 8200);
+    for (const name of unitNames) add(`${sgg}${name}`, isRoad ? 9000 : 8200);
   }
   for (const sd of sdNames) {
-    for (const emd of emdNames) add(`${sd}${emd}`, 7600);
+    for (const name of unitNames) add(`${sd}${name}`, isRoad ? 8400 : 7600);
     for (const sgg of sggNames) {
-      for (const emd of emdNames) add(`${sd}${sgg}${emd}`, 7000);
+      for (const name of unitNames) add(`${sd}${sgg}${name}`, isRoad ? 7800 : 7000);
     }
   }
-  add(unit.fullName, 6400);
+  add(unit.fullName, isRoad ? 7200 : 6400);
 
   return entries;
 }
@@ -973,16 +1006,18 @@ function searchAddressUnits(query, limit = 8) {
       if (sdDiff) return sdDiff;
       const sggDiff = koSort(a.unit.sggName, b.unit.sggName);
       if (sggDiff) return sggDiff;
-      return koSort(a.unit.emdName, b.unit.emdName);
+      return koSort(addressUnitName(a.unit), addressUnitName(b.unit));
     })
     .slice(0, limit);
 }
 
 function addressSuggestionHtml(unit) {
+  const isRoad = addressUnitKind(unit) === 'road';
+  const kindText = isRoad ? ' · 도로명' : '';
   return `
     <button type="button" class="address-suggestion" data-address-full="${escapeHtml(unit.fullName)}">
-      <strong>${escapeHtml(unit.emdName)}</strong>
-      <span>${escapeHtml(unit.fullName)}</span>
+      <strong>${escapeHtml(addressUnitName(unit))}</strong>
+      <span>${escapeHtml(unit.fullName)}${kindText}</span>
     </button>`;
 }
 
@@ -1117,11 +1152,11 @@ function renderAddressFinder() {
           <p class="address-kicker">내 투표용지에 가까운 후보 보기</p>
           <h2>주소로 후보 찾기</h2>
         </div>
-        <p>동 이름만 입력해도 후보 지역을 추천합니다. 같은 동명이 여러 곳이면 전체 주소를 골라 주세요.</p>
+        <p>동 이름이나 도로명만 입력해도 후보 지역을 추천합니다. 같은 이름이 여러 곳이면 전체 주소를 골라 주세요.</p>
       </div>
       <form class="address-form" data-address-form>
         <div class="address-input-wrap">
-          <input id="address-input" name="address" type="search" autocomplete="off" placeholder="예: 사직동, 정자동, 서울 종로구 사직동" aria-label="주소 또는 동 이름 입력" aria-controls="address-suggestions">
+          <input id="address-input" name="address" type="search" autocomplete="off" placeholder="예: 사직동, 상도로, 서울 종로구 사직로" aria-label="주소, 동 이름 또는 도로명 입력" aria-controls="address-suggestions">
           <div id="address-suggestions" class="address-suggestions" hidden></div>
         </div>
         <button type="submit">후보 보기</button>
@@ -1141,7 +1176,7 @@ function renderAddressLookup(query) {
   }
   if (!lookup.raw) {
     out.hidden = false;
-    out.innerHTML = '<p class="address-error">주소나 동 이름을 입력해 주세요. 예: 사직동, 서울 종로구 사직동</p>';
+    out.innerHTML = '<p class="address-error">주소, 동 이름 또는 도로명을 입력해 주세요. 예: 사직동, 상도로, 서울 종로구 사직로</p>';
     return;
   }
   if (!lookup.sd) {
@@ -1152,13 +1187,13 @@ function renderAddressLookup(query) {
       return;
     }
     clearAddressSuggestions();
-    out.innerHTML = '<p class="address-error">지역을 찾지 못했습니다. 동 이름이나 시군구를 조금 더 정확히 입력해 주세요.</p>';
+    out.innerHTML = '<p class="address-error">지역을 찾지 못했습니다. 동 이름, 도로명이나 시군구를 조금 더 정확히 입력해 주세요.</p>';
     return;
   }
   clearAddressSuggestions();
 
   const sections = buildAddressCandidateSections(lookup);
-  const addressBits = [lookup.sd, lookup.detailWiw || lookup.baseWiw, lookup.emd].filter(Boolean);
+  const addressBits = [lookup.sd, lookup.detailWiw || lookup.baseWiw, lookup.road || lookup.emd].filter(Boolean);
   const addressLabel = addressBits.map(escapeHtml).join(' ');
   const candidateCount = sections.reduce((sum, s) => sum + s.list.length, 0);
   const localNote = lookup.baseWiw
@@ -1830,7 +1865,7 @@ function disclosureOverviewHtml(ds) {
         <small>전과 1건 이상 ${ds.criminal.holders.toLocaleString()}명 / 전체 ${ds.criminal.count.toLocaleString()}명 (${formatPct(ds.criminal.rate)}) · 총 ${ds.criminal.cases.toLocaleString()}건</small>
       </div>
       <div class="disclosure-card">
-        <span class="disclosure-label">전체 병역</span>
+        <span class="disclosure-label">남성 병역 미필</span>
         <strong>${oneInText(ds.military.notServedRate)}</strong>
         <small>병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필 (${formatPct(ds.military.notServedRate)})</small>
       </div>
@@ -2029,7 +2064,7 @@ function disclosureRegionOverviewHtml(sd, summary) {
         <small>전과 1건 이상 ${summary.criminal.holders.toLocaleString()}명 / ${summary.criminal.count.toLocaleString()}명 (${formatPct(summary.criminal.rate)}) · 총 ${summary.criminal.cases.toLocaleString()}건</small>
       </div>
       <div class="disclosure-card">
-        <span class="disclosure-label">${escapeHtml(sd)} 병역</span>
+        <span class="disclosure-label">${escapeHtml(sd)} 남성 병역 미필</span>
         <strong>${oneInText(summary.military.notServedRate)}</strong>
         <small>병역 대상 남성 ${summary.military.eligible.toLocaleString()}명 중 ${summary.military.notServed.toLocaleString()}명이 미필 (${formatPct(summary.military.notServedRate)})</small>
       </div>
@@ -2159,7 +2194,7 @@ function disclosureStatsHtml(ds) {
           <div class="bar-list">${militaryBars(ds.byRegion.military, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
-      <p class="trend-meta">전체 병역 ${oneInText(ds.military.notServedRate)}은 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필이라는 뜻입니다. 여성 후보는 병역 통계에서 제외했고, 남성 후보 중 병역 비대상도 분모에서 제외했습니다.</p>
+      <p class="trend-meta">남성 병역 미필 ${oneInText(ds.military.notServedRate)}은 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필이라는 뜻입니다. 여성 후보는 병역 통계에서 제외했고, 남성 후보 중 병역 비대상도 분모에서 제외했습니다.</p>
     </section>`;
 }
 

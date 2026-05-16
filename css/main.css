@@ -744,8 +744,8 @@ footer a:hover { text-decoration: underline; }
   box-shadow: 0 12px 24px rgba(0,0,0,0.14);
 }
 .address-suggestion {
-  width: 100%; display: grid; grid-template-columns: 92px minmax(0, 1fr);
-  gap: 0.75rem; align-items: baseline; text-align: left;
+  width: 100%; display: grid; grid-template-columns: minmax(96px, 128px) minmax(0, 1fr);
+  gap: 0.75rem; align-items: start; text-align: left;
   border: 0; border-bottom: 1px solid var(--rule);
   background: transparent; color: var(--ink);
   padding: 0.68rem 0.85rem; font-family: inherit; cursor: pointer;
@@ -754,7 +754,8 @@ footer a:hover { text-decoration: underline; }
 .address-suggestion:hover,
 .address-suggestion:focus { background: #f7f2ed; outline: none; }
 .address-suggestion strong {
-  font-size: 0.92rem; font-weight: 800; white-space: nowrap;
+  font-size: 0.92rem; font-weight: 800; overflow-wrap: anywhere;
+  line-height: 1.25;
 }
 .address-suggestion span {
   min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
