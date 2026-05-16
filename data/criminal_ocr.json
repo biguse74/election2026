@@ -1,13 +1,13 @@
 {
   "meta": {
-    "generated_at": "2026-05-16T22:29:24.365306+00:00",
+    "generated_at": "2026-05-16T22:30:49.328469+00:00",
     "engine": "tesseract",
     "classification_version": 9,
-    "processed": 2624,
-    "failures": 3,
+    "processed": 2627,
+    "failures": 0,
     "selected_candidates": 2627,
     "total_candidates_with_criminal_pdf": 2627,
-    "partial": true
+    "partial": false
   },
   "categories": [
     {
@@ -81028,6 +81028,25 @@
       ]
     },
     {
+      "huboid": "100162133",
+      "name": "장향숙",
+      "party": "국민의힘",
+      "sdName": "경기도",
+      "sggName": "구리시가선거구",
+      "wiwName": "구리시",
+      "criminal_record": "1건",
+      "categories": [],
+      "matched_terms": {},
+      "offenses": [],
+      "offense_text": "|전과기록증명에관한제출서||AA명구리시의회의원선거선거구명구리시가선거구||소세09명국민의힘후보자성명장향숙||aas||aaageieasp처분일자ㄴ메|waeaaqee1000uae||",
+      "ocr_text": "|                 전과기록증명에 관한 제출서                 |\n|     AA 명      구리시의회의원선거 선거구명 구리시가선거구  |\n| 소세09명          국민의힘      후보자성명       장향숙 |\n|                       aa s                       |        |\n       aa        ageieasp           처분일자\nㄴ     메        |\nwae         aaqee         1000 uae | |\n첨부서류 : 범죄경력조희 희보서 1부.\nee ee en\n2항에 따라 전과기록에 관한 증명서를 위와 같이 계출합니다.                   |          |\n20264 4월 10일               |\n위. 예비후보자 장향숙 인              |\n7 |\nFee sas) AS\n|\n|\n|\n부록 3. 각종 신고ㆍ신청- 제출 서식 ewe 97",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100162133",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4125/Hb100162133/junkwa/20260516142138412_1.PDF"
+      ]
+    },
+    {
       "huboid": "100162136",
       "name": "신영재",
       "party": "국민의힘",
@@ -102109,6 +102128,25 @@
       ]
     },
     {
+      "huboid": "100164179",
+      "name": "박근호",
+      "party": "국민의힘",
+      "sdName": "강원특별자치도",
+      "sggName": "홍천군",
+      "wiwName": "홍천군",
+      "criminal_record": "2건",
+      "categories": [],
+      "matched_terms": {},
+      "offenses": [],
+      "offense_text": "[별지제12호서직의(카)]:~_=전과기록증명에관한제출서제om|선거",
+      "ocr_text": "[별지 제12호서직의(카)]                          :\n~          _      =\n전과기록증명에 관한 제출서\n 제 om |\n선거\n첨부서류 : 범죄경력조회 회보서 1부.\n2026년 6월 3일 ANSE 비레대표홍천군의회의원선거에서 『공직선거법』 제49조제10\n항에 따라 전과기록에 관한 증명서를 위와 같이 제출합니다.\n2026년 5월 14일\n위 후보자  =f)\n홍천군선거관리위원회 AS",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100164179",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg5212/Hb100164179/junkwa/20260516104241120_9.PDF"
+      ]
+    },
+    {
       "huboid": "100164185",
       "name": "최이향",
       "party": "개혁신당",
@@ -110854,6 +110892,25 @@
       ]
     },
     {
+      "huboid": "100165639",
+      "name": "강규남",
+      "party": "자유와혁신",
+      "sdName": "부산광역시",
+      "sggName": "부산광역시",
+      "wiwName": "",
+      "criminal_record": "1건",
+      "categories": [],
+      "matched_terms": {},
+      "offenses": [],
+      "offense_text": "형량(처분결과)a",
+      "ocr_text": "[별지 제19호서식의(카)]                                         :\n,          a      <\n전과기록증명에 관한 제출서\nre eee\n죄 명               형량(처분결과)      a\n첨부서류 : 범죄경력조회 회보서 1부.\n2026년 6월 3일 실시하는 비례대표 부산광역시 의회의원선거에서 『공직선거법』 제00조의\n2제2항에 따라 전과기록에 관한 증명서를 위와 같이 제출합니다.\n2026년 5월 15일\n=.\n위 예비후보자 강규  fis}\n\\ \\G\n부산광역시선거관리위원회 AS",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100165639",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg2600/Hb100165639/junkwa/20260516140541066_17.PDF"
+      ]
+    },
+    {
       "huboid": "100165640",
       "name": "김양우",
       "party": "국민의힘",
@@ -112256,18 +112313,5 @@
       ]
     }
   ],
-  "failures": [
-    {
-      "huboid": "100162133",
-      "error": "<urlopen error timed out>"
-    },
-    {
-      "huboid": "100164179",
-      "error": "<urlopen error timed out>"
-    },
-    {
-      "huboid": "100165639",
-      "error": "<urlopen error timed out>"
-    }
-  ]
+  "failures": []
 }
