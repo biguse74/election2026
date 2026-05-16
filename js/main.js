@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170255', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170315', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -2406,6 +2406,17 @@ function crimeHasPriority(categories = []) {
   return categories.some(category => crimeCategoryMeta(category).tone === 'priority');
 }
 
+function electionOfficeTitle(item) {
+  return SG_TITLE[String(item?.sgTypecode || '')] || '';
+}
+
+function criminalOfficeLine(candidate, record) {
+  const source = candidate || record || {};
+  const office = electionOfficeTitle(candidate);
+  const region = formatRegionLabel(source);
+  return [...new Set([office, region].filter(Boolean))].join(' · ');
+}
+
 function criminalAuditRows() {
   return (state.data?.candidates || [])
     .filter(isActiveCandidate)
@@ -2421,6 +2432,7 @@ function criminalAuditRows() {
         record,
         party: candidate.jdName || '무소속',
         sd: sidoFor(candidate) || '지역 미상',
+        officeType: electionOfficeTitle(candidate) || '선거 구분 미상',
         criminal,
         hasCriminal: criminal > 0,
         categories,
@@ -2488,6 +2500,77 @@ function crimeAuditBars(items, options = {}) {
   }).join('');
 }
 
+const CRIME_COMPOSITION_COLORS = ['#c41e3a', '#2c5d8f', '#3c7a57', '#b36b00', '#7357a4', '#00747a', '#8f3d5a', '#5b6570'];
+
+function summarizeCrimeComposition(rows, keyFn, options = {}) {
+  const total = rows.length;
+  const limit = options.limit ?? 8;
+  const entries = Object.entries(groupDisclosureRows(rows, keyFn))
+    .map(([label, items]) => ({ label, count: items.length }))
+    .sort((a, b) => b.count - a.count || koSort(a.label, b.label));
+  const shown = entries.slice(0, limit);
+  const otherCount = entries.slice(limit).reduce((sum, item) => sum + item.count, 0);
+  const items = shown.map((item, idx) => ({
+    ...item,
+    pct: total ? item.count / total * 100 : 0,
+    color: options.colorFor ? options.colorFor(item.label, idx) : CRIME_COMPOSITION_COLORS[idx % CRIME_COMPOSITION_COLORS.length],
+  }));
+  if (otherCount) {
+    items.push({
+      label: '그 외',
+      count: otherCount,
+      pct: total ? otherCount / total * 100 : 0,
+      color: '#c9c1b6',
+      other: true,
+    });
+  }
+  return { total, items, groupCount: entries.length };
+}
+
+function crimePieStyle(items) {
+  if (!items.length) return 'background: var(--bg);';
+  let cursor = 0;
+  const segments = items.map(item => {
+    const start = cursor;
+    const end = cursor + item.pct;
+    cursor = end;
+    return `${item.color} ${start.toFixed(2)}% ${end.toFixed(2)}%`;
+  });
+  return `background: conic-gradient(${segments.join(', ')});`;
+}
+
+function crimeCompositionPanelHtml(title, composition, options = {}) {
+  const { total, items } = composition;
+  if (!total || !items.length) return '';
+  const leader = items[0];
+  const leaderText = `${leader.label} ${leader.count.toLocaleString()}명 (${formatPct(leader.pct)})`;
+  const list = items.map(item => {
+    const href = options.regionLinks && !item.other ? metricLinkHref(item.label, { regionLinks: true }) : '';
+    const labelHtml = href
+      ? `<a href="${href}" class="crime-share-link">${escapeHtml(item.label)}</a>`
+      : `<span class="crime-share-label">${escapeHtml(item.label)}</span>`;
+    return `
+      <li class="crime-share-item">
+        <span class="crime-share-dot" style="background:${item.color}"></span>
+        ${labelHtml}
+        <strong>${item.count.toLocaleString()}명 <small>${formatPct(item.pct)}</small></strong>
+      </li>`;
+  }).join('');
+  return `
+    <div class="crime-share-panel">
+      <div class="crime-share-head">
+        <h4 class="metric-title">${escapeHtml(title)}</h4>
+        <span>${leaderText}</span>
+      </div>
+      <div class="crime-share-body">
+        <div class="crime-pie" style="${crimePieStyle(items)}" role="img" aria-label="${escapeHtml(title)} 구성 파이 차트">
+          <div class="crime-pie-center"><strong>${total.toLocaleString()}</strong><span>명</span></div>
+        </div>
+        <ol class="crime-share-list">${list}</ol>
+      </div>
+    </div>`;
+}
+
 function crimeAuditSnapshotHtml(rows, records, meta) {
   const processed = meta.processed || records.length;
   const failures = meta.failures || 0;
@@ -2534,23 +2617,20 @@ function crimeAuditLeadersHtml(rows) {
 
 function crimeCategoryAuditPanelHtml(category) {
   if (!category) return '';
-  const rows = criminalAuditRows();
-  const byParty = summarizeCrimeAuditGroups(rows, row => row.party, 20, category);
-  const byRegion = summarizeCrimeAuditGroups(rows, row => row.sd, 50, category);
-  if (!byParty.length && !byRegion.length) return '';
+  const rows = criminalAuditRows().filter(row => row.categories.includes(category));
+  if (!rows.length) return '';
+  const byParty = summarizeCrimeComposition(rows, row => row.party, { limit: 8, colorFor: label => partyColor(label) });
+  const byOffice = summarizeCrimeComposition(rows, row => row.officeType, { limit: 6 });
+  const byRegion = summarizeCrimeComposition(rows, row => row.sd, { limit: 8 });
   return `
     <section class="trend-section crime-category-audit">
-      <h3 class="trend-section-title">${escapeHtml(category)} 분포 <small>정당·지역별 후보 대비</small></h3>
-      <div class="metric-grid crime-audit-grid">
-        <div>
-          <h4 class="metric-title">정당별 비율 <small>후보 20명 이상</small></h4>
-          <div class="bar-list">${crimeAuditBars(byParty, { category }) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
-        </div>
-        <div>
-          <h4 class="metric-title">지역별 비율 <small>후보 50명 이상</small></h4>
-          <div class="bar-list">${crimeAuditBars(byRegion, { category, regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
-        </div>
+      <h3 class="trend-section-title">${escapeHtml(category)} 후보 구성 <small>이 유형 ${rows.length.toLocaleString()}명 중 비중</small></h3>
+      <div class="crime-share-grid">
+        ${crimeCompositionPanelHtml('정당별 구성', byParty)}
+        ${crimeCompositionPanelHtml('직책별 구성', byOffice)}
+        ${crimeCompositionPanelHtml('지역별 구성', byRegion, { regionLinks: true })}
       </div>
+      <p class="trend-meta">후보 전체 대비율이 아니라, 이 범죄 유형으로 분류된 후보 안에서 누가 얼마나 차지하는지 보는 구성비입니다. 공천 규모가 큰 정당·지역은 비중이 커질 수 있으므로 아래 명단의 직책과 원문을 함께 확인해야 합니다.</p>
     </section>`;
 }
 
@@ -2620,6 +2700,7 @@ function criminalCandidateEntry(item, category) {
   const record = item.record;
   const candidate = item.candidate;
   const terms = (record.matched_terms?.[category] || []).filter(Boolean);
+  const officeLine = criminalOfficeLine(candidate, record);
   const necDetailUrl = record.nec_detail_url || necDetailUrlForHuboid(record.huboid);
   const sourceLink = necDetailUrl
     ? `<a class="crime-source-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위 상세 확인</a>`
@@ -2631,6 +2712,7 @@ function criminalCandidateEntry(item, category) {
     <div class="crime-candidate-entry">
       ${candidate ? candidateRow(candidate) : criminalFallbackCandidateRow(record)}
       <div class="crime-row-detail">
+        ${officeLine ? `<span class="crime-row-office">${escapeHtml(officeLine)}</span>` : ''}
         <span>${termText}</span>
         ${criminalOcrCategoriesHtml(record, category)}
         ${sourceLink}
