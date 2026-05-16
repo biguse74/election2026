@@ -1,10 +1,10 @@
 {
   "meta": {
-    "generated_at": "2026-05-16T22:11:41.759685+00:00",
+    "generated_at": "2026-05-16T22:15:56.902699+00:00",
     "engine": "tesseract",
     "classification_version": 7,
-    "processed": 2618,
-    "failures": 9,
+    "processed": 2622,
+    "failures": 5,
     "selected_candidates": 2627,
     "total_candidates_with_criminal_pdf": 2627,
     "partial": true
@@ -19,7 +19,7 @@
     },
     {
       "category": "횡령",
-      "count": 49,
+      "count": 50,
       "group": "공직 검증 중점",
       "tone": "priority",
       "order": 11
@@ -96,7 +96,7 @@
     },
     {
       "category": "음주·위험운전",
-      "count": 948,
+      "count": 949,
       "group": "공직 검증 중점",
       "tone": "priority",
       "order": 25
@@ -187,14 +187,14 @@
     },
     {
       "category": "교통사고",
-      "count": 322,
+      "count": 323,
       "group": "교통·안전 법규",
       "tone": "standard",
       "order": 50
     },
     {
       "category": "도로교통",
-      "count": 1202,
+      "count": 1203,
       "group": "교통·안전 법규",
       "tone": "standard",
       "order": 51
@@ -329,7 +329,7 @@
     },
     {
       "category": "횡령",
-      "count": 38,
+      "count": 39,
       "group": "공직 검증 중점",
       "tone": "priority",
       "order": 11
@@ -406,7 +406,7 @@
     },
     {
       "category": "음주·위험운전",
-      "count": 714,
+      "count": 715,
       "group": "공직 검증 중점",
       "tone": "priority",
       "order": 25
@@ -504,7 +504,7 @@
     },
     {
       "category": "도로교통",
-      "count": 902,
+      "count": 903,
       "group": "교통·안전 법규",
       "tone": "standard",
       "order": 51
@@ -37258,6 +37258,25 @@
       ]
     },
     {
+      "huboid": "100158217",
+      "name": "나주하",
+      "party": "국민의힘",
+      "sdName": "충청남도",
+      "sggName": "서천군제2선거구",
+      "wiwName": "서천군",
+      "criminal_record": "1건",
+      "categories": [],
+      "matched_terms": {},
+      "offenses": [],
+      "offense_text": "[별제제12호서식의(카)]전과기록증명에관한제출서“mm™",
+      "ocr_text": "[별제 제12호서식의(카)]\n전과기록증명에 관한 제출서\n         “mm          ™\n첨부서류 : 범죄경력조회 회보서 1부.\n2026년 6월 3일 실시하는 충청남도의회의원선거에서 \"SARAH, 제60조의2게2항\n에 따라 전과기록에 관한 SINS 위와 같이 제출합니다.\n20264 3월 13일\n위 예비후보자  나주하브 은\n로  ie\nQe\n서천군선거관리위원회 AS",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100158217",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4412/Hb100158217/junkwa/20260516105421319_1.PDF"
+      ]
+    },
+    {
       "huboid": "100158218",
       "name": "최영기",
       "party": "국민의힘",
@@ -40081,6 +40100,51 @@
       ]
     },
     {
+      "huboid": "100158525",
+      "name": "김용철",
+      "party": "더불어민주당",
+      "sdName": "경기도",
+      "sggName": "군포시가선거구",
+      "wiwName": "군포시",
+      "criminal_record": "2건",
+      "categories": [
+        "횡령",
+        "교통사고"
+      ],
+      "matched_terms": {
+        "횡령": [
+          "횡령"
+        ],
+        "교통사고": [
+          "교통사고처리특례법",
+          "교통사고처리특례"
+        ]
+      },
+      "offenses": [
+        {
+          "date": "1985-12-30",
+          "offense": "업무상횡령",
+          "sentence": "벌금3000,000원",
+          "categories": [
+            "횡령"
+          ],
+          "matched_terms": {
+            "횡령": [
+              "횡령"
+            ]
+          },
+          "raw": "업무상횡령벌금3000,000원"
+        }
+      ],
+      "offense_text": "형량(처분결과)처분일자교통사고처리특례법위반금고8월,집행유예1년1985.12.30.업무상횡령벌금3000,000원2019.02.07.",
+      "ocr_text": "불임 1-2 | [규칙 별지 제12호서식의에]\n전과기록중명에 관한 제출서\n선 거 명        DEAS} AAI]    AAT      군포서가선거구\n소속정당명           더불어민주당      후보자성명        김용철\n전 과 기 록\n|        죄 명             형량(처분결과)             처분일자\n교통사고처리특례법위반        금고 8월, 집행유예 1년             1985. 12. 30.\n업무상횡령                벌금 3000,000원                2019. 02. 07.\n첨부서류 : 범죄경력조회 회보서 1부.\n2026년 6월 3일 실시하는 군포시의회 의원 선거에서 | 공직선거법」 제00조의2제\n2항에 따라 전과기록에 관한 SAAS 위와 같이 제출합니다.\n2026년 03월 17일\n3      HSH     김     4] ( Bey\n위 예비후보자    용철 ued\n군포시선거관리위원회 AS",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100158525",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4130/Hb100158525/junkwa/20260516110742947_1.PDF"
+      ]
+    },
+    {
       "huboid": "100158531",
       "name": "전기풍",
       "party": "국민의힘",
@@ -41202,6 +41266,25 @@
       "pdf_count": 1,
       "pdf_urls": [
         "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4708/Hb100158611/junkwa/20260504172041134_1.PDF"
+      ]
+    },
+    {
+      "huboid": "100158612",
+      "name": "김성태",
+      "party": "더불어민주당",
+      "sdName": "경기도",
+      "sggName": "구리시나선거구",
+      "wiwName": "구리시",
+      "criminal_record": "1건",
+      "categories": [],
+      "matched_terms": {},
+      "offenses": [],
+      "offense_text": "|붙일1-2|[규칙별지제12호서식의애0]sO관한제출서||aa구리시의회의원선거MATEㅣ구리시나선거구소속정당명더불어민주당후보자성명김성태|전과기룩4grere처분일자Micah|벌금1,000,000|2009/04/10",
+      "ocr_text": "| 붙일 1-2 | [규칙 별지 제12호서식의애0]\nsO 관한 제출서    |          |\naa    구리시의회의원선거 MATE ㅣ 구리시나선거구\n소속정당명        더불어민주당 후보자성명 김성태    |\n전 과기 룩\n4g           rere         처분일자\nMicah  |  벌금 1,000,000    |     2009/04/10\n첨부서류 : 범죄경력조희 희보서 1부.\n2006년 6월 3일 실시하는 구리시의회의원선거에서 [ 공직선거법」 제60조의2제\n2항에 따라 전과기록에 관한 증명서를 위와 같이 제출합니다.\n2026 년 3 월 17 일\n위 예비후보자 김성태 fa\nRA\n| 구리시선거관리위원회 귀중",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100158612",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4125/Hb100158612/junkwa/20260516144724433_1.PDF"
       ]
     },
     {
@@ -67980,6 +68063,54 @@
       "pdf_count": 1,
       "pdf_urls": [
         "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4902/Hb100161116/junkwa/20260331104258388_1.PDF"
+      ]
+    },
+    {
+      "huboid": "100161122",
+      "name": "김기상",
+      "party": "국민의힘",
+      "sdName": "서울특별시",
+      "sggName": "강동구사선거구",
+      "wiwName": "강동구",
+      "criminal_record": "2건",
+      "categories": [
+        "음주·위험운전",
+        "도로교통"
+      ],
+      "matched_terms": {
+        "음주·위험운전": [
+          "음주운전"
+        ],
+        "도로교통": [
+          "도로교통법"
+        ]
+      },
+      "offenses": [
+        {
+          "date": "2002-12-27",
+          "offense": "도로교통법위반(음주운전)벌금1.500.000원：",
+          "sentence": "",
+          "categories": [
+            "음주·위험운전",
+            "도로교통"
+          ],
+          "matched_terms": {
+            "음주·위험운전": [
+              "음주운전"
+            ],
+            "도로교통": [
+              "도로교통법"
+            ]
+          },
+          "raw": "도로교통법위반(음주운전)벌금1.500.000원："
+        }
+      ],
+      "offense_text": "형량(처분결과)처분일자도로교통법위반(음주운전)벌금1500009|2002.12.27.도로교통법위반(음주운전)벌금1.500.000원：2011.07.21.",
+      "ocr_text": "[규칙 별지 M1254 41 2160]\nee eee\n전과기록중명에 관한 ASA                     |\nJ                                                         |\n|                                                  시          ea\nAA 명    |  강동구의회의원선거       선거구명 \"ㅣ 강동구포선거구 Hiden le\n                       REG FE,\nFR\n소속정당명           국민의힘           후보자성명            김기상\n06                                                                          @\n전 과기 록\n죄 명                형 량(처분결과)               처분일자\n도로교통법위반(음주운전) 벌금 1500009 |     2002. 12. 27.\n도로교통법위반(음주운전) 벌금 1.500.000원  ： 2011. 07. 21.\n첨부서류 : 범최경력조회 BBA 1부.                                        .\nAbn woe He\nAp Sift aid Aas\n20264 68 3일 실시하는 강동구의회의원선거(강동구뼈선거구)에서 | 공직선거법 |\n제60조의2제2항에 따라 전과기록에 관한 중명서를 위와 같이 제출합니다.           |\n|\n|\nfe)       °         |\n|                                                2026 3 Mg\n위 agar oa7e SB)\n강동구선거관리위원회 AS\n레트.\n주: 1. 지방자치난체의 장선거에서는 “선거구명\"란은 작성하지 아니함니다,\n2 첨부하는 범죄경력조회 DANE \"공직선거후보자용“으로 발급된 회보서를 제출하여야 합니다.\n3. 전과기록은 선거기간개시일 전 150일 이후에 발급받은 법죄경력조희 회보서에 의하여 작성하여야 합니다.",
+      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100161122",
+      "pdf_count": 1,
+      "pdf_urls": [
+        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg1125/Hb100161122/junkwa/20260516112452624_1.PDF"
       ]
     },
     {
@@ -111928,22 +112059,6 @@
     }
   ],
   "failures": [
-    {
-      "huboid": "100158217",
-      "error": "<urlopen error timed out>"
-    },
-    {
-      "huboid": "100158525",
-      "error": "<urlopen error timed out>"
-    },
-    {
-      "huboid": "100158612",
-      "error": "<urlopen error timed out>"
-    },
-    {
-      "huboid": "100161122",
-      "error": "<urlopen error timed out>"
-    },
     {
       "huboid": "100161542",
       "error": "<urlopen error timed out>"
