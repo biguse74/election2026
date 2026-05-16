@@ -30,7 +30,7 @@ DETAILS_FILE = ROOT / "data" / "candidate_details.json"
 CANDIDATE_DIR = ROOT / "data" / "candidates" / "20260603"
 OUT_FILE = ROOT / "data" / "criminal_ocr.json"
 CACHE_DIR = ROOT / "data" / ".criminal_ocr_cache"
-CLASSIFICATION_VERSION = 3
+CLASSIFICATION_VERSION = 4
 PDF_HEADERS = {
     "User-Agent": "newtamsa-election2026/1.0 (+https://github.com/biguse74/election2026)",
     "Referer": "https://info.nec.go.kr/",
@@ -38,7 +38,8 @@ PDF_HEADERS = {
 
 CRIME_KEYWORDS = {
     "사기": ["사기"],
-    "횡령·배임": ["횡령", "배임"],
+    "횡령": ["횡령"],
+    "배임": ["배임"],
     "뇌물": ["뇌물", "수뢰", "알선수재"],
     "정치자금법": ["정치자금법"],
     "공직선거법": ["공직선거법"],
@@ -73,29 +74,33 @@ CRIME_KEYWORDS = {
     "야생생물": ["야생생물보호"],
     "저작권법": ["저작권법"],
     "도박": ["도박"],
+    "직권남용": ["직권남용"],
     "국가보안법": ["국가보안법", "국보법"],
     "집시법": ["집회및시위", "집회 및 시위"],
     "국가공무원법": ["국가공무원법"],
-    "명예훼손·모욕": ["명예훼손", "모욕"],
+    "명예훼손": ["명예훼손"],
+    "모욕": ["모욕"],
 }
 
 CATEGORY_META = {
     "사기": {"group": "공직 검증 중점", "tone": "priority", "order": 10},
-    "횡령·배임": {"group": "공직 검증 중점", "tone": "priority", "order": 11},
-    "뇌물": {"group": "공직 검증 중점", "tone": "priority", "order": 12},
-    "정치자금법": {"group": "공직 검증 중점", "tone": "priority", "order": 13},
-    "공직선거법": {"group": "공직 검증 중점", "tone": "priority", "order": 14},
-    "성범죄": {"group": "공직 검증 중점", "tone": "priority", "order": 15},
-    "마약": {"group": "공직 검증 중점", "tone": "priority", "order": 16},
-    "특가법": {"group": "공직 검증 중점", "tone": "priority", "order": 17},
-    "음주운전": {"group": "공직 검증 중점", "tone": "priority", "order": 18},
-    "무면허운전": {"group": "공직 검증 중점", "tone": "priority", "order": 19},
-    "교통사고": {"group": "공직 검증 중점", "tone": "priority", "order": 20},
-    "절도": {"group": "공직 검증 중점", "tone": "priority", "order": 21},
-    "조세": {"group": "공직 검증 중점", "tone": "priority", "order": 22},
-    "보조금": {"group": "공직 검증 중점", "tone": "priority", "order": 23},
-    "보험·금융": {"group": "공직 검증 중점", "tone": "priority", "order": 24},
-    "문서·인장": {"group": "공직 검증 중점", "tone": "priority", "order": 25},
+    "횡령": {"group": "공직 검증 중점", "tone": "priority", "order": 11},
+    "배임": {"group": "공직 검증 중점", "tone": "priority", "order": 12},
+    "뇌물": {"group": "공직 검증 중점", "tone": "priority", "order": 13},
+    "정치자금법": {"group": "공직 검증 중점", "tone": "priority", "order": 14},
+    "공직선거법": {"group": "공직 검증 중점", "tone": "priority", "order": 15},
+    "직권남용": {"group": "공직 검증 중점", "tone": "priority", "order": 16},
+    "성범죄": {"group": "공직 검증 중점", "tone": "priority", "order": 17},
+    "마약": {"group": "공직 검증 중점", "tone": "priority", "order": 18},
+    "특가법": {"group": "공직 검증 중점", "tone": "priority", "order": 19},
+    "음주운전": {"group": "공직 검증 중점", "tone": "priority", "order": 20},
+    "무면허운전": {"group": "공직 검증 중점", "tone": "priority", "order": 21},
+    "교통사고": {"group": "공직 검증 중점", "tone": "priority", "order": 22},
+    "절도": {"group": "공직 검증 중점", "tone": "priority", "order": 23},
+    "조세": {"group": "공직 검증 중점", "tone": "priority", "order": 24},
+    "보조금": {"group": "공직 검증 중점", "tone": "priority", "order": 25},
+    "보험·금융": {"group": "공직 검증 중점", "tone": "priority", "order": 26},
+    "문서·인장": {"group": "공직 검증 중점", "tone": "priority", "order": 27},
     "폭력": {"group": "폭력·질서", "tone": "standard", "order": 40},
     "공무집행방해": {"group": "폭력·질서", "tone": "standard", "order": 41},
     "업무방해": {"group": "폭력·질서", "tone": "standard", "order": 42},
@@ -114,12 +119,13 @@ CATEGORY_META = {
     "건축·부동산": {"group": "생활·안전 법규", "tone": "standard", "order": 67},
     "총포·화약": {"group": "생활·안전 법규", "tone": "standard", "order": 68},
     "야생생물": {"group": "생활·안전 법규", "tone": "standard", "order": 69},
-    "국가보안법": {"group": "시국·집회 관련", "tone": "context", "order": 80},
-    "집시법": {"group": "시국·집회 관련", "tone": "context", "order": 81},
-    "국가공무원법": {"group": "시국·집회 관련", "tone": "context", "order": 82},
-    "명예훼손·모욕": {"group": "기타", "tone": "standard", "order": 90},
-    "저작권법": {"group": "기타", "tone": "standard", "order": 91},
-    "도박": {"group": "기타", "tone": "standard", "order": 92},
+    "국가공무원법": {"group": "공직·행정 법규", "tone": "standard", "order": 70},
+    "국가보안법": {"group": "집회·표현 관련", "tone": "context", "order": 80},
+    "집시법": {"group": "집회·표현 관련", "tone": "context", "order": 81},
+    "명예훼손": {"group": "기타", "tone": "standard", "order": 90},
+    "모욕": {"group": "기타", "tone": "standard", "order": 91},
+    "저작권법": {"group": "기타", "tone": "standard", "order": 92},
+    "도박": {"group": "기타", "tone": "standard", "order": 93},
 }
 
 WIN_OCR_SCRIPT = r"""
