@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605161610', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170215', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -689,19 +689,39 @@ const CRIME_CATEGORY_META = {
   '공직선거법': { group: '공직 검증 중점', tone: 'priority', order: 14 },
   '성범죄': { group: '공직 검증 중점', tone: 'priority', order: 15 },
   '마약': { group: '공직 검증 중점', tone: 'priority', order: 16 },
-  '음주운전': { group: '공직 검증 중점', tone: 'priority', order: 17 },
-  '무면허운전': { group: '공직 검증 중점', tone: 'priority', order: 18 },
-  '절도': { group: '공직 검증 중점', tone: 'priority', order: 19 },
+  '특가법': { group: '공직 검증 중점', tone: 'priority', order: 17 },
+  '음주운전': { group: '공직 검증 중점', tone: 'priority', order: 18 },
+  '무면허운전': { group: '공직 검증 중점', tone: 'priority', order: 19 },
+  '교통사고': { group: '공직 검증 중점', tone: 'priority', order: 20 },
+  '절도': { group: '공직 검증 중점', tone: 'priority', order: 21 },
+  '조세': { group: '공직 검증 중점', tone: 'priority', order: 22 },
+  '보조금': { group: '공직 검증 중점', tone: 'priority', order: 23 },
+  '보험·금융': { group: '공직 검증 중점', tone: 'priority', order: 24 },
+  '문서·인장': { group: '공직 검증 중점', tone: 'priority', order: 25 },
   '폭력': { group: '폭력·질서', tone: 'standard', order: 40 },
   '공무집행방해': { group: '폭력·질서', tone: 'standard', order: 41 },
   '업무방해': { group: '폭력·질서', tone: 'standard', order: 42 },
   '재물손괴': { group: '폭력·질서', tone: 'standard', order: 43 },
   '주거침입': { group: '폭력·질서', tone: 'standard', order: 44 },
-  '도로교통': { group: '기타', tone: 'standard', order: 60 },
+  '범인도피': { group: '폭력·질서', tone: 'standard', order: 45 },
+  '사법방해': { group: '폭력·질서', tone: 'standard', order: 46 },
+  '입찰방해': { group: '폭력·질서', tone: 'standard', order: 47 },
+  '도로교통': { group: '생활·안전 법규', tone: 'standard', order: 60 },
+  '자동차관리': { group: '생활·안전 법규', tone: 'standard', order: 61 },
+  '환경': { group: '생활·안전 법규', tone: 'standard', order: 62 },
+  '식품·보건': { group: '생활·안전 법규', tone: 'standard', order: 63 },
+  '교육·청소년': { group: '생활·안전 법규', tone: 'standard', order: 64 },
+  '노동': { group: '생활·안전 법규', tone: 'standard', order: 65 },
+  '농수산': { group: '생활·안전 법규', tone: 'standard', order: 66 },
+  '건축·부동산': { group: '생활·안전 법규', tone: 'standard', order: 67 },
+  '총포·화약': { group: '생활·안전 법규', tone: 'standard', order: 68 },
+  '야생생물': { group: '생활·안전 법규', tone: 'standard', order: 69 },
   '국가보안법': { group: '시국·집회 관련', tone: 'context', order: 80 },
   '집시법': { group: '시국·집회 관련', tone: 'context', order: 81 },
   '국가공무원법': { group: '시국·집회 관련', tone: 'context', order: 82 },
   '명예훼손·모욕': { group: '기타', tone: 'standard', order: 90 },
+  '저작권법': { group: '기타', tone: 'standard', order: 91 },
+  '도박': { group: '기타', tone: 'standard', order: 92 },
 };
 
 function crimeCategoryMeta(category) {
@@ -2396,6 +2416,7 @@ function criminalCategoryChipsHtml(currentCategory = '') {
   const groups = [
     { group: '공직 검증 중점', note: '사기·횡령·뇌물·선거법·성범죄·마약·음주운전 등' },
     { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
+    { group: '생활·안전 법규', note: '교통·환경·식품·건축 관련 법규 위반' },
     { group: '시국·집회 관련', note: '국가보안법·집시법 등은 맥락 확인 필요' },
     { group: '기타', note: '' },
   ].map(def => ({ ...def, items: items.filter(item => crimeCategoryMeta(item.category).group === def.group) }))
