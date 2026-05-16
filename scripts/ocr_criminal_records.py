@@ -30,7 +30,7 @@ DETAILS_FILE = ROOT / "data" / "candidate_details.json"
 CANDIDATE_DIR = ROOT / "data" / "candidates" / "20260603"
 OUT_FILE = ROOT / "data" / "criminal_ocr.json"
 CACHE_DIR = ROOT / "data" / ".criminal_ocr_cache"
-CLASSIFICATION_VERSION = 7
+CLASSIFICATION_VERSION = 8
 PDF_HEADERS = {
     "User-Agent": "newtamsa-election2026/1.0 (+https://github.com/biguse74/election2026)",
     "Referer": "https://info.nec.go.kr/",
@@ -45,7 +45,7 @@ CRIME_KEYWORDS = {
     "공직선거법": ["공직선거법"],
     "청탁금지법": ["부정청탁", "청탁금지법", "금품등수수"],
     "직권남용": ["직권남용"],
-    "문서·인장·공용서류": [
+    "허위공문서·문서위조·공용서류": [
         "허위공문서작성",
         "허위작성공문서행사",
         "공용서류손상",
@@ -116,7 +116,7 @@ CATEGORY_META = {
     "공직선거법": {"group": "공직 검증 중점", "tone": "priority", "order": 15},
     "청탁금지법": {"group": "공직 검증 중점", "tone": "priority", "order": 16},
     "직권남용": {"group": "공직 검증 중점", "tone": "priority", "order": 17},
-    "문서·인장·공용서류": {"group": "공직 검증 중점", "tone": "priority", "order": 18},
+    "허위공문서·문서위조·공용서류": {"group": "공직 검증 중점", "tone": "priority", "order": 18},
     "성범죄": {"group": "공직 검증 중점", "tone": "priority", "order": 22},
     "마약": {"group": "공직 검증 중점", "tone": "priority", "order": 23},
     "특가법": {"group": "공직 검증 중점", "tone": "priority", "order": 24},

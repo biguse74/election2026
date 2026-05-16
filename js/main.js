@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170705', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170715', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -690,7 +690,7 @@ const CRIME_CATEGORY_META = {
   '공직선거법': { group: '공직 검증 중점', tone: 'priority', order: 15 },
   '청탁금지법': { group: '공직 검증 중점', tone: 'priority', order: 16 },
   '직권남용': { group: '공직 검증 중점', tone: 'priority', order: 17 },
-  '문서·인장·공용서류': { group: '공직 검증 중점', tone: 'priority', order: 18 },
+  '허위공문서·문서위조·공용서류': { group: '공직 검증 중점', tone: 'priority', order: 18 },
   '성범죄': { group: '공직 검증 중점', tone: 'priority', order: 22 },
   '마약': { group: '공직 검증 중점', tone: 'priority', order: 23 },
   '특가법': { group: '공직 검증 중점', tone: 'priority', order: 24 },
@@ -2648,7 +2648,7 @@ function criminalCategoryChipsHtml(currentCategory = '') {
   const items = criminalOcrCategoryItems();
   if (!items.length) return '';
   const groups = [
-    { group: '공직 검증 중점', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 문서·공용서류, 마약, 음주·위험운전 등' },
+    { group: '공직 검증 중점', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 허위공문서·문서위조, 마약, 음주·위험운전 등' },
     { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
     { group: '교통·안전 법규', note: '일반 교통사고·도로교통·자동차 관련 법규 위반' },
     { group: '경제·금융 법규', note: '보험·대부·수표·전자금융 등 경제거래 관련 법규 위반' },
