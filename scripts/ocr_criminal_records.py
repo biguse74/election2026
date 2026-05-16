@@ -30,7 +30,7 @@ DETAILS_FILE = ROOT / "data" / "candidate_details.json"
 CANDIDATE_DIR = ROOT / "data" / "candidates" / "20260603"
 OUT_FILE = ROOT / "data" / "criminal_ocr.json"
 CACHE_DIR = ROOT / "data" / ".criminal_ocr_cache"
-CLASSIFICATION_VERSION = 8
+CLASSIFICATION_VERSION = 9
 PDF_HEADERS = {
     "User-Agent": "newtamsa-election2026/1.0 (+https://github.com/biguse74/election2026)",
     "Referer": "https://info.nec.go.kr/",
@@ -103,6 +103,7 @@ CRIME_KEYWORDS = {
     "국가보안법": ["국가보안법", "국보법"],
     "집시법": ["집회및시위", "집회 및 시위"],
     "국가공무원법": ["국가공무원법"],
+    "지방공무원법": ["지방공무원법", "지방-공무원법"],
     "명예훼손": ["명예훼손"],
     "모욕": ["모욕"],
 }
@@ -146,6 +147,7 @@ CATEGORY_META = {
     "총포·화약": {"group": "생활·안전 법규", "tone": "standard", "order": 76},
     "야생생물": {"group": "생활·안전 법규", "tone": "standard", "order": 77},
     "국가공무원법": {"group": "공직·행정 법규", "tone": "standard", "order": 80},
+    "지방공무원법": {"group": "공직·행정 법규", "tone": "standard", "order": 81},
     "국가보안법": {"group": "시국·안보 관련", "tone": "context", "order": 90},
     "집시법": {"group": "집회·시위 관련", "tone": "context", "order": 91},
     "명예훼손": {"group": "기타", "tone": "standard", "order": 100},

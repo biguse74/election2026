@@ -388,7 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170715', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605170745', null);
 let candidateDetailsPromise = null;
 
 async function ensureCandidateDetails() {
@@ -720,6 +720,7 @@ const CRIME_CATEGORY_META = {
   '총포·화약': { group: '생활·안전 법규', tone: 'standard', order: 76 },
   '야생생물': { group: '생활·안전 법규', tone: 'standard', order: 77 },
   '국가공무원법': { group: '공직·행정 법규', tone: 'standard', order: 80 },
+  '지방공무원법': { group: '공직·행정 법규', tone: 'standard', order: 81 },
   '국가보안법': { group: '시국·안보 관련', tone: 'context', order: 90 },
   '집시법': { group: '집회·시위 관련', tone: 'context', order: 91 },
   '명예훼손': { group: '기타', tone: 'standard', order: 100 },
@@ -1776,6 +1777,9 @@ function disclosureRows() {
       const assets = parseDisclosureNumber(disclosures.assets_thousand_krw);
       const criminal = parseCriminalCount(disclosures.criminal_record);
       const military = militaryBucket(disclosures.military);
+      const taxPaid = parseDisclosureNumber(disclosures.tax_paid_thousand_krw);
+      const taxArrears5y = parseDisclosureNumber(disclosures.tax_arrears_5y_thousand_krw) || 0;
+      const taxArrearsCurrent = parseDisclosureNumber(disclosures.tax_arrears_current_thousand_krw) || 0;
       return {
         candidate: c,
         party: c.jdName || '무소속',
@@ -1785,6 +1789,11 @@ function disclosureRows() {
         criminal,
         hasCriminal: criminal > 0,
         military,
+        taxPaid,
+        taxArrears5y,
+        taxArrearsCurrent,
+        hasTaxArrears: taxArrears5y > 0,
+        hasCurrentTaxArrears: taxArrearsCurrent > 0,
       };
     })
     .filter(r => r.disclosures && Object.keys(r.disclosures).length);
@@ -1838,6 +1847,17 @@ function rankedMilitaryGroups(rows, keyFn, minEligible = 10) {
     .sort((a, b) => b.rate - a.rate || b.notServed - a.notServed);
 }
 
+function rankedTaxArrearsGroups(rows, keyFn, field = 'taxArrears5y', minCount = 20) {
+  return Object.entries(groupDisclosureRows(rows, keyFn))
+    .map(([label, items]) => {
+      const holders = items.filter(r => (r[field] || 0) > 0).length;
+      const total = items.reduce((sum, r) => sum + (r[field] || 0), 0);
+      return { label, count: items.length, holders, total, rate: items.length ? holders / items.length * 100 : 0 };
+    })
+    .filter(r => r.count >= minCount)
+    .sort((a, b) => b.rate - a.rate || b.holders - a.holders || b.total - a.total);
+}
+
 function sortCandidateRows(a, b) {
   const sdDiff = sidoSort(a.sd, b.sd);
   if (sdDiff) return sdDiff;
@@ -1860,6 +1880,13 @@ function rankedCriminalCandidates(rows, limit = 5) {
     .slice(0, limit);
 }
 
+function rankedTaxArrearsCandidates(rows, limit = 5, field = 'taxArrearsCurrent') {
+  return rows
+    .filter(r => (r[field] || 0) > 0)
+    .sort((a, b) => (b[field] || 0) - (a[field] || 0) || sortCandidateRows(a, b))
+    .slice(0, limit);
+}
+
 function rankedCandidateRegions(rows, rankFn, limit = 5) {
   return Object.entries(groupDisclosureRows(rows, r => r.sd))
     .map(([label, items]) => ({ label, items: rankFn(items, limit) }))
@@ -1874,6 +1901,10 @@ function buildDisclosureStats() {
   const assets = summarizeNumbers(assetRows.map(r => r.assets));
   const criminalHolders = rows.filter(r => r.hasCriminal).length;
   const criminalCases = rows.reduce((sum, r) => sum + r.criminal, 0);
+  const taxArrearsHolders = rows.filter(r => r.hasTaxArrears).length;
+  const currentTaxArrearsHolders = rows.filter(r => r.hasCurrentTaxArrears).length;
+  const taxArrears5yTotal = rows.reduce((sum, r) => sum + (r.taxArrears5y || 0), 0);
+  const taxArrearsCurrentTotal = rows.reduce((sum, r) => sum + (r.taxArrearsCurrent || 0), 0);
   const served = militaryRows.filter(r => r.military === 'served').length;
   const notServed = militaryRows.filter(r => r.military === 'notServed').length;
   const nonTarget = militaryRows.filter(r => r.military === 'nonTarget').length;
@@ -1888,6 +1919,15 @@ function buildDisclosureStats() {
       cases: criminalCases,
       rate: rows.length ? criminalHolders / rows.length * 100 : 0,
     },
+    taxArrears: {
+      count: rows.length,
+      holders: taxArrearsHolders,
+      currentHolders: currentTaxArrearsHolders,
+      total5y: taxArrears5yTotal,
+      totalCurrent: taxArrearsCurrentTotal,
+      rate: rows.length ? taxArrearsHolders / rows.length * 100 : 0,
+      currentRate: rows.length ? currentTaxArrearsHolders / rows.length * 100 : 0,
+    },
     military: {
       count: militaryRows.length,
       served,
@@ -1899,16 +1939,22 @@ function buildDisclosureStats() {
     byParty: {
       assets: rankedAssetGroups(rows, r => r.party),
       criminal: rankedCriminalGroups(rows, r => r.party),
+      taxArrears5y: rankedTaxArrearsGroups(rows, r => r.party, 'taxArrears5y'),
+      taxArrearsCurrent: rankedTaxArrearsGroups(rows, r => r.party, 'taxArrearsCurrent'),
       military: rankedMilitaryGroups(rows, r => r.party),
     },
     byRegion: {
       assets: rankedAssetGroups(rows, r => r.sd),
       criminal: rankedCriminalGroups(rows, r => r.sd),
+      taxArrears5y: rankedTaxArrearsGroups(rows, r => r.sd, 'taxArrears5y'),
+      taxArrearsCurrent: rankedTaxArrearsGroups(rows, r => r.sd, 'taxArrearsCurrent'),
       military: rankedMilitaryGroups(rows, r => r.sd),
     },
     leaders: {
       assetsOverall: rankedAssetCandidates(rows, 5),
       criminalOverall: rankedCriminalCandidates(rows, 5),
+      taxArrearsCurrentOverall: rankedTaxArrearsCandidates(rows, 5, 'taxArrearsCurrent'),
+      taxArrears5yOverall: rankedTaxArrearsCandidates(rows, 5, 'taxArrears5y'),
       assetsByRegion: rankedCandidateRegions(rows, rankedAssetCandidates, 5),
       criminalByRegion: rankedCandidateRegions(rows, rankedCriminalCandidates, 5),
     },
@@ -1929,7 +1975,7 @@ function renderTrendBox() {
     <a class="trend-card" href="#trend">
       <div class="trend-card-head">
         <span class="trend-card-label">출마자 한눈에</span>
-        <span class="trend-card-period">정당·연령·재산·전과·병역</span>
+        <span class="trend-card-period">정당·연령·재산·전과·체납·병역</span>
       </div>
       <div class="trend-summary">
         <div class="trend-summary-stat"><strong>${s.ageAvg.toFixed(1)}</strong>세<small>평균 연령</small></div>
@@ -1994,6 +2040,11 @@ function disclosureOverviewHtml(ds) {
         <small>전과 1건 이상 ${ds.criminal.holders.toLocaleString()}명 / 전체 ${ds.criminal.count.toLocaleString()}명 · 총 ${ds.criminal.cases.toLocaleString()}건</small>
       </div>
       <div class="disclosure-card">
+        <span class="disclosure-label">전체 체납</span>
+        <strong>${ds.taxArrears.currentHolders.toLocaleString()}명</strong>
+        <small>현 체납 · 최근 5년 체납 ${ds.taxArrears.holders.toLocaleString()}명 / 전체 ${ds.taxArrears.count.toLocaleString()}명</small>
+      </div>
+      <div class="disclosure-card">
         <span class="disclosure-label">남성 병역 미필률</span>
         <strong>${formatPct(ds.military.notServedRate)}</strong>
         <small>미필 ${ds.military.notServed.toLocaleString()}명 / 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명</small>
@@ -2042,6 +2093,21 @@ function militaryBars(items, options = {}) {
     '#2c5d8f',
     formatPct(x.rate),
     `미필 ${x.notServed.toLocaleString()}명 / 대상 남성 ${x.eligible.toLocaleString()}명`,
+    metricLinkHref(x.label, options)
+  )).join('');
+}
+
+function taxArrearsBars(items, options = {}) {
+  const defaultLimit = options.regionLinks ? items.length : 10;
+  const shown = items.slice(0, options.limit ?? defaultLimit);
+  const max = Math.max(...shown.map(x => x.rate), 1);
+  return shown.map(x => metricBar(
+    x.label,
+    x.rate,
+    max,
+    '#8f3d5a',
+    formatPct(x.rate),
+    `체납 ${x.holders.toLocaleString()}명 / ${x.count.toLocaleString()}명 · 합계 ${moneyDisclosure(x.total) || '0원'}`,
     metricLinkHref(x.label, options)
   )).join('');
 }
@@ -2118,7 +2184,13 @@ function candidateRankList(items, type, includeRegion = true) {
     <ol class="candidate-rank-list">
       ${items.map((r, i) => {
         const c = r.candidate || {};
-        const value = type === 'asset' ? formatEok(r.assets) : `${r.criminal.toLocaleString()}건`;
+        const value = type === 'asset'
+          ? formatEok(r.assets)
+          : type === 'taxCurrent'
+            ? moneyDisclosure(r.taxArrearsCurrent)
+            : type === 'tax5y'
+              ? moneyDisclosure(r.taxArrears5y)
+              : `${r.criminal.toLocaleString()}건`;
         const context = candidateRankContext(c, includeRegion);
         return `
           <li class="candidate-rank-item">
@@ -2366,6 +2438,31 @@ function disclosureStatsHtml(ds) {
         </div>
       </div>
       <p class="trend-meta">전과 보유율은 전과기록유무(건수)가 1건 이상인 후보 비율입니다. 예: 전체 전과 ${formatPct(ds.criminal.rate)}는 전체 ${ds.criminal.count.toLocaleString()}명 중 ${ds.criminal.holders.toLocaleString()}명이 전과 1건 이상이라는 뜻입니다.</p>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">체납 통계 <small>최근 5년·현 체납</small></h3>
+      <div class="candidate-leader-grid">
+        <div class="candidate-leader-card">
+          <h4 class="metric-title">현 체납 상위 1~5위</h4>
+          ${candidateRankList(ds.leaders.taxArrearsCurrentOverall, 'taxCurrent', true)}
+        </div>
+        <div class="candidate-leader-card">
+          <h4 class="metric-title">최근 5년 체납 상위 1~5위</h4>
+          ${candidateRankList(ds.leaders.taxArrears5yOverall, 'tax5y', true)}
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div>
+          <h4 class="metric-title">정당별 최근 5년 체납 후보율 <small>20명 이상</small></h4>
+          <div class="bar-list">${taxArrearsBars(ds.byParty.taxArrears5y) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
+        </div>
+        <div>
+          <h4 class="metric-title">지역별 현 체납 후보율 <small>지역명 클릭</small></h4>
+          <div class="bar-list">${taxArrearsBars(ds.byRegion.taxArrearsCurrent, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+        </div>
+      </div>
+      <p class="trend-meta">체납은 선관위 후보자 정보공개의 납세 자료 기준입니다. 최근 5년 체납은 과거 체납 이력을, 현 체납은 현재 남아 있는 체납액을 뜻하므로 전과와 별도의 검증 축으로 보아야 합니다.</p>
     </section>
 
     <section class="trend-section">
@@ -2653,7 +2750,7 @@ function criminalCategoryChipsHtml(currentCategory = '') {
     { group: '교통·안전 법규', note: '일반 교통사고·도로교통·자동차 관련 법규 위반' },
     { group: '경제·금융 법규', note: '보험·대부·수표·전자금융 등 경제거래 관련 법규 위반' },
     { group: '생활·안전 법규', note: '환경·식품·건축·건설 관련 법규 위반' },
-    { group: '공직·행정 법규', note: '국가공무원법 등 행정·공직 관련 법규 위반' },
+    { group: '공직·행정 법규', note: '국가공무원법·지방공무원법 등 행정·공직 관련 법규 위반' },
     { group: '시국·안보 관련', note: '국가보안법은 시대·사건 맥락 확인 필요' },
     { group: '집회·시위 관련', note: '집시법 등 집회·시위 관련 법규 위반' },
     { group: '기타', note: '' },
@@ -2837,7 +2934,7 @@ function renderTrendFull() {
         <span>총 ${s.total.toLocaleString()}명 · 평균 ${s.ageAvg.toFixed(1)}세 · 여성 ${womenPct.toFixed(0)}%</span>
       </div>
     </div>
-    <p class="page-intro">선관위 등록 데이터와 후보자 정보공개 자료를 기반으로 정당·연령·성별·직업·재산·전과·병역 분포를 정리했습니다.</p>
+    <p class="page-intro">선관위 등록 데이터와 후보자 정보공개 자료를 기반으로 정당·연령·성별·직업·재산·전과·체납·병역 분포를 정리했습니다.</p>
 
     ${disclosureOverviewHtml(ds)}
     ${disclosureStatsHtml(ds)}
