@@ -2373,6 +2373,41 @@ function candidateRankList(items, type, includeRegion = true) {
     </ol>`;
 }
 
+function militaryStatusLabel(bucket) {
+  if (bucket === 'served') return '군필';
+  if (bucket === 'notServed') return '미필';
+  if (bucket === 'nonTarget') return '비대상';
+  return '미확인';
+}
+
+function militaryCandidateRows(rows, bucket = 'notServed') {
+  return rows
+    .filter(r => r.candidate?.gender === '남' && r.military === bucket)
+    .sort(sortCandidateRows);
+}
+
+function militaryCandidateListHtml(items, options = {}) {
+  if (!items?.length) {
+    return `<p class="trend-meta">${escapeHtml(options.emptyText || '병역 미필 후보가 없습니다.')}</p>`;
+  }
+  return `
+    <ul class="military-candidate-list">
+      ${items.map(r => {
+        const c = r.candidate || {};
+        const context = candidateRankContext(c, options.includeRegion ?? false);
+        const raw = r.disclosures?.military || militaryStatusLabel(r.military);
+        return `
+          <li class="military-candidate-item">
+            <button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(c.name)} 상세 정보">${escapeHtml(c.name || '-')}</button>
+            <span class="candidate-rank-party" style="border-color:${partyColor(c.jdName)}">${escapeHtml(c.jdName || '무소속')}</span>
+            <span class="military-candidate-context">${escapeHtml(context)}</span>
+            <strong class="military-candidate-status">${militaryStatusLabel(r.military)}</strong>
+            <span class="military-candidate-raw">${escapeHtml(raw)}</span>
+          </li>`;
+      }).join('')}
+    </ul>`;
+}
+
 function findRegionRank(regions, label) {
   return regions.find(r => r.label === label)?.items || [];
 }
@@ -2466,6 +2501,7 @@ function renderTrendRegionFull(sd) {
   const sggAssets = rankedAssetGroups(localRows, localDistrictName, 1);
   const sggCriminal = rankedCriminalGroups(localRows, localDistrictName, 1);
   const sggMilitary = rankedMilitaryGroups(localRows, localDistrictName, 1);
+  const militaryNotServedRows = militaryCandidateRows(rows);
   const maxLocalItems = 99;
 
   app.innerHTML = `
@@ -2484,6 +2520,15 @@ function renderTrendRegionFull(sd) {
     <p class="page-intro">시도별 막대에서 한 단계 내려온 화면입니다. 먼저 ${escapeHtml(sd)} 전체 요약을 보고, 아래에서 시군구별 차이와 후보별 최다 순위를 함께 확인할 수 있습니다.</p>
 
     ${disclosureRegionOverviewHtml(sd, summary)}
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(sd)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
+      ${militaryCandidateListHtml(militaryNotServedRows, {
+        includeRegion: false,
+        emptyText: `${sd}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
+      })}
+      <p class="trend-meta">남성 후보 중 선관위 병역 항목이 “군복무를 마치지 아니한 사람” 또는 병적기록 관련 미필 표기로 분류된 후보입니다. 후보 이름을 누르면 상세 공개정보의 병역 원문을 확인할 수 있습니다.</p>
+    </section>
 
     <section class="trend-section">
       <h3 class="trend-section-title">${escapeHtml(sd)} 후보별 최다 순위 <small>재산·전과 1~5위</small></h3>
@@ -2539,6 +2584,7 @@ function renderTrendLocalFull(sd, local) {
   }
 
   const summary = disclosureSummaryFromRows(rows);
+  const militaryNotServedRows = militaryCandidateRows(rows);
   const title = `${sd} ${local}`;
   app.innerHTML = `
     <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="${trendRegionHref(sd)}">${escapeHtml(sd)} 상세 통계</a><span class="sep">›</span><span class="current">${escapeHtml(local)}</span></nav>
@@ -2551,11 +2597,21 @@ function renderTrendLocalFull(sd, local) {
         <span>공개정보 ${summary.rows.length.toLocaleString()}명</span>
         <span>재산 중앙값 ${formatEok(summary.assets.median)}</span>
         <span>전과 ${formatPct(summary.criminal.rate)}</span>
+        <span>병역 미필 ${formatPct(summary.military.notServedRate)}</span>
       </div>
     </div>
-    <p class="page-intro">${escapeHtml(sd)} 상세 통계에서 한 단계 내려온 시군구 화면입니다. 해당 시군구 선거구로 분류되는 후보 중 재산과 전과 상위 1~5위를 바로 확인할 수 있습니다.</p>
+    <p class="page-intro">${escapeHtml(sd)} 상세 통계에서 한 단계 내려온 시군구 화면입니다. 해당 시군구 선거구로 분류되는 후보의 재산·전과 상위 후보와 병역 미필 명단을 함께 확인할 수 있습니다.</p>
 
     ${disclosureRegionOverviewHtml(title, summary)}
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(local)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
+      ${militaryCandidateListHtml(militaryNotServedRows, {
+        includeRegion: false,
+        emptyText: `${local}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
+      })}
+      <p class="trend-meta">병역 미필률은 병역 대상 남성만 분모로 계산합니다. 여성 후보와 “해당없음(비대상)”으로 공개된 남성 후보는 분모에서 제외됩니다.</p>
+    </section>
 
     <section class="trend-section">
       <h3 class="trend-section-title">${escapeHtml(local)} 후보별 최다 순위 <small>재산·전과 1~5위</small></h3>
