@@ -1601,7 +1601,12 @@ function historyLegacyByRound() {
   return new Map((state.history?.elections || []).map(e => [Number(e.round), e]));
 }
 function normalizeHistorySidoName(sd) {
-  return sd === '제주도' ? '제주특별자치도' : sd;
+  const map = {
+    '강원도': '강원특별자치도',
+    '전라북도': '전북특별자치도',
+    '제주도': '제주특별자치도',
+  };
+  return map[sd] || sd;
 }
 function historyWinnerCell(district) {
   const winner = district?.winner;
@@ -1668,7 +1673,7 @@ function renderHistoryFull() {
     }
     resultByRoundAndSido.set(Number(e.round), rows);
   }
-  const orderedSidos = Object.values(SIDO_GROUPS).flat();
+  const orderedSidos = SIDO_ORDER;
   const regionRows = orderedSidos.map(sd => {
     const cells = countingElections.map(e => {
       const d = resultByRoundAndSido.get(Number(e.round))?.get(sd);
