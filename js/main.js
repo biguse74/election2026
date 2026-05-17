@@ -1712,7 +1712,7 @@ function renderHistoryFull() {
         <span>3~8회 · 광역단체장 개표 결과</span>
       </div>
     </div>
-    <p class="page-intro">선관위 개표 결과 원자료에서 광역단체장 선거의 선거구 합계행을 가져왔습니다. 정당별 승리 수와 시도별 당선자, 득표율을 함께 보면 어느 선거가 특정 정당의 압승이었는지, 어느 지역이 접전이었는지 한눈에 볼 수 있습니다.</p>
+    <p class="page-intro">선관위 개표 결과 원자료에서 비교성이 좋은 광역단체장 선거의 선거구 합계행을 우선 가져왔습니다. 같은 API에서 기초단체장·광역의원·기초의원·비례대표·교육감 개표 결과도 조회할 수 있어, 지방의원 상세 비교는 별도 화면으로 확장할 수 있습니다.</p>
 
     <section class="history-result-cards">
       <div class="history-result-card">
@@ -1724,11 +1724,6 @@ function renderHistoryFull() {
         <span>가장 큰 쏠림</span>
         <strong>${sweep.election.year}년 ${sweep.top.party}</strong>
         <small>${sweep.top.wins}/${sweep.election.governor.district_count}곳 · ${(sweep.share * 100).toFixed(1)}%</small>
-      </div>
-      <div class="history-result-card">
-        <span>데이터 출처</span>
-        <strong>선관위 개표 결과</strong>
-        <small>VoteXmntckInfoInqireService2</small>
       </div>
     </section>
 
@@ -1767,7 +1762,7 @@ function renderHistoryFull() {
           <tbody>${latestCloseRows}</tbody>
         </table>
       </div>
-      <p class="trend-meta">출처: 중앙선거관리위원회 OpenAPI 개표 결과. 후보별 득표율은 유효투표수 기준입니다.</p>
+      <p class="trend-meta">후보별 득표율은 유효투표수 기준입니다. 데이터 출처: 중앙선거관리위원회 선거통계 OpenAPI 개표 결과.</p>
     </section>`;
 
   window.scrollTo({ top: 0, behavior: 'instant' });
