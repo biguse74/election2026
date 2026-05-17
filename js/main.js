@@ -526,7 +526,7 @@ function candidateSeatLabel(list, stats = null) {
   const count = list.length.toLocaleString();
   const seat = seatCountForCandidateGroup(list, stats);
   return seat
-    ? `후보 ${count}명 · 정원 ${seat.toLocaleString()}명`
+    ? `후보 ${count}명 · 정원 ${seat.toLocaleString()}석`
     : `후보 ${count}명`;
 }
 
@@ -1014,7 +1014,7 @@ async function openCandidateModal(huboid) {
           ${necLink}
           <button type="button" class="modal-share" data-share-cand="${c.huboid}" data-share-title="${c.name} (${c.jdName || '무소속'}) — ${region}">🔗 링크 공유</button>
         </div>
-        <p class="modal-source">기준: 중앙선관위 OpenAPI · 선거통계시스템 후보자 정보공개 · ${state.dateStr ? `${state.dateStr.slice(0,4)}.${state.dateStr.slice(4,6)}.${state.dateStr.slice(6,8)} ${SOURCE_LABEL[state.source] || state.source}` : ''}</p>
+        <p class="modal-source">기준: 중앙선관위 후보자 공개정보 · ${state.dateStr ? `${state.dateStr.slice(0,4)}.${state.dateStr.slice(4,6)}.${state.dateStr.slice(6,8)} ${SOURCE_LABEL[state.source] || state.source}` : ''}</p>
       </footer>
     </div>`;
   root.hidden = false;
@@ -1522,7 +1522,7 @@ function renderDetailSection(section, sidoName) {
     const gridId = `cg-${section.id}`;
     const seatStats = buildSeatStats(new Set([String(section.sgTypecode)]));
     const totalSeats = keys.reduce((sum, k) => sum + (seatCountForCandidateGroup(groups[k], seatStats) || 0), 0);
-    const seatSummary = totalSeats ? ` · 정원 ${totalSeats.toLocaleString()}명` : '';
+    const seatSummary = totalSeats ? ` · 정원 ${totalSeats.toLocaleString()}석` : '';
     return `
       <h3 class="section-title">${section.title}
         <span class="section-count">후보 ${candidates.length.toLocaleString()}명${seatSummary} · ${keys.length}개 선거구</span>
@@ -1623,7 +1623,7 @@ function renderTurnoutBySidoSection() {
 
   return `
     <section class="trend-section">
-      <h3 class="trend-section-title">시도별 투표율 추이 <small>제3~8회 지방선거 · 선관위 OpenAPI</small></h3>
+      <h3 class="trend-section-title">시도별 투표율 추이 <small>제3~8회 지방선거</small></h3>
       ${groupChart}
       <ul class="trend-legend">${groupLegend}</ul>
       <p class="forecast-context" style="margin-top:1rem">
@@ -1978,9 +1978,9 @@ function renderHistoryFull() {
   const regionRows = orderedSidos.map(sd => {
     const cells = countingElections.map(e => {
       const d = resultByRoundAndSido.get(Number(e.round))?.get(sd);
-      return `<td class="history-result-cell">${historyWinnerCell(d)}</td>`;
+      return `<td class="history-result-cell" data-label="제${e.round}회 ${e.year}">${historyWinnerCell(d)}</td>`;
     }).join('');
-    return `<tr><th>${sd}</th>${cells}</tr>`;
+    return `<tr><th class="history-region-name">${sd}</th>${cells}</tr>`;
   }).join('');
 
   const summaryRows = countingElections.map(e => {
@@ -1990,23 +1990,23 @@ function renderHistoryFull() {
       : '-';
     return `
       <tr>
-        <td class="hist-round">제${e.round}회</td>
-        <td class="hist-year">${e.year}</td>
-        <td><strong>${historyTurnoutText(e, legacy)}</strong></td>
-        <td>${e.governor.district_count}곳<br><small>${historyCountingSummary(e.governor)}</small></td>
-        <td>${e.localHead?.district_count ? `${e.localHead.district_count}곳<br><small>${historyCountingSummary(e.localHead)}</small>` : '-'}</td>
-        <td class="hist-context">${closeText}</td>
+        <td class="hist-round" data-label="선거">제${e.round}회</td>
+        <td class="hist-year" data-label="연도">${e.year}</td>
+        <td data-label="투표율"><strong>${historyTurnoutText(e, legacy)}</strong></td>
+        <td data-label="광역단체장">${e.governor.district_count}곳<br><small>${historyCountingSummary(e.governor)}</small></td>
+        <td data-label="기초단체장">${e.localHead?.district_count ? `${e.localHead.district_count}곳<br><small>${historyCountingSummary(e.localHead)}</small>` : '-'}</td>
+        <td class="hist-context" data-label="광역 최접전">${closeText}</td>
       </tr>`;
   }).join('');
 
   const latestCloseRows = historyCloseRaces(latest.governor, 8).map(r => `
     <tr>
-      <td>${normalizeHistorySidoName(r.district.sdName)}</td>
-      <td><strong>${r.first.name}</strong><small>${r.first.party}</small></td>
-      <td>${r.first.vote_share.toFixed(2)}%</td>
-      <td>${r.second.name}<small>${r.second.party}</small></td>
-      <td>${r.second.vote_share.toFixed(2)}%</td>
-      <td><strong>${r.marginPct.toFixed(2)}%p</strong></td>
+      <td data-label="시도">${normalizeHistorySidoName(r.district.sdName)}</td>
+      <td data-label="1위"><strong>${r.first.name}</strong><small>${r.first.party}</small></td>
+      <td data-label="1위 득표율">${r.first.vote_share.toFixed(2)}%</td>
+      <td data-label="2위">${r.second.name}<small>${r.second.party}</small></td>
+      <td data-label="2위 득표율">${r.second.vote_share.toFixed(2)}%</td>
+      <td data-label="격차"><strong>${r.marginPct.toFixed(2)}%p</strong></td>
     </tr>`).join('');
 
   app.innerHTML = `
@@ -2059,7 +2059,7 @@ function renderHistoryFull() {
     <section class="trend-section">
       <h3 class="trend-section-title">선거별 주요 결과 <small>투표율과 당선 분포</small></h3>
       <div class="table-scroll">
-        <table class="hist-table">
+        <table class="hist-table hist-summary-table">
           <thead>
             <tr><th>선거</th><th>연도</th><th>투표율</th><th>광역단체장</th><th>기초단체장</th><th>광역 최접전</th></tr>
           </thead>
@@ -2098,7 +2098,7 @@ function renderHistoryFull() {
         </table>
       </div>
       <p class="trend-meta">기초단체장 최접전: ${escapeHtml(localCloseText)}</p>
-      <p class="trend-meta">후보별 득표율은 유효투표수 기준입니다. 데이터 출처: 중앙선거관리위원회 선거통계 OpenAPI 개표 결과.</p>
+      <p class="trend-meta">후보별 득표율은 유효투표수 기준입니다. 자료 출처: 중앙선거관리위원회 선거통계시스템 개표 결과.</p>
     </section>`;
 
   window.scrollTo({ top: 0, behavior: 'instant' });
@@ -3192,20 +3192,20 @@ function taxArrearsFocusHtml(ds) {
       <div class="section-title-row">
         <h3 class="trend-section-title">체납 상위 후보 <small>최근 5년·현 체납</small></h3>
         <div class="section-actions">
-          <a href="${taxArrearsListHref('5y')}">최근 5년 전체보기</a>
-          <a href="${taxArrearsListHref('current')}">현 체납 전체보기</a>
+          <a href="${taxArrearsListHref('5y')}">최근 5년 명단</a>
+          <a href="${taxArrearsListHref('current')}">현 체납 명단</a>
         </div>
       </div>
       <div class="candidate-leader-grid">
         <div class="candidate-leader-card">
           <h4 class="metric-title">최근 5년 체납 상위 1~5위</h4>
           ${candidateRankList(ds.leaders.taxArrears5yOverall, 'tax5y', true)}
-          <a class="rank-more-link" href="${taxArrearsListHref('5y')}">최근 5년 체납 후보 ${ds.taxArrears.holders.toLocaleString()}명 전체보기</a>
+          <a class="rank-more-link" href="${taxArrearsListHref('5y')}">${ds.taxArrears.holders.toLocaleString()}명 전체 명단</a>
         </div>
         <div class="candidate-leader-card">
           <h4 class="metric-title">현 체납 상위 1~5위</h4>
           ${candidateRankList(ds.leaders.taxArrearsCurrentOverall, 'taxCurrent', true)}
-          <a class="rank-more-link" href="${taxArrearsListHref('current')}">현 체납 후보 ${ds.taxArrears.currentHolders.toLocaleString()}명 전체보기</a>
+          <a class="rank-more-link" href="${taxArrearsListHref('current')}">${ds.taxArrears.currentHolders.toLocaleString()}명 전체 명단</a>
         </div>
       </div>
     </section>
@@ -3718,7 +3718,7 @@ function taxArrearsTabsHtml(ds, currentSlug) {
     { mode: 'current', count: ds.taxArrears.currentHolders },
   ];
   return `
-    <div class="tax-mode-tabs" aria-label="체납 전체보기 기준">
+    <div class="tax-mode-tabs" aria-label="체납 명단 기준">
       ${tabs.map(tab => {
         const cfg = taxArrearsModeConfig(tab.mode);
         return `<a href="${taxArrearsListHref(tab.mode)}" class="${cfg.slug === currentSlug ? 'active' : ''}">${cfg.label} <strong>${tab.count.toLocaleString()}명</strong></a>`;
@@ -3838,7 +3838,7 @@ function renderTaxArrearsFull(mode = 'current') {
   const regionComposition = summarizeCrimeComposition(rows, row => row.sd || '지역 미상', { limit: 8 });
 
   app.innerHTML = `
-    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">체납 전체보기</span></nav>
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">체납 명단</span></nav>
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(config.title)}</h1>
