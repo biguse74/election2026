@@ -1000,6 +1000,179 @@ footer a:hover { text-decoration: underline; }
   color: var(--ink-sub);
   line-height: 1.45;
 }
+.trend-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 0.75rem;
+}
+.trend-section-head .trend-section-title {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+.trend-section-kicker {
+  color: var(--ink-sub);
+  font-size: 0.8rem;
+  text-align: right;
+}
+.history-battle-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0 0 0.85rem;
+}
+.history-battle-summary span {
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.28rem 0.62rem;
+  font-size: 0.76rem;
+  color: var(--ink-sub);
+  background: rgba(255,255,255,0.42);
+}
+.history-battle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+.history-battle-card {
+  border: 1px solid var(--rule);
+  border-top: 2px solid var(--ink);
+  border-radius: 8px;
+  padding: 0.78rem 0.82rem;
+  background: var(--bg-card);
+  min-width: 0;
+}
+.history-battle-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem 0.65rem;
+  align-items: baseline;
+  margin-bottom: 0.65rem;
+}
+.history-battle-head span {
+  color: var(--ink-sub);
+  font-size: 0.74rem;
+}
+.history-battle-head strong {
+  grid-column: 1;
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  line-height: 1.22;
+}
+.history-battle-head em {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--accent);
+  font-style: normal;
+  font-size: 0.72rem;
+  text-align: right;
+  max-width: 120px;
+  line-height: 1.32;
+}
+.history-battle-past {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  padding: 0.62rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.history-battle-past span,
+.history-battle-current-title {
+  display: block;
+  color: var(--ink-sub);
+  font-size: 0.72rem;
+  margin-bottom: 0.18rem;
+}
+.history-battle-past strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 0.96rem;
+  line-height: 1.25;
+}
+.history-battle-past small {
+  display: block;
+  color: var(--ink-sub);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+.history-battle-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.42rem;
+  margin: 0.62rem 0;
+}
+.history-battle-metrics span {
+  color: var(--ink-sub);
+  font-size: 0.71rem;
+  min-width: 0;
+}
+.history-battle-metrics strong {
+  display: block;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+.history-current-candidates {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 0.36rem;
+}
+.history-current-candidates li {
+  display: grid;
+  grid-template-columns: 5px minmax(0, 1fr);
+  gap: 0.36rem;
+  align-items: center;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.36rem 0.42rem;
+  background: rgba(255,255,255,0.45);
+}
+.history-current-candidates li.is-past-top {
+  border-color: rgba(196,30,58,0.45);
+  background: rgba(196,30,58,0.06);
+}
+.hist-cand-color {
+  grid-row: 1 / span 2;
+  width: 5px;
+  height: 100%;
+  min-height: 28px;
+  border-radius: 2px;
+}
+.history-current-candidates button {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: left;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.history-current-candidates button:hover { color: var(--accent); }
+.history-current-candidates small {
+  color: var(--ink-sub);
+  font-size: 0.68rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.history-current-empty {
+  margin: 0;
+  color: var(--ink-sub);
+  font-size: 0.8rem;
+}
 .history-region-table th,
 .history-region-table td {
   vertical-align: top;
@@ -1638,6 +1811,16 @@ body.modal-open { overflow: hidden; }
   .site-nav-link { font-size: 0.8rem; min-height: 28px; padding: 0.22rem 0.58rem; }
   .trend-grid { grid-template-columns: 1fr; }
   .history-result-cards { grid-template-columns: 1fr; }
+  .trend-section-head { flex-direction: column; align-items: stretch; gap: 0.25rem; }
+  .trend-section-kicker { text-align: left; }
+  .history-battle-grid { grid-template-columns: 1fr; }
+  .history-battle-head { grid-template-columns: 1fr; }
+  .history-battle-head em {
+    grid-column: 1;
+    grid-row: auto;
+    text-align: left;
+    max-width: none;
+  }
   .history-region-table { min-width: 760px; }
   .stat-bar { grid-template-columns: 100px 1fr 50px; gap: 0.5rem; }
   .stat-bar-label { font-size: 0.82rem; }

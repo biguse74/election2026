@@ -1650,6 +1650,124 @@ function historyCloseRaces(result, limit = 6) {
     return { district: d, first, second, marginVotes, marginPct };
   }).filter(Boolean).sort((a, b) => a.marginPct - b.marginPct).slice(0, limit);
 }
+function historyDistrictLabel(d, sgTypecode) {
+  const sd = normalizeHistorySidoName(d?.sdName || '');
+  const sgg = d?.sggName || '';
+  if (String(sgTypecode) === '3' || !sgg || sgg === sd) return sd || sgg || '-';
+  return `${sd} ${sgg}`.trim();
+}
+function historyDistrictTurnout(d) {
+  if (!d?.eligible_voters || !d?.turnout_votes) return null;
+  return d.turnout_votes / d.eligible_voters * 100;
+}
+function historyCurrentRegion(d) {
+  const sgg = d?.sggName || '';
+  if (normalizeHistorySidoName(d?.sdName || '') === '경상북도' && sgg === '군위군') {
+    return { sd: '대구광역시', sgg };
+  }
+  return { sd: normalizeHistorySidoName(d?.sdName || ''), sgg };
+}
+function historyNameKey(name) {
+  return String(name || '').replace(/\s+/g, '');
+}
+function currentCandidatesForHistoryDistrict(d, sgTypecode) {
+  const { sd, sgg } = historyCurrentRegion(d);
+  return (state.data?.candidates || [])
+    .filter(isActiveCandidate)
+    .filter(c => String(c.sgTypecode) === String(sgTypecode))
+    .filter(c => c.sdName === sd)
+    .filter(c => String(sgTypecode) === '3' || c.sggName === sgg)
+    .sort((a, b) => Number(a.giho || 999) - Number(b.giho || 999) || koSort(a.name || '', b.name || ''));
+}
+function historyBattlefieldItems(election, limit = 12) {
+  const targets = [
+    { result: election?.governor, office: '시도지사', sgTypecode: '3' },
+    { result: election?.localHead, office: '기초단체장', sgTypecode: '4' },
+  ];
+  const rows = [];
+  for (const target of targets) {
+    for (const d of target.result?.districts || []) {
+      const margin = historyDistrictMargin(d);
+      if (!margin) continue;
+      const currentCandidates = currentCandidatesForHistoryDistrict(d, target.sgTypecode);
+      const firstKey = historyNameKey(margin.first.name);
+      const secondKey = historyNameKey(margin.second.name);
+      const returningWinner = currentCandidates.find(c => historyNameKey(c.name) === firstKey) || null;
+      const returningRunnerUp = currentCandidates.find(c => historyNameKey(c.name) === secondKey) || null;
+      rows.push({
+        ...margin,
+        district: d,
+        office: target.office,
+        sgTypecode: target.sgTypecode,
+        currentCandidates,
+        returningWinner,
+        returningRunnerUp,
+        turnoutPct: historyDistrictTurnout(d),
+      });
+    }
+  }
+  const sorted = rows.sort((a, b) => a.marginPct - b.marginPct || koSort(historyDistrictLabel(a.district, a.sgTypecode), historyDistrictLabel(b.district, b.sgTypecode)));
+  return limit === Infinity ? sorted : sorted.slice(0, limit);
+}
+function historyBattleReason(item) {
+  const reasons = [];
+  if (item.marginPct < 1) reasons.push('1%p 미만 접전');
+  else if (item.marginPct < 3) reasons.push('3%p 미만 접전');
+  else if (item.marginPct < 5) reasons.push('5%p 미만 접전');
+  if (item.returningWinner && item.returningRunnerUp) reasons.push('지난 1·2위 재출마');
+  else if (item.returningWinner) reasons.push('지난 당선자 재출마');
+  else if (item.returningRunnerUp) reasons.push('지난 2위 재출마');
+  if (item.currentCandidates.length <= 1) reasons.push('후보 1명 이하');
+  return reasons.slice(0, 3).join(' · ') || '과거 격차 기준';
+}
+function historyCurrentCandidatePills(item) {
+  const highlight = new Set([historyNameKey(item.first.name), historyNameKey(item.second.name)]);
+  if (!item.currentCandidates.length) return '<p class="history-current-empty">이번 후보 등록 데이터가 없습니다.</p>';
+  return `
+    <ul class="history-current-candidates">
+      ${item.currentCandidates.map(c => {
+        const isPastTop = highlight.has(historyNameKey(c.name));
+        return `
+          <li class="${isPastTop ? 'is-past-top' : ''}">
+            <span class="hist-cand-color" style="background:${partyColor(c.jdName)}"></span>
+            <button type="button" class="candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(c.name)} 상세 정보">${escapeHtml(c.name || '-')}</button>
+            <small>${escapeHtml(c.jdName || '무소속')}</small>
+          </li>`;
+      }).join('')}
+    </ul>`;
+}
+function historyBattlefieldCard(item) {
+  const turnout = item.turnoutPct == null ? '-' : `${item.turnoutPct.toFixed(1)}%`;
+  return `
+    <article class="history-battle-card">
+      <header class="history-battle-head">
+        <span>${escapeHtml(item.office)}</span>
+        <strong>${escapeHtml(historyDistrictLabel(item.district, item.sgTypecode))}</strong>
+        <em>${escapeHtml(historyBattleReason(item))}</em>
+      </header>
+      <div class="history-battle-past">
+        <div>
+          <span>지난 1위</span>
+          <strong>${escapeHtml(item.first.name)}</strong>
+          <small>${escapeHtml(item.first.party || '무소속')} · ${item.first.vote_share.toFixed(2)}%</small>
+        </div>
+        <div>
+          <span>지난 2위</span>
+          <strong>${escapeHtml(item.second.name)}</strong>
+          <small>${escapeHtml(item.second.party || '무소속')} · ${item.second.vote_share.toFixed(2)}%</small>
+        </div>
+      </div>
+      <div class="history-battle-metrics">
+        <span>격차 <strong>${item.marginPct.toFixed(2)}%p</strong></span>
+        <span>표차 <strong>${item.marginVotes.toLocaleString()}표</strong></span>
+        <span>투표율 <strong>${turnout}</strong></span>
+      </div>
+      <div class="history-battle-current">
+        <div class="history-battle-current-title">이번 후보 등록 <strong>${item.currentCandidates.length.toLocaleString()}명</strong></div>
+        ${historyCurrentCandidatePills(item)}
+      </div>
+    </article>`;
+}
 function historyLocalGroupsHtml(result) {
   const districts = [...(result?.districts || [])].sort((a, b) =>
     sidoSort(normalizeHistorySidoName(a.sdName), normalizeHistorySidoName(b.sdName))
@@ -1739,6 +1857,14 @@ function renderHistoryFull() {
   const localCloseText = localClose
     ? `${normalizeHistorySidoName(localClose.district.sdName)} ${localClose.district.sggName} · ${localClose.first.name} ${localClose.marginPct.toFixed(2)}%p 차`
     : '-';
+  const battlefields = historyBattlefieldItems(latest, Infinity);
+  const topBattlefields = battlefields.slice(0, 12);
+  const battlefieldStats = {
+    closeUnder3: battlefields.filter(r => r.marginPct < 3).length,
+    returningWinner: battlefields.filter(r => r.returningWinner).length,
+    rematch: battlefields.filter(r => r.returningWinner && r.returningRunnerUp).length,
+  };
+  const battlefieldCards = topBattlefields.map(historyBattlefieldCard).join('');
 
   const resultByRoundAndSido = new Map();
   for (const e of countingElections) {
@@ -1814,6 +1940,20 @@ function renderHistoryFull() {
         <strong>${sweep.election.year}년 ${sweep.top.party}</strong>
         <small>${sweep.top.wins}/${sweep.election.governor.district_count}곳 · ${(sweep.share * 100).toFixed(1)}%</small>
       </div>
+    </section>
+
+    <section class="trend-section history-battle-section">
+      <div class="trend-section-head">
+        <h3 class="trend-section-title">지난 접전지, 이번 후보 등록</h3>
+        <span class="trend-section-kicker">${latest.year}년 광역·기초단체장 최접전 ${topBattlefields.length}곳</span>
+      </div>
+      <div class="history-battle-summary">
+        <span>3%p 미만 ${battlefieldStats.closeUnder3.toLocaleString()}곳</span>
+        <span>지난 당선자 재출마 ${battlefieldStats.returningWinner.toLocaleString()}곳</span>
+        <span>지난 1·2위 재출마 ${battlefieldStats.rematch.toLocaleString()}곳</span>
+      </div>
+      <div class="history-battle-grid">${battlefieldCards}</div>
+      <p class="trend-meta">과거 득표 격차, 당시 투표율, 이번 후보 등록 현황을 나란히 둔 관전 지표입니다. 특정 후보의 당락을 예측하지 않습니다.</p>
     </section>
 
     <section class="trend-section">
