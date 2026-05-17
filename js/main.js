@@ -540,7 +540,7 @@ function districtCompetitionLabelFromValues(countValue, seatValue) {
   if (!seat) return `<span class="district-meta"><span>후보 ${count}명</span></span>`;
   const ratio = `${(count / seat).toFixed(1)}:1`;
   const uncontested = count > 0 && count <= seat;
-  return `<span class="district-meta"><span>후보 ${count.toLocaleString()}명</span><span>정원 ${seat.toLocaleString()}석</span><span class="district-ratio">${ratio}</span>${uncontested ? '<span class="district-flag">무투표</span>' : ''}</span>`;
+  return `<span class="district-meta"><span>후보 ${count.toLocaleString()}명</span><span>· 정원 ${seat.toLocaleString()}석</span><span class="district-ratio">· ${ratio}</span>${uncontested ? '<span class="district-flag">무투표</span>' : ''}</span>`;
 }
 
 function districtCompetitionLabel(list, stats = null) {
@@ -4095,7 +4095,7 @@ function renderMpBox() {
     const seat = parseInt(s.sggJungsu, 10) || 1;
     const detail = linked
       ? districtCompetitionLabelFromValues(list.filter(isActiveCandidate).length, seat)
-      : `<span class="district-meta"><span>${stage} 미등록</span><span>정원 ${seat.toLocaleString()}석</span></span>`;
+      : `<span class="district-meta"><span>${stage} 미등록</span><span>· 정원 ${seat.toLocaleString()}석</span></span>`;
     const inner = `
       <div class="mp-card-region">
         <span class="mp-card-sido">${sdShort}</span>
