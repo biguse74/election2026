@@ -1,0 +1,4766 @@
+{
+  "generated_at": "2026-05-18T00:26:09+09:00",
+  "source": "중앙선거관리위원회 OpenAPI · VoteXmntckInfoInqireService2/getXmntckSttusInfoInqire",
+  "note": "읍면동 세부행은 제외하고 선거구 합계행 기준으로 정리.",
+  "elections": [
+    {
+      "round": 3,
+      "year": 2002,
+      "date": "2002-06-13",
+      "sgId": "20020613",
+      "results": [
+        {
+          "sgTypecode": "3",
+          "office": "시도지사",
+          "district_count": 16,
+          "party_wins": [
+            {
+              "party": "한나라당",
+              "wins": 11
+            },
+            {
+              "party": "새천년민주당",
+              "wins": 4
+            },
+            {
+              "party": "자민련",
+              "wins": 1
+            }
+          ],
+          "districts": [
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "서울특별시",
+              "sdName": "서울특별시",
+              "wiwName": "합계",
+              "eligible_voters": 7665343,
+              "turnout_votes": 3510898,
+              "valid_votes": 3479105,
+              "invalid_votes": 31793,
+              "abstentions": 4154445,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "이명박",
+                "votes": 1819057,
+                "vote_share": 52.29
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "이명박",
+                  "votes": 1819057,
+                  "vote_share": 52.29
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "김민석",
+                  "votes": 1496754,
+                  "vote_share": 43.02
+                },
+                {
+                  "slot": 3,
+                  "party": "녹색평화당",
+                  "name": "임삼진",
+                  "votes": 28034,
+                  "vote_share": 0.81
+                },
+                {
+                  "slot": 4,
+                  "party": "민주노동당",
+                  "name": "이문옥",
+                  "votes": 87965,
+                  "vote_share": 2.53
+                },
+                {
+                  "slot": 5,
+                  "party": "사회당",
+                  "name": "원용수",
+                  "votes": 12982,
+                  "vote_share": 0.37
+                },
+                {
+                  "slot": 6,
+                  "party": "무소속",
+                  "name": "이경희",
+                  "votes": 34313,
+                  "vote_share": 0.99
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "부산광역시",
+              "sdName": "부산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2784721,
+              "turnout_votes": 1163040,
+              "valid_votes": 1144121,
+              "invalid_votes": 18919,
+              "abstentions": 1621681,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "안상영",
+                "votes": 729589,
+                "vote_share": 63.77
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "안상영",
+                  "votes": 729589,
+                  "vote_share": 63.77
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "한이헌",
+                  "votes": 221938,
+                  "vote_share": 19.4
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "김석준",
+                  "votes": 192594,
+                  "vote_share": 16.83
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "대구광역시",
+              "sdName": "대구광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1814278,
+              "turnout_votes": 751994,
+              "valid_votes": 740339,
+              "invalid_votes": 11655,
+              "abstentions": 1062284,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "조해녕",
+                "votes": 452943,
+                "vote_share": 61.18
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "조해녕",
+                  "votes": 452943,
+                  "vote_share": 61.18
+                },
+                {
+                  "slot": 2,
+                  "party": "무소속",
+                  "name": "이재용",
+                  "votes": 287396,
+                  "vote_share": 38.82
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "인천광역시",
+              "sdName": "인천광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1809907,
+              "turnout_votes": 711602,
+              "valid_votes": 701253,
+              "invalid_votes": 10349,
+              "abstentions": 1098305,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "안상수",
+                "votes": 393932,
+                "vote_share": 56.18
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "안상수",
+                  "votes": 393932,
+                  "vote_share": 56.18
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "박상은",
+                  "votes": 225210,
+                  "vote_share": 32.12
+                },
+                {
+                  "slot": 3,
+                  "party": "녹색평화당",
+                  "name": "신맹순",
+                  "votes": 29473,
+                  "vote_share": 4.2
+                },
+                {
+                  "slot": 4,
+                  "party": "민주노동당",
+                  "name": "김창한",
+                  "votes": 35234,
+                  "vote_share": 5.02
+                },
+                {
+                  "slot": 5,
+                  "party": "사회당",
+                  "name": "김영규",
+                  "votes": 17404,
+                  "vote_share": 2.48
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "광주광역시",
+              "sdName": "광주광역시",
+              "wiwName": "합계",
+              "eligible_voters": 954481,
+              "turnout_votes": 403821,
+              "valid_votes": 397148,
+              "invalid_votes": 6673,
+              "abstentions": 550660,
+              "winner": {
+                "slot": 2,
+                "party": "새천년민주당",
+                "name": "박광태",
+                "votes": 185938,
+                "vote_share": 46.82
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "이환의",
+                  "votes": 43695,
+                  "vote_share": 11.0
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "박광태",
+                  "votes": 185938,
+                  "vote_share": 46.82
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "박종현",
+                  "votes": 29427,
+                  "vote_share": 7.41
+                },
+                {
+                  "slot": 4,
+                  "party": "무소속",
+                  "name": "정구선",
+                  "votes": 9877,
+                  "vote_share": 2.49
+                },
+                {
+                  "slot": 5,
+                  "party": "무소속",
+                  "name": "정동년",
+                  "votes": 107415,
+                  "vote_share": 27.05
+                },
+                {
+                  "slot": 6,
+                  "party": "무소속",
+                  "name": "정호선",
+                  "votes": 20796,
+                  "vote_share": 5.24
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "대전광역시",
+              "sdName": "대전광역시",
+              "wiwName": "합계",
+              "eligible_voters": 987180,
+              "turnout_votes": 417809,
+              "valid_votes": 411483,
+              "invalid_votes": 6326,
+              "abstentions": 569371,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "염홍철",
+                "votes": 191832,
+                "vote_share": 46.62
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "염홍철",
+                  "votes": 191832,
+                  "vote_share": 46.62
+                },
+                {
+                  "slot": 2,
+                  "party": "자민련",
+                  "name": "홍선기",
+                  "votes": 165426,
+                  "vote_share": 40.2
+                },
+                {
+                  "slot": 3,
+                  "party": "무소속",
+                  "name": "김헌태",
+                  "votes": 15780,
+                  "vote_share": 3.83
+                },
+                {
+                  "slot": 4,
+                  "party": "무소속",
+                  "name": "정하용",
+                  "votes": 38445,
+                  "vote_share": 9.34
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "울산광역시",
+              "sdName": "울산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 722806,
+              "turnout_votes": 378121,
+              "valid_votes": 372647,
+              "invalid_votes": 5474,
+              "abstentions": 344685,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "박맹우",
+                "votes": 197772,
+                "vote_share": 53.07
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "박맹우",
+                  "votes": 197772,
+                  "vote_share": 53.07
+                },
+                {
+                  "slot": 2,
+                  "party": "민주노동당",
+                  "name": "송철호",
+                  "votes": 162546,
+                  "vote_share": 43.62
+                },
+                {
+                  "slot": 3,
+                  "party": "사회당",
+                  "name": "안승천",
+                  "votes": 12329,
+                  "vote_share": 3.31
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "경기도",
+              "sdName": "경기도",
+              "wiwName": "합계",
+              "eligible_voters": 6777575,
+              "turnout_votes": 3024844,
+              "valid_votes": 2987891,
+              "invalid_votes": 36953,
+              "abstentions": 3752731,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "손학규",
+                "votes": 1744291,
+                "vote_share": 58.38
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "손학규",
+                  "votes": 1744291,
+                  "vote_share": 58.38
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "진념",
+                  "votes": 1075243,
+                  "vote_share": 35.99
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "김준기",
+                  "votes": 168357,
+                  "vote_share": 5.63
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "강원도",
+              "sdName": "강원도",
+              "wiwName": "합계",
+              "eligible_voters": 1129859,
+              "turnout_votes": 671242,
+              "valid_votes": 659438,
+              "invalid_votes": 11804,
+              "abstentions": 458617,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "김진선",
+                "votes": 468987,
+                "vote_share": 71.12
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "김진선",
+                  "votes": 468987,
+                  "vote_share": 71.12
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "남동우",
+                  "votes": 190451,
+                  "vote_share": 28.88
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "충청북도",
+              "sdName": "충청북도",
+              "wiwName": "합계",
+              "eligible_voters": 1076451,
+              "turnout_votes": 600550,
+              "valid_votes": 586258,
+              "invalid_votes": 14292,
+              "abstentions": 475901,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "이원종",
+                "votes": 343546,
+                "vote_share": 58.6
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "이원종",
+                  "votes": 343546,
+                  "vote_share": 58.6
+                },
+                {
+                  "slot": 2,
+                  "party": "자민련",
+                  "name": "구천서",
+                  "votes": 196253,
+                  "vote_share": 33.48
+                },
+                {
+                  "slot": 3,
+                  "party": "무소속",
+                  "name": "장한량",
+                  "votes": 46459,
+                  "vote_share": 7.92
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "충청남도",
+              "sdName": "충청남도",
+              "wiwName": "합계",
+              "eligible_voters": 1397105,
+              "turnout_votes": 785742,
+              "valid_votes": 759801,
+              "invalid_votes": 25941,
+              "abstentions": 611363,
+              "winner": {
+                "slot": 2,
+                "party": "자민련",
+                "name": "심대평",
+                "votes": 508796,
+                "vote_share": 66.96
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "박태권",
+                  "votes": 251005,
+                  "vote_share": 33.04
+                },
+                {
+                  "slot": 2,
+                  "party": "자민련",
+                  "name": "심대평",
+                  "votes": 508796,
+                  "vote_share": 66.96
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "전라북도",
+              "sdName": "전라북도",
+              "wiwName": "합계",
+              "eligible_voters": 1431722,
+              "turnout_votes": 787135,
+              "valid_votes": 766631,
+              "invalid_votes": 20504,
+              "abstentions": 644587,
+              "winner": {
+                "slot": 2,
+                "party": "새천년민주당",
+                "name": "강현욱",
+                "votes": 571650,
+                "vote_share": 74.57
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "라경균",
+                  "votes": 63661,
+                  "vote_share": 8.3
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "강현욱",
+                  "votes": 571650,
+                  "vote_share": 74.57
+                },
+                {
+                  "slot": 3,
+                  "party": "무소속",
+                  "name": "손주항",
+                  "votes": 131320,
+                  "vote_share": 17.13
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "전라남도",
+              "sdName": "전라남도",
+              "wiwName": "합계",
+              "eligible_voters": 1533059,
+              "turnout_votes": 1006148,
+              "valid_votes": 975533,
+              "invalid_votes": 30615,
+              "abstentions": 526911,
+              "winner": {
+                "slot": 2,
+                "party": "새천년민주당",
+                "name": "박태영",
+                "votes": 563545,
+                "vote_share": 57.77
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "황수연",
+                  "votes": 51504,
+                  "vote_share": 5.28
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "박태영",
+                  "votes": 563545,
+                  "vote_share": 57.77
+                },
+                {
+                  "slot": 3,
+                  "party": "무소속",
+                  "name": "송재구",
+                  "votes": 236558,
+                  "vote_share": 24.25
+                },
+                {
+                  "slot": 4,
+                  "party": "무소속",
+                  "name": "송하성",
+                  "votes": 89487,
+                  "vote_share": 9.17
+                },
+                {
+                  "slot": 5,
+                  "party": "무소속",
+                  "name": "안수원",
+                  "votes": 34439,
+                  "vote_share": 3.53
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "경상북도",
+              "sdName": "경상북도",
+              "wiwName": "합계",
+              "eligible_voters": 2044215,
+              "turnout_votes": 1234095,
+              "valid_votes": 1202552,
+              "invalid_votes": 31543,
+              "abstentions": 810120,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "이의근",
+                "votes": 1028080,
+                "vote_share": 85.49
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "이의근",
+                  "votes": 1028080,
+                  "vote_share": 85.49
+                },
+                {
+                  "slot": 2,
+                  "party": "무소속",
+                  "name": "조영건",
+                  "votes": 174472,
+                  "vote_share": 14.51
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "경상남도",
+              "sdName": "경상남도",
+              "wiwName": "합계",
+              "eligible_voters": 2227548,
+              "turnout_votes": 1259142,
+              "valid_votes": 1235714,
+              "invalid_votes": 23428,
+              "abstentions": 968406,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "김혁규",
+                "votes": 920706,
+                "vote_share": 74.51
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "김혁규",
+                  "votes": 920706,
+                  "vote_share": 74.51
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "김두관",
+                  "votes": 208641,
+                  "vote_share": 16.88
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "임수태",
+                  "votes": 106367,
+                  "vote_share": 8.61
+                }
+              ]
+            },
+            {
+              "sgId": "20020613",
+              "sgTypecode": "3",
+              "sggName": "제주도",
+              "sdName": "제주도",
+              "wiwName": "합계",
+              "eligible_voters": 387982,
+              "turnout_votes": 267479,
+              "valid_votes": 263158,
+              "invalid_votes": 4321,
+              "abstentions": 120503,
+              "winner": {
+                "slot": 2,
+                "party": "새천년민주당",
+                "name": "우근민",
+                "votes": 135283,
+                "vote_share": 51.41
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "신구범",
+                  "votes": 119502,
+                  "vote_share": 45.41
+                },
+                {
+                  "slot": 2,
+                  "party": "새천년민주당",
+                  "name": "우근민",
+                  "votes": 135283,
+                  "vote_share": 51.41
+                },
+                {
+                  "slot": 3,
+                  "party": "민국당",
+                  "name": "신두완",
+                  "votes": 8373,
+                  "vote_share": 3.18
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "year": 2006,
+      "date": "2006-05-31",
+      "sgId": "20060531",
+      "results": [
+        {
+          "sgTypecode": "3",
+          "office": "시도지사",
+          "district_count": 16,
+          "party_wins": [
+            {
+              "party": "한나라당",
+              "wins": 12
+            },
+            {
+              "party": "민주당",
+              "wins": 2
+            },
+            {
+              "party": "무소속",
+              "wins": 1
+            },
+            {
+              "party": "열린우리당",
+              "wins": 1
+            }
+          ],
+          "districts": [
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "서울특별시",
+              "sdName": "서울특별시",
+              "wiwName": "합계",
+              "eligible_voters": 7983648,
+              "turnout_votes": 3977842,
+              "valid_votes": 3946826,
+              "invalid_votes": 31016,
+              "abstentions": 4005806,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "오세훈",
+                "votes": 2409760,
+                "vote_share": 61.06
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "강금실",
+                  "votes": 1077890,
+                  "vote_share": 27.31
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "오세훈",
+                  "votes": 2409760,
+                  "vote_share": 61.06
+                },
+                {
+                  "slot": 3,
+                  "party": "민주당",
+                  "name": "박주선",
+                  "votes": 304565,
+                  "vote_share": 7.72
+                },
+                {
+                  "slot": 4,
+                  "party": "민주노동당",
+                  "name": "김종철",
+                  "votes": 117421,
+                  "vote_share": 2.98
+                },
+                {
+                  "slot": 5,
+                  "party": "국민중심당",
+                  "name": "임웅균",
+                  "votes": 14111,
+                  "vote_share": 0.36
+                },
+                {
+                  "slot": 6,
+                  "party": "시민당",
+                  "name": "이귀선",
+                  "votes": 4790,
+                  "vote_share": 0.12
+                },
+                {
+                  "slot": 7,
+                  "party": "한미준",
+                  "name": "이태희",
+                  "votes": 4481,
+                  "vote_share": 0.11
+                },
+                {
+                  "slot": 8,
+                  "party": "무소속",
+                  "name": "백승원",
+                  "votes": 13808,
+                  "vote_share": 0.35
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "부산광역시",
+              "sdName": "부산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2845104,
+              "turnout_votes": 1378618,
+              "valid_votes": 1365745,
+              "invalid_votes": 12873,
+              "abstentions": 1466486,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "허남식",
+                "votes": 895214,
+                "vote_share": 65.55
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "오거돈",
+                  "votes": 329470,
+                  "vote_share": 24.12
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "허남식",
+                  "votes": 895214,
+                  "vote_share": 65.55
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "김석준",
+                  "votes": 141061,
+                  "vote_share": 10.33
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "대구광역시",
+              "sdName": "대구광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1885043,
+              "turnout_votes": 915060,
+              "valid_votes": 906681,
+              "invalid_votes": 8379,
+              "abstentions": 969983,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "김범일",
+                "votes": 636057,
+                "vote_share": 70.15
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "이재용",
+                  "votes": 191131,
+                  "vote_share": 21.08
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "김범일",
+                  "votes": 636057,
+                  "vote_share": 70.15
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "이연재",
+                  "votes": 35497,
+                  "vote_share": 3.92
+                },
+                {
+                  "slot": 4,
+                  "party": "국민중심당",
+                  "name": "박승국",
+                  "votes": 8764,
+                  "vote_share": 0.97
+                },
+                {
+                  "slot": 5,
+                  "party": "무소속",
+                  "name": "백승홍",
+                  "votes": 35232,
+                  "vote_share": 3.89
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "인천광역시",
+              "sdName": "인천광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1940403,
+              "turnout_votes": 859506,
+              "valid_votes": 850819,
+              "invalid_votes": 8687,
+              "abstentions": 1080897,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "안상수",
+                "votes": 526932,
+                "vote_share": 61.93
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "최기선",
+                  "votes": 200650,
+                  "vote_share": 23.58
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "안상수",
+                  "votes": 526932,
+                  "vote_share": 61.93
+                },
+                {
+                  "slot": 3,
+                  "party": "민주당",
+                  "name": "신경철",
+                  "votes": 44339,
+                  "vote_share": 5.21
+                },
+                {
+                  "slot": 4,
+                  "party": "민주노동당",
+                  "name": "김성진",
+                  "votes": 78898,
+                  "vote_share": 9.27
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "광주광역시",
+              "sdName": "광주광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1014620,
+              "turnout_votes": 469316,
+              "valid_votes": 464718,
+              "invalid_votes": 4598,
+              "abstentions": 545304,
+              "winner": {
+                "slot": 3,
+                "party": "민주당",
+                "name": "박광태",
+                "votes": 239884,
+                "vote_share": 51.62
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "조영택",
+                  "votes": 157756,
+                  "vote_share": 33.95
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "한영",
+                  "votes": 18461,
+                  "vote_share": 3.97
+                },
+                {
+                  "slot": 3,
+                  "party": "민주당",
+                  "name": "박광태",
+                  "votes": 239884,
+                  "vote_share": 51.62
+                },
+                {
+                  "slot": 4,
+                  "party": "민주노동당",
+                  "name": "오병윤",
+                  "votes": 48617,
+                  "vote_share": 10.46
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "대전광역시",
+              "sdName": "대전광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1077468,
+              "turnout_votes": 532568,
+              "valid_votes": 528041,
+              "invalid_votes": 4527,
+              "abstentions": 544900,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "박성효",
+                "votes": 231489,
+                "vote_share": 43.84
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "염홍철",
+                  "votes": 217273,
+                  "vote_share": 41.15
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "박성효",
+                  "votes": 231489,
+                  "vote_share": 43.84
+                },
+                {
+                  "slot": 3,
+                  "party": "민주당",
+                  "name": "최기복",
+                  "votes": 6442,
+                  "vote_share": 1.22
+                },
+                {
+                  "slot": 4,
+                  "party": "민주노동당",
+                  "name": "박춘호",
+                  "votes": 14899,
+                  "vote_share": 2.82
+                },
+                {
+                  "slot": 5,
+                  "party": "국민중심당",
+                  "name": "남충희",
+                  "votes": 55231,
+                  "vote_share": 10.46
+                },
+                {
+                  "slot": 6,
+                  "party": "한미준",
+                  "name": "고낙정",
+                  "votes": 2707,
+                  "vote_share": 0.51
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "울산광역시",
+              "sdName": "울산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 790289,
+              "turnout_votes": 417200,
+              "valid_votes": 413324,
+              "invalid_votes": 3876,
+              "abstentions": 373089,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "박맹우",
+                "votes": 261361,
+                "vote_share": 63.23
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "심규명",
+                  "votes": 47579,
+                  "vote_share": 11.51
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "박맹우",
+                  "votes": 261361,
+                  "vote_share": 63.23
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "노옥희",
+                  "votes": 104384,
+                  "vote_share": 25.25
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "경기도",
+              "sdName": "경기도",
+              "wiwName": "합계",
+              "eligible_voters": 7918828,
+              "turnout_votes": 3695552,
+              "valid_votes": 3655509,
+              "invalid_votes": 40043,
+              "abstentions": 4223276,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "김문수",
+                "votes": 2181677,
+                "vote_share": 59.68
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "진대제",
+                  "votes": 1124317,
+                  "vote_share": 30.76
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "김문수",
+                  "votes": 2181677,
+                  "vote_share": 59.68
+                },
+                {
+                  "slot": 3,
+                  "party": "민주당",
+                  "name": "박정일",
+                  "votes": 148409,
+                  "vote_share": 4.06
+                },
+                {
+                  "slot": 4,
+                  "party": "민주노동당",
+                  "name": "김용한",
+                  "votes": 201106,
+                  "vote_share": 5.5
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "강원도",
+              "sdName": "강원도",
+              "wiwName": "합계",
+              "eligible_voters": 1160977,
+              "turnout_votes": 681633,
+              "valid_votes": 668326,
+              "invalid_votes": 13307,
+              "abstentions": 479344,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "김진선",
+                "votes": 471613,
+                "vote_share": 70.57
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "이창복",
+                  "votes": 148302,
+                  "vote_share": 22.19
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "김진선",
+                  "votes": 471613,
+                  "vote_share": 70.57
+                },
+                {
+                  "slot": 3,
+                  "party": "민주당",
+                  "name": "유재규",
+                  "votes": 29028,
+                  "vote_share": 4.34
+                },
+                {
+                  "slot": 4,
+                  "party": "국민중심당",
+                  "name": "유승규",
+                  "votes": 19383,
+                  "vote_share": 2.9
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "충청북도",
+              "sdName": "충청북도",
+              "wiwName": "합계",
+              "eligible_voters": 1126282,
+              "turnout_votes": 616053,
+              "valid_votes": 605324,
+              "invalid_votes": 10729,
+              "abstentions": 510229,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "정우택",
+                "votes": 361157,
+                "vote_share": 59.66
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "한범덕",
+                  "votes": 185426,
+                  "vote_share": 30.63
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "정우택",
+                  "votes": 361157,
+                  "vote_share": 59.66
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "배창호",
+                  "votes": 39095,
+                  "vote_share": 6.46
+                },
+                {
+                  "slot": 4,
+                  "party": "국민중심당",
+                  "name": "조병세",
+                  "votes": 19646,
+                  "vote_share": 3.25
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "충청남도",
+              "sdName": "충청남도",
+              "wiwName": "합계",
+              "eligible_voters": 1503240,
+              "turnout_votes": 838462,
+              "valid_votes": 819260,
+              "invalid_votes": 19202,
+              "abstentions": 664778,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "이완구",
+                "votes": 379420,
+                "vote_share": 46.31
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "오영교",
+                  "votes": 178169,
+                  "vote_share": 21.75
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "이완구",
+                  "votes": 379420,
+                  "vote_share": 46.31
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "이용길",
+                  "votes": 52417,
+                  "vote_share": 6.4
+                },
+                {
+                  "slot": 4,
+                  "party": "국민중심당",
+                  "name": "이명수",
+                  "votes": 209254,
+                  "vote_share": 25.54
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "전라북도",
+              "sdName": "전라북도",
+              "wiwName": "합계",
+              "eligible_voters": 1429632,
+              "turnout_votes": 827387,
+              "valid_votes": 809921,
+              "invalid_votes": 17466,
+              "abstentions": 602245,
+              "winner": {
+                "slot": 1,
+                "party": "열린우리당",
+                "name": "김완주",
+                "votes": 389436,
+                "vote_share": 48.08
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "김완주",
+                  "votes": 389436,
+                  "vote_share": 48.08
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "문용주",
+                  "votes": 62922,
+                  "vote_share": 7.77
+                },
+                {
+                  "slot": 3,
+                  "party": "민주당",
+                  "name": "정균환",
+                  "votes": 295891,
+                  "vote_share": 36.53
+                },
+                {
+                  "slot": 4,
+                  "party": "민주노동당",
+                  "name": "염경석",
+                  "votes": 61672,
+                  "vote_share": 7.61
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "전라남도",
+              "sdName": "전라남도",
+              "wiwName": "합계",
+              "eligible_voters": 1513912,
+              "turnout_votes": 973820,
+              "valid_votes": 946796,
+              "invalid_votes": 27024,
+              "abstentions": 540092,
+              "winner": {
+                "slot": 3,
+                "party": "민주당",
+                "name": "박준영",
+                "votes": 640894,
+                "vote_share": 67.69
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "서범석",
+                  "votes": 181756,
+                  "vote_share": 19.2
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "박재순",
+                  "votes": 55444,
+                  "vote_share": 5.86
+                },
+                {
+                  "slot": 3,
+                  "party": "민주당",
+                  "name": "박준영",
+                  "votes": 640894,
+                  "vote_share": 67.69
+                },
+                {
+                  "slot": 4,
+                  "party": "민주노동당",
+                  "name": "박웅두",
+                  "votes": 68702,
+                  "vote_share": 7.26
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "경상북도",
+              "sdName": "경상북도",
+              "wiwName": "합계",
+              "eligible_voters": 2087709,
+              "turnout_votes": 1284342,
+              "valid_votes": 1251721,
+              "invalid_votes": 32621,
+              "abstentions": 803367,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "김관용",
+                "votes": 961363,
+                "vote_share": 76.8
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "박명재",
+                  "votes": 290358,
+                  "vote_share": 23.2
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "김관용",
+                  "votes": 961363,
+                  "vote_share": 76.8
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "경상남도",
+              "sdName": "경상남도",
+              "wiwName": "합계",
+              "eligible_voters": 2375265,
+              "turnout_votes": 1373815,
+              "valid_votes": 1350243,
+              "invalid_votes": 23572,
+              "abstentions": 1001450,
+              "winner": {
+                "slot": 2,
+                "party": "한나라당",
+                "name": "김태호",
+                "votes": 852377,
+                "vote_share": 63.13
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "김두관",
+                  "votes": 343137,
+                  "vote_share": 25.41
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "김태호",
+                  "votes": 852377,
+                  "vote_share": 63.13
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "문성현",
+                  "votes": 135823,
+                  "vote_share": 10.06
+                },
+                {
+                  "slot": 4,
+                  "party": "국민중심당",
+                  "name": "김재주",
+                  "votes": 18906,
+                  "vote_share": 1.4
+                }
+              ]
+            },
+            {
+              "sgId": "20060531",
+              "sgTypecode": "3",
+              "sggName": "제주도",
+              "sdName": "제주도",
+              "wiwName": "합계",
+              "eligible_voters": 411862,
+              "turnout_votes": 277003,
+              "valid_votes": 274352,
+              "invalid_votes": 2651,
+              "abstentions": 134859,
+              "winner": {
+                "slot": 3,
+                "party": "무소속",
+                "name": "김태환",
+                "votes": 117244,
+                "vote_share": 42.73
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "열린우리당",
+                  "name": "진철훈",
+                  "votes": 44334,
+                  "vote_share": 16.16
+                },
+                {
+                  "slot": 2,
+                  "party": "한나라당",
+                  "name": "현명관",
+                  "votes": 112774,
+                  "vote_share": 41.11
+                },
+                {
+                  "slot": 3,
+                  "party": "무소속",
+                  "name": "김태환",
+                  "votes": 117244,
+                  "vote_share": 42.73
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "year": 2010,
+      "date": "2010-06-02",
+      "sgId": "20100602",
+      "results": [
+        {
+          "sgTypecode": "3",
+          "office": "시도지사",
+          "district_count": 16,
+          "party_wins": [
+            {
+              "party": "민주당",
+              "wins": 7
+            },
+            {
+              "party": "한나라당",
+              "wins": 6
+            },
+            {
+              "party": "무소속",
+              "wins": 2
+            },
+            {
+              "party": "자유선진당",
+              "wins": 1
+            }
+          ],
+          "districts": [
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "서울특별시",
+              "sdName": "서울특별시",
+              "wiwName": "합계",
+              "eligible_voters": 8211461,
+              "turnout_votes": 4426182,
+              "valid_votes": 4397672,
+              "invalid_votes": 28510,
+              "abstentions": 3785279,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "오세훈",
+                "votes": 2086127,
+                "vote_share": 47.44
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "오세훈",
+                  "votes": 2086127,
+                  "vote_share": 47.44
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "한명숙",
+                  "votes": 2059715,
+                  "vote_share": 46.84
+                },
+                {
+                  "slot": 3,
+                  "party": "자유선진당",
+                  "name": "지상욱",
+                  "votes": 90032,
+                  "vote_share": 2.05
+                },
+                {
+                  "slot": 4,
+                  "party": "진보신당",
+                  "name": "노회찬",
+                  "votes": 143459,
+                  "vote_share": 3.26
+                },
+                {
+                  "slot": 5,
+                  "party": "미래연합",
+                  "name": "석종현",
+                  "votes": 18339,
+                  "vote_share": 0.42
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "부산광역시",
+              "sdName": "부산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2849895,
+              "turnout_votes": 1410126,
+              "valid_votes": 1390072,
+              "invalid_votes": 20054,
+              "abstentions": 1439769,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "허남식",
+                "votes": 770507,
+                "vote_share": 55.43
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "허남식",
+                  "votes": 770507,
+                  "vote_share": 55.43
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "김정길",
+                  "votes": 619565,
+                  "vote_share": 44.57
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "대구광역시",
+              "sdName": "대구광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1928835,
+              "turnout_votes": 886035,
+              "valid_votes": 868175,
+              "invalid_votes": 17860,
+              "abstentions": 1042800,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "김범일",
+                "votes": 633118,
+                "vote_share": 72.93
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "김범일",
+                  "votes": 633118,
+                  "vote_share": 72.93
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "이승천",
+                  "votes": 146458,
+                  "vote_share": 16.87
+                },
+                {
+                  "slot": 3,
+                  "party": "진보신당",
+                  "name": "조명래",
+                  "votes": 88599,
+                  "vote_share": 10.21
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "인천광역시",
+              "sdName": "인천광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2096853,
+              "turnout_votes": 1067431,
+              "valid_votes": 1056780,
+              "invalid_votes": 10651,
+              "abstentions": 1029422,
+              "winner": {
+                "slot": 2,
+                "party": "민주당",
+                "name": "송영길",
+                "votes": 556902,
+                "vote_share": 52.7
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "안상수",
+                  "votes": 469040,
+                  "vote_share": 44.38
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "송영길",
+                  "votes": 556902,
+                  "vote_share": 52.7
+                },
+                {
+                  "slot": 3,
+                  "party": "진보신당",
+                  "name": "김상하",
+                  "votes": 19580,
+                  "vote_share": 1.85
+                },
+                {
+                  "slot": 4,
+                  "party": "평화민주당",
+                  "name": "백석두",
+                  "votes": 11258,
+                  "vote_share": 1.07
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "광주광역시",
+              "sdName": "광주광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1064913,
+              "turnout_votes": 529901,
+              "valid_votes": 523483,
+              "invalid_votes": 6418,
+              "abstentions": 535012,
+              "winner": {
+                "slot": 2,
+                "party": "민주당",
+                "name": "강운태",
+                "votes": 297003,
+                "vote_share": 56.74
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "정용화",
+                  "votes": 74490,
+                  "vote_share": 14.23
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "강운태",
+                  "votes": 297003,
+                  "vote_share": 56.74
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "장원섭",
+                  "votes": 39455,
+                  "vote_share": 7.54
+                },
+                {
+                  "slot": 4,
+                  "party": "진보신당",
+                  "name": "윤난실",
+                  "votes": 30834,
+                  "vote_share": 5.89
+                },
+                {
+                  "slot": 5,
+                  "party": "국민참여당",
+                  "name": "정찬용",
+                  "votes": 75830,
+                  "vote_share": 14.49
+                },
+                {
+                  "slot": 6,
+                  "party": "평화민주당",
+                  "name": "조홍규",
+                  "votes": 5871,
+                  "vote_share": 1.12
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "대전광역시",
+              "sdName": "대전광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1127547,
+              "turnout_votes": 596683,
+              "valid_votes": 591563,
+              "invalid_votes": 5120,
+              "abstentions": 530864,
+              "winner": {
+                "slot": 3,
+                "party": "자유선진당",
+                "name": "염홍철",
+                "votes": 276122,
+                "vote_share": 46.68
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "박성효",
+                  "votes": 168616,
+                  "vote_share": 28.5
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "김원웅",
+                  "votes": 137751,
+                  "vote_share": 23.29
+                },
+                {
+                  "slot": 3,
+                  "party": "자유선진당",
+                  "name": "염홍철",
+                  "votes": 276122,
+                  "vote_share": 46.68
+                },
+                {
+                  "slot": 4,
+                  "party": "진보신당",
+                  "name": "김윤기",
+                  "votes": 9074,
+                  "vote_share": 1.53
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "울산광역시",
+              "sdName": "울산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 838805,
+              "turnout_votes": 462103,
+              "valid_votes": 456114,
+              "invalid_votes": 5989,
+              "abstentions": 376702,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "박맹우",
+                "votes": 279421,
+                "vote_share": 61.26
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "박맹우",
+                  "votes": 279421,
+                  "vote_share": 61.26
+                },
+                {
+                  "slot": 2,
+                  "party": "민주노동당",
+                  "name": "김창현",
+                  "votes": 133437,
+                  "vote_share": 29.26
+                },
+                {
+                  "slot": 3,
+                  "party": "진보신당",
+                  "name": "노옥희",
+                  "votes": 43256,
+                  "vote_share": 9.48
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "경기도",
+              "sdName": "경기도",
+              "wiwName": "합계",
+              "eligible_voters": 8761840,
+              "turnout_votes": 4534771,
+              "valid_votes": 4351384,
+              "invalid_votes": 183387,
+              "abstentions": 4227069,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "김문수",
+                "votes": 2271492,
+                "vote_share": 52.2
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "김문수",
+                  "votes": 2271492,
+                  "vote_share": 52.2
+                },
+                {
+                  "slot": 2,
+                  "party": "국민참여당",
+                  "name": "유시민",
+                  "votes": 2079892,
+                  "vote_share": 47.8
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "강원도",
+              "sdName": "강원도",
+              "wiwName": "합계",
+              "eligible_voters": 1190509,
+              "turnout_votes": 741724,
+              "valid_votes": 714554,
+              "invalid_votes": 27170,
+              "abstentions": 448785,
+              "winner": {
+                "slot": 2,
+                "party": "민주당",
+                "name": "이광재",
+                "votes": 388443,
+                "vote_share": 54.36
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "이계진",
+                  "votes": 326111,
+                  "vote_share": 45.64
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "이광재",
+                  "votes": 388443,
+                  "vote_share": 54.36
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "충청북도",
+              "sdName": "충청북도",
+              "wiwName": "합계",
+              "eligible_voters": 1183811,
+              "turnout_votes": 696393,
+              "valid_votes": 683110,
+              "invalid_votes": 13283,
+              "abstentions": 487418,
+              "winner": {
+                "slot": 2,
+                "party": "민주당",
+                "name": "이시종",
+                "votes": 349913,
+                "vote_share": 51.22
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "정우택",
+                  "votes": 313646,
+                  "vote_share": 45.91
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "이시종",
+                  "votes": 349913,
+                  "vote_share": 51.22
+                },
+                {
+                  "slot": 3,
+                  "party": "진보신당",
+                  "name": "김백규",
+                  "votes": 19551,
+                  "vote_share": 2.86
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "충청남도",
+              "sdName": "충청남도",
+              "wiwName": "합계",
+              "eligible_voters": 1595587,
+              "turnout_votes": 901863,
+              "valid_votes": 869276,
+              "invalid_votes": 32587,
+              "abstentions": 693724,
+              "winner": {
+                "slot": 2,
+                "party": "민주당",
+                "name": "안희정",
+                "votes": 367288,
+                "vote_share": 42.25
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "박해춘",
+                  "votes": 154723,
+                  "vote_share": 17.8
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "안희정",
+                  "votes": 367288,
+                  "vote_share": 42.25
+                },
+                {
+                  "slot": 3,
+                  "party": "자유선진당",
+                  "name": "박상돈",
+                  "votes": 347265,
+                  "vote_share": 39.95
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "전라북도",
+              "sdName": "전라북도",
+              "wiwName": "합계",
+              "eligible_voters": 1442805,
+              "turnout_votes": 856111,
+              "valid_votes": 829930,
+              "invalid_votes": 26181,
+              "abstentions": 586694,
+              "winner": {
+                "slot": 2,
+                "party": "민주당",
+                "name": "김완주",
+                "votes": 569980,
+                "vote_share": 68.68
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "정운천",
+                  "votes": 151064,
+                  "vote_share": 18.2
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "김완주",
+                  "votes": 569980,
+                  "vote_share": 68.68
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "하연호",
+                  "votes": 52331,
+                  "vote_share": 6.31
+                },
+                {
+                  "slot": 4,
+                  "party": "진보신당",
+                  "name": "염경석",
+                  "votes": 35565,
+                  "vote_share": 4.29
+                },
+                {
+                  "slot": 5,
+                  "party": "평화민주당",
+                  "name": "김대식",
+                  "votes": 20990,
+                  "vote_share": 2.53
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "전라남도",
+              "sdName": "전라남도",
+              "wiwName": "합계",
+              "eligible_voters": 1504902,
+              "turnout_votes": 967338,
+              "valid_votes": 922333,
+              "invalid_votes": 45005,
+              "abstentions": 537564,
+              "winner": {
+                "slot": 2,
+                "party": "민주당",
+                "name": "박준영",
+                "votes": 629984,
+                "vote_share": 68.3
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "김대식",
+                  "votes": 123548,
+                  "vote_share": 13.4
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "박준영",
+                  "votes": 629984,
+                  "vote_share": 68.3
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "박웅두",
+                  "votes": 100581,
+                  "vote_share": 10.91
+                },
+                {
+                  "slot": 4,
+                  "party": "평화민주당",
+                  "name": "김경재",
+                  "votes": 68220,
+                  "vote_share": 7.4
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "경상북도",
+              "sdName": "경상북도",
+              "wiwName": "합계",
+              "eligible_voters": 2122905,
+              "turnout_votes": 1260591,
+              "valid_votes": 1212520,
+              "invalid_votes": 48071,
+              "abstentions": 862314,
+              "winner": {
+                "slot": 1,
+                "party": "한나라당",
+                "name": "김관용",
+                "votes": 913812,
+                "vote_share": 75.36
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "김관용",
+                  "votes": 913812,
+                  "vote_share": 75.36
+                },
+                {
+                  "slot": 2,
+                  "party": "민주당",
+                  "name": "홍의락",
+                  "votes": 143347,
+                  "vote_share": 11.82
+                },
+                {
+                  "slot": 3,
+                  "party": "민주노동당",
+                  "name": "윤병태",
+                  "votes": 68015,
+                  "vote_share": 5.61
+                },
+                {
+                  "slot": 4,
+                  "party": "국민참여당",
+                  "name": "유성찬",
+                  "votes": 87346,
+                  "vote_share": 7.2
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "경상남도",
+              "sdName": "경상남도",
+              "wiwName": "합계",
+              "eligible_voters": 2506393,
+              "turnout_votes": 1549690,
+              "valid_votes": 1518322,
+              "invalid_votes": 31368,
+              "abstentions": 956703,
+              "winner": {
+                "slot": 2,
+                "party": "무소속",
+                "name": "김두관",
+                "votes": 812336,
+                "vote_share": 53.5
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "한나라당",
+                  "name": "이달곤",
+                  "votes": 705986,
+                  "vote_share": 46.5
+                },
+                {
+                  "slot": 2,
+                  "party": "무소속",
+                  "name": "김두관",
+                  "votes": 812336,
+                  "vote_share": 53.5
+                }
+              ]
+            },
+            {
+              "sgId": "20100602",
+              "sgTypecode": "3",
+              "sggName": "제주특별자치도",
+              "sdName": "제주특별자치도",
+              "wiwName": "합계",
+              "eligible_voters": 424098,
+              "turnout_votes": 276056,
+              "valid_votes": 267133,
+              "invalid_votes": 8923,
+              "abstentions": 148042,
+              "winner": {
+                "slot": 3,
+                "party": "무소속",
+                "name": "우근민",
+                "votes": 110603,
+                "vote_share": 41.4
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "민주당",
+                  "name": "고희범",
+                  "votes": 48186,
+                  "vote_share": 18.04
+                },
+                {
+                  "slot": 2,
+                  "party": "무소속",
+                  "name": "현명관",
+                  "votes": 108344,
+                  "vote_share": 40.56
+                },
+                {
+                  "slot": 3,
+                  "party": "무소속",
+                  "name": "우근민",
+                  "votes": 110603,
+                  "vote_share": 41.4
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "year": 2014,
+      "date": "2014-06-04",
+      "sgId": "20140604",
+      "results": [
+        {
+          "sgTypecode": "3",
+          "office": "시도지사",
+          "district_count": 17,
+          "party_wins": [
+            {
+              "party": "새정치민주연합",
+              "wins": 9
+            },
+            {
+              "party": "새누리당",
+              "wins": 8
+            }
+          ],
+          "districts": [
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "서울특별시",
+              "sdName": "서울특별시",
+              "wiwName": "합계",
+              "eligible_voters": 8441594,
+              "turnout_votes": 4948897,
+              "valid_votes": 4903281,
+              "invalid_votes": 45616,
+              "abstentions": 3492697,
+              "winner": {
+                "slot": 2,
+                "party": "새정치민주연합",
+                "name": "박원순",
+                "votes": 2752171,
+                "vote_share": 56.13
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "정몽준",
+                  "votes": 2109869,
+                  "vote_share": 43.03
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "박원순",
+                  "votes": 2752171,
+                  "vote_share": 56.13
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "정태흥",
+                  "votes": 23638,
+                  "vote_share": 0.48
+                },
+                {
+                  "slot": 4,
+                  "party": "새정치당",
+                  "name": "홍정식",
+                  "votes": 17603,
+                  "vote_share": 0.36
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "부산광역시",
+              "sdName": "부산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2932179,
+              "turnout_votes": 1629167,
+              "valid_votes": 1575151,
+              "invalid_votes": 54016,
+              "abstentions": 1303012,
+              "winner": {
+                "slot": 1,
+                "party": "새누리당",
+                "name": "서병수",
+                "votes": 797926,
+                "vote_share": 50.66
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "서병수",
+                  "votes": 797926,
+                  "vote_share": 50.66
+                },
+                {
+                  "slot": 2,
+                  "party": "무소속",
+                  "name": "오거돈",
+                  "votes": 777225,
+                  "vote_share": 49.34
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "대구광역시",
+              "sdName": "대구광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2012579,
+              "turnout_votes": 1052638,
+              "valid_votes": 1038619,
+              "invalid_votes": 14019,
+              "abstentions": 959941,
+              "winner": {
+                "slot": 1,
+                "party": "새누리당",
+                "name": "권영진",
+                "votes": 581175,
+                "vote_share": 55.96
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "권영진",
+                  "votes": 581175,
+                  "vote_share": 55.96
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "김부겸",
+                  "votes": 418891,
+                  "vote_share": 40.33
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "송영우",
+                  "votes": 10857,
+                  "vote_share": 1.05
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "이원준",
+                  "votes": 12922,
+                  "vote_share": 1.24
+                },
+                {
+                  "slot": 5,
+                  "party": "무소속",
+                  "name": "이정숙",
+                  "votes": 14774,
+                  "vote_share": 1.42
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "인천광역시",
+              "sdName": "인천광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2319198,
+              "turnout_votes": 1244502,
+              "valid_votes": 1231283,
+              "invalid_votes": 13219,
+              "abstentions": 1074696,
+              "winner": {
+                "slot": 1,
+                "party": "새누리당",
+                "name": "유정복",
+                "votes": 615077,
+                "vote_share": 49.95
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "유정복",
+                  "votes": 615077,
+                  "vote_share": 49.95
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "송영길",
+                  "votes": 593555,
+                  "vote_share": 48.21
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "신창현",
+                  "votes": 22651,
+                  "vote_share": 1.84
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "광주광역시",
+              "sdName": "광주광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1138418,
+              "turnout_votes": 650008,
+              "valid_votes": 634717,
+              "invalid_votes": 15291,
+              "abstentions": 488410,
+              "winner": {
+                "slot": 2,
+                "party": "새정치민주연합",
+                "name": "윤장현",
+                "votes": 367203,
+                "vote_share": 57.85
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "이정재",
+                  "votes": 21614,
+                  "vote_share": 3.41
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "윤장현",
+                  "votes": 367203,
+                  "vote_share": 57.85
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "윤민호",
+                  "votes": 21200,
+                  "vote_share": 3.34
+                },
+                {
+                  "slot": 4,
+                  "party": "노동당",
+                  "name": "이병훈",
+                  "votes": 6785,
+                  "vote_share": 1.07
+                },
+                {
+                  "slot": 5,
+                  "party": "무소속",
+                  "name": "강운태",
+                  "votes": 201666,
+                  "vote_share": 31.77
+                },
+                {
+                  "slot": 6,
+                  "party": "무소속",
+                  "name": "이병완",
+                  "votes": 16249,
+                  "vote_share": 2.56
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "대전광역시",
+              "sdName": "대전광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1207972,
+              "turnout_votes": 652671,
+              "valid_votes": 644506,
+              "invalid_votes": 8165,
+              "abstentions": 555301,
+              "winner": {
+                "slot": 2,
+                "party": "새정치민주연합",
+                "name": "권선택",
+                "votes": 322762,
+                "vote_share": 50.08
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "박성효",
+                  "votes": 301389,
+                  "vote_share": 46.76
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "권선택",
+                  "votes": 322762,
+                  "vote_share": 50.08
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "김창근",
+                  "votes": 9009,
+                  "vote_share": 1.4
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "한창민",
+                  "votes": 11346,
+                  "vote_share": 1.76
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "울산광역시",
+              "sdName": "울산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 912325,
+              "turnout_votes": 511881,
+              "valid_votes": 468154,
+              "invalid_votes": 43727,
+              "abstentions": 400444,
+              "winner": {
+                "slot": 1,
+                "party": "새누리당",
+                "name": "김기현",
+                "votes": 306311,
+                "vote_share": 65.43
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "김기현",
+                  "votes": 306311,
+                  "vote_share": 65.43
+                },
+                {
+                  "slot": 2,
+                  "party": "정의당",
+                  "name": "조승수",
+                  "votes": 123736,
+                  "vote_share": 26.43
+                },
+                {
+                  "slot": 3,
+                  "party": "노동당",
+                  "name": "이갑용",
+                  "votes": 38107,
+                  "vote_share": 8.14
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "세종특별자치시",
+              "sdName": "세종특별자치시",
+              "wiwName": "합계",
+              "eligible_voters": 101559,
+              "turnout_votes": 63629,
+              "valid_votes": 62654,
+              "invalid_votes": 975,
+              "abstentions": 37930,
+              "winner": {
+                "slot": 2,
+                "party": "새정치민주연합",
+                "name": "이춘희",
+                "votes": 36203,
+                "vote_share": 57.78
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "유한식",
+                  "votes": 26451,
+                  "vote_share": 42.22
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "이춘희",
+                  "votes": 36203,
+                  "vote_share": 57.78
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "경기도",
+              "sdName": "경기도",
+              "wiwName": "합계",
+              "eligible_voters": 9679317,
+              "turnout_votes": 5156691,
+              "valid_votes": 5006805,
+              "invalid_votes": 149886,
+              "abstentions": 4522626,
+              "winner": {
+                "slot": 1,
+                "party": "새누리당",
+                "name": "남경필",
+                "votes": 2524981,
+                "vote_share": 50.43
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "남경필",
+                  "votes": 2524981,
+                  "vote_share": 50.43
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "김진표",
+                  "votes": 2481824,
+                  "vote_share": 49.57
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "강원도",
+              "sdName": "강원도",
+              "wiwName": "합계",
+              "eligible_voters": 1255469,
+              "turnout_votes": 781359,
+              "valid_votes": 766313,
+              "invalid_votes": 15046,
+              "abstentions": 474110,
+              "winner": {
+                "slot": 2,
+                "party": "새정치민주연합",
+                "name": "최문순",
+                "votes": 381338,
+                "vote_share": 49.76
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "최흥집",
+                  "votes": 369201,
+                  "vote_share": 48.18
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "최문순",
+                  "votes": 381338,
+                  "vote_share": 49.76
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "이승재",
+                  "votes": 15774,
+                  "vote_share": 2.06
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "충청북도",
+              "sdName": "충청북도",
+              "wiwName": "합계",
+              "eligible_voters": 1261119,
+              "turnout_votes": 741049,
+              "valid_votes": 725857,
+              "invalid_votes": 15192,
+              "abstentions": 520070,
+              "winner": {
+                "slot": 2,
+                "party": "새정치민주연합",
+                "name": "이시종",
+                "votes": 361115,
+                "vote_share": 49.75
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "윤진식",
+                  "votes": 346152,
+                  "vote_share": 47.69
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "이시종",
+                  "votes": 361115,
+                  "vote_share": 49.75
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "신장호",
+                  "votes": 18590,
+                  "vote_share": 2.56
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "충청남도",
+              "sdName": "충청남도",
+              "wiwName": "합계",
+              "eligible_voters": 1644554,
+              "turnout_votes": 916206,
+              "valid_votes": 892513,
+              "invalid_votes": 23693,
+              "abstentions": 728348,
+              "winner": {
+                "slot": 2,
+                "party": "새정치민주연합",
+                "name": "안희정",
+                "votes": 465994,
+                "vote_share": 52.21
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "정진석",
+                  "votes": 392315,
+                  "vote_share": 43.96
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "안희정",
+                  "votes": 465994,
+                  "vote_share": 52.21
+                },
+                {
+                  "slot": 3,
+                  "party": "무소속",
+                  "name": "김기문",
+                  "votes": 34204,
+                  "vote_share": 3.83
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "전라북도",
+              "sdName": "전라북도",
+              "wiwName": "합계",
+              "eligible_voters": 1503242,
+              "turnout_votes": 900029,
+              "valid_votes": 866163,
+              "invalid_votes": 33866,
+              "abstentions": 603213,
+              "winner": {
+                "slot": 2,
+                "party": "새정치민주연합",
+                "name": "송하진",
+                "votes": 599654,
+                "vote_share": 69.23
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "박철곤",
+                  "votes": 177172,
+                  "vote_share": 20.45
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "송하진",
+                  "votes": 599654,
+                  "vote_share": 69.23
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "이광석",
+                  "votes": 89337,
+                  "vote_share": 10.31
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "전라남도",
+              "sdName": "전라남도",
+              "wiwName": "합계",
+              "eligible_voters": 1549440,
+              "turnout_votes": 1015688,
+              "valid_votes": 968650,
+              "invalid_votes": 47038,
+              "abstentions": 533752,
+              "winner": {
+                "slot": 2,
+                "party": "새정치민주연합",
+                "name": "이낙연",
+                "votes": 755233,
+                "vote_share": 77.97
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "이중효",
+                  "votes": 92549,
+                  "vote_share": 9.55
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "이낙연",
+                  "votes": 755233,
+                  "vote_share": 77.97
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "이성수",
+                  "votes": 120868,
+                  "vote_share": 12.48
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "경상북도",
+              "sdName": "경상북도",
+              "wiwName": "합계",
+              "eligible_voters": 2211734,
+              "turnout_votes": 1314925,
+              "valid_votes": 1269659,
+              "invalid_votes": 45266,
+              "abstentions": 896809,
+              "winner": {
+                "slot": 1,
+                "party": "새누리당",
+                "name": "김관용",
+                "votes": 986989,
+                "vote_share": 77.74
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "김관용",
+                  "votes": 986989,
+                  "vote_share": 77.74
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "오중기",
+                  "votes": 189603,
+                  "vote_share": 14.93
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "윤병태",
+                  "votes": 33458,
+                  "vote_share": 2.64
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "박창호",
+                  "votes": 59609,
+                  "vote_share": 4.69
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "경상남도",
+              "sdName": "경상남도",
+              "wiwName": "합계",
+              "eligible_voters": 2658347,
+              "turnout_votes": 1589673,
+              "valid_votes": 1551544,
+              "invalid_votes": 38129,
+              "abstentions": 1068674,
+              "winner": {
+                "slot": 1,
+                "party": "새누리당",
+                "name": "홍준표",
+                "votes": 913162,
+                "vote_share": 58.86
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "홍준표",
+                  "votes": 913162,
+                  "vote_share": 58.86
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "김경수",
+                  "votes": 559367,
+                  "vote_share": 36.05
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "강병기",
+                  "votes": 79015,
+                  "vote_share": 5.09
+                }
+              ]
+            },
+            {
+              "sgId": "20140604",
+              "sgTypecode": "3",
+              "sggName": "제주특별자치도",
+              "sdName": "제주특별자치도",
+              "wiwName": "합계",
+              "eligible_voters": 467182,
+              "turnout_votes": 293323,
+              "valid_votes": 288132,
+              "invalid_votes": 5191,
+              "abstentions": 173859,
+              "winner": {
+                "slot": 1,
+                "party": "새누리당",
+                "name": "원희룡",
+                "votes": 172793,
+                "vote_share": 59.97
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "새누리당",
+                  "name": "원희룡",
+                  "votes": 172793,
+                  "vote_share": 59.97
+                },
+                {
+                  "slot": 2,
+                  "party": "새정치민주연합",
+                  "name": "신구범",
+                  "votes": 99493,
+                  "vote_share": 34.53
+                },
+                {
+                  "slot": 3,
+                  "party": "통합진보당",
+                  "name": "고승완",
+                  "votes": 12209,
+                  "vote_share": 4.24
+                },
+                {
+                  "slot": 4,
+                  "party": "새정치당",
+                  "name": "주종근",
+                  "votes": 3637,
+                  "vote_share": 1.26
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "year": 2018,
+      "date": "2018-06-13",
+      "sgId": "20180613",
+      "results": [
+        {
+          "sgTypecode": "3",
+          "office": "시도지사",
+          "district_count": 17,
+          "party_wins": [
+            {
+              "party": "더불어민주당",
+              "wins": 14
+            },
+            {
+              "party": "자유한국당",
+              "wins": 2
+            },
+            {
+              "party": "무소속",
+              "wins": 1
+            }
+          ],
+          "districts": [
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "서울특별시",
+              "sdName": "서울특별시",
+              "wiwName": "합계",
+              "eligible_voters": 8380947,
+              "turnout_votes": 5019098,
+              "valid_votes": 4961872,
+              "invalid_votes": 57226,
+              "abstentions": 3361849,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "박원순",
+                "votes": 2619497,
+                "vote_share": 52.79
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "박원순",
+                  "votes": 2619497,
+                  "vote_share": 52.79
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "김문수",
+                  "votes": 1158487,
+                  "vote_share": 23.35
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "안철수",
+                  "votes": 970374,
+                  "vote_share": 19.56
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "김종민",
+                  "votes": 81664,
+                  "vote_share": 1.65
+                },
+                {
+                  "slot": 5,
+                  "party": "민중당",
+                  "name": "김진숙",
+                  "votes": 22134,
+                  "vote_share": 0.45
+                },
+                {
+                  "slot": 6,
+                  "party": "대한애국당",
+                  "name": "인지연",
+                  "votes": 11222,
+                  "vote_share": 0.23
+                },
+                {
+                  "slot": 7,
+                  "party": "녹색당",
+                  "name": "신지예",
+                  "votes": 82874,
+                  "vote_share": 1.67
+                },
+                {
+                  "slot": 8,
+                  "party": "우리미래",
+                  "name": "우인철",
+                  "votes": 11599,
+                  "vote_share": 0.23
+                },
+                {
+                  "slot": 9,
+                  "party": "친박연대",
+                  "name": "최태현",
+                  "votes": 4021,
+                  "vote_share": 0.08
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "부산광역시",
+              "sdName": "부산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2939046,
+              "turnout_votes": 1727684,
+              "valid_votes": 1702796,
+              "invalid_votes": 24888,
+              "abstentions": 1211362,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "오거돈",
+                "votes": 940469,
+                "vote_share": 55.23
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "오거돈",
+                  "votes": 940469,
+                  "vote_share": 55.23
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "서병수",
+                  "votes": 632806,
+                  "vote_share": 37.16
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "이성권",
+                  "votes": 67502,
+                  "vote_share": 3.96
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "박주미",
+                  "votes": 35299,
+                  "vote_share": 2.07
+                },
+                {
+                  "slot": 5,
+                  "party": "무소속",
+                  "name": "이종혁",
+                  "votes": 26720,
+                  "vote_share": 1.57
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "대구광역시",
+              "sdName": "대구광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2047286,
+              "turnout_votes": 1172279,
+              "valid_votes": 1152232,
+              "invalid_votes": 20047,
+              "abstentions": 875007,
+              "winner": {
+                "slot": 2,
+                "party": "자유한국당",
+                "name": "권영진",
+                "votes": 619165,
+                "vote_share": 53.74
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "임대윤",
+                  "votes": 458112,
+                  "vote_share": 39.76
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "권영진",
+                  "votes": 619165,
+                  "vote_share": 53.74
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "김형기",
+                  "votes": 74955,
+                  "vote_share": 6.51
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "인천광역시",
+              "sdName": "인천광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2440779,
+              "turnout_votes": 1349084,
+              "valid_votes": 1328649,
+              "invalid_votes": 20435,
+              "abstentions": 1091695,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "박남춘",
+                "votes": 766186,
+                "vote_share": 57.67
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "박남춘",
+                  "votes": 766186,
+                  "vote_share": 57.67
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "유정복",
+                  "votes": 470937,
+                  "vote_share": 35.44
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "문병호",
+                  "votes": 54054,
+                  "vote_share": 4.07
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "김응호",
+                  "votes": 37472,
+                  "vote_share": 2.82
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "광주광역시",
+              "sdName": "광주광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1172429,
+              "turnout_votes": 694252,
+              "valid_votes": 682710,
+              "invalid_votes": 11542,
+              "abstentions": 478177,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "이용섭",
+                "votes": 573995,
+                "vote_share": 84.08
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "이용섭",
+                  "votes": 573995,
+                  "vote_share": 84.08
+                },
+                {
+                  "slot": 2,
+                  "party": "바른미래당",
+                  "name": "전덕영",
+                  "votes": 34487,
+                  "vote_share": 5.05
+                },
+                {
+                  "slot": 3,
+                  "party": "정의당",
+                  "name": "나경채",
+                  "votes": 40916,
+                  "vote_share": 5.99
+                },
+                {
+                  "slot": 4,
+                  "party": "민중당",
+                  "name": "윤민호",
+                  "votes": 33312,
+                  "vote_share": 4.88
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "대전광역시",
+              "sdName": "대전광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1219513,
+              "turnout_votes": 706983,
+              "valid_votes": 697282,
+              "invalid_votes": 9701,
+              "abstentions": 512530,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "허태정",
+                "votes": 393354,
+                "vote_share": 56.41
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "허태정",
+                  "votes": 393354,
+                  "vote_share": 56.41
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "박성효",
+                  "votes": 224306,
+                  "vote_share": 32.17
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "남충희",
+                  "votes": 61271,
+                  "vote_share": 8.79
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "김윤기",
+                  "votes": 18351,
+                  "vote_share": 2.63
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "울산광역시",
+              "sdName": "울산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 942550,
+              "turnout_votes": 610698,
+              "valid_votes": 600026,
+              "invalid_votes": 10672,
+              "abstentions": 331852,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "송철호",
+                "votes": 317341,
+                "vote_share": 52.89
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "송철호",
+                  "votes": 317341,
+                  "vote_share": 52.89
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "김기현",
+                  "votes": 240475,
+                  "vote_share": 40.08
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "이영희",
+                  "votes": 13589,
+                  "vote_share": 2.26
+                },
+                {
+                  "slot": 4,
+                  "party": "민중당",
+                  "name": "김창현",
+                  "votes": 28621,
+                  "vote_share": 4.77
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "세종특별자치시",
+              "sdName": "세종특별자치시",
+              "wiwName": "합계",
+              "eligible_voters": 222852,
+              "turnout_votes": 137603,
+              "valid_votes": 135886,
+              "invalid_votes": 1717,
+              "abstentions": 85249,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "이춘희",
+                "votes": 96896,
+                "vote_share": 71.31
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "이춘희",
+                  "votes": 96896,
+                  "vote_share": 71.31
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "송아영",
+                  "votes": 24546,
+                  "vote_share": 18.06
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "허철회",
+                  "votes": 14444,
+                  "vote_share": 10.63
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "경기도",
+              "sdName": "경기도",
+              "wiwName": "합계",
+              "eligible_voters": 10533027,
+              "turnout_votes": 6084955,
+              "valid_votes": 5975527,
+              "invalid_votes": 109428,
+              "abstentions": 4448072,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "이재명",
+                "votes": 3370621,
+                "vote_share": 56.41
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "이재명",
+                  "votes": 3370621,
+                  "vote_share": 56.41
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "남경필",
+                  "votes": 2122433,
+                  "vote_share": 35.52
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "김영환",
+                  "votes": 287504,
+                  "vote_share": 4.81
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "이홍우",
+                  "votes": 151871,
+                  "vote_share": 2.54
+                },
+                {
+                  "slot": 5,
+                  "party": "민중당",
+                  "name": "홍성규",
+                  "votes": 43098,
+                  "vote_share": 0.72
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "강원도",
+              "sdName": "강원도",
+              "wiwName": "합계",
+              "eligible_voters": 1296196,
+              "turnout_votes": 819193,
+              "valid_votes": 800903,
+              "invalid_votes": 18290,
+              "abstentions": 477003,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "최문순",
+                "votes": 518447,
+                "vote_share": 64.73
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "최문순",
+                  "votes": 518447,
+                  "vote_share": 64.73
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "정창수",
+                  "votes": 282456,
+                  "vote_share": 35.27
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "충청북도",
+              "sdName": "충청북도",
+              "wiwName": "합계",
+              "eligible_voters": 1318186,
+              "turnout_votes": 782316,
+              "valid_votes": 766451,
+              "invalid_votes": 15865,
+              "abstentions": 535870,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "이시종",
+                "votes": 468750,
+                "vote_share": 61.16
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "이시종",
+                  "votes": 468750,
+                  "vote_share": 61.16
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "박경국",
+                  "votes": 227371,
+                  "vote_share": 29.67
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "신용한",
+                  "votes": 70330,
+                  "vote_share": 9.18
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "충청남도",
+              "sdName": "충청남도",
+              "wiwName": "합계",
+              "eligible_voters": 1740413,
+              "turnout_votes": 1011447,
+              "valid_votes": 984459,
+              "invalid_votes": 26988,
+              "abstentions": 728966,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "양승조",
+                "votes": 615870,
+                "vote_share": 62.56
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "양승조",
+                  "votes": 615870,
+                  "vote_share": 62.56
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "이인제",
+                  "votes": 345577,
+                  "vote_share": 35.1
+                },
+                {
+                  "slot": 3,
+                  "party": "코리아",
+                  "name": "차국환",
+                  "votes": 23012,
+                  "vote_share": 2.34
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "전라북도",
+              "sdName": "전라북도",
+              "wiwName": "합계",
+              "eligible_voters": 1527729,
+              "turnout_votes": 996504,
+              "valid_votes": 966467,
+              "invalid_votes": 30037,
+              "abstentions": 531225,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "송하진",
+                "votes": 682042,
+                "vote_share": 70.57
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "송하진",
+                  "votes": 682042,
+                  "vote_share": 70.57
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "신재봉",
+                  "votes": 26374,
+                  "vote_share": 2.73
+                },
+                {
+                  "slot": 3,
+                  "party": "민주평화당",
+                  "name": "임정엽",
+                  "votes": 184728,
+                  "vote_share": 19.11
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "권태홍",
+                  "votes": 52496,
+                  "vote_share": 5.43
+                },
+                {
+                  "slot": 5,
+                  "party": "민중당",
+                  "name": "이광석",
+                  "votes": 20827,
+                  "vote_share": 2.15
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "전라남도",
+              "sdName": "전라남도",
+              "wiwName": "합계",
+              "eligible_voters": 1577224,
+              "turnout_votes": 1092107,
+              "valid_votes": 1048005,
+              "invalid_votes": 44102,
+              "abstentions": 485117,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "김영록",
+                "votes": 807902,
+                "vote_share": 77.09
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "김영록",
+                  "votes": 807902,
+                  "vote_share": 77.09
+                },
+                {
+                  "slot": 2,
+                  "party": "바른미래당",
+                  "name": "박매호",
+                  "votes": 40287,
+                  "vote_share": 3.84
+                },
+                {
+                  "slot": 3,
+                  "party": "민주평화당",
+                  "name": "민영삼",
+                  "votes": 110973,
+                  "vote_share": 10.59
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "노형태",
+                  "votes": 37433,
+                  "vote_share": 3.57
+                },
+                {
+                  "slot": 5,
+                  "party": "민중당",
+                  "name": "이성수",
+                  "votes": 51410,
+                  "vote_share": 4.91
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "경상북도",
+              "sdName": "경상북도",
+              "wiwName": "합계",
+              "eligible_voters": 2251538,
+              "turnout_votes": 1457539,
+              "valid_votes": 1406008,
+              "invalid_votes": 51531,
+              "abstentions": 793999,
+              "winner": {
+                "slot": 2,
+                "party": "자유한국당",
+                "name": "이철우",
+                "votes": 732785,
+                "vote_share": 52.12
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "오중기",
+                  "votes": 482564,
+                  "vote_share": 34.32
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "이철우",
+                  "votes": 732785,
+                  "vote_share": 52.12
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "권오을",
+                  "votes": 143409,
+                  "vote_share": 10.2
+                },
+                {
+                  "slot": 4,
+                  "party": "정의당",
+                  "name": "박창호",
+                  "votes": 47250,
+                  "vote_share": 3.36
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "경상남도",
+              "sdName": "경상남도",
+              "wiwName": "합계",
+              "eligible_voters": 2765485,
+              "turnout_votes": 1819391,
+              "valid_votes": 1782718,
+              "invalid_votes": 36673,
+              "abstentions": 946094,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "김경수",
+                "votes": 941491,
+                "vote_share": 52.81
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "김경수",
+                  "votes": 941491,
+                  "vote_share": 52.81
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "김태호",
+                  "votes": 765809,
+                  "vote_share": 42.96
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "김유근",
+                  "votes": 75418,
+                  "vote_share": 4.23
+                }
+              ]
+            },
+            {
+              "sgId": "20180613",
+              "sgTypecode": "3",
+              "sggName": "제주특별자치도",
+              "sdName": "제주특별자치도",
+              "wiwName": "합계",
+              "eligible_voters": 532515,
+              "turnout_votes": 350943,
+              "valid_votes": 344604,
+              "invalid_votes": 6339,
+              "abstentions": 181572,
+              "winner": {
+                "slot": 5,
+                "party": "무소속",
+                "name": "원희룡",
+                "votes": 178255,
+                "vote_share": 51.73
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "문대림",
+                  "votes": 137901,
+                  "vote_share": 40.02
+                },
+                {
+                  "slot": 2,
+                  "party": "자유한국당",
+                  "name": "김방훈",
+                  "votes": 11241,
+                  "vote_share": 3.26
+                },
+                {
+                  "slot": 3,
+                  "party": "바른미래당",
+                  "name": "장성철",
+                  "votes": 5019,
+                  "vote_share": 1.46
+                },
+                {
+                  "slot": 4,
+                  "party": "녹색당",
+                  "name": "고은영",
+                  "votes": 12188,
+                  "vote_share": 3.54
+                },
+                {
+                  "slot": 5,
+                  "party": "무소속",
+                  "name": "원희룡",
+                  "votes": 178255,
+                  "vote_share": 51.73
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "year": 2022,
+      "date": "2022-06-01",
+      "sgId": "20220601",
+      "results": [
+        {
+          "sgTypecode": "3",
+          "office": "시도지사",
+          "district_count": 17,
+          "party_wins": [
+            {
+              "party": "국민의힘",
+              "wins": 12
+            },
+            {
+              "party": "더불어민주당",
+              "wins": 5
+            }
+          ],
+          "districts": [
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "서울특별시",
+              "sdName": "서울특별시",
+              "wiwName": "합계",
+              "eligible_voters": 8378339,
+              "turnout_votes": 4455161,
+              "valid_votes": 4416919,
+              "invalid_votes": 38242,
+              "abstentions": 3923178,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "오세훈",
+                "votes": 2608277,
+                "vote_share": 59.05
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "송영길",
+                  "votes": 1733183,
+                  "vote_share": 39.24
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "오세훈",
+                  "votes": 2608277,
+                  "vote_share": 59.05
+                },
+                {
+                  "slot": 3,
+                  "party": "정의당",
+                  "name": "권수정",
+                  "votes": 53840,
+                  "vote_share": 1.22
+                },
+                {
+                  "slot": 4,
+                  "party": "기본소득당",
+                  "name": "신지혜",
+                  "votes": 12619,
+                  "vote_share": 0.29
+                },
+                {
+                  "slot": 5,
+                  "party": "무소속",
+                  "name": "김광종",
+                  "votes": 9000,
+                  "vote_share": 0.2
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "부산광역시",
+              "sdName": "부산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2916832,
+              "turnout_votes": 1432194,
+              "valid_votes": 1414235,
+              "invalid_votes": 17959,
+              "abstentions": 1484638,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "박형준",
+                "votes": 938601,
+                "vote_share": 66.37
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "변성완",
+                  "votes": 455901,
+                  "vote_share": 32.24
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "박형준",
+                  "votes": 938601,
+                  "vote_share": 66.37
+                },
+                {
+                  "slot": 3,
+                  "party": "정의당",
+                  "name": "김영진",
+                  "votes": 19733,
+                  "vote_share": 1.4
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "대구광역시",
+              "sdName": "대구광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2044579,
+              "turnout_votes": 883141,
+              "valid_votes": 870034,
+              "invalid_votes": 13107,
+              "abstentions": 1161438,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "홍준표",
+                "votes": 685159,
+                "vote_share": 78.75
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "서재헌",
+                  "votes": 156429,
+                  "vote_share": 17.98
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "홍준표",
+                  "votes": 685159,
+                  "vote_share": 78.75
+                },
+                {
+                  "slot": 3,
+                  "party": "정의당",
+                  "name": "한민정",
+                  "votes": 20904,
+                  "vote_share": 2.4
+                },
+                {
+                  "slot": 4,
+                  "party": "기본소득당",
+                  "name": "신원호",
+                  "votes": 7542,
+                  "vote_share": 0.87
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "인천광역시",
+              "sdName": "인천광역시",
+              "wiwName": "합계",
+              "eligible_voters": 2534338,
+              "turnout_votes": 1240469,
+              "valid_votes": 1225135,
+              "invalid_votes": 15334,
+              "abstentions": 1293869,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "유정복",
+                "votes": 634250,
+                "vote_share": 51.77
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "박남춘",
+                  "votes": 545885,
+                  "vote_share": 44.56
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "유정복",
+                  "votes": 634250,
+                  "vote_share": 51.77
+                },
+                {
+                  "slot": 3,
+                  "party": "정의당",
+                  "name": "이정미",
+                  "votes": 38921,
+                  "vote_share": 3.18
+                },
+                {
+                  "slot": 4,
+                  "party": "기본소득당",
+                  "name": "김한별",
+                  "votes": 6079,
+                  "vote_share": 0.5
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "광주광역시",
+              "sdName": "광주광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1206886,
+              "turnout_votes": 454516,
+              "valid_votes": 446770,
+              "invalid_votes": 7746,
+              "abstentions": 752370,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "강기정",
+                "votes": 334699,
+                "vote_share": 74.92
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "강기정",
+                  "votes": 334699,
+                  "vote_share": 74.92
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "주기환",
+                  "votes": 71062,
+                  "vote_share": 15.91
+                },
+                {
+                  "slot": 3,
+                  "party": "정의당",
+                  "name": "장연주",
+                  "votes": 21070,
+                  "vote_share": 4.72
+                },
+                {
+                  "slot": 4,
+                  "party": "기본소득당",
+                  "name": "문현철",
+                  "votes": 3344,
+                  "vote_share": 0.75
+                },
+                {
+                  "slot": 5,
+                  "party": "진보당",
+                  "name": "김주업",
+                  "votes": 16595,
+                  "vote_share": 3.71
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "대전광역시",
+              "sdName": "대전광역시",
+              "wiwName": "합계",
+              "eligible_voters": 1233557,
+              "turnout_votes": 612639,
+              "valid_votes": 605590,
+              "invalid_votes": 7049,
+              "abstentions": 620918,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "이장우",
+                "votes": 310035,
+                "vote_share": 51.2
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "허태정",
+                  "votes": 295555,
+                  "vote_share": 48.8
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "이장우",
+                  "votes": 310035,
+                  "vote_share": 51.2
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "울산광역시",
+              "sdName": "울산광역시",
+              "wiwName": "합계",
+              "eligible_voters": 941189,
+              "turnout_votes": 491866,
+              "valid_votes": 485993,
+              "invalid_votes": 5873,
+              "abstentions": 449323,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "김두겸",
+                "votes": 290563,
+                "vote_share": 59.79
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "송철호",
+                  "votes": 195430,
+                  "vote_share": 40.21
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "김두겸",
+                  "votes": 290563,
+                  "vote_share": 59.79
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "세종특별자치시",
+              "sdName": "세종특별자치시",
+              "wiwName": "합계",
+              "eligible_voters": 292259,
+              "turnout_votes": 149751,
+              "valid_votes": 148410,
+              "invalid_votes": 1341,
+              "abstentions": 142508,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "최민호",
+                "votes": 78415,
+                "vote_share": 52.84
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "이춘희",
+                  "votes": 69995,
+                  "vote_share": 47.16
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "최민호",
+                  "votes": 78415,
+                  "vote_share": 52.84
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "경기도",
+              "sdName": "경기도",
+              "wiwName": "합계",
+              "eligible_voters": 11497206,
+              "turnout_votes": 5820631,
+              "valid_votes": 5762809,
+              "invalid_votes": 57822,
+              "abstentions": 5676575,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "김동연",
+                "votes": 2827593,
+                "vote_share": 49.07
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "김동연",
+                  "votes": 2827593,
+                  "vote_share": 49.07
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "김은혜",
+                  "votes": 2818680,
+                  "vote_share": 48.91
+                },
+                {
+                  "slot": 3,
+                  "party": "정의당",
+                  "name": "황순식",
+                  "votes": 38525,
+                  "vote_share": 0.67
+                },
+                {
+                  "slot": 4,
+                  "party": "기본소득당",
+                  "name": "서태성",
+                  "votes": 9314,
+                  "vote_share": 0.16
+                },
+                {
+                  "slot": 5,
+                  "party": "진보당",
+                  "name": "송영주",
+                  "votes": 13939,
+                  "vote_share": 0.24
+                },
+                {
+                  "slot": 6,
+                  "party": "무소속",
+                  "name": "강용석",
+                  "votes": 54758,
+                  "vote_share": 0.95
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "강원도",
+              "sdName": "강원도",
+              "wiwName": "합계",
+              "eligible_voters": 1336080,
+              "turnout_votes": 772498,
+              "valid_votes": 757227,
+              "invalid_votes": 15271,
+              "abstentions": 563582,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "김진태",
+                "votes": 409461,
+                "vote_share": 54.07
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "이광재",
+                  "votes": 347766,
+                  "vote_share": 45.93
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "김진태",
+                  "votes": 409461,
+                  "vote_share": 54.07
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "충청북도",
+              "sdName": "충청북도",
+              "wiwName": "합계",
+              "eligible_voters": 1368779,
+              "turnout_votes": 692324,
+              "valid_votes": 679683,
+              "invalid_votes": 12641,
+              "abstentions": 676455,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "김영환",
+                "votes": 395517,
+                "vote_share": 58.19
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "노영민",
+                  "votes": 284166,
+                  "vote_share": 41.81
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "김영환",
+                  "votes": 395517,
+                  "vote_share": 58.19
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "충청남도",
+              "sdName": "충청남도",
+              "wiwName": "합계",
+              "eligible_voters": 1803096,
+              "turnout_votes": 898369,
+              "valid_votes": 869966,
+              "invalid_votes": 28403,
+              "abstentions": 904727,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "김태흠",
+                "votes": 468658,
+                "vote_share": 53.87
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "양승조",
+                  "votes": 401308,
+                  "vote_share": 46.13
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "김태흠",
+                  "votes": 468658,
+                  "vote_share": 53.87
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "전라북도",
+              "sdName": "전라북도",
+              "wiwName": "합계",
+              "eligible_voters": 1532133,
+              "turnout_votes": 745354,
+              "valid_votes": 720338,
+              "invalid_votes": 25016,
+              "abstentions": 786779,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "김관영",
+                "votes": 591510,
+                "vote_share": 82.12
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "김관영",
+                  "votes": 591510,
+                  "vote_share": 82.12
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "조배숙",
+                  "votes": 128828,
+                  "vote_share": 17.88
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "전라남도",
+              "sdName": "전라남도",
+              "wiwName": "합계",
+              "eligible_voters": 1580098,
+              "turnout_votes": 923347,
+              "valid_votes": 887789,
+              "invalid_votes": 35558,
+              "abstentions": 656751,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "김영록",
+                "votes": 672433,
+                "vote_share": 75.74
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "김영록",
+                  "votes": 672433,
+                  "vote_share": 75.74
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "이정현",
+                  "votes": 167020,
+                  "vote_share": 18.81
+                },
+                {
+                  "slot": 3,
+                  "party": "진보당",
+                  "name": "민점기",
+                  "votes": 48336,
+                  "vote_share": 5.44
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "경상북도",
+              "sdName": "경상북도",
+              "wiwName": "합계",
+              "eligible_voters": 2268707,
+              "turnout_votes": 1194595,
+              "valid_votes": 1160450,
+              "invalid_votes": 34145,
+              "abstentions": 1074112,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "이철우",
+                "votes": 904675,
+                "vote_share": 77.96
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "임미애",
+                  "votes": 255775,
+                  "vote_share": 22.04
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "이철우",
+                  "votes": 904675,
+                  "vote_share": 77.96
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "경상남도",
+              "sdName": "경상남도",
+              "wiwName": "합계",
+              "eligible_voters": 2804287,
+              "turnout_votes": 1497400,
+              "valid_votes": 1466328,
+              "invalid_votes": 31072,
+              "abstentions": 1306887,
+              "winner": {
+                "slot": 2,
+                "party": "국민의힘",
+                "name": "박완수",
+                "votes": 963473,
+                "vote_share": 65.71
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "양문석",
+                  "votes": 431569,
+                  "vote_share": 29.43
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "박완수",
+                  "votes": 963473,
+                  "vote_share": 65.71
+                },
+                {
+                  "slot": 3,
+                  "party": "정의당",
+                  "name": "여영국",
+                  "votes": 58933,
+                  "vote_share": 4.02
+                },
+                {
+                  "slot": 4,
+                  "party": "통일한국당",
+                  "name": "최진석",
+                  "votes": 12353,
+                  "vote_share": 0.84
+                }
+              ]
+            },
+            {
+              "sgId": "20220601",
+              "sgTypecode": "3",
+              "sggName": "제주특별자치도",
+              "sdName": "제주특별자치도",
+              "wiwName": "합계",
+              "eligible_voters": 565084,
+              "turnout_votes": 300139,
+              "valid_votes": 295790,
+              "invalid_votes": 4349,
+              "abstentions": 264945,
+              "winner": {
+                "slot": 1,
+                "party": "더불어민주당",
+                "name": "오영훈",
+                "votes": 163116,
+                "vote_share": 55.15
+              },
+              "candidates": [
+                {
+                  "slot": 1,
+                  "party": "더불어민주당",
+                  "name": "오영훈",
+                  "votes": 163116,
+                  "vote_share": 55.15
+                },
+                {
+                  "slot": 2,
+                  "party": "국민의힘",
+                  "name": "허향진",
+                  "votes": 116786,
+                  "vote_share": 39.48
+                },
+                {
+                  "slot": 3,
+                  "party": "녹색당",
+                  "name": "부순정",
+                  "votes": 5750,
+                  "vote_share": 1.94
+                },
+                {
+                  "slot": 4,
+                  "party": "무소속",
+                  "name": "박찬식",
+                  "votes": 10138,
+                  "vote_share": 3.43
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
