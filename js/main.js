@@ -538,7 +538,7 @@ function districtCompetitionLabelFromValues(countValue, seatValue) {
   const count = Number(countValue) || 0;
   const seat = Number(seatValue) || 0;
   if (!seat) return `<span class="district-meta"><span>후보 ${count}명</span></span>`;
-  const ratio = `${(count / seat).toFixed(1)}:1`;
+  const ratio = `${formatCompetitionRatio(count / seat)}:1`;
   const uncontested = count > 0 && count <= seat;
   return `<span class="district-meta"><span>후보 ${count.toLocaleString()}명</span><span>· 정원 ${seat.toLocaleString()}석</span><span class="district-ratio">· ${ratio}</span>${uncontested ? '<span class="district-flag">무투표</span>' : ''}</span>`;
 }
@@ -546,6 +546,11 @@ function districtCompetitionLabelFromValues(countValue, seatValue) {
 function districtCompetitionLabel(list, stats = null) {
   const meta = districtCompetitionMeta(list, stats);
   return districtCompetitionLabelFromValues(meta.count, meta.seat);
+}
+
+function formatCompetitionRatio(value) {
+  const num = Number(value) || 0;
+  return Number.isInteger(num) ? String(num) : num.toFixed(1);
 }
 
 function buildCompetitionRanking() {
@@ -4191,19 +4196,19 @@ function renderHome() {
       ${competition ? `
         <a class="summary-card" href="#competition">
           <span class="summary-card-label">전체 평균 경쟁률</span>
-          <span class="summary-card-value"><strong>${competition.national.ratio.toFixed(1)}</strong><span class="summary-card-unit">:1</span></span>
+          <span class="summary-card-value"><strong>${formatCompetitionRatio(competition.national.ratio)}</strong><span class="summary-card-unit">:1</span></span>
           <span class="summary-card-sub">${competition.national.candidates.toLocaleString()}명 / ${competition.national.seats.toLocaleString()}석 · ${competition.national.districts.toLocaleString()}개 선거구 전체 기준 →</span>
         </a>` : ''}
       ${regionTop ? `
         <a class="summary-card" href="#competition">
           <span class="summary-card-label">지역별 평균 경쟁률</span>
-          <span class="summary-card-value"><strong>${regionTop.ratio.toFixed(1)}</strong><span class="summary-card-unit">:1</span></span>
-          <span class="summary-card-sub">1위 ${regionTop.sd} · ${regionNext.map(r => `${r.sd} ${r.ratio.toFixed(1)}:1`).join(' · ')} →</span>
+          <span class="summary-card-value"><strong>${formatCompetitionRatio(regionTop.ratio)}</strong><span class="summary-card-unit">:1</span></span>
+          <span class="summary-card-sub">1위 ${regionTop.sd} · ${regionNext.map(r => `${r.sd} ${formatCompetitionRatio(r.ratio)}:1`).join(' · ')} →</span>
         </a>` : ''}
       ${top ? `
         <a class="summary-card" href="#competition">
           <span class="summary-card-label">경쟁이 가장 치열한 선거구</span>
-          <span class="summary-card-value"><strong>${top.ratio.toFixed(1)}</strong><span class="summary-card-unit">:1</span></span>
+          <span class="summary-card-value"><strong>${formatCompetitionRatio(top.ratio)}</strong><span class="summary-card-unit">:1</span></span>
           <span class="summary-card-sub">${formatRegionLabel(top)} ${top.title} · ${ranking.length.toLocaleString()}개 선거구 전체 보기 →</span>
         </a>` : ''}
       ${uc.totalCandidates ? `
@@ -4524,7 +4529,7 @@ function renderCompetitionFull() {
   const regionRows = summary?.regions || [];
   const maxRegionRatio = Math.max(...regionRows.map(r => r.ratio), 1);
   const regionBars = regionRows.map(r =>
-    metricBar(r.sd, r.ratio, maxRegionRatio, 'var(--accent)', `${r.ratio.toFixed(1)}:1`, `${r.candidates.toLocaleString()}명 / ${r.seats.toLocaleString()}석`)
+    metricBar(r.sd, r.ratio, maxRegionRatio, 'var(--accent)', `${formatCompetitionRatio(r.ratio)}:1`, `${r.candidates.toLocaleString()}명 / ${r.seats.toLocaleString()}석`)
   ).join('');
   const rows = ranking.map((r, i) => {
     const target = r.sgg || r.sd;
@@ -4534,7 +4539,7 @@ function renderCompetitionFull() {
         <span class="comp-rank">${i + 1}</span>
         <a class="comp-region" href="${href}">${formatRegionLabel(r)}</a>
         <span class="comp-type">${r.title}</span>
-        <span class="comp-ratio"><strong>${r.ratio.toFixed(1)}</strong>:1</span>
+        <span class="comp-ratio"><strong>${formatCompetitionRatio(r.ratio)}</strong>:1</span>
         <span class="comp-detail">${r.count}명 / ${r.seat}석</span>
       </li>`;
   }).join('');
@@ -4556,7 +4561,7 @@ function renderCompetitionFull() {
         <div class="competition-overview">
           <div class="disclosure-card">
             <span class="disclosure-label">전체 평균</span>
-            <strong>${summary.national.ratio.toFixed(1)}:1</strong>
+            <strong>${formatCompetitionRatio(summary.national.ratio)}:1</strong>
             <small>${summary.national.candidates.toLocaleString()}명 / ${summary.national.seats.toLocaleString()}석 · ${summary.national.districts.toLocaleString()}개 선거구</small>
           </div>
           <div class="competition-region-bars">
