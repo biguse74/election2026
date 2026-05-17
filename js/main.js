@@ -1602,7 +1602,7 @@ function renderTurnoutBySidoSection() {
 
   return `
     <section class="trend-section">
-      <h3 class="trend-section-title">시도별 투표율 추이 <small>3~8회 · 선관위 OpenAPI</small></h3>
+      <h3 class="trend-section-title">시도별 투표율 추이 <small>제3~8회 지방선거 · 선관위 OpenAPI</small></h3>
       ${groupChart}
       <ul class="trend-legend">${groupLegend}</ul>
       <p class="forecast-context" style="margin-top:1rem">
@@ -1611,16 +1611,16 @@ function renderTurnoutBySidoSection() {
     </section>
 
     <section class="trend-section">
-      <h3 class="trend-section-title">시도별 회차 표</h3>
+      <h3 class="trend-section-title">시도별 투표율 표</h3>
       <div class="table-scroll">
         <table class="hist-table hist-table-sido">
           <thead>
-            <tr><th>시도</th>${rounds.map(r => `<th>${r.round}회</th>`).join('')}<th>7→8 변화</th></tr>
+            <tr><th>시도</th>${rounds.map(r => `<th>제${r.round}회</th>`).join('')}<th>7→8 변화</th></tr>
           </thead>
           <tbody>${tableRows}</tbody>
         </table>
       </div>
-      <p class="trend-meta">8회 대비 7회 변화량 · "—" 표시는 데이터 미제공(2회 미참여 시도 등)</p>
+      <p class="trend-meta">제8회와 제7회 투표율 차이 · "—" 표시는 데이터 미제공(2회 미참여 시도 등)</p>
     </section>`;
 }
 
@@ -1969,7 +1969,7 @@ function renderHistoryFull() {
       : '-';
     return `
       <tr>
-        <td class="hist-round">${e.round}회</td>
+        <td class="hist-round">제${e.round}회</td>
         <td class="hist-year">${e.year}</td>
         <td><strong>${historyTurnoutText(e, legacy)}</strong></td>
         <td>${e.governor.district_count}곳<br><small>${historyCountingSummary(e.governor)}</small></td>
@@ -1993,7 +1993,7 @@ function renderHistoryFull() {
     <div class="detail-head">
       <h1 class="detail-title">지난 선거 결과</h1>
       <div class="detail-inline-stats">
-        <span>3~8회 · 광역·기초단체장 개표 결과</span>
+        <span>제3~8회 지방선거 · 광역·기초단체장 개표 결과</span>
       </div>
     </div>
     <p class="page-intro">역대 지방선거 결과를 먼저 큰 흐름으로 보고, 필요한 경우 시도와 시군구 당선자까지 내려가 확인할 수 있게 정리했습니다.</p>
@@ -2012,7 +2012,7 @@ function renderHistoryFull() {
       <div class="history-result-card">
         <span>${latest.year}년 투표율</span>
         <strong>${latestTurnout}</strong>
-        <small>같은 회차의 투표율과 개표 결과를 함께 봅니다.</small>
+        <small>같은 선거의 투표율과 개표 결과를 함께 봅니다.</small>
       </div>
       <div class="history-result-card">
         <span>가장 큰 쏠림</span>
@@ -2036,16 +2036,16 @@ function renderHistoryFull() {
     </section>
 
     <section class="trend-section">
-      <h3 class="trend-section-title">회차별 오버뷰 <small>투표율과 당선 분포</small></h3>
+      <h3 class="trend-section-title">선거별 주요 결과 <small>투표율과 당선 분포</small></h3>
       <div class="table-scroll">
         <table class="hist-table">
           <thead>
-            <tr><th>회차</th><th>연도</th><th>투표율</th><th>광역단체장</th><th>기초단체장</th><th>광역 최접전</th></tr>
+            <tr><th>선거</th><th>연도</th><th>투표율</th><th>광역단체장</th><th>기초단체장</th><th>광역 최접전</th></tr>
           </thead>
           <tbody>${summaryRows}</tbody>
         </table>
       </div>
-      <p class="trend-meta">투표율은 같은 회차 전체 투표율입니다. 당선 분포는 선거구 합계행 기준이며, 정당별 숫자는 당선 지역 수입니다.</p>
+      <p class="trend-meta">투표율은 같은 선거 전체 투표율입니다. 당선 분포는 선거구 합계행 기준이며, 정당별 숫자는 당선 지역 수입니다.</p>
     </section>
 
     <section class="trend-section">
