@@ -155,7 +155,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: [], jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null, historyCounting: null, criminalOcr: null, criminalOcrMap: {} };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: null, jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null, historyCounting: null, criminalOcr: null, criminalOcrMap: {} };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -391,17 +391,54 @@ const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
 const loadHistoryCounting = () => safeJson('data/history_counting_results.json?v=202605180330', null);
 const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605171015', null);
 let candidateDetailsPromise = null;
+let addressIndexPromise = null;
+let criminalOcrPromise = null;
+let historyCountingPromise = null;
 
 async function ensureCandidateDetails() {
   if (state.candidateDetailsMeta) return state.candidateDetailsMeta;
   if (!candidateDetailsPromise) {
     candidateDetailsPromise = loadCandidateDetails().then(payload => {
       state.candidateDetails = buildCandidateDetailsMap(payload);
-      state.candidateDetailsMeta = payload;
-      return payload;
+      state.candidateDetailsMeta = payload || { details: [] };
+      return state.candidateDetailsMeta;
     });
   }
   return candidateDetailsPromise;
+}
+
+async function ensureAddressIndex() {
+  if (Array.isArray(state.addressIndex)) return state.addressIndex;
+  if (!addressIndexPromise) {
+    addressIndexPromise = loadAddressIndex().then(payload => {
+      state.addressIndex = Array.isArray(payload) ? payload : [];
+      return state.addressIndex;
+    });
+  }
+  return addressIndexPromise;
+}
+
+async function ensureCriminalOcr() {
+  if (state.criminalOcr) return state.criminalOcr;
+  if (!criminalOcrPromise) {
+    criminalOcrPromise = loadCriminalOcr().then(payload => {
+      state.criminalOcr = payload || { records: [], categories: [], meta: {} };
+      state.criminalOcrMap = buildCriminalOcrMap(state.criminalOcr);
+      return state.criminalOcr;
+    });
+  }
+  return criminalOcrPromise;
+}
+
+async function ensureHistoryCounting() {
+  if (state.historyCounting) return state.historyCounting;
+  if (!historyCountingPromise) {
+    historyCountingPromise = loadHistoryCounting().then(payload => {
+      state.historyCounting = payload || { elections: [] };
+      return state.historyCounting;
+    });
+  }
+  return historyCountingPromise;
 }
 
 // 라우팅용: 통합특별시는 광주/전남 중 광주로 진입 (alias 매핑이 양쪽 수용)
@@ -850,8 +887,9 @@ async function openCandidateModal(huboid) {
       </a>
     </figure>` : '';
   const necDetailUrl = nec?.nec_detail_url || '';
-  const criminalOcrRecord = criminalOcrRecordFor(c.huboid);
   const hasCriminalRecord = parseCriminalCount(disclosures.criminal_record) > 0;
+  if (hasCriminalRecord) await ensureCriminalOcr();
+  const criminalOcrRecord = criminalOcrRecordFor(c.huboid);
 
   // 필드 정의: 값이 있는 것만 표시
   const fields = [
@@ -1324,6 +1362,14 @@ function renderAddressFinder() {
       </form>
       <div id="address-lookup-results" class="address-results" hidden></div>
     </section>`;
+}
+
+function renderAddressLoading() {
+  const box = document.getElementById('address-suggestions');
+  if (box) {
+    box.hidden = false;
+    box.innerHTML = '<div class="address-suggestion"><span>주소 색인을 불러오는 중입니다.</span></div>';
+  }
 }
 
 function renderAddressLookup(query) {
@@ -4194,7 +4240,23 @@ function updateSiteNavActive(hash) {
   });
 }
 
-function route() {
+let routeRunId = 0;
+
+function renderRouteLoading(label = '데이터') {
+  const app = document.getElementById('app');
+  app.className = '';
+  app.innerHTML = `<div class="loading">${escapeHtml(label)} 불러오는 중…</div>`;
+}
+
+async function renderAfterData(label, loaders, renderFn, runId) {
+  renderRouteLoading(label);
+  await Promise.all(loaders.map(loader => loader()));
+  if (runId !== routeRunId) return;
+  renderFn();
+}
+
+async function route() {
+  const runId = ++routeRunId;
   const hash = decodeURIComponent(location.hash.slice(1));
   if (!hash.startsWith('cand/')) closeCandidateModal();
   updateSidoNavActive(hash);
@@ -4206,26 +4268,31 @@ function route() {
       const finder = document.getElementById('address-finder');
       finder?.scrollIntoView({ block: 'start', behavior: 'smooth' });
       finder?.querySelector('input')?.focus();
+      ensureAddressIndex();
     });
     return;
   }
   if (hash === 'competition') return renderCompetitionFull();
   if (hash === 'changes') return renderChangesFull();
-  if (hash === 'trend') return renderTrendFull();
-  if (hash.startsWith('disclosure/')) return renderDisclosureFocusFull(hash.slice('disclosure/'.length));
-  if (hash === 'tax-arrears') return renderTaxArrearsFull('5y');
-  if (hash.startsWith('tax-arrears/')) return renderTaxArrearsFull(hash.slice('tax-arrears/'.length));
-  if (hash.startsWith('criminal/')) return renderCriminalCategoryFull(hash.slice('criminal/'.length));
+  if (hash === 'trend') return renderAfterData('후보자 공개정보', [ensureCandidateDetails], renderTrendFull, runId);
+  if (hash.startsWith('disclosure/')) {
+    const kind = hash.slice('disclosure/'.length);
+    const loaders = kind === 'criminal' ? [ensureCandidateDetails, ensureCriminalOcr] : [ensureCandidateDetails];
+    return renderAfterData('후보자 공개정보', loaders, () => renderDisclosureFocusFull(kind), runId);
+  }
+  if (hash === 'tax-arrears') return renderAfterData('체납 공개정보', [ensureCandidateDetails], () => renderTaxArrearsFull('5y'), runId);
+  if (hash.startsWith('tax-arrears/')) return renderAfterData('체납 공개정보', [ensureCandidateDetails], () => renderTaxArrearsFull(hash.slice('tax-arrears/'.length)), runId);
+  if (hash.startsWith('criminal/')) return renderAfterData('전과 원문 분류', [ensureCandidateDetails, ensureCriminalOcr], () => renderCriminalCategoryFull(hash.slice('criminal/'.length)), runId);
   if (hash.startsWith('trend/')) {
     const parts = hash.split('/');
     if (parts[1] === 'military') {
-      if (parts.length >= 4) return renderTrendMilitaryLocalFull(parts[2], parts.slice(3).join('/'));
-      return renderTrendMilitaryRegionFull(parts[2]);
+      if (parts.length >= 4) return renderAfterData('병역 공개정보', [ensureCandidateDetails], () => renderTrendMilitaryLocalFull(parts[2], parts.slice(3).join('/')), runId);
+      return renderAfterData('병역 공개정보', [ensureCandidateDetails], () => renderTrendMilitaryRegionFull(parts[2]), runId);
     }
-    if (parts.length >= 3) return renderTrendLocalFull(parts[1], parts.slice(2).join('/'));
-    return renderTrendRegionFull(parts[1]);
+    if (parts.length >= 3) return renderAfterData('후보자 공개정보', [ensureCandidateDetails], () => renderTrendLocalFull(parts[1], parts.slice(2).join('/')), runId);
+    return renderAfterData('후보자 공개정보', [ensureCandidateDetails], () => renderTrendRegionFull(parts[1]), runId);
   }
-  if (hash === 'history') return renderHistoryFull();
+  if (hash === 'history') return renderAfterData('지난 선거 개표 결과', [ensureHistoryCounting], renderHistoryFull, runId);
   if (hash === 'schedule') return renderScheduleFull();
   if (hash === 'candidates') return renderCandidatesFull();
   if (hash.startsWith('cand/')) {
@@ -4609,12 +4676,11 @@ async function main() {
   calculateDDay();
   renderScheduleBar();
   try {
-    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, addressIndex, changelog, timeseries, history, historyTurnout, historyCounting, candidateDetailsPayload, criminalOcr] = await Promise.all([
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, changelog, timeseries, history, historyTurnout] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
-      loadAddressIndex(), loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(), loadHistoryCounting(), loadCandidateDetails(), loadCriminalOcr(),
+      loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(),
     ]);
     state.constituencies = constituencies;
-    state.addressIndex = addressIndex || [];
     state.jointConstituencySdMap = buildJointConstituencySdMap(constituencies);
     // 로딩 시점에 단 한 번 dedup + 지역 보정. 이후 모든 화면은 깨끗한 데이터를 본다.
     const candidates = normalizeCandidateRegions(dedupeByHuboid(data.candidates), constituencies);
@@ -4629,14 +4695,6 @@ async function main() {
     state.timeseries = timeseries;
     state.history = history;
     state.historyTurnout = historyTurnout;
-    state.historyCounting = historyCounting;
-    state.criminalOcr = criminalOcr;
-    state.criminalOcrMap = buildCriminalOcrMap(criminalOcr);
-    if (candidateDetailsPayload) {
-      state.candidateDetails = buildCandidateDetailsMap(candidateDetailsPayload);
-      state.candidateDetailsMeta = candidateDetailsPayload;
-      candidateDetailsPromise = Promise.resolve(candidateDetailsPayload);
-    }
     const sourceLabel = SOURCE_LABEL[source] || source;
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
@@ -4709,15 +4767,26 @@ async function main() {
         expandBtn.textContent = opening ? '모두 접기' : '모두 펼치기';
       }
     });
-    document.addEventListener('submit', e => {
+    document.addEventListener('submit', async e => {
       const form = e.target.closest('[data-address-form]');
       if (!form) return;
       e.preventDefault();
       const input = form.querySelector('[name="address"]');
+      renderAddressLoading();
+      await ensureAddressIndex();
       renderAddressLookup(input?.value || '');
     });
-    document.addEventListener('input', e => {
-      if (e.target.matches('#address-input')) renderAddressSuggestions(e.target.value);
+    document.addEventListener('input', async e => {
+      if (e.target.matches('#address-input')) {
+        const query = e.target.value;
+        if (!Array.isArray(state.addressIndex) && compactAddressText(query).length >= 2) renderAddressLoading();
+        await ensureAddressIndex();
+        const input = document.getElementById('address-input');
+        if (input?.value === query) renderAddressSuggestions(query);
+      }
+    });
+    document.addEventListener('focusin', e => {
+      if (e.target.matches('#address-input')) ensureAddressIndex();
     });
     // ESC로 모달 닫기
     document.addEventListener('keydown', e => {
