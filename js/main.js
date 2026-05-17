@@ -920,6 +920,9 @@ async function openCandidateModal(huboid) {
   await ensureCandidateDetails();
 
   const confirmed = isConfirmed(c);
+  const modalUncontestedBadge = isUncontestedCandidate(c)
+    ? `<span class="uncontested-badge modal-uncontested-badge" title="등록 후보 수가 의원정수 이하인 무투표 당선 선거구 후보">무투표 당선</span>`
+    : '';
   const articles = state.articleMap?.[c.huboid] || [];
   const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
   const sectionTitle = titleMap[c.sgTypecode] || '';
@@ -1001,6 +1004,7 @@ async function openCandidateModal(huboid) {
           <p class="modal-region">${region} · ${sectionTitle}</p>
           <h2 id="modal-name" class="modal-name">${c.name}
             ${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}
+            ${modalUncontestedBadge}
           </h2>
           <p class="modal-subline">${c.jdName || '무소속'}${c.status ? ` · ${c.status}` : ''}</p>
         </header>
