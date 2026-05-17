@@ -155,7 +155,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: null, jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null, historyCounting: null, criminalOcr: null, criminalOcrMap: {}, uncontestedCandidateSet: null };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: null, jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null, historyCounting: null, criminalOcr: null, criminalOcrMap: {}, uncontestedCandidateSet: null, historyBattleFilter: 'top' };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -1893,6 +1893,44 @@ function historyBattlefieldCard(item) {
       </div>
     </article>`;
 }
+function historyBattlefieldFilterItems(battlefields, filter) {
+  if (filter === 'closeUnder3') return battlefields.filter(item => item.marginPct < 3);
+  if (filter === 'returningWinner') return battlefields.filter(item => item.returningWinner);
+  if (filter === 'rematch') return battlefields.filter(item => item.returningWinner && item.returningRunnerUp);
+  return battlefields.slice(0, 12);
+}
+function historyBattlefieldPanelHtml(battlefields, filter = 'top') {
+  const filters = [
+    { key: 'top', label: '최접전', items: historyBattlefieldFilterItems(battlefields, 'top') },
+    { key: 'closeUnder3', label: '3%p 미만', items: historyBattlefieldFilterItems(battlefields, 'closeUnder3') },
+    { key: 'returningWinner', label: '지난 당선자 재출마', items: historyBattlefieldFilterItems(battlefields, 'returningWinner') },
+    { key: 'rematch', label: '지난 1·2위 재출마', items: historyBattlefieldFilterItems(battlefields, 'rematch') },
+  ];
+  const active = filters.find(item => item.key === filter) || filters[0];
+  const cards = active.items.map(historyBattlefieldCard).join('');
+  return `
+    <div class="history-battle-summary" role="group" aria-label="접전지 조건 선택">
+      ${filters.map(item => `
+        <button type="button" class="${item.key === active.key ? 'active' : ''}" data-history-battle-filter="${item.key}" aria-pressed="${item.key === active.key ? 'true' : 'false'}">
+          <span>${item.label}</span><strong>${item.items.length.toLocaleString()}곳</strong>
+        </button>`).join('')}
+    </div>
+    <p class="history-battle-filter-note">${escapeHtml(active.label)} ${active.items.length.toLocaleString()}곳을 표시합니다.</p>
+    <div class="history-battle-grid">${cards || '<p class="absence-note">표시할 선거구가 없습니다.</p>'}</div>`;
+}
+function updateHistoryBattlefieldFilter(filter) {
+  state.historyBattleFilter = filter || 'top';
+  const hc = state.historyCounting;
+  const countingElections = (hc?.elections || [])
+    .map(e => ({ ...e, governor: historyGovernorResult(e), localHead: historyLocalHeadResult(e) }))
+    .filter(e => e.governor?.districts?.length);
+  const latest = countingElections[countingElections.length - 1];
+  if (!latest) return;
+  const battlefields = historyBattlefieldItems(latest, Infinity);
+  const panel = document.querySelector('[data-history-battle-panel]');
+  if (!panel) return;
+  panel.innerHTML = historyBattlefieldPanelHtml(battlefields, state.historyBattleFilter);
+}
 function historyLocalGroupsHtml(result) {
   const districts = [...(result?.districts || [])].sort((a, b) =>
     sidoSort(normalizeHistorySidoName(a.sdName), normalizeHistorySidoName(b.sdName))
@@ -1983,13 +2021,7 @@ function renderHistoryFull() {
     ? `${normalizeHistorySidoName(localClose.district.sdName)} ${localClose.district.sggName} · ${localClose.first.name} ${localClose.marginPct.toFixed(2)}%p 차`
     : '-';
   const battlefields = historyBattlefieldItems(latest, Infinity);
-  const topBattlefields = battlefields.slice(0, 12);
-  const battlefieldStats = {
-    closeUnder3: battlefields.filter(r => r.marginPct < 3).length,
-    returningWinner: battlefields.filter(r => r.returningWinner).length,
-    rematch: battlefields.filter(r => r.returningWinner && r.returningRunnerUp).length,
-  };
-  const battlefieldCards = topBattlefields.map(historyBattlefieldCard).join('');
+  const battlefieldPanel = historyBattlefieldPanelHtml(battlefields, state.historyBattleFilter);
 
   const resultByRoundAndSido = new Map();
   for (const e of countingElections) {
@@ -2067,17 +2099,12 @@ function renderHistoryFull() {
       </div>
     </section>
 
-    <section class="trend-section history-battle-section">
+    <section class="trend-section history-battle-section" data-history-battle-section>
       <div class="trend-section-head">
         <h3 class="trend-section-title">지난 접전지, 이번 후보 등록</h3>
-        <span class="trend-section-kicker">${latest.year}년 광역·기초단체장 최접전 ${topBattlefields.length}곳</span>
+        <span class="trend-section-kicker">${latest.year}년 광역·기초단체장 접전지</span>
       </div>
-      <div class="history-battle-summary">
-        <span>3%p 미만 ${battlefieldStats.closeUnder3.toLocaleString()}곳</span>
-        <span>지난 당선자 재출마 ${battlefieldStats.returningWinner.toLocaleString()}곳</span>
-        <span>지난 1·2위 재출마 ${battlefieldStats.rematch.toLocaleString()}곳</span>
-      </div>
-      <div class="history-battle-grid">${battlefieldCards}</div>
+      <div data-history-battle-panel>${battlefieldPanel}</div>
       <p class="trend-meta">과거 득표 격차, 당시 투표율, 이번 후보 등록 현황을 나란히 둔 관전 지표입니다. 특정 후보의 당락을 예측하지 않습니다.</p>
     </section>
 
@@ -4864,6 +4891,12 @@ async function main() {
         grid.querySelectorAll('details').forEach(d => { d.open = opening; });
         expandBtn.dataset.open = opening ? 'true' : 'false';
         expandBtn.textContent = opening ? '모두 접기' : '모두 펼치기';
+        return;
+      }
+      const battleFilter = e.target.closest('[data-history-battle-filter]');
+      if (battleFilter) {
+        e.preventDefault();
+        updateHistoryBattlefieldFilter(battleFilter.dataset.historyBattleFilter);
       }
     });
     document.addEventListener('submit', async e => {

@@ -1065,13 +1065,38 @@ footer a:hover { text-decoration: underline; }
   gap: 0.45rem;
   margin: 0 0 0.85rem;
 }
-.history-battle-summary span {
+.history-battle-summary button {
   border: 1px solid var(--rule);
   border-radius: 999px;
   padding: 0.28rem 0.62rem;
   font-size: 0.76rem;
   color: var(--ink-sub);
   background: rgba(255,255,255,0.42);
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.history-battle-summary button strong {
+  color: var(--ink);
+  font-weight: 800;
+}
+.history-battle-summary button:hover,
+.history-battle-summary button.active {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: var(--bg-card);
+}
+.history-battle-summary button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.history-battle-filter-note {
+  margin: -0.25rem 0 0.75rem;
+  color: var(--ink-sub);
+  font-size: 0.78rem;
 }
 .history-battle-grid {
   display: grid;
