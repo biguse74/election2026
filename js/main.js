@@ -512,6 +512,24 @@ function buildSeatStats(allowedTypes = new Set(SECTIONS.map(s => s.sgTypecode)))
   return { seats, counts, candidatesByKey };
 }
 
+function seatCountForCandidateGroup(list, stats = null) {
+  if (!list?.length) return null;
+  const seatStats = stats || buildSeatStats(new Set(list.map(c => String(c.sgTypecode)).filter(Boolean)));
+  if (!seatStats) return null;
+  const keys = new Set(list.map(c => seatKey(c)));
+  let total = 0;
+  for (const key of keys) total += seatStats.seats[key] || 0;
+  return total || null;
+}
+
+function candidateSeatLabel(list, stats = null) {
+  const count = list.length.toLocaleString();
+  const seat = seatCountForCandidateGroup(list, stats);
+  return seat
+    ? `후보 ${count}명 · 정원 ${seat.toLocaleString()}명`
+    : `후보 ${count}명`;
+}
+
 function buildCompetitionRanking() {
   const stats = buildSeatStats();
   if (!stats) return [];
@@ -1502,9 +1520,12 @@ function renderDetailSection(section, sidoName) {
     }, {});
     const keys = Object.keys(groups).sort(koSort);
     const gridId = `cg-${section.id}`;
+    const seatStats = buildSeatStats(new Set([String(section.sgTypecode)]));
+    const totalSeats = keys.reduce((sum, k) => sum + (seatCountForCandidateGroup(groups[k], seatStats) || 0), 0);
+    const seatSummary = totalSeats ? ` · 정원 ${totalSeats.toLocaleString()}명` : '';
     return `
       <h3 class="section-title">${section.title}
-        <span class="section-count">${candidates.length.toLocaleString()}명 · ${keys.length}개 선거구</span>
+        <span class="section-count">후보 ${candidates.length.toLocaleString()}명${seatSummary} · ${keys.length}개 선거구</span>
         <span class="section-toolbar">
           <button type="button" class="expand-toggle" data-target="${gridId}" data-open="false">모두 펼치기</button>
         </span>
@@ -1513,8 +1534,8 @@ function renderDetailSection(section, sidoName) {
         ${keys.map(k => `
           <details class="electoral-district">
             <summary>
-              <span class="ed-name">${k}</span>
-              <span class="ed-count">${groups[k].length}명</span>
+              <span class="ed-name" title="${escapeHtml(k)}">${escapeHtml(k)}</span>
+              <span class="ed-count">${candidateSeatLabel(groups[k], seatStats)}</span>
             </summary>
             <div class="ed-body">${groups[k].map(candidateRow).join('')}</div>
           </details>`).join('')}

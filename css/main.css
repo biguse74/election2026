@@ -306,8 +306,14 @@ main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
 }
 .electoral-district[open] summary::before { transform: rotate(90deg); }
 .electoral-district summary:hover { background: rgba(196, 30, 58, 0.04); }
-.ed-name { font-family: var(--serif); font-weight: 700; font-size: 0.95rem; flex: 1; }
-.ed-count { font-size: 0.78rem; color: var(--ink-sub); flex-shrink: 0; }
+.ed-name {
+  font-family: var(--serif); font-weight: 700; font-size: 0.95rem; flex: 1;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ed-count {
+  font-size: 0.78rem; color: var(--ink-sub); flex-shrink: 0;
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+}
 .ed-body { padding: 0 1rem 0.8rem; border-top: 1px dotted var(--rule); }
 .ed-body .candidate:first-child { padding-top: 0.6rem; }
 
