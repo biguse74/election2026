@@ -1145,6 +1145,7 @@ footer a:hover { text-decoration: underline; }
   border-bottom: 1px solid var(--rule);
 }
 .uc-block.tied .uc-block-title { color: var(--accent); }
+.uc-block.singlePartyPr .uc-block-title { color: #6f47b8; }
 .uc-block.short .uc-block-title { color: #b25c00; }
 .uc-block.zero .uc-block-title { color: var(--ink-sub); }
 .uc-count { font-family: var(--sans); font-weight: 400; font-size: 0.82rem; color: var(--ink-sub); margin-left: 0.5rem; }
@@ -1170,6 +1171,7 @@ footer a:hover { text-decoration: underline; }
   text-align: right; color: var(--accent);
 }
 .uc-block.short .uc-detail { color: #b25c00; }
+.uc-block.singlePartyPr .uc-detail { color: #6f47b8; }
 .uc-block.zero .uc-detail { color: var(--ink-sub); }
 .uc-more { font-size: 0.85rem; color: var(--ink-sub); margin-top: 0.6rem; }
 .uc-more a { color: var(--accent); text-decoration: none; font-weight: 500; }

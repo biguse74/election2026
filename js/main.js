@@ -454,22 +454,24 @@ const seatKey = c => {
 function isActiveCandidate(c) {
   return !c.status || c.status === '등록';
 }
-function buildSeatStats() {
+function buildSeatStats(allowedTypes = new Set(SECTIONS.map(s => s.sgTypecode))) {
   const constituencies = state.constituencies;
   if (!constituencies?.length) return null;
-  const allowedTypes = new Set(SECTIONS.map(s => s.sgTypecode));
   const seats = {};
   for (const s of constituencies) {
     if (!allowedTypes.has(String(s.sgTypecode))) continue;
     seats[seatKey(s)] = parseInt(s.sggJungsu, 10) || 1;
   }
   const counts = {};
+  const candidatesByKey = {};
   for (const c of state.data.candidates) {
     if (!allowedTypes.has(String(c.sgTypecode))) continue;
     if (!isActiveCandidate(c)) continue;
-    counts[seatKey(c)] = (counts[seatKey(c)] || 0) + 1;
+    const key = seatKey(c);
+    counts[key] = (counts[key] || 0) + 1;
+    (candidatesByKey[key] ||= []).push(c);
   }
-  return { seats, counts };
+  return { seats, counts, candidatesByKey };
 }
 
 function buildCompetitionRanking() {
@@ -522,24 +524,57 @@ function buildCompetitionSummary() {
   };
 }
 
-// 이대로 가면 무투표 당선될 가능성이 있는 곳 (정원 = 후보 수).
-// 일부 미달(1명 이상·정원 미만)·0명도 함께 수집 — 사용자는 박스 안에서 카테고리별로 본다.
+// 무투표 당선 집계. 비례대표는 한 정당 명부만 등록된 경우도 선관위 보도 집계와 맞춘다.
+const UNCONTESTED_SG_TYPES = new Set(['4', '5', '6', '8', '9']);
 function buildUncontestedList() {
-  const stats = buildSeatStats();
-  if (!stats) return { tied: [], short: [], zero: [] };
-  const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
-  const tied = [], short = [], zero = [];
+  const stats = buildSeatStats(UNCONTESTED_SG_TYPES);
+  if (!stats) return {
+    tied: [], short: [], singlePartyPr: [], zero: [],
+    totalCandidates: 0, totalDistricts: 0, proportionalCandidates: 0, nonProportionalCandidates: 0,
+  };
+  const tied = [], short = [], singlePartyPr = [], zero = [];
   for (const [k, seat] of Object.entries(stats.seats)) {
     const count = stats.counts[k] || 0;
-    if (count > seat) continue;
     const [sgType, sd, sgg] = k.split('|');
-    const row = { sgType, sd, sgg, count, seat, title: titleMap[sgType] || sgType };
+    const isProportional = ['8', '9'].includes(String(sgType));
+    const parties = new Set((stats.candidatesByKey[k] || []).map(c => c.jdName || c.party || '무소속'));
+    const isSinglePartyPr = isProportional && count > seat && count > 0 && parties.size === 1;
+    if (count > seat && !isSinglePartyPr) continue;
+    const row = {
+      sgType,
+      sd,
+      sgg,
+      count,
+      seat,
+      title: SG_TITLE[sgType] || sgType,
+      isProportional,
+      isSinglePartyPr,
+    };
     if (count === 0) zero.push(row);
+    else if (isSinglePartyPr) singlePartyPr.push(row);
     else if (count < seat) short.push(row);
     else tied.push(row);
   }
   const cmp = (a, b) => sidoSort(a.sd, b.sd) || koSort(a.sgg || '', b.sgg || '');
-  return { tied: tied.sort(cmp), short: short.sort(cmp), zero: zero.sort(cmp) };
+  tied.sort(cmp);
+  short.sort(cmp);
+  singlePartyPr.sort(cmp);
+  zero.sort(cmp);
+  const candidateRows = [...tied, ...short, ...singlePartyPr];
+  const totalCandidates = candidateRows.reduce((sum, r) => sum + r.count, 0);
+  const proportionalCandidates = candidateRows
+    .filter(r => r.isProportional)
+    .reduce((sum, r) => sum + r.count, 0);
+  return {
+    tied,
+    short,
+    singlePartyPr,
+    zero,
+    totalCandidates,
+    totalDistricts: candidateRows.length,
+    proportionalCandidates,
+    nonProportionalCandidates: totalCandidates - proportionalCandidates,
+  };
 }
 
 // 후보 등록 시작일. 이 날짜 이후로는 candidates 스냅샷이 우선.
@@ -3489,8 +3524,8 @@ function renderHome() {
   const regionTop = competition?.regions?.[0];
   const regionNext = competition?.regions?.slice(1, 4) || [];
   const uc = buildUncontestedList();
-  const ucTotal = uc.tied.length + uc.short.length + uc.zero.length;
-  const summaryBox = (top || ucTotal || competition) ? `
+  const ucLabel = state.source === 'candidates' ? '무투표 당선' : '무투표 가능 후보';
+  const summaryBox = (top || uc.totalCandidates || competition) ? `
     <div class="summary-row">
       ${competition ? `
         <a class="summary-card" href="#competition">
@@ -3510,11 +3545,11 @@ function renderHome() {
           <span class="summary-card-value"><strong>${top.ratio.toFixed(1)}</strong><span class="summary-card-unit">:1</span></span>
           <span class="summary-card-sub">${formatRegionLabel(top)} ${top.title} · ${ranking.length.toLocaleString()}개 선거구 전체 보기 →</span>
         </a>` : ''}
-      ${ucTotal ? `
+      ${uc.totalCandidates ? `
         <a class="summary-card" href="#uncontested">
-          <span class="summary-card-label">경쟁 없는 선거구</span>
-          <span class="summary-card-value"><strong>${ucTotal.toLocaleString()}</strong>곳</span>
-          <span class="summary-card-sub">단독 ${uc.tied.length} · 일부 미달 ${uc.short.length} · 0명 ${uc.zero.length} · 모두 보기 →</span>
+          <span class="summary-card-label">${ucLabel}</span>
+          <span class="summary-card-value"><strong>${uc.totalCandidates.toLocaleString()}</strong>명</span>
+          <span class="summary-card-sub">${uc.totalDistricts.toLocaleString()}개 선거구 · 지역구·단체장 ${uc.nonProportionalCandidates.toLocaleString()}명 · 비례 ${uc.proportionalCandidates.toLocaleString()}명 →</span>
         </a>` : ''}
     </div>` : '';
 
@@ -3716,7 +3751,7 @@ function route() {
   return renderSidoDetail(hash);
 }
 
-// ============ 경쟁 없는 선거구 (공용 헬퍼) ============
+// ============ 무투표 당선 선거구 (공용 헬퍼) ============
 function uncontestedStageNote() {
   return state.source === 'candidates'
     ? '후보 등록 기준 — 사실상 확정'
@@ -3738,7 +3773,7 @@ function uncontestedRow(r) {
     <li>
       ${regionEl}
       <span class="uc-type">${r.title}</span>
-      <span class="uc-detail">${r.count}/${r.seat}</span>
+      <span class="uc-detail">${r.isSinglePartyPr ? `${r.count}명` : `${r.count}/${r.seat}`}</span>
     </li>`;
 }
 function uncontestedBlock(items, totalCount, label, cls) {
@@ -3753,13 +3788,14 @@ function uncontestedBlock(items, totalCount, label, cls) {
     </div>`;
 }
 
-// 경쟁 없는 선거구 전체 페이지 (#uncontested 또는 #uncontested/{cat})
+// 무투표 당선 선거구 전체 페이지 (#uncontested 또는 #uncontested/{cat})
 function renderUncontestedFull(category) {
   const uc = buildUncontestedList();
   const cats = [
-    { key: 'tied',  label: '단독 출마·정원 충원 (후보 수 = 정원)',  items: uc.tied,  cls: 'tied' },
-    { key: 'short', label: '정원 일부 미달 (1명 이상·후보 수 < 정원)', items: uc.short, cls: 'short' },
-    { key: 'zero',  label: '후보 0명',                            items: uc.zero,  cls: 'zero' },
+    { key: 'tied',          label: '후보 수와 정원이 같은 선거구',              items: uc.tied,          cls: 'tied' },
+    { key: 'singlePartyPr', label: '비례대표 단일 정당 명부',                   items: uc.singlePartyPr, cls: 'singlePartyPr' },
+    { key: 'short',         label: '정원 일부 미달 (1명 이상·후보 수 < 정원)', items: uc.short,         cls: 'short' },
+    { key: 'zero',          label: '후보 0명',                                  items: uc.zero,          cls: 'zero' },
   ];
   const filtered = category ? cats.filter(c => c.key === category) : cats;
   const titleSuffix = category
@@ -3769,11 +3805,13 @@ function renderUncontestedFull(category) {
     <nav class="breadcrumb">
       <a href="#">전국</a>
       <span class="sep">›</span>
-      <span class="current">경쟁 없는 선거구${titleSuffix}</span>
+      <span class="current">무투표 당선 선거구${titleSuffix}</span>
     </nav>
     <div class="detail-head">
-      <h1 class="detail-title">경쟁 없는 선거구</h1>
+      <h1 class="detail-title">무투표 당선 선거구</h1>
       <div class="detail-inline-stats">
+        <span>${uc.totalCandidates.toLocaleString()}명</span>
+        <span>${uc.totalDistricts.toLocaleString()}개 선거구</span>
         <span>${uncontestedStageNote()}</span>
       </div>
     </div>
