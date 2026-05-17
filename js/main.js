@@ -1717,7 +1717,7 @@ function renderHistoryFull() {
         <span>3~8회 · 광역단체장 개표 결과</span>
       </div>
     </div>
-    <p class="page-intro">선관위 개표 결과 원자료에서 비교성이 좋은 광역단체장 선거의 선거구 합계행을 우선 가져왔습니다. 같은 API에서 기초단체장·광역의원·기초의원·비례대표·교육감 개표 결과도 조회할 수 있어, 지방의원 상세 비교는 별도 화면으로 확장할 수 있습니다.</p>
+    <p class="page-intro">역대 지방선거 광역단체장 개표 결과를 회차별 판세, 시도별 당선자, 득표율, 접전 지역으로 정리했습니다.</p>
 
     <section class="history-result-cards">
       <div class="history-result-card">
