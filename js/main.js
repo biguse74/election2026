@@ -155,7 +155,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: [], jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null, criminalOcr: null, criminalOcrMap: {} };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: [], jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null, historyCounting: null, criminalOcr: null, criminalOcrMap: {} };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -388,6 +388,7 @@ const loadChangelog = () => safeJson('data/changelog.json', null);
 const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
+const loadHistoryCounting = () => safeJson('data/history_counting_results.json?v=202605180026', null);
 const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605171015', null);
 let candidateDetailsPromise = null;
 
@@ -1588,6 +1589,39 @@ function historyWinnersSummary(winners) {
   return Object.entries(winners).sort((a,b) => b[1]-a[1])
     .map(([p, n]) => `${p} ${n}`).join(' · ');
 }
+function historyGovernorResult(election) {
+  return election?.results?.find(r => String(r.sgTypecode) === '3') || null;
+}
+function historyCountingSummary(result) {
+  return (result?.party_wins || [])
+    .map(row => `${row.party} ${row.wins}`)
+    .join(' · ');
+}
+function historyLegacyByRound() {
+  return new Map((state.history?.elections || []).map(e => [Number(e.round), e]));
+}
+function normalizeHistorySidoName(sd) {
+  return sd === '제주도' ? '제주특별자치도' : sd;
+}
+function historyWinnerCell(district) {
+  const winner = district?.winner;
+  if (!winner?.name) return '<span class="hist-empty">-</span>';
+  return `
+    <span class="history-winner-party">${winner.party || '무소속'}</span>
+    <strong>${winner.name}</strong>
+    <small>${winner.vote_share != null ? winner.vote_share.toFixed(2) + '%' : '-'}</small>`;
+}
+function historyCloseRaces(result, limit = 6) {
+  const districts = result?.districts || [];
+  return districts.map(d => {
+    const candidates = [...(d.candidates || [])].sort((a, b) => (b.votes || 0) - (a.votes || 0));
+    const first = candidates[0], second = candidates[1];
+    if (!first || !second || !d.valid_votes) return null;
+    const marginVotes = first.votes - second.votes;
+    const marginPct = marginVotes / d.valid_votes * 100;
+    return { district: d, first, second, marginVotes, marginPct };
+  }).filter(Boolean).sort((a, b) => a.marginPct - b.marginPct).slice(0, limit);
+}
 function findClosestPastElection(turnout) {
   const elections = state.history?.elections || [];
   if (!elections.length) return null;
@@ -1602,125 +1636,139 @@ function findClosestPastElection(turnout) {
 function renderHistoryFull() {
   const app = document.getElementById('app');
   app.className = '';
-  const h = state.history;
-  if (!h?.elections?.length) {
+  const hc = state.historyCounting;
+  const countingElections = (hc?.elections || [])
+    .map(e => ({ ...e, governor: historyGovernorResult(e) }))
+    .filter(e => e.governor?.districts?.length);
+  if (!countingElections.length) {
     app.innerHTML = `
-      <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">과거 회차</span></nav>
-      <div class="detail-head"><h1 class="detail-title">과거 지방선거 비교</h1></div>
-      <p class="absence-note">과거 데이터가 아직 없습니다.</p>`;
+      <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">지난 선거</span></nav>
+      <div class="detail-head"><h1 class="detail-title">지난 선거 결과</h1></div>
+      <p class="absence-note">지난 선거 개표 결과 데이터가 아직 없습니다.</p>`;
     return;
   }
 
-  const elections = h.elections;
-  const turnouts = elections.map(e => e.turnout);
-  const avg = turnouts.reduce((a, b) => a + b, 0) / turnouts.length;
-  const maxT = Math.max(...turnouts);
-  const minT = Math.min(...turnouts);
+  const legacy = historyLegacyByRound();
+  const latest = countingElections[countingElections.length - 1];
+  const latestTop = latest.governor.party_wins?.[0];
+  const sweep = countingElections.map(e => {
+    const top = e.governor.party_wins?.[0] || { party: '-', wins: 0 };
+    return {
+      election: e,
+      top,
+      share: e.governor.district_count ? top.wins / e.governor.district_count : 0,
+    };
+  }).sort((a, b) => b.share - a.share)[0];
 
-  // 회차별 막대 그래프
-  const w = 800, h_ = 180, pad = 30;
-  const stepX = (w - pad * 2) / (elections.length - 1);
-  const barWidth = Math.min(40, stepX * 0.55);
-  const yScale = v => h_ - pad - ((v - 40) / 35) * (h_ - pad * 2);  // 40~75% 범위
-  const bars = elections.map((e, i) => {
-    const x = pad + i * stepX;
-    const y = yScale(e.turnout);
-    return `
-      <rect x="${(x - barWidth/2).toFixed(1)}" y="${y.toFixed(1)}"
-            width="${barWidth.toFixed(1)}" height="${(h_ - pad - y).toFixed(1)}"
-            fill="#c41e3a" opacity="0.85"/>
-      <text x="${x.toFixed(1)}" y="${(y - 6).toFixed(1)}" font-size="11" fill="#1a1a1a" text-anchor="middle" font-weight="700">${e.turnout}%</text>
-      <text x="${x.toFixed(1)}" y="${h_ - 10}" font-size="10" fill="#888" text-anchor="middle">${e.round}회</text>
-      <text x="${x.toFixed(1)}" y="${h_ - 22}" font-size="9" fill="#aaa" text-anchor="middle">${e.year}</text>
-    `;
+  const resultByRoundAndSido = new Map();
+  for (const e of countingElections) {
+    const rows = new Map();
+    for (const d of e.governor.districts || []) {
+      rows.set(normalizeHistorySidoName(d.sdName), d);
+    }
+    resultByRoundAndSido.set(Number(e.round), rows);
+  }
+  const orderedSidos = Object.values(SIDO_GROUPS).flat();
+  const regionRows = orderedSidos.map(sd => {
+    const cells = countingElections.map(e => {
+      const d = resultByRoundAndSido.get(Number(e.round))?.get(sd);
+      return `<td class="history-result-cell">${historyWinnerCell(d)}</td>`;
+    }).join('');
+    return `<tr><th>${sd}</th>${cells}</tr>`;
   }).join('');
-  const avgLine = `
-    <line x1="${pad}" y1="${yScale(avg)}" x2="${w - pad}" y2="${yScale(avg)}"
-          stroke="#888" stroke-width="1" stroke-dasharray="4 3"/>
-    <text x="${w - pad + 4}" y="${yScale(avg) + 4}" font-size="9" fill="#888">평균 ${avg.toFixed(1)}%</text>`;
-  const chartSvg = `
-    <svg viewBox="0 0 ${w} ${h_}" class="trend-chart" aria-label="역대 투표율">
-      <line x1="${pad}" y1="${h_ - pad}" x2="${w - pad}" y2="${h_ - pad}" stroke="#d8d2c8"/>
-      ${bars}${avgLine}
-    </svg>`;
 
-  // 회차별 표
-  const tableRows = elections.map(e => {
-    const winners = historyWinnersSummary(e.winners);
+  const summaryRows = countingElections.map(e => {
+    const old = legacy.get(Number(e.round));
+    const close = historyCloseRaces(e.governor, 1)[0];
+    const closeText = close
+      ? `${normalizeHistorySidoName(close.district.sdName)} ${close.first.name} ${close.marginPct.toFixed(2)}%p 차`
+      : '-';
     return `
       <tr>
         <td class="hist-round">${e.round}회</td>
         <td class="hist-year">${e.year}</td>
-        <td class="hist-turn"><strong>${e.turnout}%</strong>${e.early_turnout ? `<small>사전 ${e.early_turnout}%</small>` : ''}</td>
-        <td class="hist-seats">${winners}</td>
-        <td class="hist-context">${e.context}</td>
+        <td>${e.governor.district_count}곳</td>
+        <td class="hist-seats">${historyCountingSummary(e.governor)}</td>
+        <td>${old?.turnout ? old.turnout + '%' : '-'}</td>
+        <td class="hist-context">${closeText}</td>
       </tr>`;
   }).join('');
 
-  // 슬라이더 매칭 영역 (초기값: 8회 50.9 + 평균의 평균쯤)
-  const initial = 55;
-  const initialMatch = findClosestPastElection(initial);
-  const initWinners = historyWinnersSummary(initialMatch.match.winners);
+  const latestCloseRows = historyCloseRaces(latest.governor, 8).map(r => `
+    <tr>
+      <td>${normalizeHistorySidoName(r.district.sdName)}</td>
+      <td><strong>${r.first.name}</strong><small>${r.first.party}</small></td>
+      <td>${r.first.vote_share.toFixed(2)}%</td>
+      <td>${r.second.name}<small>${r.second.party}</small></td>
+      <td>${r.second.vote_share.toFixed(2)}%</td>
+      <td><strong>${r.marginPct.toFixed(2)}%p</strong></td>
+    </tr>`).join('');
 
   app.innerHTML = `
-    <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">과거 회차 비교</span></nav>
+    <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">지난 선거</span></nav>
     <div class="detail-head">
-      <h1 class="detail-title">과거 지방선거 비교</h1>
+      <h1 class="detail-title">지난 선거 결과</h1>
       <div class="detail-inline-stats">
-        <span>1~8회 · 평균 투표율 ${avg.toFixed(1)}%</span>
+        <span>3~8회 · 광역단체장 개표 결과</span>
       </div>
     </div>
-    <p class="page-intro">역대 8번의 전국동시지방선거 투표율과 광역단체장 결과입니다. <strong>아래는 단정적 예측이 아닌 과거 패턴 비교</strong>입니다 — 6/3 투표율 시나리오를 가정해 가장 비슷한 과거 회차를 찾아볼 수 있습니다.</p>
+    <p class="page-intro">선관위 개표 결과 원자료에서 광역단체장 선거의 선거구 합계행을 가져왔습니다. 정당별 승리 수와 시도별 당선자, 득표율을 함께 보면 어느 선거가 특정 정당의 압승이었는지, 어느 지역이 접전이었는지 한눈에 볼 수 있습니다.</p>
 
-    <section class="trend-section">
-      <h3 class="trend-section-title">회차별 투표율</h3>
-      ${chartSvg}
-    </section>
-
-    <section class="trend-section">
-      <h3 class="trend-section-title">6·3 투표율 시나리오 매칭</h3>
-      <div class="forecast">
-        <label class="forecast-label" for="forecast-turnout">가정 투표율</label>
-        <div class="forecast-input-row">
-          <input id="forecast-turnout" type="range" min="40" max="75" step="0.1" value="${initial}">
-          <output id="forecast-output" class="forecast-output">${initial.toFixed(1)}%</output>
-        </div>
-        <div id="forecast-match" class="forecast-match">
-          <p>가장 가까운 과거 회차: <strong>${initialMatch.match.round}회 (${initialMatch.match.year}, ${initialMatch.match.turnout}%)</strong> · 차이 ${initialMatch.diff.toFixed(1)}%p</p>
-          <p class="forecast-context">${initialMatch.match.context}</p>
-          <p class="forecast-winners">광역단체장 결과: <strong>${initWinners}</strong></p>
-        </div>
-        <p class="forecast-caveat">※ 단정적 예측이 아닙니다. 후보·시기·외부 변수가 모두 달라 참고용 비교입니다.</p>
+    <section class="history-result-cards">
+      <div class="history-result-card">
+        <span>최근 선거</span>
+        <strong>${latest.year}년 ${latestTop.party} ${latestTop.wins}곳</strong>
+        <small>${historyCountingSummary(latest.governor)}</small>
+      </div>
+      <div class="history-result-card">
+        <span>가장 큰 쏠림</span>
+        <strong>${sweep.election.year}년 ${sweep.top.party}</strong>
+        <small>${sweep.top.wins}/${sweep.election.governor.district_count}곳 · ${(sweep.share * 100).toFixed(1)}%</small>
+      </div>
+      <div class="history-result-card">
+        <span>데이터 출처</span>
+        <strong>선관위 개표 결과</strong>
+        <small>VoteXmntckInfoInqireService2</small>
       </div>
     </section>
 
-    ${renderTurnoutBySidoSection()}
+    <section class="trend-section">
+      <h3 class="trend-section-title">회차별 판세</h3>
+      <div class="table-scroll">
+        <table class="hist-table">
+          <thead>
+            <tr><th>회차</th><th>연도</th><th>광역단체장</th><th>정당별 승리</th><th>투표율</th><th>최접전</th></tr>
+          </thead>
+          <tbody>${summaryRows}</tbody>
+        </table>
+      </div>
+      <p class="trend-meta">투표율은 기존 선관위 통계 데이터와 결합해 보조 지표로 표시했습니다.</p>
+    </section>
 
     <section class="trend-section">
-      <h3 class="trend-section-title">회차별 상세</h3>
-      <table class="hist-table">
-        <thead>
-          <tr><th>회차</th><th>연도</th><th>투표율</th><th>광역단체장</th><th>맥락</th></tr>
-        </thead>
-        <tbody>${tableRows}</tbody>
-      </table>
-      <p class="trend-meta">출처: 중앙선거관리위원회 통계 + 위키피디아 종합</p>
-    </section>`;
+      <h3 class="trend-section-title">시도별 당선자와 득표율</h3>
+      <div class="table-scroll">
+        <table class="hist-table history-region-table">
+          <thead>
+            <tr><th>시도</th>${countingElections.map(e => `<th>${e.round}회<br><small>${e.year}</small></th>`).join('')}</tr>
+          </thead>
+          <tbody>${regionRows}</tbody>
+        </table>
+      </div>
+    </section>
 
-  // 슬라이더 인터랙티브
-  const input = document.getElementById('forecast-turnout');
-  const output = document.getElementById('forecast-output');
-  const matchEl = document.getElementById('forecast-match');
-  input.addEventListener('input', () => {
-    const v = parseFloat(input.value);
-    output.textContent = v.toFixed(1) + '%';
-    const r = findClosestPastElection(v);
-    const winners = historyWinnersSummary(r.match.winners);
-    matchEl.innerHTML = `
-      <p>가장 가까운 과거 회차: <strong>${r.match.round}회 (${r.match.year}, ${r.match.turnout}%)</strong> · 차이 ${r.diff.toFixed(1)}%p</p>
-      <p class="forecast-context">${r.match.context}</p>
-      <p class="forecast-winners">광역단체장 결과: <strong>${winners}</strong></p>`;
-  });
+    <section class="trend-section">
+      <h3 class="trend-section-title">${latest.year}년 접전 지역</h3>
+      <div class="table-scroll">
+        <table class="hist-table history-close-table">
+          <thead>
+            <tr><th>시도</th><th>1위</th><th>득표율</th><th>2위</th><th>득표율</th><th>격차</th></tr>
+          </thead>
+          <tbody>${latestCloseRows}</tbody>
+        </table>
+      </div>
+      <p class="trend-meta">출처: 중앙선거관리위원회 OpenAPI 개표 결과. 후보별 득표율은 유효투표수 기준입니다.</p>
+    </section>`;
 
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
@@ -4114,9 +4162,9 @@ async function main() {
   calculateDDay();
   renderScheduleBar();
   try {
-    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, addressIndex, changelog, timeseries, history, historyTurnout, candidateDetailsPayload, criminalOcr] = await Promise.all([
+    const [{ data, dateStr, source }, parties, nominations, articles, constituencies, addressIndex, changelog, timeseries, history, historyTurnout, historyCounting, candidateDetailsPayload, criminalOcr] = await Promise.all([
       loadLatestSnapshot(), loadParties(), loadNominations(), loadArticles(), loadConstituencies(),
-      loadAddressIndex(), loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(), loadCandidateDetails(), loadCriminalOcr(),
+      loadAddressIndex(), loadChangelog(), loadTimeseries(), loadHistory(), loadHistoryTurnout(), loadHistoryCounting(), loadCandidateDetails(), loadCriminalOcr(),
     ]);
     state.constituencies = constituencies;
     state.addressIndex = addressIndex || [];
@@ -4134,6 +4182,7 @@ async function main() {
     state.timeseries = timeseries;
     state.history = history;
     state.historyTurnout = historyTurnout;
+    state.historyCounting = historyCounting;
     state.criminalOcr = criminalOcr;
     state.criminalOcrMap = buildCriminalOcrMap(criminalOcr);
     if (candidateDetailsPayload) {
