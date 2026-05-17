@@ -25,8 +25,13 @@ import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
-import requests
+try:
+    import requests
+except ModuleNotFoundError:
+    requests = None
 
 BASE_URL = "https://apis.data.go.kr/9760000/VoteXmntckInfoInqireService2"
 OPERATION = "getXmntckSttusInfoInqire"
@@ -94,9 +99,13 @@ def fetch_pages(params: dict[str, Any], max_pages: int = 200) -> list[dict[str, 
             "numOfRows": 200,
             "resultType": "json",
         }
-        res = requests.get(f"{BASE_URL}/{OPERATION}", params=query, timeout=30)
-        res.raise_for_status()
-        payload = res.json()
+        if requests:
+            res = requests.get(f"{BASE_URL}/{OPERATION}", params=query, timeout=30)
+            res.raise_for_status()
+            payload = res.json()
+        else:
+            with urlopen(f"{BASE_URL}/{OPERATION}?{urlencode(query)}", timeout=30) as res:
+                payload = json.loads(res.read().decode("utf-8"))
         header = payload.get("response", {}).get("header", {})
         if header.get("resultCode") in ("INFO-03", "ERROR-03"):
             return []
@@ -207,13 +216,12 @@ def fetch_election_type(sg_id: str, sg_type: str) -> list[dict[str, Any]]:
 
 
 def main() -> None:
-    if not API_KEY:
-        sys.exit("환경변수 NEC_API_KEY가 설정되지 않았습니다.")
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--sg-type", action="append", default=None, help="선거종류 코드. 기본값 3(시도지사)")
     parser.add_argument("--out", type=Path, default=OUT)
     args = parser.parse_args()
+    if not API_KEY:
+        sys.exit("환경변수 NEC_API_KEY가 설정되지 않았습니다.")
 
     sg_types = [str(x) for x in (args.sg_type or ["3"])]
     elections = []

@@ -973,7 +973,7 @@ footer a:hover { text-decoration: underline; }
 .table-scroll { overflow-x: auto; }
 .history-result-cards {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.8rem;
   margin: 0 0 1.5rem;
 }
@@ -1026,6 +1026,65 @@ footer a:hover { text-decoration: underline; }
 }
 .hist-empty {
   color: var(--ink-sub);
+}
+.history-local-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.history-local-group {
+  border-top: 1px solid var(--ink);
+  background: var(--bg-card);
+}
+.history-local-group summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  cursor: pointer;
+}
+.history-local-group summary strong {
+  font-family: var(--serif);
+  font-size: 1.02rem;
+}
+.history-local-group summary span {
+  color: var(--ink-sub);
+  font-size: 0.82rem;
+  text-align: right;
+}
+.history-local-list {
+  list-style: none;
+  padding: 0 0 0.95rem;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.55rem;
+}
+.history-local-card {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 0.62rem 0.68rem;
+  background: rgba(255,255,255,0.48);
+}
+.history-local-district {
+  display: block;
+  color: var(--ink-sub);
+  font-size: 0.75rem;
+  margin-bottom: 0.22rem;
+}
+.history-local-card strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 0.96rem;
+  line-height: 1.32;
+}
+.history-local-card small {
+  display: block;
+  color: var(--ink-sub);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  margin-top: 0.24rem;
 }
 
 /* 오늘의 변경 — 어제·오늘 스냅샷 diff 박스 */
