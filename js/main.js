@@ -2207,6 +2207,22 @@ function rankedMilitaryGroups(rows, keyFn, minEligible = 10) {
     .sort((a, b) => b.rate - a.rate || b.notServed - a.notServed);
 }
 
+function rankedSidoMilitaryGroups(rows) {
+  const byLabel = new Map(
+    rankedMilitaryGroups(rows, r => canonicalSidoName(r.sd), 0)
+      .map(row => [canonicalSidoName(row.label), row])
+  );
+  return SIDO_ORDER.map(sd => byLabel.get(sd) || {
+    label: sd,
+    count: 0,
+    served: 0,
+    notServed: 0,
+    nonTarget: 0,
+    eligible: 0,
+    rate: 0,
+  });
+}
+
 function rankedTaxArrearsGroups(rows, keyFn, field = 'taxArrears5y', minCount = 20) {
   return Object.entries(groupDisclosureRows(rows, keyFn))
     .map(([label, items]) => {
@@ -2342,7 +2358,7 @@ function buildDisclosureStats() {
       criminal: rankedCriminalGroups(rows, r => r.sd),
       taxArrears5y: rankedTaxArrearsGroups(rows, r => r.sd, 'taxArrears5y'),
       taxArrearsCurrent: rankedTaxArrearsGroups(rows, r => r.sd, 'taxArrearsCurrent'),
-      military: rankedMilitaryGroups(rows, r => r.sd),
+      military: rankedSidoMilitaryGroups(rows),
     },
     leaders: {
       assetsOverall: rankedAssetCandidates(rows, 5),
