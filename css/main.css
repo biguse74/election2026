@@ -706,22 +706,35 @@ footer a:hover { text-decoration: underline; }
 }
 .military-candidate-list {
   list-style: none; padding: 0; margin: 0;
-  display: flex; flex-direction: column; gap: 0.35rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.55rem;
 }
 .military-candidate-item {
+  min-width: 0;
   display: grid;
-  grid-template-columns: minmax(86px, 0.8fr) auto minmax(150px, 1fr) auto minmax(180px, 1.2fr);
-  align-items: center; gap: 0.55rem;
-  padding: 0.58rem 0; border-bottom: 1px solid var(--rule);
+  gap: 0.38rem;
+  padding: 0.62rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.45);
 }
-.military-candidate-item:last-child { border-bottom: none; }
+.military-candidate-main,
+.military-candidate-meta {
+  min-width: 0; display: flex; align-items: center; gap: 0.45rem;
+}
+.military-candidate-main { justify-content: space-between; }
+.military-candidate-meta { color: var(--ink-sub); }
 .military-candidate-context,
 .military-candidate-raw {
   min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   color: var(--ink-sub); font-size: 0.76rem;
 }
 .military-candidate-status {
-  font-family: var(--serif); font-weight: 900; font-size: 0.95rem;
+  padding: 0.1rem 0.42rem;
+  border-radius: 999px;
+  background: rgba(44,93,143,0.09);
+  font-weight: 800; font-size: 0.76rem;
   color: #2c5d8f; white-space: nowrap;
 }
 .section-title-row {
@@ -759,6 +772,7 @@ footer a:hover { text-decoration: underline; }
 .tax-mode-tabs strong {
   margin-left: 0.35rem; font-family: var(--serif); font-size: 0.94rem;
 }
+.disclosure-mode-tabs strong { margin-left: 0; }
 .tax-tier-list {
   display: flex; flex-direction: column; gap: 0.65rem;
 }
@@ -1542,20 +1556,9 @@ body.modal-open { overflow: hidden; }
   }
   .candidate-rank-value { grid-column: 3; grid-row: 1; }
   .candidate-rank-party { max-width: 76px; }
-  .military-candidate-item {
-    grid-template-columns: minmax(78px, 1fr) auto auto;
-    gap: 0.35rem 0.5rem;
-  }
-  .military-candidate-context,
-  .military-candidate-raw {
-    grid-column: 1 / -1;
-    white-space: normal;
-    line-height: 1.35;
-  }
-  .military-candidate-status {
-    grid-column: 3;
-    grid-row: 1;
-  }
+  .military-candidate-list { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+  .military-candidate-context { white-space: normal; line-height: 1.35; }
+  .military-candidate-meta { align-items: flex-start; }
   .region-rank-grid { grid-template-columns: 1fr; }
   .modal-dialog { padding: 1.25rem 1.1rem 1rem; }
   .modal-profile { grid-template-columns: 72px 1fr; gap: 0.75rem; }

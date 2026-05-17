@@ -2119,7 +2119,17 @@ function trendLocalHref(sd, label) {
   return `#trend/${encodeURIComponent(canonicalSidoName(sd))}/${encodeURIComponent(label)}`;
 }
 
+function trendMilitaryRegionHref(label) {
+  return `#trend/military/${encodeURIComponent(canonicalSidoName(label))}`;
+}
+
+function trendMilitaryLocalHref(sd, label) {
+  return `#trend/military/${encodeURIComponent(canonicalSidoName(sd))}/${encodeURIComponent(label)}`;
+}
+
 function metricLinkHref(label, options = {}) {
+  if (options.focus === 'military' && options.localLinksSd) return trendMilitaryLocalHref(options.localLinksSd, label);
+  if (options.focus === 'military' && options.regionLinks) return trendMilitaryRegionHref(label);
   if (options.localLinksSd) return trendLocalHref(options.localLinksSd, label);
   if (options.regionLinks) return trendRegionHref(label);
   return '';
@@ -2214,6 +2224,22 @@ function disclosureFocusCardsHtml(ds) {
           </a>`).join('')}
       </div>
     </section>`;
+}
+
+function disclosureFocusTabsHtml(currentKey) {
+  const tabs = [
+    ['assets', '재산'],
+    ['criminal', '전과'],
+    ['tax', '체납'],
+    ['military', '병역'],
+  ];
+  return `
+    <div class="tax-mode-tabs disclosure-mode-tabs" aria-label="공개정보 보기 기준">
+      ${tabs.map(([key, label]) => `
+        <a href="${disclosureFocusHref(key)}" class="${key === currentKey ? 'active' : ''}">
+          <strong>${escapeHtml(label)}</strong>
+        </a>`).join('')}
+    </div>`;
 }
 
 function assetBars(items, options = {}) {
@@ -2392,12 +2418,15 @@ function militaryCandidateListHtml(items, options = {}) {
         const context = candidateRankContext(c, options.includeRegion ?? false);
         const raw = r.disclosures?.military || militaryStatusLabel(r.military);
         return `
-          <li class="military-candidate-item">
-            <button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(c.name)} 상세 정보">${escapeHtml(c.name || '-')}</button>
-            <span class="candidate-rank-party" style="border-color:${partyColor(c.jdName)}">${escapeHtml(c.jdName || '무소속')}</span>
-            <span class="military-candidate-context">${escapeHtml(context)}</span>
-            <strong class="military-candidate-status">${militaryStatusLabel(r.military)}</strong>
-            <span class="military-candidate-raw">${escapeHtml(raw)}</span>
+          <li class="military-candidate-item" title="${escapeHtml(raw)}">
+            <div class="military-candidate-main">
+              <button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(c.name)} 상세 정보">${escapeHtml(c.name || '-')}</button>
+              <strong class="military-candidate-status">${militaryStatusLabel(r.military)}</strong>
+            </div>
+            <div class="military-candidate-meta">
+              <span class="candidate-rank-party" style="border-color:${partyColor(c.jdName)}">${escapeHtml(c.jdName || '무소속')}</span>
+              <span class="military-candidate-context">${escapeHtml(context)}</span>
+            </div>
           </li>`;
       }).join('')}
     </ul>`;
@@ -2470,6 +2499,27 @@ function disclosureRegionOverviewHtml(sd, summary) {
         <span class="disclosure-label">${escapeHtml(sd)} 남성 병역 미필률</span>
         <strong>${formatPct(summary.military.notServedRate)}</strong>
         <small>미필 ${summary.military.notServed.toLocaleString()}명 / 병역 대상 남성 ${summary.military.eligible.toLocaleString()}명</small>
+      </div>
+    </div>`;
+}
+
+function militaryRegionOverviewHtml(label, summary) {
+  return `
+    <div class="disclosure-overview">
+      <div class="disclosure-card disclosure-focus-military">
+        <span class="disclosure-label">${escapeHtml(label)} 남성 후보</span>
+        <strong>${summary.military.count.toLocaleString()}명</strong>
+        <small>병역 공개 대상 후보 기준</small>
+      </div>
+      <div class="disclosure-card disclosure-focus-military">
+        <span class="disclosure-label">병역 대상 남성</span>
+        <strong>${summary.military.eligible.toLocaleString()}명</strong>
+        <small>군필 ${summary.military.served.toLocaleString()}명 · 미필 ${summary.military.notServed.toLocaleString()}명</small>
+      </div>
+      <div class="disclosure-card disclosure-focus-military">
+        <span class="disclosure-label">미필률</span>
+        <strong>${formatPct(summary.military.notServedRate)}</strong>
+        <small>병역 대상 남성 중 미필 비율</small>
       </div>
     </div>`;
 }
@@ -2553,7 +2603,7 @@ function renderTrendRegionFull(sd) {
         </div>
         <div>
           <h4 class="metric-title">시군구별 병역 미필률 <small>지역명 클릭</small></h4>
-          <div class="bar-list">${militaryBars(sggMilitary, { limit: maxLocalItems, localLinksSd: sd }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
+          <div class="bar-list">${militaryBars(sggMilitary, { limit: maxLocalItems, localLinksSd: sd, focus: 'military' }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
         </div>
       </div>
       <p class="trend-meta">시군구별 통계는 해당 시군구 선거구로 분류되는 후보 기준입니다. 시도지사·교육감처럼 시도 전체 선거 후보는 시군구 막대에서는 제외했습니다.</p>
@@ -2621,6 +2671,111 @@ function renderTrendLocalFull(sd, local) {
         </div>
       </div>
       <p class="trend-meta">시도지사·교육감처럼 시도 전체 선거 후보는 시군구 후보 순위에서 제외됩니다. 후보 이름을 누르면 선관위 공개정보와 후보 상세를 볼 수 있습니다.</p>
+    </section>`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function renderTrendMilitaryRegionFull(sd) {
+  sd = canonicalSidoName(sd);
+  const app = document.getElementById('app');
+  app.className = '';
+  if (!state.data) {
+    app.innerHTML = '<div class="loading">불러오는 중…</div>';
+    return;
+  }
+  const ds = buildDisclosureStats();
+  const rows = ds.rows.filter(r => r.sd === sd);
+  if (!rows.length) {
+    app.innerHTML = `
+      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><span class="current">${escapeHtml(sd || '지역')}</span></nav>
+      <div class="error-banner"><strong>지역 병역 통계를 찾지 못했습니다.</strong> 다시 지역을 선택해 주세요.</div>`;
+    return;
+  }
+
+  const summary = disclosureSummaryFromRows(rows);
+  const localRows = rows.filter(localDistrictName);
+  const sggMilitary = rankedMilitaryGroups(localRows, localDistrictName, 1);
+  const militaryNotServedRows = militaryCandidateRows(rows);
+  const maxLocalItems = 99;
+
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><span class="current">${escapeHtml(sd)}</span></nav>
+    <div class="detail-head">
+      <div>
+        <h1 class="detail-title">${escapeHtml(sd)} 병역 미필 후보</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sd)} 병역 미필 후보 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+      </div>
+      <div class="detail-inline-stats">
+        <span>미필 ${militaryNotServedRows.length.toLocaleString()}명</span>
+        <span>대상 ${summary.military.eligible.toLocaleString()}명</span>
+        <span>미필률 ${formatPct(summary.military.notServedRate)}</span>
+      </div>
+    </div>
+    <p class="page-intro">병역 대상 남성 기준의 미필률과 후보 명단을 지역별로 봅니다.</p>
+
+    ${militaryRegionOverviewHtml(sd, summary)}
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(sd)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
+      ${militaryCandidateListHtml(militaryNotServedRows, {
+        includeRegion: false,
+        emptyText: `${sd}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
+      })}
+      <p class="trend-meta">후보 이름을 누르면 상세 공개정보의 병역 원문을 확인할 수 있습니다.</p>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">시군구별 병역 미필률 <small>지역명 클릭</small></h3>
+      <div class="bar-list">${militaryBars(sggMilitary, { limit: maxLocalItems, localLinksSd: sd, focus: 'military' }) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
+      <p class="trend-meta">시군구별 통계는 해당 시군구 선거구로 분류되는 후보 기준입니다. 시도 전체 선거 후보는 시군구 막대에서는 제외했습니다.</p>
+    </section>`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function renderTrendMilitaryLocalFull(sd, local) {
+  sd = canonicalSidoName(sd);
+  const app = document.getElementById('app');
+  app.className = '';
+  if (!state.data) {
+    app.innerHTML = '<div class="loading">불러오는 중…</div>';
+    return;
+  }
+  const ds = buildDisclosureStats();
+  const rows = ds.rows.filter(r => r.sd === sd && localDistrictName(r) === local);
+  if (!rows.length) {
+    app.innerHTML = `
+      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><a href="${trendMilitaryRegionHref(sd)}">${escapeHtml(sd || '지역')}</a><span class="sep">›</span><span class="current">${escapeHtml(local || '시군구')}</span></nav>
+      <div class="error-banner"><strong>시군구 병역 통계를 찾지 못했습니다.</strong> 다시 지역을 선택해 주세요.</div>`;
+    return;
+  }
+
+  const summary = disclosureSummaryFromRows(rows);
+  const militaryNotServedRows = militaryCandidateRows(rows);
+  const title = `${sd} ${local}`;
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><a href="${trendMilitaryRegionHref(sd)}">${escapeHtml(sd)}</a><span class="sep">›</span><span class="current">${escapeHtml(local)}</span></nav>
+    <div class="detail-head">
+      <div>
+        <h1 class="detail-title">${escapeHtml(title)} 병역 미필 후보</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(title)} 병역 미필 후보 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+      </div>
+      <div class="detail-inline-stats">
+        <span>미필 ${militaryNotServedRows.length.toLocaleString()}명</span>
+        <span>대상 ${summary.military.eligible.toLocaleString()}명</span>
+        <span>미필률 ${formatPct(summary.military.notServedRate)}</span>
+      </div>
+    </div>
+    <p class="page-intro">병역 대상 남성 중 미필 후보를 시군구 단위로 확인합니다.</p>
+
+    ${militaryRegionOverviewHtml(title, summary)}
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(local)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
+      ${militaryCandidateListHtml(militaryNotServedRows, {
+        includeRegion: false,
+        emptyText: `${local}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
+      })}
+      <p class="trend-meta">병역 미필률은 병역 대상 남성만 분모로 계산합니다. 여성 후보와 병역 비대상 남성 후보는 분모에서 제외됩니다.</p>
     </section>`;
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
@@ -2744,7 +2899,7 @@ function militaryFocusHtml(ds) {
         </div>
         <div>
           <h4 class="metric-title">지역별 미필률 <small>지역명 클릭</small></h4>
-          <div class="bar-list">${militaryBars(ds.byRegion.military, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+          <div class="bar-list">${militaryBars(ds.byRegion.military, { regionLinks: true, focus: 'military' }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
       <p class="trend-meta">남성 병역 미필률 ${formatPct(ds.military.notServedRate)}는 병역 대상 남성 ${ds.military.eligible.toLocaleString()}명 중 ${ds.military.notServed.toLocaleString()}명이 미필이라는 뜻입니다. 여성 후보는 병역 통계에서 제외했고, 남성 후보 중 병역 비대상도 분모에서 제외했습니다.</p>
@@ -2807,7 +2962,7 @@ function renderDisclosureFocusFull(kind = 'assets') {
       </div>
     </div>
     <p class="page-intro">${escapeHtml(config.intro)}</p>
-    ${disclosureFocusCardsHtml(ds)}
+    ${disclosureFocusTabsHtml(config.key)}
     ${config.body}`;
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
@@ -3785,6 +3940,7 @@ function updateSidoNavActive(hash) {
 function siteNavSectionForHash(hash) {
   if (hash === 'address') return 'address';
   if (hash === 'candidates' || hash.startsWith('cand/')) return 'candidates';
+  if (hash === 'disclosure/military' || hash.startsWith('trend/military/')) return 'military';
   if (hash === 'trend' || hash.startsWith('trend/')) return 'trend';
   if (hash === 'disclosure/criminal' || hash.startsWith('criminal/')) return 'criminal';
   if (hash === 'disclosure/tax' || hash === 'tax-arrears' || hash.startsWith('tax-arrears/')) return 'tax';
@@ -3826,6 +3982,10 @@ function route() {
   if (hash.startsWith('criminal/')) return renderCriminalCategoryFull(hash.slice('criminal/'.length));
   if (hash.startsWith('trend/')) {
     const parts = hash.split('/');
+    if (parts[1] === 'military') {
+      if (parts.length >= 4) return renderTrendMilitaryLocalFull(parts[2], parts.slice(3).join('/'));
+      return renderTrendMilitaryRegionFull(parts[2]);
+    }
     if (parts.length >= 3) return renderTrendLocalFull(parts[1], parts.slice(2).join('/'));
     return renderTrendRegionFull(parts[1]);
   }
