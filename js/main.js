@@ -522,12 +522,30 @@ function seatCountForCandidateGroup(list, stats = null) {
   return total || null;
 }
 
-function candidateSeatLabel(list, stats = null) {
-  const count = list.length.toLocaleString();
+function districtCompetitionMeta(list, stats = null) {
+  const activeList = (list || []).filter(isActiveCandidate);
   const seat = seatCountForCandidateGroup(list, stats);
-  return seat
-    ? `후보 ${count}명 · 정원 ${seat.toLocaleString()}석`
-    : `후보 ${count}명`;
+  const count = activeList.length;
+  return {
+    count,
+    seat,
+    ratio: seat ? count / seat : null,
+    uncontested: !!seat && count > 0 && count <= seat,
+  };
+}
+
+function districtCompetitionLabelFromValues(countValue, seatValue) {
+  const count = Number(countValue) || 0;
+  const seat = Number(seatValue) || 0;
+  if (!seat) return `<span class="district-meta"><span>후보 ${count}명</span></span>`;
+  const ratio = `${(count / seat).toFixed(1)}:1`;
+  const uncontested = count > 0 && count <= seat;
+  return `<span class="district-meta"><span>후보 ${count.toLocaleString()}명</span><span>정원 ${seat.toLocaleString()}석</span><span class="district-ratio">${ratio}</span>${uncontested ? '<span class="district-flag">무투표</span>' : ''}</span>`;
+}
+
+function districtCompetitionLabel(list, stats = null) {
+  const meta = districtCompetitionMeta(list, stats);
+  return districtCompetitionLabelFromValues(meta.count, meta.seat);
 }
 
 function buildCompetitionRanking() {
@@ -1035,12 +1053,15 @@ function closeCandidateModal() {
   document.body.classList.remove('modal-open');
 }
 
-function candidateCard(label, list) {
+function candidateCard(label, list, opts = {}) {
+  const countHtml = opts.showCompetition
+    ? districtCompetitionLabel(list, opts.seatStats)
+    : `<span class="district-meta"><span>${list.length.toLocaleString()}명</span></span>`;
   return `
     <div class="candidate-card">
       <div class="cc-header">
         <div class="cc-name">${label}</div>
-        <div class="cc-count">${list.length}명</div>
+        <div class="cc-count">${countHtml}</div>
       </div>
       ${list.length === 0 ? '<div class="cc-empty">등록된 후보가 없습니다.</div>' : list.map(candidateRow).join('')}
     </div>`;
@@ -1491,6 +1512,7 @@ function renderDetailSection(section, sidoName) {
   }
 
   const { layout, groupBy } = section.detail;
+  const seatStats = buildSeatStats(new Set([String(section.sgTypecode)]));
 
   if (layout === 'single') {
     const label = section.id === 'chief'
@@ -1498,7 +1520,7 @@ function renderDetailSection(section, sidoName) {
       : `${sidoName} ${section.title}`;
     return `
       <h3 class="section-title">${section.title}</h3>
-      <div class="single-section">${candidateCard(label, candidates)}</div>`;
+      <div class="single-section">${candidateCard(label, candidates, { showCompetition: true, seatStats })}</div>`;
   }
 
   if (layout === 'grid') {
@@ -1511,7 +1533,7 @@ function renderDetailSection(section, sidoName) {
     return `
       <h3 class="section-title">${section.title}</h3>
       <div class="basic-grid">
-        ${keys.map(k => candidateCard(k, groups[k])).join('')}
+        ${keys.map(k => candidateCard(k, groups[k], { showCompetition: true, seatStats })).join('')}
       </div>`;
   }
 
@@ -1524,7 +1546,6 @@ function renderDetailSection(section, sidoName) {
     }, {});
     const keys = Object.keys(groups).sort(koSort);
     const gridId = `cg-${section.id}`;
-    const seatStats = buildSeatStats(new Set([String(section.sgTypecode)]));
     const totalSeats = keys.reduce((sum, k) => sum + (seatCountForCandidateGroup(groups[k], seatStats) || 0), 0);
     const seatSummary = totalSeats ? ` · 정원 ${totalSeats.toLocaleString()}석` : '';
     return `
@@ -1539,7 +1560,7 @@ function renderDetailSection(section, sidoName) {
           <details class="electoral-district">
             <summary>
               <span class="ed-name" title="${escapeHtml(k)}">${escapeHtml(k)}</span>
-              <span class="ed-count">${candidateSeatLabel(groups[k], seatStats)}</span>
+              <span class="ed-count">${districtCompetitionLabel(groups[k], seatStats)}</span>
             </summary>
             <div class="ed-body">${groups[k].map(candidateRow).join('')}</div>
           </details>`).join('')}
@@ -4071,7 +4092,10 @@ function renderMpBox() {
     const sdShort = (SIDO_TAGS[sd] || [sd])[0];
     const linked = list.length > 0;
     const href = `#${encodeURIComponent(sidoFor({ sdName: sd }))}::${encodeURIComponent(sgg)}`;
-    const detail = linked ? `${stage} <strong>${list.length}</strong>명` : `${stage} 미등록`;
+    const seat = parseInt(s.sggJungsu, 10) || 1;
+    const detail = linked
+      ? districtCompetitionLabelFromValues(list.filter(isActiveCandidate).length, seat)
+      : `<span class="district-meta"><span>${stage} 미등록</span><span>정원 ${seat.toLocaleString()}석</span></span>`;
     const inner = `
       <div class="mp-card-region">
         <span class="mp-card-sido">${sdShort}</span>

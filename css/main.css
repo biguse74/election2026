@@ -203,8 +203,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
 .mp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.6rem; margin-bottom: 2.5rem; }
 .mp-card {
   display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: baseline; gap: 0.3rem 0.6rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start; gap: 0.3rem 0.6rem;
   background: var(--bg-card); border: 1px solid var(--rule);
   padding: 0.7rem 0.95rem; text-decoration: none; color: inherit;
   transition: all 0.18s ease;
@@ -213,7 +213,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
 .mp-card-region { min-width: 0; word-break: keep-all; }
 .mp-card-sido { font-size: 0.72rem; color: var(--accent); font-weight: 700; letter-spacing: 0.04em; margin-right: 0.3rem; white-space: nowrap; }
 .mp-card-sgg { font-family: var(--serif); font-weight: 700; font-size: 0.92rem; color: var(--ink); overflow-wrap: anywhere; }
-.mp-card-detail { font-size: 0.78rem; color: var(--ink-sub); white-space: nowrap; align-self: start; }
+.mp-card-detail { font-size: 0.78rem; color: var(--ink-sub); align-self: start; }
+.mp-card-detail .district-meta { justify-content: flex-end; }
 .mp-card-detail strong { color: var(--ink); font-weight: 700; }
 .mp-card-empty { opacity: 0.62; cursor: help; }
 .mp-card-empty:hover { transform: none; box-shadow: none; border-color: var(--rule); }
@@ -241,9 +242,28 @@ main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
 
 /* Candidate card (공통) */
 .candidate-card { background: var(--bg-card); border: 1px solid var(--rule); padding: 1rem 1.25rem; }
-.cc-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule); }
+.cc-header { display: flex; justify-content: space-between; align-items: baseline; gap: 0.8rem; margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule); }
 .cc-name { font-family: var(--serif); font-weight: 700; font-size: 1.05rem; }
-.cc-count { font-size: 0.8rem; color: var(--ink-sub); }
+.cc-count { font-size: 0.8rem; color: var(--ink-sub); min-width: 0; }
+.district-meta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.18rem 0.45rem;
+  white-space: normal;
+  font-variant-numeric: tabular-nums;
+}
+.district-ratio { color: var(--ink); font-weight: 700; }
+.district-flag {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  color: var(--ink);
+  border-radius: 2px;
+  padding: 0.04rem 0.32rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
 .cc-empty { font-size: 0.85rem; color: var(--ink-sub); padding: 0.5rem 0; }
 
 /* Candidate row — grid로 명확한 컬럼 정의(색띠·이름·정당·액션). 박스 폭 좁아도 wrap 없이 안정. */
@@ -312,7 +332,10 @@ main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
 }
 .ed-count {
   font-size: 0.78rem; color: var(--ink-sub); flex-shrink: 0;
-  white-space: nowrap; font-variant-numeric: tabular-nums;
+  font-variant-numeric: tabular-nums;
+}
+.ed-count .district-meta {
+  max-width: 190px;
 }
 .ed-body { padding: 0 1rem 0.8rem; border-top: 1px dotted var(--rule); }
 .ed-body .candidate:first-child { padding-top: 0.6rem; }
