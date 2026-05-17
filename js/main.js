@@ -155,7 +155,7 @@ const ABSENCE_NOTES = {
   },
 };
 
-const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: null, jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null, historyCounting: null, criminalOcr: null, criminalOcrMap: {} };
+const state = { data: null, parties: {}, nominations: null, dateStr: null, source: null, articles: null, articleMap: {}, candidateDetails: {}, candidateDetailsMeta: null, constituencies: null, addressIndex: null, jointConstituencySdMap: {}, changelog: null, timeseries: null, history: null, historyTurnout: null, historyCounting: null, criminalOcr: null, criminalOcrMap: {}, uncontestedCandidateSet: null };
 const koSort = (a, b) => a.localeCompare(b, 'ko');
 
 // ============ Helpers ============
@@ -615,6 +615,36 @@ function buildUncontestedList() {
   };
 }
 
+function uncontestedCandidateSet() {
+  if (state.uncontestedCandidateSet) return state.uncontestedCandidateSet;
+  const out = new Set();
+  const stats = buildSeatStats(UNCONTESTED_SG_TYPES);
+  if (!stats) {
+    state.uncontestedCandidateSet = out;
+    return out;
+  }
+  for (const [key, seat] of Object.entries(stats.seats)) {
+    const candidates = stats.candidatesByKey[key] || [];
+    const count = stats.counts[key] || 0;
+    if (!count) continue;
+    const [sgType] = key.split('|');
+    const isProportional = ['8', '9'].includes(String(sgType));
+    const parties = new Set(candidates.map(c => c.jdName || c.party || '무소속'));
+    const isSinglePartyPr = isProportional && count > seat && parties.size === 1;
+    if (count <= seat || isSinglePartyPr) {
+      candidates.forEach(c => {
+        if (c.huboid) out.add(String(c.huboid));
+      });
+    }
+  }
+  state.uncontestedCandidateSet = out;
+  return out;
+}
+
+function isUncontestedCandidate(c) {
+  return isActiveCandidate(c) && uncontestedCandidateSet().has(String(c.huboid || ''));
+}
+
 // 후보 등록 시작일. 이 날짜 이후로는 candidates 스냅샷이 우선.
 const CANDIDATES_START = '20260514';
 
@@ -686,10 +716,13 @@ function candidateRow(c) {
   const statusBadge = statusInfo
     ? `<span class="status-badge status-${statusInfo.cls}" title="${statusInfo.tip}" data-tip="${statusInfo.tip}">${statusInfo.label}</span>`
     : '';
+  const uncontestedBadge = isUncontestedCandidate(c)
+    ? `<span class="uncontested-badge" title="등록 후보 수가 의원정수 이하인 무투표 당선 선거구 후보">무투표 당선</span>`
+    : '';
   return `
     <div class="candidate${confirmed ? ' confirmed' : ''}${statusInfo ? ' candidate-inactive' : ''}">
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
-      <button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${c.name} 상세 정보">${c.name}${statusBadge}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>
+      <button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${c.name} 상세 정보">${c.name}${uncontestedBadge}${statusBadge}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>
       <div class="candidate-party">${c.jdName}</div>
       <span class="candidate-actions">
         ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
@@ -4701,6 +4734,7 @@ async function main() {
     // 로딩 시점에 단 한 번 dedup + 지역 보정. 이후 모든 화면은 깨끗한 데이터를 본다.
     const candidates = normalizeCandidateRegions(dedupeByHuboid(data.candidates), constituencies);
     state.data = { ...data, candidates };
+    state.uncontestedCandidateSet = null;
     state.parties = parties;
     state.nominations = nominations;
     state.dateStr = dateStr;
