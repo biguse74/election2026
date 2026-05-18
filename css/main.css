@@ -1613,6 +1613,81 @@ footer a:hover { text-decoration: underline; }
   line-height: 1.65;
 }
 .uc-reading-note p { margin: 0 0 0.45rem; }
+.uc-dual-legend {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  color: var(--ink-sub);
+  font-size: 0.76rem;
+  margin: 0 0 0.45rem;
+}
+.uc-dual-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+}
+.uc-dual-legend i {
+  display: inline-block;
+  width: 0.72rem;
+  height: 0.72rem;
+  border-radius: 50%;
+}
+.uc-criminal-dot,
+.uc-dual-criminal { background: #b25c00; }
+.uc-tax-dot,
+.uc-dual-tax { background: #8f3d5a; }
+.uc-dual-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.52rem;
+}
+.uc-dual-bar {
+  display: grid;
+  grid-template-columns: 86px minmax(120px, 1fr) 172px;
+  gap: 0.62rem;
+  align-items: center;
+}
+.uc-dual-label {
+  font-size: 0.86rem;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.uc-dual-tracks {
+  display: grid;
+  gap: 0.22rem;
+}
+.uc-dual-track {
+  height: 9px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.uc-dual-fill {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  transition: width 0.3s ease;
+}
+.uc-dual-value {
+  text-align: right;
+  min-width: 0;
+}
+.uc-dual-value strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 0.88rem;
+  line-height: 1.2;
+}
+.uc-dual-value small {
+  display: block;
+  color: var(--ink-sub);
+  font-size: 0.7rem;
+  line-height: 1.25;
+  margin-top: 0.1rem;
+}
 
 /* collapsible 섹션 헤더의 일괄 토글 버튼 (시도의원·기초의원 한꺼번에 펼치기) */
 .section-toolbar { display: inline-flex; gap: 0.4rem; margin-left: 0.6rem; vertical-align: middle; }
@@ -1877,6 +1952,9 @@ body.modal-open { overflow: hidden; }
   .uc-stats-grid,
   .uc-party-grid { grid-template-columns: 1fr; }
   .uc-reading-note { border-left: none; border-top: 2px solid var(--ink); padding: 0.75rem 0 0; }
+  .uc-dual-bar { grid-template-columns: 78px minmax(0, 1fr); gap: 0.35rem 0.55rem; }
+  .uc-dual-value { grid-column: 2; text-align: left; }
+  .uc-dual-value strong { font-size: 0.84rem; }
   .crime-stat { border-right: none; border-bottom: 1px solid var(--rule); }
   .crime-stat:last-child { border-bottom: none; }
   .crime-chip-list { margin-bottom: 0.6rem; }

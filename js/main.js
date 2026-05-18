@@ -4862,6 +4862,40 @@ function uncontestedRateBars(items, options = {}) {
   }).join('');
 }
 
+function uncontestedDualCountBars(items, options = {}) {
+  const shown = items.filter(x => x.count > 0);
+  if (!shown.length) return '<p class="trend-meta">표시할 무투표 후보 통계가 없습니다.</p>';
+  const max = Math.max(...shown.flatMap(x => [x.criminal, x.tax]), 1);
+  return `
+    <div class="uc-dual-legend" aria-hidden="true">
+      <span><i class="uc-criminal-dot"></i>전과</span>
+      <span><i class="uc-tax-dot"></i>체납</span>
+    </div>
+    <div class="uc-dual-bars">
+      ${shown.map(x => {
+        const label = options.region ? sidoDisplayName(x.label) : x.label;
+        const criminalPct = Math.max(0, x.criminal / max * 100);
+        const taxPct = Math.max(0, x.tax / max * 100);
+        return `
+          <div class="uc-dual-bar">
+            <div class="uc-dual-label">${escapeHtml(label)}</div>
+            <div class="uc-dual-tracks">
+              <div class="uc-dual-track" title="${escapeHtml(label)} 전과 ${x.criminal.toLocaleString()}명">
+                <span class="uc-dual-fill uc-dual-criminal" style="width:${criminalPct.toFixed(1)}%"></span>
+              </div>
+              <div class="uc-dual-track" title="${escapeHtml(label)} 체납 ${x.tax.toLocaleString()}명">
+                <span class="uc-dual-fill uc-dual-tax" style="width:${taxPct.toFixed(1)}%"></span>
+              </div>
+            </div>
+            <div class="uc-dual-value">
+              <strong>전과 ${x.criminal.toLocaleString()} · 체납 ${x.tax.toLocaleString()}</strong>
+              <small>합집합 ${x.union.toLocaleString()}명 / 무투표 ${x.count.toLocaleString()}명 · ${formatPct(x.unionRate)}</small>
+            </div>
+          </div>`;
+      }).join('')}
+    </div>`;
+}
+
 function uncontestedDisclosureDashboardHtml(ds, uc) {
   if (!ds?.total) return '';
   return `
@@ -4900,11 +4934,11 @@ function uncontestedDisclosureDashboardHtml(ds, uc) {
       <div class="uc-stats-grid">
         <div>
           <h4 class="metric-title">시도별 전과·체납 후보 수 <small>비율은 보조 지표</small></h4>
-          <div class="bar-list">${uncontestedRateBars(ds.byRegion, { region: true, color: '#8f3d5a' })}</div>
+          ${uncontestedDualCountBars(ds.byRegion, { region: true })}
         </div>
         <div>
           <h4 class="metric-title">직책별 전과·체납 후보 수 <small>비율은 보조 지표</small></h4>
-          <div class="bar-list">${uncontestedRateBars(ds.byOffice, { color: '#2c5d8f' })}</div>
+          ${uncontestedDualCountBars(ds.byOffice)}
         </div>
       </div>
       <div class="uc-stats-grid uc-party-grid">
@@ -4914,7 +4948,7 @@ function uncontestedDisclosureDashboardHtml(ds, uc) {
         </div>
         <div class="uc-reading-note">
           <h4 class="metric-title">읽는 법</h4>
-          <p>시도·직책 차트는 전과 또는 최근 5년 체납 이력이 확인된 후보 수를 먼저 보여주고, 비율은 보조로만 표시합니다. 무투표 후보가 적은 지역은 비율이 쉽게 튈 수 있기 때문입니다.</p>
+          <p>시도·직책 차트는 전과와 체납을 색으로 나눠 보여줍니다. 두 항목에 동시에 걸리는 후보가 있어 막대를 단순 합산하지 않고, 합집합은 텍스트로 따로 표시했습니다.</p>
           <p>정당 비교는 무투표 후보 규모가 큰 더불어민주당과 국민의힘만 나란히 봅니다. 무투표 후보가 1명뿐인 정당은 비율이 과장돼 보일 수 있어 이 차트에서는 제외했습니다.</p>
           <p>체납은 최근 5년 체납 이력과 현 체납을 구분해야 하며, 전과 세부 죄명은 후보 상세의 선관위 원문 확인이 필요합니다.</p>
         </div>
