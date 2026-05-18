@@ -404,6 +404,7 @@ let candidateDetailsPromise = null;
 let addressIndexPromise = null;
 let criminalOcrPromise = null;
 let historyCountingPromise = null;
+let homeTrendBoxRefreshQueued = false;
 
 async function ensureCandidateDetails() {
   if (state.candidateDetailsMeta) return state.candidateDetailsMeta;
@@ -415,6 +416,22 @@ async function ensureCandidateDetails() {
     });
   }
   return candidateDetailsPromise;
+}
+
+function queueHomeTrendBoxRefresh() {
+  if (state.candidateDetailsMeta || homeTrendBoxRefreshQueued) return;
+  homeTrendBoxRefreshQueued = true;
+  ensureCandidateDetails()
+    .then(() => {
+      homeTrendBoxRefreshQueued = false;
+      const hash = decodeURIComponent(location.hash.slice(1));
+      if (hash && hash !== 'address') return;
+      const box = document.getElementById('home-trend-box');
+      if (box) box.innerHTML = renderTrendBox();
+    })
+    .catch(() => {
+      homeTrendBoxRefreshQueued = false;
+    });
 }
 
 async function ensureAddressIndex() {
@@ -2533,11 +2550,15 @@ function renderTrendBox() {
   const ds = buildDisclosureStats();
   const womenPct = s.byGender['여'] ? (s.byGender['여'] / s.total * 100) : 0;
   const topParty = s.parties[0];
-  const detailBits = ds.rows.length ? `
+  const detailBits = state.candidateDetailsMeta && ds.rows.length ? `
         <div class="trend-summary-stat"><strong>${formatEok(ds.assets.median)}</strong><small>재산 중앙값</small></div>
         <div class="trend-summary-stat"><strong>${formatPct(ds.criminal.rate)}</strong><small>전과 보유율</small></div>
         <div class="trend-summary-stat"><strong>${ds.taxArrears.holders.toLocaleString()}</strong>명<small>최근 5년 체납</small></div>
-        <div class="trend-summary-stat"><strong>${formatPct(ds.military.notServedRate)}</strong><small>남성 병역 미필률</small></div>` : '';
+        <div class="trend-summary-stat"><strong>${formatPct(ds.military.notServedRate)}</strong><small>남성 병역 미필률</small></div>` : `
+        <div class="trend-summary-stat"><strong>…</strong><small>재산 중앙값</small></div>
+        <div class="trend-summary-stat"><strong>…</strong><small>전과 보유율</small></div>
+        <div class="trend-summary-stat"><strong>…</strong><small>최근 5년 체납</small></div>
+        <div class="trend-summary-stat"><strong>…</strong><small>남성 병역 미필률</small></div>`;
   return `
     <a class="trend-card" href="#trend">
       <div class="trend-card-head">
@@ -4455,7 +4476,7 @@ function renderHome() {
     </div>
     ${renderAddressFinder()}
     ${summaryBox}
-    ${renderTrendBox()}
+    <div id="home-trend-box">${renderTrendBox()}</div>
     ${renderChangesBox()}
     ${renderMpBox()}
     <h2 class="section-title">시도별 후보자
@@ -4484,6 +4505,7 @@ function renderHome() {
   const app = document.getElementById('app');
   app.innerHTML = html;
   app.classList.remove('loading');
+  queueHomeTrendBoxRefresh();
 }
 
 // ============ Render: 상세 ============
