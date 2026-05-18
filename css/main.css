@@ -717,7 +717,7 @@ footer a:hover { text-decoration: underline; }
   display: flex; flex-direction: column; gap: 0.35rem;
 }
 .candidate-rank-item {
-  display: grid; grid-template-columns: 28px minmax(82px, 0.8fr) auto minmax(120px, 1fr) auto;
+  display: grid; grid-template-columns: 28px minmax(88px, 0.8fr) 92px minmax(120px, 1fr) minmax(82px, 96px);
   align-items: center; gap: 0.55rem;
   padding: 0.55rem 0; border-bottom: 1px solid var(--rule);
 }
@@ -734,7 +734,8 @@ footer a:hover { text-decoration: underline; }
 }
 .candidate-rank-name:hover { color: var(--accent); }
 .candidate-rank-party {
-  max-width: 86px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  width: 100%; min-width: 0; box-sizing: border-box;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   border-left: 4px solid var(--rule); padding-left: 0.45rem;
   color: var(--ink-sub); font-size: 0.76rem;
 }
@@ -744,7 +745,7 @@ footer a:hover { text-decoration: underline; }
 }
 .candidate-rank-value {
   font-family: var(--serif); font-weight: 900; font-size: 0.95rem;
-  color: var(--ink); text-align: right; white-space: nowrap;
+  min-width: 0; color: var(--ink); text-align: right; white-space: nowrap;
 }
 .military-candidate-list {
   list-style: none; padding: 0; margin: 0;
@@ -1947,14 +1948,16 @@ body.modal-open { overflow: hidden; }
   .metric-bar-value { font-size: 0.84rem; }
   .candidate-rank-item,
   .region-rank .candidate-rank-item {
-    grid-template-columns: 24px minmax(76px, 1fr) auto;
+    grid-template-columns: 24px minmax(0, 1fr) minmax(72px, max-content);
     gap: 0.4rem 0.5rem;
   }
+  .candidate-rank-no { grid-column: 1; grid-row: 1; }
+  .candidate-rank-name { grid-column: 2; grid-row: 1; }
   .candidate-rank-context {
-    grid-column: 2 / -1; white-space: normal; line-height: 1.35;
+    grid-column: 2 / -1; grid-row: 3; white-space: normal; line-height: 1.35;
   }
   .candidate-rank-value { grid-column: 3; grid-row: 1; }
-  .candidate-rank-party { max-width: 76px; }
+  .candidate-rank-party { grid-column: 2; grid-row: 2; width: 84px; }
   .military-candidate-list { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
   .military-candidate-context { white-space: normal; line-height: 1.35; }
   .military-candidate-meta { align-items: flex-start; }
