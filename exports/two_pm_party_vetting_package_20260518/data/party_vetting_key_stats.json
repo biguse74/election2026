@@ -1,0 +1,167 @@
+{
+  "generated_at": "2026-05-18T21:44:07",
+  "theme": "민주당과 국민의힘 어느 쪽이 더 헐겁게 공천했을까",
+  "source_meta": {
+    "snapshot_file": "data\\candidates\\20260603\\snapshot_20260518.json",
+    "snapshot_fetched_at": "2026-05-18T04:37:12+09:00",
+    "candidate_details_file": "data\\candidate_details.json",
+    "criminal_ocr_file": "data\\criminal_ocr.json",
+    "constituencies_file": "data\\constituencies.json",
+    "total_active_candidates": 7828,
+    "target_party_candidates": 5958,
+    "important_categories": [
+      "공직선거법",
+      "뇌물",
+      "무면허운전",
+      "배임",
+      "보조금",
+      "사기",
+      "성범죄",
+      "음주·위험운전",
+      "절도",
+      "정치자금법",
+      "조세",
+      "직권남용",
+      "청탁금지법",
+      "특가법",
+      "허위공문서·문서위조·공용서류",
+      "횡령"
+    ]
+  },
+  "party_summary": {
+    "국민의힘": {
+      "party": "국민의힘",
+      "total_candidates": 2744,
+      "criminal_record_candidates": 914,
+      "criminal_record_rate": "33.3%",
+      "official_vetting_record_candidates": 500,
+      "official_vetting_record_rate": "18.2%",
+      "hard_vetting_record_candidates": 137,
+      "hard_vetting_record_rate": "5.0%",
+      "economic_trust_record_candidates": 56,
+      "economic_trust_record_rate": "2.0%",
+      "election_integrity_record_candidates": 66,
+      "election_integrity_record_rate": "2.4%",
+      "tax_arrears_5y_candidates": 451,
+      "tax_arrears_5y_rate": "16.4%",
+      "tax_arrears_5y_sum_thousand_krw": 5270625,
+      "tax_arrears_current_candidates": 29,
+      "tax_arrears_current_rate": "1.1%",
+      "tax_arrears_current_sum_thousand_krw": 495437,
+      "money_trust_flag_candidates": 498,
+      "money_trust_flag_rate": "18.1%",
+      "any_vetting_flag_candidates": 853,
+      "any_vetting_flag_rate": "31.1%",
+      "uncontested_candidates": 198,
+      "uncontested_rate": "7.2%",
+      "uncontested_with_any_vetting_flag": 64
+    },
+    "더불어민주당": {
+      "party": "더불어민주당",
+      "total_candidates": 3214,
+      "criminal_record_candidates": 950,
+      "criminal_record_rate": "29.6%",
+      "official_vetting_record_candidates": 479,
+      "official_vetting_record_rate": "14.9%",
+      "hard_vetting_record_candidates": 141,
+      "hard_vetting_record_rate": "4.4%",
+      "economic_trust_record_candidates": 48,
+      "economic_trust_record_rate": "1.5%",
+      "election_integrity_record_candidates": 75,
+      "election_integrity_record_rate": "2.3%",
+      "tax_arrears_5y_candidates": 391,
+      "tax_arrears_5y_rate": "12.2%",
+      "tax_arrears_5y_sum_thousand_krw": 3247863,
+      "tax_arrears_current_candidates": 11,
+      "tax_arrears_current_rate": "0.3%",
+      "tax_arrears_current_sum_thousand_krw": 662718,
+      "money_trust_flag_candidates": 432,
+      "money_trust_flag_rate": "13.4%",
+      "any_vetting_flag_candidates": 799,
+      "any_vetting_flag_rate": "24.9%",
+      "uncontested_candidates": 280,
+      "uncontested_rate": "8.7%",
+      "uncontested_with_any_vetting_flag": 69
+    }
+  },
+  "comparison": [
+    {
+      "metric": "전과 공개",
+      "democratic_count": 950,
+      "democratic_rate": "29.6%",
+      "ppp_count": 914,
+      "ppp_rate": "33.3%",
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 3.75
+    },
+    {
+      "metric": "공직 검증 전과",
+      "democratic_count": 479,
+      "democratic_rate": "14.9%",
+      "ppp_count": 500,
+      "ppp_rate": "18.2%",
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 3.32
+    },
+    {
+      "metric": "핵심 검증 전과",
+      "democratic_count": 141,
+      "democratic_rate": "4.4%",
+      "ppp_count": 137,
+      "ppp_rate": "5.0%",
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 0.61
+    },
+    {
+      "metric": "사기·횡령·배임·뇌물",
+      "democratic_count": 48,
+      "democratic_rate": "1.5%",
+      "ppp_count": 56,
+      "ppp_rate": "2.0%",
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 0.55
+    },
+    {
+      "metric": "최근 5년 체납",
+      "democratic_count": 391,
+      "democratic_rate": "12.2%",
+      "ppp_count": 451,
+      "ppp_rate": "16.4%",
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 4.27
+    },
+    {
+      "metric": "돈·신뢰 검증 플래그",
+      "democratic_count": 432,
+      "democratic_rate": "13.4%",
+      "ppp_count": 498,
+      "ppp_rate": "18.1%",
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 4.71
+    },
+    {
+      "metric": "전과·체납 검증 플래그",
+      "democratic_count": 799,
+      "democratic_rate": "24.9%",
+      "ppp_count": 853,
+      "ppp_rate": "31.1%",
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 6.23
+    },
+    {
+      "metric": "무투표 당선",
+      "democratic_count": 280,
+      "democratic_rate": "8.7%",
+      "ppp_count": 198,
+      "ppp_rate": "7.2%",
+      "higher_rate_party": "더불어민주당",
+      "rate_gap_pct_point": 1.5
+    }
+  ],
+  "definitions": {
+    "official_vetting_record": "전과 PDF 죄명 분류 결과 중 group='공직 검증'에 속한 유형이 1개 이상인 후보",
+    "hard_vetting_record": "사기·횡령·배임·뇌물, 공직선거법·정치자금법·청탁금지법, 직권남용·허위공문서·문서위조·공용서류·공무원법, 조세·보조금 중 1개 이상",
+    "money_trust_flag": "사기·횡령·배임·뇌물 전과 또는 최근 5년/현 체납 중 1개 이상",
+    "any_vetting_flag": "공직 검증 전과 또는 최근 5년/현 체납 중 1개 이상"
+  }
+}
