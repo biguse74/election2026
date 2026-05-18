@@ -468,6 +468,32 @@ function prettifySgg(sgg) {
   });
 }
 
+function displayDistrictName(sd, sgg) {
+  let value = String(sgg || '').trim();
+  if (!value) return value;
+  const canonicalSd = canonicalSidoName(sd);
+  const fullPrefixes = [
+    canonicalSd,
+    String(sd || '').trim(),
+  ].filter(Boolean);
+  for (const prefix of [...new Set(fullPrefixes)]) {
+    if (value === prefix) return '';
+    if (value.startsWith(`${prefix} `)) {
+      value = value.slice(prefix.length).trim();
+      break;
+    }
+    if (value.startsWith(prefix) && prefix.length >= 2) {
+      value = value.slice(prefix.length).trim();
+      break;
+    }
+  }
+  const shortPrefix = sidoDisplayName(canonicalSd || sd);
+  if (shortPrefix && value !== shortPrefix && value.startsWith(`${shortPrefix} `)) {
+    value = value.slice(shortPrefix.length).trim();
+  }
+  return value;
+}
+
 // 선거구 라벨에 시도 약칭을 붙여 동명 구(서구·중구·동구 등) 모호함 제거.
 // 예: "서구바선거구" → "광주 서구바선거구"
 function formatRegionLabel(item) {
@@ -477,7 +503,8 @@ function formatRegionLabel(item) {
   if (sd === JOINT_SIDO || sgg === JOINT_SIDO) return sidoDisplayName(sgg || sd);
   if (!sgg || sgg === sd) return sidoDisplayName(sd || sgg);
   const sdShort = sidoDisplayName(sd);
-  return `${sdShort} ${sgg}`;
+  const district = displayDistrictName(sd, sgg);
+  return district ? `${sdShort} ${district}` : sdShort;
 }
 
 function canonicalSidoName(label) {
@@ -1796,7 +1823,8 @@ function historyDistrictLabel(d, sgTypecode) {
   const sgg = d?.sggName || '';
   const sdLabel = sidoDisplayName(sd);
   if (String(sgTypecode) === '3' || !sgg || sgg === sd) return sdLabel || sgg || '-';
-  return `${sdLabel} ${sgg}`.trim();
+  const district = displayDistrictName(sd, sgg);
+  return `${sdLabel} ${district || sgg}`.trim();
 }
 function historyDistrictTurnout(d) {
   if (!d?.eligible_voters || !d?.turnout_votes) return null;
@@ -2743,11 +2771,13 @@ function taxArrearsBars(items, options = {}) {
 }
 
 function candidateRankContext(c, includeRegion = true) {
+  const sgg = c.sggName && c.sggName !== c.sdName ? displayDistrictName(c.sdName, c.sggName) || c.sggName : '';
+  const wiw = c.wiwName && c.wiwName !== c.sggName ? displayDistrictName(c.sdName, c.wiwName) || c.wiwName : '';
   const parts = [
     includeRegion ? sidoDisplayName(sidoFor(c)) : '',
     SG_TITLE[String(c.sgTypecode)] || '',
-    c.sggName && c.sggName !== c.sdName ? c.sggName : '',
-    c.wiwName && c.wiwName !== c.sggName ? c.wiwName : '',
+    sgg,
+    wiw,
   ].filter(Boolean);
   return [...new Set(parts)].join(' · ');
 }
@@ -4325,7 +4355,7 @@ function renderMpBox() {
     const inner = `
       <div class="mp-card-region">
         <span class="mp-card-sido">${sdShort}</span>
-        <span class="mp-card-sgg">${prettifySgg(sgg)}</span>
+        <span class="mp-card-sgg">${prettifySgg(displayDistrictName(sd, sgg) || sgg)}</span>
       </div>
       <div class="mp-card-detail">${detail}</div>`;
     return linked
@@ -4548,9 +4578,9 @@ function siteNavSectionForHash(hash) {
   if (hash === 'address') return 'address';
   if (hash === 'candidates' || hash.startsWith('cand/')) return 'candidates';
   if (hash === 'disclosure/military' || hash.startsWith('trend/military/')) return 'military';
-  if (hash === 'trend' || hash.startsWith('trend/')) return 'trend';
-  if (hash === 'disclosure/criminal' || hash.startsWith('criminal/')) return 'criminal';
-  if (hash === 'disclosure/tax' || hash === 'tax-arrears' || hash.startsWith('tax-arrears/')) return 'tax';
+  if (hash === 'disclosure/criminal' || hash.startsWith('criminal/') || hash.startsWith('trend/criminal/')) return 'criminal';
+  if (hash === 'disclosure/tax' || hash === 'tax-arrears' || hash.startsWith('tax-arrears/') || hash.startsWith('trend/tax5y/') || hash.startsWith('trend/taxCurrent/')) return 'tax';
+  if (hash === 'trend' || hash.startsWith('trend/') || hash === 'competition' || hash === 'uncontested' || hash.startsWith('uncontested/')) return 'trend';
   if (hash.startsWith('disclosure/')) return 'trend';
   if (hash === 'changes') return 'changes';
   if (hash === 'history') return 'history';
