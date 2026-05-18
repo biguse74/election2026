@@ -1,0 +1,305 @@
+{
+  "generated_at": "2026-05-19T02:47:53",
+  "theme": "민주당과 국민의힘 어느 쪽 공천이 더 헐거웠을까",
+  "major_party_conclusion": "전과·체납·돈 문제 비율은 국민의힘이 높고, 무투표 당선 규모와 병역 미필 비율은 민주당이 높다.",
+  "major_party_comparison": [
+    {
+      "axis": "전과 공개",
+      "democratic_count": 950,
+      "democratic_rate": 29.56,
+      "ppp_count": 914,
+      "ppp_rate": 33.31,
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 3.75,
+      "broadcast_note": "선관위 전과 공개정보에 1건 이상"
+    },
+    {
+      "axis": "공직 검증 전과",
+      "democratic_count": 479,
+      "democratic_rate": 14.9,
+      "ppp_count": 500,
+      "ppp_rate": 18.22,
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 3.32,
+      "broadcast_note": "전과 죄명 분류상 공직 검증 범주"
+    },
+    {
+      "axis": "핵심 검증 전과",
+      "democratic_count": 141,
+      "democratic_rate": 4.39,
+      "ppp_count": 137,
+      "ppp_rate": 4.99,
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 0.61,
+      "broadcast_note": "돈·선거·공직권한·조세·보조금"
+    },
+    {
+      "axis": "사기·횡령·배임·뇌물",
+      "democratic_count": 48,
+      "democratic_rate": 1.49,
+      "ppp_count": 56,
+      "ppp_rate": 2.04,
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 0.55,
+      "broadcast_note": "돈과 신뢰 범죄 묶음"
+    },
+    {
+      "axis": "최근 5년 체납",
+      "democratic_count": 391,
+      "democratic_rate": 12.17,
+      "ppp_count": 451,
+      "ppp_rate": 16.44,
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 4.27,
+      "broadcast_note": "최근 5년 체납액 1원 이상"
+    },
+    {
+      "axis": "현 체납",
+      "democratic_count": 11,
+      "democratic_rate": 0.34,
+      "ppp_count": 29,
+      "ppp_rate": 1.06,
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 0.71,
+      "broadcast_note": "현재 남아 있는 체납액 1원 이상"
+    },
+    {
+      "axis": "돈·신뢰 플래그",
+      "democratic_count": 432,
+      "democratic_rate": 13.44,
+      "ppp_count": 498,
+      "ppp_rate": 18.15,
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 4.71,
+      "broadcast_note": "사기·횡령·배임·뇌물 또는 체납"
+    },
+    {
+      "axis": "전과·체납 검증 플래그",
+      "democratic_count": 799,
+      "democratic_rate": 24.86,
+      "ppp_count": 853,
+      "ppp_rate": 31.09,
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 6.23,
+      "broadcast_note": "공직 검증 전과 또는 체납"
+    },
+    {
+      "axis": "무투표 당선 규모",
+      "democratic_count": 314,
+      "democratic_rate": 9.8,
+      "ppp_count": 198,
+      "ppp_rate": 7.2,
+      "higher_rate_party": "더불어민주당",
+      "rate_gap_pct_point": 2.6,
+      "broadcast_note": "공천이 곧 당선에 가까워지는 구조의 절대 규모"
+    },
+    {
+      "axis": "무투표 후보 중 전과·체납",
+      "democratic_count": 106,
+      "democratic_rate": 33.8,
+      "ppp_count": 81,
+      "ppp_rate": 40.9,
+      "higher_rate_party": "국민의힘",
+      "rate_gap_pct_point": 7.1,
+      "broadcast_note": "무투표 후보 안에서 전과·체납 후보가 차지하는 비중"
+    }
+  ],
+  "five_party_summary": [
+    {
+      "party": "더불어민주당",
+      "party_short": "민주당",
+      "total_candidates": 3214,
+      "criminal_record_candidates": 950,
+      "criminal_record_rate_pct": 29.56,
+      "official_vetting_record_candidates": 479,
+      "official_vetting_record_rate_pct": 14.9,
+      "economic_trust_record_candidates": 48,
+      "economic_trust_record_rate_pct": 1.49,
+      "tax_arrears_5y_candidates": 391,
+      "tax_arrears_5y_rate_pct": 12.17,
+      "tax_arrears_current_candidates": 11,
+      "tax_arrears_current_rate_pct": 0.34,
+      "money_trust_flag_candidates": 432,
+      "money_trust_flag_rate_pct": 13.44,
+      "any_vetting_flag_candidates": 799,
+      "any_vetting_flag_rate_pct": 24.86
+    },
+    {
+      "party": "국민의힘",
+      "party_short": "국힘",
+      "total_candidates": 2744,
+      "criminal_record_candidates": 914,
+      "criminal_record_rate_pct": 33.31,
+      "official_vetting_record_candidates": 500,
+      "official_vetting_record_rate_pct": 18.22,
+      "economic_trust_record_candidates": 56,
+      "economic_trust_record_rate_pct": 2.04,
+      "tax_arrears_5y_candidates": 451,
+      "tax_arrears_5y_rate_pct": 16.44,
+      "tax_arrears_current_candidates": 29,
+      "tax_arrears_current_rate_pct": 1.06,
+      "money_trust_flag_candidates": 498,
+      "money_trust_flag_rate_pct": 18.15,
+      "any_vetting_flag_candidates": 853,
+      "any_vetting_flag_rate_pct": 31.09
+    },
+    {
+      "party": "조국혁신당",
+      "party_short": "조국",
+      "total_candidates": 263,
+      "criminal_record_candidates": 94,
+      "criminal_record_rate_pct": 35.74,
+      "official_vetting_record_candidates": 51,
+      "official_vetting_record_rate_pct": 19.39,
+      "economic_trust_record_candidates": 5,
+      "economic_trust_record_rate_pct": 1.9,
+      "tax_arrears_5y_candidates": 36,
+      "tax_arrears_5y_rate_pct": 13.69,
+      "tax_arrears_current_candidates": 3,
+      "tax_arrears_current_rate_pct": 1.14,
+      "money_trust_flag_candidates": 41,
+      "money_trust_flag_rate_pct": 15.59,
+      "any_vetting_flag_candidates": 77,
+      "any_vetting_flag_rate_pct": 29.28
+    },
+    {
+      "party": "진보당",
+      "party_short": "진보",
+      "total_candidates": 316,
+      "criminal_record_candidates": 148,
+      "criminal_record_rate_pct": 46.84,
+      "official_vetting_record_candidates": 38,
+      "official_vetting_record_rate_pct": 12.03,
+      "economic_trust_record_candidates": 1,
+      "economic_trust_record_rate_pct": 0.32,
+      "tax_arrears_5y_candidates": 18,
+      "tax_arrears_5y_rate_pct": 5.7,
+      "tax_arrears_current_candidates": 0,
+      "tax_arrears_current_rate_pct": 0.0,
+      "money_trust_flag_candidates": 19,
+      "money_trust_flag_rate_pct": 6.01,
+      "any_vetting_flag_candidates": 56,
+      "any_vetting_flag_rate_pct": 17.72
+    },
+    {
+      "party": "개혁신당",
+      "party_short": "개혁",
+      "total_candidates": 192,
+      "criminal_record_candidates": 35,
+      "criminal_record_rate_pct": 18.23,
+      "official_vetting_record_candidates": 16,
+      "official_vetting_record_rate_pct": 8.33,
+      "economic_trust_record_candidates": 5,
+      "economic_trust_record_rate_pct": 2.6,
+      "tax_arrears_5y_candidates": 23,
+      "tax_arrears_5y_rate_pct": 11.98,
+      "tax_arrears_current_candidates": 4,
+      "tax_arrears_current_rate_pct": 2.08,
+      "money_trust_flag_candidates": 26,
+      "money_trust_flag_rate_pct": 13.54,
+      "any_vetting_flag_candidates": 34,
+      "any_vetting_flag_rate_pct": 17.71
+    }
+  ],
+  "military_summary": [
+    {
+      "party": "더불어민주당",
+      "party_short": "민주당",
+      "military_target_candidates": 2055,
+      "not_served_candidates": 252,
+      "not_served_rate_pct": 12.26
+    },
+    {
+      "party": "국민의힘",
+      "party_short": "국힘",
+      "military_target_candidates": 1950,
+      "not_served_candidates": 197,
+      "not_served_rate_pct": 10.1
+    },
+    {
+      "party": "조국혁신당",
+      "party_short": "조국",
+      "military_target_candidates": 191,
+      "not_served_candidates": 17,
+      "not_served_rate_pct": 8.9
+    },
+    {
+      "party": "진보당",
+      "party_short": "진보",
+      "military_target_candidates": 129,
+      "not_served_candidates": 30,
+      "not_served_rate_pct": 23.26
+    },
+    {
+      "party": "개혁신당",
+      "party_short": "개혁",
+      "military_target_candidates": 156,
+      "not_served_candidates": 12,
+      "not_served_rate_pct": 7.69
+    }
+  ],
+  "uncontested_key_stats": {
+    "total_uncontested_candidates": 513,
+    "criminal_or_tax_union_candidates": 188,
+    "by_party": [
+      {
+        "party": "더불어민주당",
+        "정당전체후보수": 3214,
+        "무투표당선_후보수": 314,
+        "정당전체후보대비_무투표비율": 9.8,
+        "전과신고_후보수": 81,
+        "최근5년체납_후보수": 38,
+        "현체납_후보수": 2,
+        "전과또는체납_합집합": 106,
+        "무투표후보내_전과또는체납비율": 33.8
+      },
+      {
+        "party": "국민의힘",
+        "정당전체후보수": 2744,
+        "무투표당선_후보수": 198,
+        "정당전체후보대비_무투표비율": 7.2,
+        "전과신고_후보수": 56,
+        "최근5년체납_후보수": 35,
+        "현체납_후보수": 1,
+        "전과또는체납_합집합": 81,
+        "무투표후보내_전과또는체납비율": 40.9
+      },
+      {
+        "party": "진보당",
+        "정당전체후보수": 316,
+        "무투표당선_후보수": 1,
+        "정당전체후보대비_무투표비율": 0.3,
+        "전과신고_후보수": 1,
+        "최근5년체납_후보수": 1,
+        "현체납_후보수": 0,
+        "전과또는체납_합집합": 1,
+        "무투표후보내_전과또는체납비율": 100.0
+      },
+      {
+        "party": "기타",
+        "정당전체후보수": 1554,
+        "무투표당선_후보수": 0,
+        "정당전체후보대비_무투표비율": 0.0,
+        "전과신고_후보수": 0,
+        "최근5년체납_후보수": 0,
+        "현체납_후보수": 0,
+        "전과또는체납_합집합": 0,
+        "무투표후보내_전과또는체납비율": 0.0
+      }
+    ]
+  },
+  "additional_verification_status": {
+    "has_2022_candidate_snapshot_in_local_data": false,
+    "economic_trust_record_major_party_candidates": 104,
+    "sex_or_drug_major_party_candidates": 3,
+    "active_candidates": 7828,
+    "tax5_100m_all_candidates": 24,
+    "current_100m_all_candidates": 6,
+    "tax5_100m_major_party_candidates": 17
+  },
+  "prior_package_crosscheck": {
+    "file": "exports\\two_pm_party_vetting_package_20260518\\data\\party_vetting_key_stats.json",
+    "generated_at": "2026-05-18T21:44:07",
+    "note": "무투표 당선 수는 513명 재검증 패키지의 최신값으로 보정했다."
+  }
+}

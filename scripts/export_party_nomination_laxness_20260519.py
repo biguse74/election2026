@@ -13,13 +13,15 @@ from typing import Any, Callable
 
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT_DIR = ROOT / "exports" / "party_nomination_laxness_20260519"
+OUT_DIR = ROOT / "exports" / "party_nomination_laxness_20260519_v2"
 DATA_DIR = OUT_DIR / "data"
 OUT_MD = OUT_DIR / "CLAUDE_PARTY_NOMINATION_LAXNESS_20260519.md"
-ZIP = ROOT / "exports" / "party_nomination_laxness_20260519.zip"
+ZIP = ROOT / "exports" / "party_nomination_laxness_20260519_v2.zip"
 
 VETTING_STATS = ROOT / "exports" / "two_pm_party_vetting_package_20260518" / "data" / "party_vetting_key_stats.json"
 UNCONTESTED_STATS = ROOT / "exports" / "uncontested_513_verification_20260518" / "uncontested_513_key_stats.json"
+SNAPSHOT = ROOT / "data" / "candidates" / "20260603" / "snapshot_20260518.json"
+DETAILS = ROOT / "data" / "candidate_details.json"
 
 PARTIES = ["더불어민주당", "국민의힘", "조국혁신당", "진보당", "개혁신당"]
 MAJOR_PARTIES = ["더불어민주당", "국민의힘"]
@@ -104,6 +106,42 @@ def amount_text(thousand: int) -> str:
     if won >= 10_000:
         return f"{won // 10_000:,}만원"
     return f"{won:,}원"
+
+
+def parse_int(value: Any) -> int:
+    text = str(value or "").replace(",", "").strip()
+    digits = "".join(ch for ch in text if ch.isdigit() or ch == "-")
+    return int(digits or 0)
+
+
+def active_candidate(candidate: dict[str, Any]) -> bool:
+    return not candidate.get("status") or candidate.get("status") == "등록"
+
+
+def has_2022_snapshot() -> bool:
+    candidates_dir = ROOT / "data" / "candidates"
+    return any(path.is_file() for path in candidates_dir.glob("**/*2022*.json")) or any(
+        path.is_dir() and "2022" in path.name for path in candidates_dir.glob("*")
+    )
+
+
+def all_candidate_tax_threshold_counts() -> dict[str, int]:
+    snapshot = load_json(SNAPSHOT)
+    details = {str(row.get("huboid")): row for row in load_json(DETAILS).get("details", [])}
+    active = [row for row in snapshot["candidates"] if active_candidate(row)]
+    tax5_100m = 0
+    current_100m = 0
+    for candidate in active:
+        disclosure = details.get(str(candidate.get("huboid")), {}).get("disclosures", {})
+        if parse_int(disclosure.get("tax_arrears_5y_thousand_krw")) >= 100000:
+            tax5_100m += 1
+        if parse_int(disclosure.get("tax_arrears_current_thousand_krw")) >= 100000:
+            current_100m += 1
+    return {
+        "active_candidates": len(active),
+        "tax5_100m_all_candidates": tax5_100m,
+        "current_100m_all_candidates": current_100m,
+    }
 
 
 def csv_write(path: Path, rows: list[dict[str, Any]], fieldnames: list[str]) -> None:
@@ -371,6 +409,8 @@ def build_markdown(
     tax_rows: list[dict[str, Any]],
     military_rows: list[dict[str, Any]],
     uncontested: dict[str, Any],
+    all_tax_counts: dict[str, int],
+    has_2022_data: bool,
 ) -> str:
     generated = datetime.now().strftime("%Y-%m-%d %H:%M")
     return f"""# Claude 입력 파일: 어느 정당의 공천이 더 헐거웠나
@@ -488,6 +528,69 @@ def build_markdown(
 9. 시국·집회 전과: 민주당이 높은 축으로 별도 표시.
 10. 제3정당 참고: “분모 작음” 표시를 크게 넣고 보조 박스로 처리.
 
+## 추가 검증 원칙
+
+### 1차 자료
+
+- 중앙선거관리위원회 후보자 공개정보: https://info.nec.go.kr/electioninfo/
+- 후보자 상세 페이지 PDF 원문
+- 선관위 OpenAPI 후보자 데이터
+
+### 추정 금지
+
+- 1차 자료로 확인 안 되는 수치는 “확인 불가”로 표기한다.
+- 추정·외삽은 하지 않는다.
+- 부분 확인 시 “표본 N명 중 X명 확인”이라고 쓴다.
+
+### 시점 고정
+
+- 9회 지선(2026): 2026년 5월 17일 0시 기준.
+- 8회 지선(2022): 2022년 5월 13일 후보 등록 마감 기준.
+- 이후 사퇴·등록무효 발생 시 별도 표기한다.
+
+### 명예훼손 위험 점검
+
+- 인물 명단은 죄목 신고 사실만 표기한다.
+- 죄질 판단, 도덕 평가, 단정적 비난은 하지 않는다.
+- 모든 인물 관련 표현에는 “선관위 공개정보 기준”을 붙인다.
+- 형이 확정되지 않은 사건은 확정 전 사건으로 별도 분류한다.
+
+## v2에서 확인한 데이터 상태
+
+- 2026년 후보자 원자료는 로컬에 있음: `data/candidates/20260603/snapshot_20260518.json`.
+- 2022년 8회 지선 후보자 스냅샷은 현재 로컬 `data/candidates` 아래에서 확인되지 않음: {"있음" if has_2022_data else "없음"}.
+- 따라서 8회 지선 시계열 수치는 이 패키지에서 산출하지 않는다. 클로드가 시계열 문장을 쓸 경우 “추가 원자료 확보 후 확인 필요”로 표시해야 한다.
+- 사기·횡령·배임·뇌물 분류 전과는 양당 합계 104명으로 확인된다: 민주당 48명, 국민의힘 56명.
+- 성범죄·마약 분류는 양당 기준 3명으로 확인된다: 성범죄 1명, 마약 2명.
+- 1억원 이상 최근 5년 체납은 양당 기준 17명, 전체 활성 후보 기준 {all_tax_counts["tax5_100m_all_candidates"]}명으로 확인된다. “20명”은 기준이 다르거나 보정 전 수치일 수 있어 원문에는 재검증 필요로 둔다.
+
+## 작업 우선순위
+
+| 임무 | 현재 상태 | 방송 사용처 |
+|---|---|---|
+| A. 8회 지선 시계열 | 2022 원자료 미확보. 확인 불가 | 오프닝 5분 / 메인 결론 |
+| B-1. 사기·횡령·배임·뇌물 104명 | 양당 기준 확인됨 | 그래픽 4~6장 |
+| B-2. 1억 이상 체납 | 양당 17명, 전체 후보 {all_tax_counts["tax5_100m_all_candidates"]}명 확인. 20명 기준 재검증 필요 | 그래픽 2~3장 |
+| B-3. 성범죄·마약 3명 | 양당 기준 확인됨. 사용 신중 | 보조 박스 |
+
+## 1탄과의 연결
+
+> 1탄(5/18): 무투표 513명 중 사기·횡령·배임·뇌물 분류 전과 10명, 체납 74명  
+> 2탄(5/19): 같은 잣대를 양당 전체 공천 후보로 줌아웃
+
+오프닝 3분 안에 “무투표 당선자 513명에서 보던 검증 잣대를 양당 전체 후보, 민주당 3,214명과 국민의힘 2,744명으로 넓힌 분석”이라고 설명한다.
+
+## v1 패키지 원자료
+
+- 양당 비교 본표: `major_party_laxness_summary.csv`
+- 5개 정당 참고표: `five_party_reference_summary.csv`
+- 전과 유형별 분해: `category_by_party_focus.csv`
+- 체납 금액 구간별: `tax_amount_buckets_by_party.csv`
+- 무투표 정당별: `uncontested_party_laxness.csv`
+- 병역: `military_by_party.csv`
+- 핵심 통계: `key_stats.json`
+- 분석 보고서: `CLAUDE_PARTY_NOMINATION_LAXNESS_20260519.md`
+
 ## 클로드에게 시킬 일
 
 아래 요청을 그대로 붙여 쓰면 됩니다.
@@ -513,6 +616,8 @@ def build_markdown(
 - 성범죄·마약은 숫자가 작으므로 소수 사례로만 언급한다.
 - 시국·집회 전과는 돈·신뢰 범죄와 성격이 다르므로 별도 축으로 설명한다.
 - 진보당 100% 같은 작은 분모 수치는 메인 그래프에 넣지 말고 각주로 처리한다.
+- 2022년 8회 지선 시계열은 현재 원자료 미확보로 확인 불가라고 표기한다. 추정해서 쓰지 않는다.
+- 1억원 이상 체납 “20명”은 이 패키지 기준과 맞지 않는다. 양당 17명, 전체 활성 후보 {all_tax_counts["tax5_100m_all_candidates"]}명으로 확인되므로, 20명은 재검증 필요로 둔다.
 ```
 
 ## 사용한 원자료와 기준
@@ -537,6 +642,8 @@ def main() -> None:
     category_rows = build_category_rows(rows)
     tax_rows = build_tax_bucket_rows(rows)
     military_rows = build_military_rows(rows)
+    tax_threshold_counts = all_candidate_tax_threshold_counts()
+    has_2022_data = has_2022_snapshot()
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -618,6 +725,22 @@ def main() -> None:
             "criminal_or_tax_union_candidates": uncontested["criminal_or_tax_union_candidates"],
             "by_party": uncontested["by_party"],
         },
+        "additional_verification_status": {
+            "has_2022_candidate_snapshot_in_local_data": has_2022_data,
+            "economic_trust_record_major_party_candidates": sum(
+                1 for row in rows
+                if row["party"] in MAJOR_PARTIES and row["categories"] & ECONOMIC
+            ),
+            "sex_or_drug_major_party_candidates": sum(
+                1 for row in rows
+                if row["party"] in MAJOR_PARTIES and row["categories"] & {"성범죄", "마약"}
+            ),
+            **tax_threshold_counts,
+            "tax5_100m_major_party_candidates": sum(
+                1 for row in rows
+                if row["party"] in MAJOR_PARTIES and row["tax5"] >= 100000
+            ),
+        },
         "prior_package_crosscheck": {
             "file": str(VETTING_STATS.relative_to(ROOT)),
             "generated_at": prior_vetting.get("generated_at"),
@@ -627,7 +750,16 @@ def main() -> None:
     (DATA_DIR / "key_stats.json").write_text(json.dumps(key_stats, ensure_ascii=False, indent=2), encoding="utf-8")
 
     OUT_MD.write_text(
-        build_markdown(summary, comparison, category_rows, tax_rows, military_rows, uncontested),
+        build_markdown(
+            summary,
+            comparison,
+            category_rows,
+            tax_rows,
+            military_rows,
+            uncontested,
+            tax_threshold_counts,
+            has_2022_data,
+        ),
         encoding="utf-8",
     )
 
