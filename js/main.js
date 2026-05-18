@@ -2331,7 +2331,12 @@ function rankedSidoMilitaryGroups(rows) {
     nonTarget: 0,
     eligible: 0,
     rate: 0,
-  });
+  }).sort((a, b) =>
+    b.rate - a.rate ||
+    b.notServed - a.notServed ||
+    b.eligible - a.eligible ||
+    SIDO_ORDER.indexOf(a.label) - SIDO_ORDER.indexOf(b.label)
+  );
 }
 
 function rankedTaxArrearsGroups(rows, keyFn, field = 'taxArrears5y', minCount = 20) {
@@ -3307,7 +3312,7 @@ function militaryFocusHtml(ds) {
           <div class="bar-list">${militaryBars(ds.byParty.military) || '<p class="trend-meta">표시할 정당이 없습니다.</p>'}</div>
         </div>
         <div>
-          <h4 class="metric-title">지역별 미필률 <small>지역명 클릭</small></h4>
+          <h4 class="metric-title">지역별 미필률 <small>높은 순 · 지역명 클릭</small></h4>
           <div class="bar-list">${militaryBars(ds.byRegion.military, { regionLinks: true, focus: 'military' }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
