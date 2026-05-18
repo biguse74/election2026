@@ -820,12 +820,13 @@ function buildUncontestedDisclosureStats() {
       if (ai !== -1 || bi !== -1) return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
       return b.count - a.count || koSort(a.label, b.label);
     });
-  const partyOrder = ['더불어민주당', '국민의힘', '진보당'];
+  const partyOrder = ['더불어민주당', '국민의힘'];
   const byParty = summarizeUncontestedDisclosureRows(rows, r => r.party)
+    .filter(row => partyOrder.includes(row.label))
     .sort((a, b) => {
       const ai = partyOrder.indexOf(a.label);
       const bi = partyOrder.indexOf(b.label);
-      if (ai !== -1 || bi !== -1) return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      if (ai !== -1 || bi !== -1) return ai - bi;
       return b.count - a.count || koSort(a.label, b.label);
     });
   return {
@@ -4906,12 +4907,13 @@ function uncontestedDisclosureDashboardHtml(ds, uc) {
       </div>
       <div class="uc-stats-grid uc-party-grid">
         <div>
-          <h4 class="metric-title">정당별 전과·체납 비율 <small>무투표 후보 중</small></h4>
+          <h4 class="metric-title">민주당·국민의힘 전과·체납 비율 <small>무투표 후보 중</small></h4>
           <div class="bar-list">${uncontestedRateBars(ds.byParty, { party: true })}</div>
         </div>
         <div class="uc-reading-note">
           <h4 class="metric-title">읽는 법</h4>
           <p>비율은 전체 후보 대비가 아니라 해당 정당·시도·직책의 무투표 후보 안에서 전과 또는 최근 5년 체납 이력이 확인된 후보의 비중입니다.</p>
+          <p>정당 비교는 무투표 후보 규모가 큰 더불어민주당과 국민의힘만 나란히 봅니다. 무투표 후보가 1명뿐인 정당은 비율이 과장돼 보일 수 있어 이 차트에서는 제외했습니다.</p>
           <p>체납은 최근 5년 체납 이력과 현 체납을 구분해야 하며, 전과 세부 죄명은 후보 상세의 선관위 원문 확인이 필요합니다.</p>
         </div>
       </div>
