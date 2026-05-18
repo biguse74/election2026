@@ -2553,9 +2553,23 @@ function trendMilitaryLocalHref(sd, label) {
   return `#trend/military/${encodeURIComponent(canonicalSidoName(sd))}/${encodeURIComponent(label)}`;
 }
 
+function disclosureRegionFocusHref(focus, label) {
+  return `#trend/${encodeURIComponent(focus)}/${encodeURIComponent(canonicalSidoName(label))}`;
+}
+
+function disclosureLocalFocusHref(focus, sd, label) {
+  return `#trend/${encodeURIComponent(focus)}/${encodeURIComponent(canonicalSidoName(sd))}/${encodeURIComponent(label)}`;
+}
+
 function metricLinkHref(label, options = {}) {
   if (options.focus === 'military' && options.localLinksSd) return trendMilitaryLocalHref(options.localLinksSd, label);
   if (options.focus === 'military' && options.regionLinks) return trendMilitaryRegionHref(label);
+  if (['assets', 'criminal', 'tax5y', 'taxCurrent'].includes(options.focus) && options.localLinksSd) {
+    return disclosureLocalFocusHref(options.focus, options.localLinksSd, label);
+  }
+  if (['assets', 'criminal', 'tax5y', 'taxCurrent'].includes(options.focus) && options.regionLinks) {
+    return disclosureRegionFocusHref(options.focus, label);
+  }
   if (options.localLinksSd) return trendLocalHref(options.localLinksSd, label);
   if (options.regionLinks) return trendRegionHref(label);
   return '';
@@ -2770,6 +2784,10 @@ function disclosureSummaryFromRows(rows) {
   const militaryRows = rows.filter(r => r.candidate?.gender === '남');
   const criminalHolders = rows.filter(r => r.hasCriminal).length;
   const criminalCases = rows.reduce((sum, r) => sum + r.criminal, 0);
+  const taxArrearsHolders = rows.filter(r => r.hasTaxArrears).length;
+  const currentTaxArrearsHolders = rows.filter(r => r.hasCurrentTaxArrears).length;
+  const taxArrears5yTotal = rows.reduce((sum, r) => sum + (r.taxArrears5y || 0), 0);
+  const taxArrearsCurrentTotal = rows.reduce((sum, r) => sum + (r.taxArrearsCurrent || 0), 0);
   const served = militaryRows.filter(r => r.military === 'served').length;
   const notServed = militaryRows.filter(r => r.military === 'notServed').length;
   const nonTarget = militaryRows.filter(r => r.military === 'nonTarget').length;
@@ -2782,6 +2800,15 @@ function disclosureSummaryFromRows(rows) {
       holders: criminalHolders,
       cases: criminalCases,
       rate: rows.length ? criminalHolders / rows.length * 100 : 0,
+    },
+    taxArrears: {
+      count: rows.length,
+      holders: taxArrearsHolders,
+      currentHolders: currentTaxArrearsHolders,
+      total5y: taxArrears5yTotal,
+      totalCurrent: taxArrearsCurrentTotal,
+      rate: rows.length ? taxArrearsHolders / rows.length * 100 : 0,
+      currentRate: rows.length ? currentTaxArrearsHolders / rows.length * 100 : 0,
     },
     military: {
       count: militaryRows.length,
@@ -3103,6 +3130,151 @@ function renderTrendLocalFull(sd, local) {
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
+function disclosureRegionFocusConfig(focus) {
+  const key = String(focus || '').trim();
+  const configs = {
+    assets: {
+      key: 'assets',
+      nav: '재산',
+      title: '재산 공개정보',
+      subject: '재산',
+      rankTitle: '재산 상위 후보',
+      localTitle: '시군구별 평균 재산',
+      rankType: 'asset',
+      rankRows: rows => rankedAssetCandidates(rows, 10),
+      localRows: rows => rankedAssetGroups(rows.filter(localDistrictName), localDistrictName, 1),
+      bars: (items, sd) => assetBars(items, { limit: 99, localLinksSd: sd, focus: 'assets' }),
+      summary: (summary) => [
+        ['재산 중앙값', formatEok(summary.assets.median), `평균 ${formatEok(summary.assets.avg)} · ${summary.assets.count.toLocaleString()}명`],
+        ['재산 평균', formatEok(summary.assets.avg), '선관위 재산신고액 기준'],
+        ['공개정보', `${summary.rows.length.toLocaleString()}명`, '후보자 상세 공개정보 기준'],
+      ],
+      note: '재산은 선관위 후보자 정보공개의 재산신고액을 억원 단위로 환산했습니다.',
+    },
+    criminal: {
+      key: 'criminal',
+      nav: '전과',
+      title: '전과 공개정보',
+      subject: '전과',
+      rankTitle: '전과 상위 후보',
+      localTitle: '시군구별 전과 보유율',
+      rankType: 'criminal',
+      rankRows: rows => rankedCriminalCandidates(rows, 10),
+      localRows: rows => rankedCriminalGroups(rows.filter(localDistrictName), localDistrictName, 1),
+      bars: (items, sd) => criminalBars(items, { limit: 99, localLinksSd: sd, focus: 'criminal' }),
+      summary: (summary) => [
+        ['전과 보유율', formatPct(summary.criminal.rate), `전과 1건 이상 ${summary.criminal.holders.toLocaleString()}명 / ${summary.criminal.count.toLocaleString()}명`],
+        ['전과 총 건수', `${summary.criminal.cases.toLocaleString()}건`, '전과기록유무(건수) 합산'],
+        ['공개정보', `${summary.rows.length.toLocaleString()}명`, '후보자 상세 공개정보 기준'],
+      ],
+      note: '전과 보유율은 전과기록유무(건수)가 1건 이상인 후보 비율입니다.',
+    },
+    taxCurrent: {
+      key: 'taxCurrent',
+      nav: '체납',
+      title: '현 체납 공개정보',
+      subject: '현 체납',
+      rankTitle: '현 체납 상위 후보',
+      localTitle: '시군구별 현 체납 후보율',
+      rankType: 'taxCurrent',
+      rankRows: rows => rankedTaxArrearsCandidates(rows, 10, 'taxArrearsCurrent'),
+      localRows: rows => rankedTaxArrearsGroups(rows.filter(localDistrictName), localDistrictName, 'taxArrearsCurrent', 1),
+      bars: (items, sd) => taxArrearsBars(items, { limit: 99, localLinksSd: sd, focus: 'taxCurrent' }),
+      summary: (summary) => [
+        ['현 체납 후보', `${summary.taxArrears.currentHolders.toLocaleString()}명`, `공개정보 ${summary.taxArrears.count.toLocaleString()}명 중 ${formatPct(summary.taxArrears.currentRate)}`],
+        ['현 체납 합계', moneyDisclosure(summary.taxArrears.totalCurrent) || '0원', '현재 남아 있는 체납액'],
+        ['최근 5년 이력', `${summary.taxArrears.holders.toLocaleString()}명`, '과거 체납 이력 별도 기준'],
+      ],
+      note: '현 체납은 현재 남아 있는 체납액 기준입니다.',
+    },
+    tax5y: {
+      key: 'tax5y',
+      nav: '체납',
+      title: '최근 5년 체납 공개정보',
+      subject: '최근 5년 체납',
+      rankTitle: '최근 5년 체납 상위 후보',
+      localTitle: '시군구별 최근 5년 체납 후보율',
+      rankType: 'tax5y',
+      rankRows: rows => rankedTaxArrearsCandidates(rows, 10, 'taxArrears5y'),
+      localRows: rows => rankedTaxArrearsGroups(rows.filter(localDistrictName), localDistrictName, 'taxArrears5y', 1),
+      bars: (items, sd) => taxArrearsBars(items, { limit: 99, localLinksSd: sd, focus: 'tax5y' }),
+      summary: (summary) => [
+        ['최근 5년 체납 후보', `${summary.taxArrears.holders.toLocaleString()}명`, `공개정보 ${summary.taxArrears.count.toLocaleString()}명 중 ${formatPct(summary.taxArrears.rate)}`],
+        ['최근 5년 체납 합계', moneyDisclosure(summary.taxArrears.total5y) || '0원', '과거 체납 이력 합산'],
+        ['현 체납 후보', `${summary.taxArrears.currentHolders.toLocaleString()}명`, '현재 남아 있는 체납액 별도 기준'],
+      ],
+      note: '최근 5년 체납은 과거 체납 이력 기준입니다. 현 체납과 함께 보되 서로 다른 기준입니다.',
+    },
+  };
+  return configs[key] || configs.assets;
+}
+
+function disclosureRegionFocusSummaryHtml(cards) {
+  return `
+    <div class="disclosure-overview">
+      ${cards.map(([label, value, detail]) => `
+        <div class="disclosure-card">
+          <span class="disclosure-label">${escapeHtml(label)}</span>
+          <strong>${value}</strong>
+          <small>${escapeHtml(detail)}</small>
+        </div>`).join('')}
+    </div>`;
+}
+
+function renderDisclosureRegionFocusFull(focus, sd, local = '') {
+  sd = canonicalSidoName(sd);
+  const sdLabel = sidoDisplayName(sd);
+  const config = disclosureRegionFocusConfig(focus);
+  const app = document.getElementById('app');
+  app.className = '';
+  if (!state.data) {
+    app.innerHTML = '<div class="loading">불러오는 중…</div>';
+    return;
+  }
+  const ds = buildDisclosureStats();
+  const rows = ds.rows.filter(r => r.sd === sd && (!local || localDistrictName(r) === local));
+  const title = `${sdLabel}${local ? ` ${local}` : ''} ${config.title}`;
+  if (!rows.length) {
+    app.innerHTML = `
+      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="${disclosureFocusHref(config.key === 'tax5y' || config.key === 'taxCurrent' ? 'tax' : config.key)}">${escapeHtml(config.nav)}</a><span class="sep">›</span><span class="current">${escapeHtml(sdLabel || '지역')}</span></nav>
+      <div class="error-banner"><strong>${escapeHtml(config.subject)} 지역 통계를 찾지 못했습니다.</strong> 다시 지역을 선택해 주세요.</div>`;
+    return;
+  }
+
+  const summary = disclosureSummaryFromRows(rows);
+  const rankRows = config.rankRows(rows);
+  const localItems = local ? [] : config.localRows(rows);
+  const focusHref = disclosureFocusHref(config.key === 'tax5y' || config.key === 'taxCurrent' ? 'tax' : config.key);
+  app.innerHTML = `
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="${focusHref}">${escapeHtml(config.nav)}</a><span class="sep">›</span><span class="current">${escapeHtml(sdLabel)}${local ? ` ${escapeHtml(local)}` : ''}</span></nav>
+    <div class="detail-head">
+      <div>
+        <h1 class="detail-title">${escapeHtml(title)}</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(title)} - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+      </div>
+      <div class="detail-inline-stats">
+        <span>${escapeHtml(config.subject)}</span>
+        <span>공개정보 ${summary.rows.length.toLocaleString()}명</span>
+      </div>
+    </div>
+    <p class="page-intro">${escapeHtml(sdLabel)}${local ? ` ${escapeHtml(local)}` : ''} 후보의 ${escapeHtml(config.subject)} 지표만 따로 보는 화면입니다.</p>
+
+    ${disclosureRegionFocusSummaryHtml(config.summary(summary))}
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(config.rankTitle)} <small>${rankRows.length.toLocaleString()}명</small></h3>
+      ${candidateRankList(rankRows, config.rankType, !local)}
+      <p class="trend-meta">${escapeHtml(config.note)}</p>
+    </section>
+
+    ${!local ? `
+      <section class="trend-section">
+        <h3 class="trend-section-title">${escapeHtml(config.localTitle)} <small>시군구명 클릭</small></h3>
+        <div class="bar-list">${config.bars(localItems, sd) || '<p class="trend-meta">표시할 시군구가 없습니다.</p>'}</div>
+      </section>` : ''}`;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 function renderTrendMilitaryRegionFull(sd) {
   sd = canonicalSidoName(sd);
   const sdLabel = sidoDisplayName(sd);
@@ -3232,7 +3404,7 @@ function assetFocusHtml(ds) {
         </div>
         <div>
           <h4 class="metric-title">지역별 평균 재산 <small>지역명 클릭</small></h4>
-          <div class="bar-list">${assetBars(ds.byRegion.assets, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+          <div class="bar-list">${assetBars(ds.byRegion.assets, { regionLinks: true, focus: 'assets' }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
     </section>`;
@@ -3255,7 +3427,7 @@ function criminalFocusHtml(ds) {
         </div>
         <div>
           <h4 class="metric-title">지역별 전과 보유율 <small>지역명 클릭</small></h4>
-          <div class="bar-list">${criminalBars(ds.byRegion.criminal, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+          <div class="bar-list">${criminalBars(ds.byRegion.criminal, { regionLinks: true, focus: 'criminal' }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
       <p class="trend-meta">전과 보유율은 전과기록유무(건수)가 1건 이상인 후보 비율입니다. 예: 전체 전과 ${formatPct(ds.criminal.rate)}는 전체 ${ds.criminal.count.toLocaleString()}명 중 ${ds.criminal.holders.toLocaleString()}명이 전과 1건 이상이라는 뜻입니다.</p>
@@ -3307,11 +3479,11 @@ function taxArrearsFocusHtml(ds) {
       <div class="metric-grid">
         <div>
           <h4 class="metric-title">지역별 현 체납 후보율 <small>지역명 클릭</small></h4>
-          <div class="bar-list">${taxArrearsBars(ds.byRegion.taxArrearsCurrent, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+          <div class="bar-list">${taxArrearsBars(ds.byRegion.taxArrearsCurrent, { regionLinks: true, focus: 'taxCurrent' }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
         <div>
           <h4 class="metric-title">지역별 최근 5년 체납 후보율 <small>지역명 클릭</small></h4>
-          <div class="bar-list">${taxArrearsBars(ds.byRegion.taxArrears5y, { regionLinks: true }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
+          <div class="bar-list">${taxArrearsBars(ds.byRegion.taxArrears5y, { regionLinks: true, focus: 'tax5y' }) || '<p class="trend-meta">표시할 지역이 없습니다.</p>'}</div>
         </div>
       </div>
       <p class="trend-meta">체납은 선관위 후보자 정보공개의 납세 자료 기준입니다. 현 체납은 현재 남아 있는 체납액, 최근 5년 체납은 과거 체납 이력을 뜻하므로 둘을 나누어 봐야 합니다.</p>
@@ -4438,6 +4610,12 @@ async function route() {
   if (hash.startsWith('criminal/')) return renderAfterData('전과 원문 분류', [ensureCandidateDetails, ensureCriminalOcr], () => renderCriminalCategoryFull(hash.slice('criminal/'.length)), runId);
   if (hash.startsWith('trend/')) {
     const parts = hash.split('/');
+    if (['assets', 'criminal', 'tax5y', 'taxCurrent'].includes(parts[1])) {
+      if (parts.length >= 4) {
+        return renderAfterData('후보자 공개정보', [ensureCandidateDetails], () => renderDisclosureRegionFocusFull(parts[1], parts[2], parts.slice(3).join('/')), runId);
+      }
+      return renderAfterData('후보자 공개정보', [ensureCandidateDetails], () => renderDisclosureRegionFocusFull(parts[1], parts[2]), runId);
+    }
     if (parts[1] === 'military') {
       if (parts.length >= 4) return renderAfterData('병역 공개정보', [ensureCandidateDetails], () => renderTrendMilitaryLocalFull(parts[2], parts.slice(3).join('/')), runId);
       return renderAfterData('병역 공개정보', [ensureCandidateDetails], () => renderTrendMilitaryRegionFull(parts[2]), runId);
