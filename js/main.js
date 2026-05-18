@@ -740,6 +740,113 @@ function isUncontestedCandidate(c) {
   return isActiveCandidate(c) && uncontestedCandidateSet().has(String(c.huboid || ''));
 }
 
+function uncontestedDisclosureRows() {
+  return (state.data?.candidates || [])
+    .filter(isUncontestedCandidate)
+    .map(c => {
+      const detail = state.candidateDetails?.[String(c.huboid)] || null;
+      const disclosures = detail?.disclosures || {};
+      const criminal = parseCriminalCount(disclosures.criminal_record);
+      const taxArrears5y = parseDisclosureNumber(disclosures.tax_arrears_5y_thousand_krw) || 0;
+      const taxArrearsCurrent = parseDisclosureNumber(disclosures.tax_arrears_current_thousand_krw) || 0;
+      return {
+        candidate: c,
+        party: c.jdName || '무소속',
+        sd: sidoFor(c),
+        office: SG_TITLE[String(c.sgTypecode)] || String(c.sgTypecode || ''),
+        disclosures,
+        criminal,
+        hasCriminal: criminal > 0,
+        taxArrears5y,
+        taxArrearsCurrent,
+        hasTaxArrears: taxArrears5y > 0,
+        hasCurrentTaxArrears: taxArrearsCurrent > 0,
+        hasCriminalOrTax: criminal > 0 || taxArrears5y > 0,
+      };
+    });
+}
+
+function summarizeUncontestedDisclosureRows(rows, keyFn) {
+  return Object.entries(groupDisclosureRows(rows, keyFn))
+    .map(([label, items]) => {
+      const criminal = items.filter(r => r.hasCriminal).length;
+      const tax = items.filter(r => r.hasTaxArrears).length;
+      const currentTax = items.filter(r => r.hasCurrentTaxArrears).length;
+      const union = items.filter(r => r.hasCriminalOrTax).length;
+      const taxTotal = items.reduce((sum, r) => sum + (r.taxArrears5y || 0), 0);
+      return {
+        label,
+        count: items.length,
+        criminal,
+        tax,
+        currentTax,
+        union,
+        taxTotal,
+        unionRate: items.length ? union / items.length * 100 : 0,
+        criminalRate: items.length ? criminal / items.length * 100 : 0,
+        taxRate: items.length ? tax / items.length * 100 : 0,
+      };
+    });
+}
+
+function buildUncontestedDisclosureStats() {
+  const rows = uncontestedDisclosureRows();
+  const total = rows.length;
+  const criminal = rows.filter(r => r.hasCriminal).length;
+  const tax = rows.filter(r => r.hasTaxArrears).length;
+  const currentTax = rows.filter(r => r.hasCurrentTaxArrears).length;
+  const union = rows.filter(r => r.hasCriminalOrTax).length;
+  const both = rows.filter(r => r.hasCriminal && r.hasTaxArrears).length;
+  const onlyCriminal = rows.filter(r => r.hasCriminal && !r.hasTaxArrears).length;
+  const onlyTax = rows.filter(r => !r.hasCriminal && r.hasTaxArrears).length;
+  const byRegionLookup = new Map(
+    summarizeUncontestedDisclosureRows(rows, r => canonicalSidoName(r.sd))
+      .map(row => [canonicalSidoName(row.label), row])
+  );
+  const byRegion = SIDO_ORDER
+    .map(sd => byRegionLookup.get(sd))
+    .filter(Boolean)
+    .sort((a, b) =>
+      b.unionRate - a.unionRate ||
+      b.union - a.union ||
+      b.count - a.count ||
+      sidoSort(a.label, b.label)
+    );
+  const officeOrder = ['기초단체장', '시도의원', '구시군의회의원', '기초의원비례'];
+  const byOffice = summarizeUncontestedDisclosureRows(rows, r => r.office)
+    .sort((a, b) => {
+      const ai = officeOrder.indexOf(a.label);
+      const bi = officeOrder.indexOf(b.label);
+      if (ai !== -1 || bi !== -1) return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      return b.count - a.count || koSort(a.label, b.label);
+    });
+  const partyOrder = ['더불어민주당', '국민의힘', '진보당'];
+  const byParty = summarizeUncontestedDisclosureRows(rows, r => r.party)
+    .sort((a, b) => {
+      const ai = partyOrder.indexOf(a.label);
+      const bi = partyOrder.indexOf(b.label);
+      if (ai !== -1 || bi !== -1) return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      return b.count - a.count || koSort(a.label, b.label);
+    });
+  return {
+    rows,
+    total,
+    criminal,
+    tax,
+    currentTax,
+    union,
+    both,
+    onlyCriminal,
+    onlyTax,
+    unionRate: total ? union / total * 100 : 0,
+    criminalRate: total ? criminal / total * 100 : 0,
+    taxRate: total ? tax / total * 100 : 0,
+    byRegion,
+    byOffice,
+    byParty,
+  };
+}
+
 // 후보 등록 시작일. 이 날짜 이후로는 candidates 스냅샷이 우선.
 const CANDIDATES_START = '20260514';
 
@@ -4602,7 +4709,8 @@ function siteNavSectionForHash(hash) {
   if (hash === 'disclosure/military' || hash.startsWith('trend/military/')) return 'military';
   if (hash === 'disclosure/criminal' || hash.startsWith('criminal/') || hash.startsWith('trend/criminal/')) return 'criminal';
   if (hash === 'disclosure/tax' || hash === 'tax-arrears' || hash.startsWith('tax-arrears/') || hash.startsWith('trend/tax5y/') || hash.startsWith('trend/taxCurrent/')) return 'tax';
-  if (hash === 'trend' || hash.startsWith('trend/') || hash === 'competition' || hash === 'uncontested' || hash.startsWith('uncontested/')) return 'trend';
+  if (hash === 'uncontested' || hash.startsWith('uncontested/')) return 'uncontested';
+  if (hash === 'trend' || hash.startsWith('trend/') || hash === 'competition') return 'trend';
   if (hash.startsWith('disclosure/')) return 'trend';
   if (hash === 'changes') return 'changes';
   if (hash === 'history') return 'history';
@@ -4684,9 +4792,9 @@ async function route() {
     openCandidateModal(hash.slice('cand/'.length));
     return;
   }
-  if (hash === 'uncontested') return renderUncontestedFull(null);
+  if (hash === 'uncontested') return renderAfterData('무투표 당선 공개정보', [ensureCandidateDetails], () => renderUncontestedFull(null), runId);
   if (hash.startsWith('uncontested/')) {
-    return renderUncontestedFull(hash.slice('uncontested/'.length));
+    return renderAfterData('무투표 당선 공개정보', [ensureCandidateDetails], () => renderUncontestedFull(hash.slice('uncontested/'.length)), runId);
   }
   // "{시도명}" 또는 "{시도명}::{선거구명}" (구분자 :: — 시도명에 ':' 포함되지 않음을 가정)
   const sepIdx = hash.indexOf('::');
@@ -4733,9 +4841,87 @@ function uncontestedBlock(items, totalCount, label, cls) {
     </div>`;
 }
 
+function uncontestedRateBars(items, options = {}) {
+  const shown = items.filter(x => x.count > 0);
+  if (!shown.length) return '<p class="trend-meta">표시할 무투표 후보 통계가 없습니다.</p>';
+  const max = Math.max(...shown.map(x => x.unionRate), 1);
+  return shown.map(x => {
+    const label = options.region ? sidoDisplayName(x.label) : x.label;
+    const color = options.party ? partyColor(x.label) : options.color || 'var(--accent)';
+    return metricBar(
+      label,
+      x.unionRate,
+      max,
+      color,
+      formatPct(x.unionRate),
+      `전과 ${x.criminal.toLocaleString()}명 · 체납 ${x.tax.toLocaleString()}명 / 무투표 ${x.count.toLocaleString()}명`
+    );
+  }).join('');
+}
+
+function uncontestedDisclosureDashboardHtml(ds, uc) {
+  if (!ds?.total) return '';
+  return `
+    <section class="trend-section uc-dashboard-section">
+      <div class="trend-section-head">
+        <h3 class="trend-section-title">무투표 당선 통계 <small>전과·체납 공개정보 기준</small></h3>
+        <span class="trend-section-kicker">무투표 후보 ${ds.total.toLocaleString()}명</span>
+      </div>
+      <div class="disclosure-overview uc-overview">
+        <div class="disclosure-card">
+          <span class="disclosure-label">무투표 당선</span>
+          <strong>${uc.totalCandidates.toLocaleString()}명</strong>
+          <small>${uc.totalDistricts.toLocaleString()}개 선거구 · 지역구·단체장 ${uc.nonProportionalCandidates.toLocaleString()}명 · 비례 ${uc.proportionalCandidates.toLocaleString()}명</small>
+        </div>
+        <div class="disclosure-card">
+          <span class="disclosure-label">전과 또는 체납</span>
+          <strong>${ds.union.toLocaleString()}명</strong>
+          <small>무투표 후보의 ${formatPct(ds.unionRate)} · 전과만 ${ds.onlyCriminal.toLocaleString()}명 · 체납만 ${ds.onlyTax.toLocaleString()}명 · 동시 ${ds.both.toLocaleString()}명</small>
+        </div>
+        <div class="disclosure-card">
+          <span class="disclosure-label">전과 신고</span>
+          <strong>${ds.criminal.toLocaleString()}명</strong>
+          <small>무투표 후보의 ${formatPct(ds.criminalRate)} · 선관위 전과기록유무 기준</small>
+        </div>
+        <div class="disclosure-card">
+          <span class="disclosure-label">최근 5년 체납</span>
+          <strong>${ds.tax.toLocaleString()}명</strong>
+          <small>무투표 후보의 ${formatPct(ds.taxRate)} · 현 체납 ${ds.currentTax.toLocaleString()}명</small>
+        </div>
+      </div>
+      <div class="uc-risk-split" aria-label="전과와 체납 중복 분포">
+        <div><span>전과만</span><strong>${ds.onlyCriminal.toLocaleString()}명</strong></div>
+        <div><span>체납만</span><strong>${ds.onlyTax.toLocaleString()}명</strong></div>
+        <div><span>전과·체납 동시</span><strong>${ds.both.toLocaleString()}명</strong></div>
+      </div>
+      <div class="uc-stats-grid">
+        <div>
+          <h4 class="metric-title">시도별 전과·체납 비율 <small>무투표 후보 중</small></h4>
+          <div class="bar-list">${uncontestedRateBars(ds.byRegion, { region: true, color: '#8f3d5a' })}</div>
+        </div>
+        <div>
+          <h4 class="metric-title">직책별 전과·체납 비율 <small>무투표 후보 중</small></h4>
+          <div class="bar-list">${uncontestedRateBars(ds.byOffice, { color: '#2c5d8f' })}</div>
+        </div>
+      </div>
+      <div class="uc-stats-grid uc-party-grid">
+        <div>
+          <h4 class="metric-title">정당별 전과·체납 비율 <small>무투표 후보 중</small></h4>
+          <div class="bar-list">${uncontestedRateBars(ds.byParty, { party: true })}</div>
+        </div>
+        <div class="uc-reading-note">
+          <h4 class="metric-title">읽는 법</h4>
+          <p>비율은 전체 후보 대비가 아니라 해당 정당·시도·직책의 무투표 후보 안에서 전과 또는 최근 5년 체납 이력이 확인된 후보의 비중입니다.</p>
+          <p>체납은 최근 5년 체납 이력과 현 체납을 구분해야 하며, 전과 세부 죄명은 후보 상세의 선관위 원문 확인이 필요합니다.</p>
+        </div>
+      </div>
+    </section>`;
+}
+
 // 무투표 당선 선거구 전체 페이지 (#uncontested 또는 #uncontested/{cat})
 function renderUncontestedFull(category) {
   const uc = buildUncontestedList();
+  const uds = buildUncontestedDisclosureStats();
   const cats = [
     { key: 'tied',          label: '후보 수와 정원이 같은 선거구',              items: uc.tied,          cls: 'tied' },
     { key: 'singlePartyPr', label: '비례대표 단일 정당 명부',                   items: uc.singlePartyPr, cls: 'singlePartyPr' },
@@ -4760,6 +4946,8 @@ function renderUncontestedFull(category) {
         <span>${uncontestedStageNote()}</span>
       </div>
     </div>
+    <p class="page-intro">후보 수가 의원정수 이하라 본투표 없이 당선되는 선거구와 후보를 따로 모았습니다. 상단 통계는 무투표 후보 안에서 전과·체납 공개정보가 얼마나 겹치는지 보여줍니다.</p>
+    ${uncontestedDisclosureDashboardHtml(uds, uc)}
     ${filtered.map(c =>
       `<div class="uc-block ${c.cls}">
         <h3 class="uc-block-title">${c.label} <span class="uc-count">${c.items.length.toLocaleString()}곳</span></h3>

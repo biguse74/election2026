@@ -1566,6 +1566,53 @@ footer a:hover { text-decoration: underline; }
 .uc-more { font-size: 0.85rem; color: var(--ink-sub); margin-top: 0.6rem; }
 .uc-more a { color: var(--accent); text-decoration: none; font-weight: 500; }
 .uc-more a:hover { text-decoration: underline; }
+.uc-dashboard-section { margin-bottom: 1.7rem; }
+.uc-overview {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 0.9rem;
+}
+.uc-risk-split {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 0 0 1.1rem;
+}
+.uc-risk-split div {
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  padding: 0.62rem 0.75rem;
+  min-width: 0;
+}
+.uc-risk-split span {
+  display: block;
+  color: var(--ink-sub);
+  font-size: 0.74rem;
+  margin-bottom: 0.18rem;
+}
+.uc-risk-split strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.16rem;
+  line-height: 1.15;
+}
+.uc-stats-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.1rem 1.35rem;
+  align-items: start;
+}
+.uc-party-grid {
+  margin-top: 1.15rem;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.85fr);
+}
+.uc-reading-note {
+  border-left: 2px solid var(--ink);
+  padding-left: 0.9rem;
+  color: var(--ink-sub);
+  font-size: 0.84rem;
+  line-height: 1.65;
+}
+.uc-reading-note p { margin: 0 0 0.45rem; }
 
 /* collapsible 섹션 헤더의 일괄 토글 버튼 (시도의원·기초의원 한꺼번에 펼치기) */
 .section-toolbar { display: inline-flex; gap: 0.4rem; margin-left: 0.6rem; vertical-align: middle; }
@@ -1825,6 +1872,11 @@ body.modal-open { overflow: hidden; }
   .crime-share-grid { grid-template-columns: 1fr; }
   .disclosure-card { border-right: none; border-bottom: 1px solid var(--rule); }
   .disclosure-card:last-child { border-bottom: none; }
+  .uc-overview,
+  .uc-risk-split,
+  .uc-stats-grid,
+  .uc-party-grid { grid-template-columns: 1fr; }
+  .uc-reading-note { border-left: none; border-top: 2px solid var(--ink); padding: 0.75rem 0 0; }
   .crime-stat { border-right: none; border-bottom: 1px solid var(--rule); }
   .crime-stat:last-child { border-bottom: none; }
   .crime-chip-list { margin-bottom: 0.6rem; }
