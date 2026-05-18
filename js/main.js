@@ -3016,18 +3016,9 @@ function renderTrendRegionFull(sd) {
         <span>병역 미필 ${formatPct(summary.military.notServedRate)}</span>
       </div>
     </div>
-    <p class="page-intro">시도별 막대에서 한 단계 내려온 화면입니다. 먼저 ${escapeHtml(sdLabel)} 전체 요약을 보고, 아래에서 시군구별 차이와 후보별 최다 순위를 함께 확인할 수 있습니다.</p>
+    <p class="page-intro">시도별 막대에서 한 단계 내려온 화면입니다. 먼저 ${escapeHtml(sdLabel)} 전체 요약을 보고, 아래에서 후보별 최다 순위와 시군구별 차이를 함께 확인할 수 있습니다.</p>
 
     ${disclosureRegionOverviewHtml(sdLabel, summary)}
-
-    <section class="trend-section">
-      <h3 class="trend-section-title">${escapeHtml(sdLabel)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
-      ${militaryCandidateListHtml(militaryNotServedRows, {
-        includeRegion: false,
-        emptyText: `${sdLabel}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
-      })}
-      <p class="trend-meta">남성 후보 중 선관위 병역 항목이 “군복무를 마치지 아니한 사람” 또는 병적기록 관련 미필 표기로 분류된 후보입니다. 후보 이름을 누르면 상세 공개정보의 병역 원문을 확인할 수 있습니다.</p>
-    </section>
 
     <section class="trend-section">
       <h3 class="trend-section-title">${escapeHtml(sdLabel)} 후보별 최다 순위 <small>재산·전과 1~5위</small></h3>
@@ -3061,6 +3052,15 @@ function renderTrendRegionFull(sd) {
         </div>
       </div>
       <p class="trend-meta">시군구별 통계는 해당 시군구 선거구로 분류되는 후보 기준입니다. 시도지사·교육감처럼 시도 전체 선거 후보는 시군구 막대에서는 제외했습니다.</p>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">${escapeHtml(sdLabel)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
+      ${militaryCandidateListHtml(militaryNotServedRows, {
+        includeRegion: false,
+        emptyText: `${sdLabel}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
+      })}
+      <p class="trend-meta">남성 후보 중 선관위 병역 항목이 “군복무를 마치지 아니한 사람” 또는 병적기록 관련 미필 표기로 분류된 후보입니다. 후보 이름을 누르면 상세 공개정보의 병역 원문을 확인할 수 있습니다.</p>
     </section>`;
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
