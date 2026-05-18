@@ -510,7 +510,6 @@ footer a:hover { text-decoration: underline; }
   border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
   margin: 0 0 1.2rem;
 }
-.disclosure-overview-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .disclosure-card {
   padding: 0.9rem 1rem;
   border-right: 1px solid var(--rule);

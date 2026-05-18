@@ -4005,7 +4005,6 @@ function renderTrendFull() {
     </div>
     <p class="page-intro">선관위 등록 데이터와 후보자 정보공개 자료를 기반으로 정당·연령·성별·직업·재산·전과·체납·병역 분포를 정리했습니다.</p>
 
-    ${disclosureOverviewHtml(ds)}
     ${disclosureFocusCardsHtml(ds)}
 
     <section class="trend-section">
