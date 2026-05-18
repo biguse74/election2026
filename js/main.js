@@ -2560,7 +2560,7 @@ function metricBar(label, value, max, color, valueText, subText, href = '') {
 function disclosureOverviewHtml(ds) {
   if (!ds.rows.length) return '<p class="absence-note">후보자 상세 공개정보를 아직 불러오지 못했습니다.</p>';
   return `
-    <div class="disclosure-overview">
+    <div class="disclosure-overview disclosure-overview-four">
       <div class="disclosure-card">
         <span class="disclosure-label">전체 재산</span>
         <strong>${formatEok(ds.assets.median)}</strong>
