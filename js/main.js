@@ -225,6 +225,16 @@ const SIDO_TAGS = {
   '제주특별자치도': ['제주', '제주도'],
   '전남광주통합특별시': ['전남', '광주', '전남광주'],
 };
+function sidoDisplayName(label) {
+  const value = String(label || '').trim();
+  if (!value) return value;
+  if (value === JOINT_SIDO) return '전남광주';
+  const direct = SIDO_TAGS[value]?.[0];
+  if (direct) return direct;
+  const hit = Object.entries(SIDO_TAGS)
+    .find(([sd, tags]) => tags.includes(value) || shortLocalName(sd) === value);
+  return hit ? hit[1][0] : value;
+}
 const PARTY_TAGS = {
   '더불어민주당': ['민주당', '민주'],
   '국민의힘': ['국힘'],
@@ -463,10 +473,10 @@ function prettifySgg(sgg) {
 function formatRegionLabel(item) {
   const sd = item.sdName || item.sd || '';
   const sgg = item.sggName || item.sgg || '';
-  if (!sgg || sgg === sd) return sd || sgg;
-  const sdShort = (SIDO_TAGS[sd] || [sd])[0] || sd;
   // 통합특별시 같은 특수 케이스는 합쳐진 이름 그대로 표시
-  if (sd === JOINT_SIDO || sgg === JOINT_SIDO) return sgg || sd;
+  if (sd === JOINT_SIDO || sgg === JOINT_SIDO) return sidoDisplayName(sgg || sd);
+  if (!sgg || sgg === sd) return sidoDisplayName(sd || sgg);
+  const sdShort = sidoDisplayName(sd);
   return `${sdShort} ${sgg}`;
 }
 
@@ -1507,6 +1517,7 @@ function renderAddressLookup(query) {
 function renderDetailSection(section, sidoName) {
   if (!section.detail) return '';
   const candidates = getSectionCandidates(section, sidoName);
+  const sidoLabel = sidoDisplayName(sidoName);
 
   // 비어있는 섹션: 컨텍스트 메시지가 있으면 노출, 없으면 완전 숨김
   if (candidates.length === 0) {
@@ -1521,8 +1532,8 @@ function renderDetailSection(section, sidoName) {
 
   if (layout === 'single') {
     const label = section.id === 'chief'
-      ? (candidates[0].sggName || sidoName)
-      : `${sidoName} ${section.title}`;
+      ? (candidates[0].sggName === sidoName ? sidoLabel : (candidates[0].sggName || sidoLabel))
+      : `${sidoLabel} ${section.title}`;
     return `
       <h3 class="section-title">${section.title}</h3>
       <div class="single-section">${candidateCard(label, candidates, { showCompetition: true, seatStats })}</div>`;
@@ -1648,7 +1659,7 @@ function renderTurnoutBySidoSection() {
     const deltaCell = delta == null
       ? '<td>—</td>'
       : `<td class="delta ${delta >= 0 ? 'up' : 'down'}">${delta >= 0 ? '+' : ''}${delta.toFixed(1)}p</td>`;
-    return `<tr><th>${sd}</th>${cells}${deltaCell}</tr>`;
+    return `<tr><th>${sidoDisplayName(sd)}</th>${cells}${deltaCell}</tr>`;
   }).join('');
 
   return `
@@ -1783,8 +1794,9 @@ function historyCloseRaces(result, limit = 6) {
 function historyDistrictLabel(d, sgTypecode) {
   const sd = normalizeHistorySidoName(d?.sdName || '');
   const sgg = d?.sggName || '';
-  if (String(sgTypecode) === '3' || !sgg || sgg === sd) return sd || sgg || '-';
-  return `${sd} ${sgg}`.trim();
+  const sdLabel = sidoDisplayName(sd);
+  if (String(sgTypecode) === '3' || !sgg || sgg === sd) return sdLabel || sgg || '-';
+  return `${sdLabel} ${sgg}`.trim();
 }
 function historyDistrictTurnout(d) {
   if (!d?.eligible_voters || !d?.turnout_votes) return null;
@@ -1975,7 +1987,7 @@ function historyLocalGroupsHtml(result) {
     return `
       <details class="history-local-group" ${idx < 2 ? 'open' : ''}>
         <summary>
-          <strong>${escapeHtml(sd)}</strong>
+          <strong>${escapeHtml(sidoDisplayName(sd))}</strong>
           <span>${items.length.toLocaleString()}곳 · ${escapeHtml(summary)}</span>
         </summary>
         <ul class="history-local-list">${cards}</ul>
@@ -2023,7 +2035,7 @@ function renderHistoryFull() {
   }).sort((a, b) => b.share - a.share)[0];
   const localClose = historyCloseRaces(latest.localHead, 1)[0];
   const localCloseText = localClose
-    ? `${normalizeHistorySidoName(localClose.district.sdName)} ${localClose.district.sggName} · ${localClose.first.name} ${localClose.marginPct.toFixed(2)}%p 차`
+    ? `${sidoDisplayName(normalizeHistorySidoName(localClose.district.sdName))} ${localClose.district.sggName} · ${localClose.first.name} ${localClose.marginPct.toFixed(2)}%p 차`
     : '-';
   const battlefields = historyBattlefieldItems(latest, Infinity);
   const battlefieldPanel = historyBattlefieldPanelHtml(battlefields, state.historyBattleFilter);
@@ -2042,13 +2054,13 @@ function renderHistoryFull() {
       const d = resultByRoundAndSido.get(Number(e.round))?.get(sd);
       return `<td class="history-result-cell" data-label="제${e.round}회 ${e.year}">${historyWinnerCell(d)}</td>`;
     }).join('');
-    return `<tr><th class="history-region-name">${sd}</th>${cells}</tr>`;
+    return `<tr><th class="history-region-name">${sidoDisplayName(sd)}</th>${cells}</tr>`;
   }).join('');
 
   const summaryRows = countingElections.map(e => {
     const close = historyCloseRaces(e.governor, 1)[0];
     const closeText = close
-      ? `${normalizeHistorySidoName(close.district.sdName)} ${close.first.name} ${close.marginPct.toFixed(2)}%p 차`
+      ? `${sidoDisplayName(normalizeHistorySidoName(close.district.sdName))} ${close.first.name} ${close.marginPct.toFixed(2)}%p 차`
       : '-';
     return `
       <tr>
@@ -2063,7 +2075,7 @@ function renderHistoryFull() {
 
   const latestCloseRows = historyCloseRaces(latest.governor, 8).map(r => `
     <tr>
-      <td data-label="시도">${normalizeHistorySidoName(r.district.sdName)}</td>
+      <td data-label="시도">${sidoDisplayName(normalizeHistorySidoName(r.district.sdName))}</td>
       <td data-label="1위"><strong>${r.first.name}</strong><small>${r.first.party}</small></td>
       <td data-label="1위 득표율">${r.first.vote_share.toFixed(2)}%</td>
       <td data-label="2위">${r.second.name}<small>${r.second.party}</small></td>
@@ -2661,7 +2673,7 @@ function assetBars(items, options = {}) {
   const shown = items.slice(0, options.limit ?? defaultLimit);
   const max = Math.max(...shown.map(x => x.avg), 1);
   return shown.map(x => metricBar(
-    x.label,
+    options.regionLinks ? sidoDisplayName(x.label) : x.label,
     x.avg,
     max,
     'var(--accent)',
@@ -2676,7 +2688,7 @@ function criminalBars(items, options = {}) {
   const shown = items.slice(0, options.limit ?? defaultLimit);
   const max = Math.max(...shown.map(x => x.rate), 1);
   return shown.map(x => metricBar(
-    x.label,
+    options.regionLinks ? sidoDisplayName(x.label) : x.label,
     x.rate,
     max,
     '#b25c00',
@@ -2691,7 +2703,7 @@ function militaryBars(items, options = {}) {
   const shown = items.slice(0, options.limit ?? defaultLimit);
   const max = Math.max(...shown.map(x => x.rate), 1);
   return shown.map(x => metricBar(
-    x.label,
+    options.regionLinks ? sidoDisplayName(x.label) : x.label,
     x.rate,
     max,
     '#2c5d8f',
@@ -2706,7 +2718,7 @@ function taxArrearsBars(items, options = {}) {
   const shown = items.slice(0, options.limit ?? defaultLimit);
   const max = Math.max(...shown.map(x => x.rate), 1);
   return shown.map(x => metricBar(
-    x.label,
+    options.regionLinks ? sidoDisplayName(x.label) : x.label,
     x.rate,
     max,
     '#8f3d5a',
@@ -2718,7 +2730,7 @@ function taxArrearsBars(items, options = {}) {
 
 function candidateRankContext(c, includeRegion = true) {
   const parts = [
-    includeRegion ? sidoFor(c) : '',
+    includeRegion ? sidoDisplayName(sidoFor(c)) : '',
     SG_TITLE[String(c.sgTypecode)] || '',
     c.sggName && c.sggName !== c.sdName ? c.sggName : '',
     c.wiwName && c.wiwName !== c.sggName ? c.wiwName : '',
@@ -2860,7 +2872,7 @@ function candidateRegionRanksHtml(ds) {
     <div class="region-rank-grid">
       ${labels.map(label => `
         <details class="region-rank">
-          <summary>${escapeHtml(label)} <span>재산·전과 TOP 5</span></summary>
+          <summary>${escapeHtml(sidoDisplayName(label))} <span>재산·전과 TOP 5</span></summary>
           <div class="region-rank-body">
             <div>
               <h5 class="rank-subtitle">재산 1~5위</h5>
@@ -2940,6 +2952,7 @@ function militaryRegionOverviewHtml(label, summary) {
 
 function renderTrendRegionFull(sd) {
   sd = canonicalSidoName(sd);
+  const sdLabel = sidoDisplayName(sd);
   const app = document.getElementById('app');
   app.className = '';
   if (!state.data) {
@@ -2950,7 +2963,7 @@ function renderTrendRegionFull(sd) {
   const rows = ds.rows.filter(r => r.sd === sd);
   if (!rows.length) {
     app.innerHTML = `
-      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">${escapeHtml(sd || '지역')}</span></nav>
+      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">${escapeHtml(sdLabel || '지역')}</span></nav>
       <div class="error-banner"><strong>지역 통계를 찾지 못했습니다.</strong> 다시 지역을 선택해 주세요.</div>`;
     return;
   }
@@ -2964,11 +2977,11 @@ function renderTrendRegionFull(sd) {
   const maxLocalItems = 99;
 
   app.innerHTML = `
-    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">${escapeHtml(sd)} 상세 통계</span></nav>
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><span class="current">${escapeHtml(sdLabel)} 상세 통계</span></nav>
     <div class="detail-head">
       <div>
-        <h1 class="detail-title">${escapeHtml(sd)} 공개정보 상세</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sd)} 공개정보 상세 — 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <h1 class="detail-title">${escapeHtml(sdLabel)} 공개정보 상세</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sdLabel)} 공개정보 상세 — 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         <span>공개정보 ${summary.rows.length.toLocaleString()}명</span>
@@ -2976,21 +2989,21 @@ function renderTrendRegionFull(sd) {
         <span>병역 미필 ${formatPct(summary.military.notServedRate)}</span>
       </div>
     </div>
-    <p class="page-intro">시도별 막대에서 한 단계 내려온 화면입니다. 먼저 ${escapeHtml(sd)} 전체 요약을 보고, 아래에서 시군구별 차이와 후보별 최다 순위를 함께 확인할 수 있습니다.</p>
+    <p class="page-intro">시도별 막대에서 한 단계 내려온 화면입니다. 먼저 ${escapeHtml(sdLabel)} 전체 요약을 보고, 아래에서 시군구별 차이와 후보별 최다 순위를 함께 확인할 수 있습니다.</p>
 
-    ${disclosureRegionOverviewHtml(sd, summary)}
+    ${disclosureRegionOverviewHtml(sdLabel, summary)}
 
     <section class="trend-section">
-      <h3 class="trend-section-title">${escapeHtml(sd)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
+      <h3 class="trend-section-title">${escapeHtml(sdLabel)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
       ${militaryCandidateListHtml(militaryNotServedRows, {
         includeRegion: false,
-        emptyText: `${sd}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
+        emptyText: `${sdLabel}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
       })}
       <p class="trend-meta">남성 후보 중 선관위 병역 항목이 “군복무를 마치지 아니한 사람” 또는 병적기록 관련 미필 표기로 분류된 후보입니다. 후보 이름을 누르면 상세 공개정보의 병역 원문을 확인할 수 있습니다.</p>
     </section>
 
     <section class="trend-section">
-      <h3 class="trend-section-title">${escapeHtml(sd)} 후보별 최다 순위 <small>재산·전과 1~5위</small></h3>
+      <h3 class="trend-section-title">${escapeHtml(sdLabel)} 후보별 최다 순위 <small>재산·전과 1~5위</small></h3>
       <div class="candidate-leader-grid">
         <div class="candidate-leader-card">
           <h4 class="metric-title">재산 1~5위</h4>
@@ -3027,6 +3040,7 @@ function renderTrendRegionFull(sd) {
 
 function renderTrendLocalFull(sd, local) {
   sd = canonicalSidoName(sd);
+  const sdLabel = sidoDisplayName(sd);
   const app = document.getElementById('app');
   app.className = '';
   if (!state.data) {
@@ -3037,16 +3051,16 @@ function renderTrendLocalFull(sd, local) {
   const rows = ds.rows.filter(r => r.sd === sd && localDistrictName(r) === local);
   if (!rows.length) {
     app.innerHTML = `
-      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="${trendRegionHref(sd)}">${escapeHtml(sd || '지역')}</a><span class="sep">›</span><span class="current">${escapeHtml(local || '시군구')}</span></nav>
+      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="${trendRegionHref(sd)}">${escapeHtml(sdLabel || '지역')}</a><span class="sep">›</span><span class="current">${escapeHtml(local || '시군구')}</span></nav>
       <div class="error-banner"><strong>시군구 통계를 찾지 못했습니다.</strong> 다시 지역을 선택해 주세요.</div>`;
     return;
   }
 
   const summary = disclosureSummaryFromRows(rows);
   const militaryNotServedRows = militaryCandidateRows(rows);
-  const title = `${sd} ${local}`;
+  const title = `${sdLabel} ${local}`;
   app.innerHTML = `
-    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="${trendRegionHref(sd)}">${escapeHtml(sd)} 상세 통계</a><span class="sep">›</span><span class="current">${escapeHtml(local)}</span></nav>
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="${trendRegionHref(sd)}">${escapeHtml(sdLabel)} 상세 통계</a><span class="sep">›</span><span class="current">${escapeHtml(local)}</span></nav>
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(title)} 공개정보 상세</h1>
@@ -3059,7 +3073,7 @@ function renderTrendLocalFull(sd, local) {
         <span>병역 미필 ${formatPct(summary.military.notServedRate)}</span>
       </div>
     </div>
-    <p class="page-intro">${escapeHtml(sd)} 상세 통계에서 한 단계 내려온 시군구 화면입니다. 해당 시군구 선거구로 분류되는 후보의 재산·전과 상위 후보와 병역 미필 명단을 함께 확인할 수 있습니다.</p>
+    <p class="page-intro">${escapeHtml(sdLabel)} 상세 통계에서 한 단계 내려온 시군구 화면입니다. 해당 시군구 선거구로 분류되는 후보의 재산·전과 상위 후보와 병역 미필 명단을 함께 확인할 수 있습니다.</p>
 
     ${disclosureRegionOverviewHtml(title, summary)}
 
@@ -3091,6 +3105,7 @@ function renderTrendLocalFull(sd, local) {
 
 function renderTrendMilitaryRegionFull(sd) {
   sd = canonicalSidoName(sd);
+  const sdLabel = sidoDisplayName(sd);
   const app = document.getElementById('app');
   app.className = '';
   if (!state.data) {
@@ -3101,7 +3116,7 @@ function renderTrendMilitaryRegionFull(sd) {
   const rows = ds.rows.filter(r => r.sd === sd);
   if (!rows.length) {
     app.innerHTML = `
-      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><span class="current">${escapeHtml(sd || '지역')}</span></nav>
+      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><span class="current">${escapeHtml(sdLabel || '지역')}</span></nav>
       <div class="error-banner"><strong>지역 병역 통계를 찾지 못했습니다.</strong> 다시 지역을 선택해 주세요.</div>`;
     return;
   }
@@ -3113,11 +3128,11 @@ function renderTrendMilitaryRegionFull(sd) {
   const maxLocalItems = 99;
 
   app.innerHTML = `
-    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><span class="current">${escapeHtml(sd)}</span></nav>
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><span class="current">${escapeHtml(sdLabel)}</span></nav>
     <div class="detail-head">
       <div>
-        <h1 class="detail-title">${escapeHtml(sd)} 병역 미필 후보</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sd)} 병역 미필 후보 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <h1 class="detail-title">${escapeHtml(sdLabel)} 병역 미필 후보</h1>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sdLabel)} 병역 미필 후보 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         <span>미필 ${militaryNotServedRows.length.toLocaleString()}명</span>
@@ -3127,13 +3142,13 @@ function renderTrendMilitaryRegionFull(sd) {
     </div>
     <p class="page-intro">병역 대상 남성 기준의 미필률과 후보 명단을 지역별로 봅니다.</p>
 
-    ${militaryRegionOverviewHtml(sd, summary)}
+    ${militaryRegionOverviewHtml(sdLabel, summary)}
 
     <section class="trend-section">
-      <h3 class="trend-section-title">${escapeHtml(sd)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
+      <h3 class="trend-section-title">${escapeHtml(sdLabel)} 병역 미필 후보 <small>${militaryNotServedRows.length.toLocaleString()}명 전체</small></h3>
       ${militaryCandidateListHtml(militaryNotServedRows, {
         includeRegion: false,
-        emptyText: `${sd}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
+        emptyText: `${sdLabel}에서 병역 미필로 표시된 남성 후보가 없습니다.`,
       })}
       <p class="trend-meta">후보 이름을 누르면 상세 공개정보의 병역 원문을 확인할 수 있습니다.</p>
     </section>
@@ -3148,6 +3163,7 @@ function renderTrendMilitaryRegionFull(sd) {
 
 function renderTrendMilitaryLocalFull(sd, local) {
   sd = canonicalSidoName(sd);
+  const sdLabel = sidoDisplayName(sd);
   const app = document.getElementById('app');
   app.className = '';
   if (!state.data) {
@@ -3158,16 +3174,16 @@ function renderTrendMilitaryLocalFull(sd, local) {
   const rows = ds.rows.filter(r => r.sd === sd && localDistrictName(r) === local);
   if (!rows.length) {
     app.innerHTML = `
-      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><a href="${trendMilitaryRegionHref(sd)}">${escapeHtml(sd || '지역')}</a><span class="sep">›</span><span class="current">${escapeHtml(local || '시군구')}</span></nav>
+      <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><a href="${trendMilitaryRegionHref(sd)}">${escapeHtml(sdLabel || '지역')}</a><span class="sep">›</span><span class="current">${escapeHtml(local || '시군구')}</span></nav>
       <div class="error-banner"><strong>시군구 병역 통계를 찾지 못했습니다.</strong> 다시 지역을 선택해 주세요.</div>`;
     return;
   }
 
   const summary = disclosureSummaryFromRows(rows);
   const militaryNotServedRows = militaryCandidateRows(rows);
-  const title = `${sd} ${local}`;
+  const title = `${sdLabel} ${local}`;
   app.innerHTML = `
-    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><a href="${trendMilitaryRegionHref(sd)}">${escapeHtml(sd)}</a><span class="sep">›</span><span class="current">${escapeHtml(local)}</span></nav>
+    <nav class="breadcrumb"><a href="#trend">출마자 한눈에</a><span class="sep">›</span><a href="#disclosure/military">병역</a><span class="sep">›</span><a href="${trendMilitaryRegionHref(sd)}">${escapeHtml(sdLabel)}</a><span class="sep">›</span><span class="current">${escapeHtml(local)}</span></nav>
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(title)} 병역 미필 후보</h1>
@@ -3483,11 +3499,12 @@ function crimeAuditBars(items, options = {}) {
   const metric = options.category ? 'categoryRate' : 'priorityRate';
   const max = Math.max(...shown.map(x => x[metric]), 1);
   return shown.map(x => {
+    const label = options.regionLinks ? sidoDisplayName(x.label) : x.label;
     const subText = options.category
       ? `${x.categoryHits.toLocaleString()}명 / ${x.count.toLocaleString()}명 · 전과 ${formatPct(x.criminalRate)}`
       : `검증 ${x.priority.toLocaleString()}명 · 전과 ${formatPct(x.criminalRate)} · ${x.count.toLocaleString()}명`;
     return metricBar(
-      x.label,
+      label,
       x[metric],
       max,
       options.category ? '#7a4a00' : 'var(--accent)',
@@ -3542,9 +3559,10 @@ function crimeCompositionPanelHtml(title, composition, options = {}) {
   if (!total || !items.length) return '';
   const list = items.map(item => {
     const href = options.regionLinks && !item.other ? metricLinkHref(item.label, { regionLinks: true }) : '';
+    const label = options.regionLinks && !item.other ? sidoDisplayName(item.label) : item.label;
     const labelHtml = href
-      ? `<a href="${href}" class="crime-share-link">${escapeHtml(item.label)}</a>`
-      : `<span class="crime-share-label">${escapeHtml(item.label)}</span>`;
+      ? `<a href="${href}" class="crime-share-link">${escapeHtml(label)}</a>`
+      : `<span class="crime-share-label">${escapeHtml(label)}</span>`;
     return `
       <li class="crime-share-item">
         <span class="crime-share-dot" style="background:${item.color}"></span>
@@ -3744,7 +3762,7 @@ function renderCriminalCategoryFull(category) {
   const groupsHtml = groups.map(([region, items]) => `
     <section class="candidate-card crime-region-card">
       <div class="cc-header">
-        <div class="cc-name">${escapeHtml(region)}</div>
+        <div class="cc-name">${escapeHtml(sidoDisplayName(region))}</div>
         <div class="cc-count">${items.length.toLocaleString()}명</div>
       </div>
       ${items.map(item => criminalCandidateEntry(item, categoryLabel)).join('')}
@@ -4207,7 +4225,7 @@ function renderHome() {
         <a class="summary-card" href="#competition">
           <span class="summary-card-label">지역별 평균 경쟁률</span>
           <span class="summary-card-value"><strong>${formatCompetitionRatio(regionTop.ratio)}</strong><span class="summary-card-unit">:1</span></span>
-          <span class="summary-card-sub">1위 ${regionTop.sd} · ${regionNext.map(r => `${r.sd} ${formatCompetitionRatio(r.ratio)}:1`).join(' · ')} →</span>
+          <span class="summary-card-sub">1위 ${sidoDisplayName(regionTop.sd)} · ${regionNext.map(r => `${sidoDisplayName(r.sd)} ${formatCompetitionRatio(r.ratio)}:1`).join(' · ')} →</span>
         </a>` : ''}
       ${top ? `
         <a class="summary-card" href="#competition">
@@ -4253,7 +4271,7 @@ function renderHome() {
         if (stats.length === 0) return '';
         return `
           <a href="#${encodeURIComponent(sido)}" class="sido-card">
-            <div class="sido-card-name">${sido}</div>
+            <div class="sido-card-name">${sidoDisplayName(sido)}</div>
             <div class="sido-card-stats">
               ${stats.map(s => `<div>${s.label} <strong>${s.count}</strong></div>`).join('')}
             </div>
@@ -4269,6 +4287,7 @@ function renderHome() {
 // ============ Render: 상세 ============
 function renderSidoDetail(sidoName, focusSgg) {
   sidoName = canonicalSidoName(sidoName);
+  const sidoLabel = sidoDisplayName(sidoName);
 
   // 상세에서 그릴 섹션들의 후보 데이터를 한 번에 준비
   const sectionData = SECTIONS
@@ -4288,12 +4307,12 @@ function renderSidoDetail(sidoName, focusSgg) {
 
   const html = `
     <nav class="breadcrumb">
-      <a href="#">전체</a> <span class="sep">›</span> <span class="current">${sidoName}</span>
+      <a href="#">전체</a> <span class="sep">›</span> <span class="current">${sidoLabel}</span>
     </nav>
     <div class="detail-head">
       <div>
-        <h2 class="detail-title">${sidoName}</h2>
-        <button type="button" class="page-share" data-share-page data-share-title="${sidoName} 출마자 현황 — 6·3 지방선거">🔗 이 페이지 공유</button>
+        <h2 class="detail-title">${sidoLabel}</h2>
+        <button type="button" class="page-share" data-share-page data-share-title="${sidoLabel} 출마자 현황 — 6·3 지방선거">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         ${stats.map(s => `<div><strong>${s.count}</strong> ${s.label}</div>`).join('')}
@@ -4533,7 +4552,7 @@ function renderCompetitionFull() {
   const regionRows = summary?.regions || [];
   const maxRegionRatio = Math.max(...regionRows.map(r => r.ratio), 1);
   const regionBars = regionRows.map(r =>
-    metricBar(r.sd, r.ratio, maxRegionRatio, 'var(--accent)', `${formatCompetitionRatio(r.ratio)}:1`, `${r.candidates.toLocaleString()}명 / ${r.seats.toLocaleString()}석`)
+    metricBar(sidoDisplayName(r.sd), r.ratio, maxRegionRatio, 'var(--accent)', `${formatCompetitionRatio(r.ratio)}:1`, `${r.candidates.toLocaleString()}명 / ${r.seats.toLocaleString()}석`)
   ).join('');
   const rows = ranking.map((r, i) => {
     const target = r.sgg || r.sd;
@@ -4630,7 +4649,7 @@ function renderCandidatesFull() {
     // 광주·전남 칩은 통합특별시 단일 선거 후보까지 카운트에 포함
     const extra = (sd === '광주광역시' || sd === '전라남도') ? JOINT_SIDO : null;
     const n = state.data.candidates.filter(c => c.sdName === sd || c.sdName === extra).length;
-    return chip('sd', sd, sd, n, candidatesFilter.sd.has(sd));
+    return chip('sd', sd, sidoDisplayName(sd), n, candidatesFilter.sd.has(sd));
   }).join('');
   const sgChips = facets.sgs.map(s => {
     const n = state.data.candidates.filter(c => String(c.sgTypecode) === s.code).length;
@@ -4723,8 +4742,7 @@ function runSearch(q) {
     || sidoSort(a.sdName, b.sdName));
   const top = matches.slice(0, 30);
   const items = top.map(c => {
-    const region = c.sggName && c.sggName !== c.sdName
-      ? `${c.sdName} · ${c.sggName}` : (c.sdName || '');
+    const region = formatRegionLabel(c).replace(' ', ' · ');
     // 기초단체장(그리드)·시도의원·기초의원(collapsible)은 페이지에 묻혀 있으므로
     // focus 해시로 자동 펼침·스크롤·강조
     const needsFocus = ['4', '5', '6'].includes(String(c.sgTypecode))
