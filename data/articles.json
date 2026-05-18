@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-05-18T19:09:28+09:00",
+  "updated_at": "2026-05-19T00:38:06+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 315,
+  "count": 316,
   "articles": [
+    {
+      "date": "2026-05-18",
+      "title": "6.3 지선 무투표 당선 513명 중 188명, 전과·체납자",
+      "url": "https://newtamsa.org/news/uyZ0Tt",
+      "category": "데이터",
+      "tags": [
+        "지방선거",
+        "무투표당선",
+        "전과",
+        "체납",
+        "사기",
+        "횡령",
+        "배임",
+        "뇌물",
+        "도로교통법"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-05-18",
       "title": "김두겸 울산시장 취임 뒤 5개 업체에 수의계약 227건…페이퍼컴퍼니 의혹",
