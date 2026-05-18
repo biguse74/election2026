@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-05-19T08:33:25",
+  "source_files": {
+    "snapshot": "data\\candidates\\20260603\\snapshot_20260518.json",
+    "candidate_details": "data\\candidate_details.json",
+    "criminal_ocr": "data\\criminal_ocr.json"
+  },
+  "tax_100m_candidates": {
+    "total_deduped_major_party": 17,
+    "democratic": 9,
+    "ppp": 8,
+    "current_100m_included_in_recent_100m": true,
+    "tax_agency_status": "구조화 데이터에 국세/지방세 구분 없음"
+  },
+  "sex_drug_candidates": {
+    "total_major_party": 3,
+    "democratic": 0,
+    "ppp": 3
+  },
+  "economic_priority_candidates": {
+    "selected_total": 20,
+    "democratic": 10,
+    "ppp": 10,
+    "selection_rule": "무투표, 단체장, 광역·기초의원, 비례 순",
+    "verified_top10_detail_source_used": true
+  }
+}
