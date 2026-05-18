@@ -1,9 +1,31 @@
 {
-  "updated_at": "2026-05-17T22:25:30+09:00",
+  "updated_at": "2026-05-18T12:54:21+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 313,
+  "count": 315,
   "articles": [
+    {
+      "date": "2026-05-18",
+      "title": "김두겸 울산시장 취임 뒤 5개 업체에 수의계약 227건…페이퍼컴퍼니 의혹",
+      "url": "https://newtamsa.org/news/jrFvWq",
+      "category": "취재플러스",
+      "tags": [
+        "울산시",
+        "김두겸",
+        "금섬회",
+        "신천지",
+        "수의계약"
+      ],
+      "author": "김은도, 김시몬, 강진구"
+    },
+    {
+      "date": "2026-05-17",
+      "title": "[바로잡습니다] 4월 22일 자 신안 '정원수협동조합' 보도 일부 정정",
+      "url": "https://newtamsa.org/news/AL3-im",
+      "category": "정정/반론보도",
+      "tags": [],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-05-17",
       "title": "1억 '가짜 미투' 피해자 정영덕 후보, 김산 군수와 무안서 정면대결",
