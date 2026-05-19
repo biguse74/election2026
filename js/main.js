@@ -4805,21 +4805,28 @@ function proportionalTagsHtml(row) {
       `<a class="proportional-tag is-category" href="${criminalCategoryHref(cat)}">${escapeHtml(cat)}</a>`));
     if (row.categories.length > 3) tags.push(`<span class="proportional-tag">+${row.categories.length - 3}</span>`);
   }
-  return tags.length ? `<div class="proportional-tags">${tags.join('')}</div>` : '<div class="proportional-tags"><span class="proportional-tag muted">공개 특이사항 없음</span></div>';
+  return tags.length ? `<div class="proportional-tags">${tags.join('')}</div>` : '';
 }
 
 function proportionalRowHtml(row) {
   const partyStyle = `style="--party:${partyColor(row.party)}"`;
   const rank = row.rank ? `${row.rank}` : '-';
   const seat = row.seats ? `/${row.seats}` : '';
+  const tags = proportionalTagsHtml(row);
   return `
     <li class="proportional-row" ${partyStyle}>
       <span class="proportional-rank"><strong>${rank}</strong><small>${seat}</small></span>
-      <button type="button" class="proportional-name candidate-detail-trigger" data-huboid="${escapeHtml(row.huboid)}" title="${escapeHtml(row.name)} 상세 정보">${escapeHtml(row.name)}</button>
-      <span class="proportional-party">${escapeHtml(row.party)}</span>
-      <span class="proportional-region">${escapeHtml(row.region)}</span>
-      <span class="proportional-office">${escapeHtml(row.office)}</span>
-      ${proportionalTagsHtml(row)}
+      <div class="proportional-main">
+        <div class="proportional-name-line">
+          <button type="button" class="proportional-name candidate-detail-trigger" data-huboid="${escapeHtml(row.huboid)}" title="${escapeHtml(row.name)} 상세 정보">${escapeHtml(row.name)}</button>
+          <span class="proportional-party">${escapeHtml(row.party)}</span>
+        </div>
+        <div class="proportional-meta">
+          <span class="proportional-region">${escapeHtml(row.region)}</span>
+          <span class="proportional-office">${escapeHtml(row.office)}</span>
+        </div>
+      </div>
+      ${tags}
     </li>`;
 }
 
