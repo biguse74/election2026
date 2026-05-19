@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-05-19T00:38:06+09:00",
+  "updated_at": "2026-05-19T12:47:03+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 316,
+  "count": 317,
   "articles": [
+    {
+      "date": "2026-05-19",
+      "title": "김관영 CCTV 제보 음식점 사장, '이원택 비서' 통화 한 건만 빼고 선관위 제출",
+      "url": "https://newtamsa.org/news/pLZO9u",
+      "category": "단독보도",
+      "tags": [
+        "전북",
+        "김관영",
+        "이원택",
+        "정치공작",
+        "CCTV",
+        "음식점",
+        "채널A"
+      ],
+      "author": "강진구, 정선호, 김시몬"
+    },
     {
       "date": "2026-05-18",
       "title": "6.3 지선 무투표 당선 513명 중 188명, 전과·체납자",
