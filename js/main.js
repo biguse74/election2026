@@ -141,6 +141,8 @@ const SG_TITLE = {
   '9': '기초의원비례',
   '11': '교육감',
 };
+const PROPORTIONAL_SG_TYPES = new Set(['8', '9']);
+const MAJOR_PARTIES = ['더불어민주당', '국민의힘'];
 
 // 행정구조상 선거 자체가 없는 경우의 컨텍스트 메시지.
 // (데이터가 0이라서 단순 숨기면 "누락된 건가?" 오해 소지가 있는 케이스)
@@ -895,8 +897,7 @@ function articleListHtml(articles) {
 // 후보 → 뉴탐사 제보 페이지로 직접 연결. 후보명·지역구·정당을 제목에 미리 채워 보냄.
 function tipoffUrl(c) {
   const region = [c.sdName, c.sggName].filter(Boolean).join(' ');
-  const titleMap = { '2': '국회의원(재·보궐)', '3': '시도지사', '4': '기초단체장', '5': '시도의원', '6': '구시군의회의원', '11': '교육감' };
-  const sect = titleMap[String(c.sgTypecode)] || '';
+  const sect = SG_TITLE[String(c.sgTypecode)] || '';
   const subject = `[제보] ${c.name} (${c.jdName || '무소속'}) · ${region} ${sect}`.trim();
   return `https://tipoff.newtamsa.org/?subject=${encodeURIComponent(subject)}`;
 }
@@ -1108,8 +1109,7 @@ async function openCandidateModal(huboid) {
     ? `<span class="uncontested-badge modal-uncontested-badge" title="등록 후보 수가 의원정수 이하인 무투표 당선 선거구 후보">무투표 당선</span>`
     : '';
   const articles = state.articleMap?.[c.huboid] || [];
-  const titleMap = Object.fromEntries(SECTIONS.map(s => [s.sgTypecode, s.title]));
-  const sectionTitle = titleMap[c.sgTypecode] || '';
+  const sectionTitle = SG_TITLE[String(c.sgTypecode)] || '';
   const region = formatRegionLabel(c);
   const birth = formatBirthday(c.birthday);
   const regdate = formatRegdate(c.regdate);
@@ -4513,6 +4513,8 @@ function renderHome() {
 
   // 글로벌 카운트 — 활성 후보만
   const countBy = sgType => activeCands.filter(c => String(c.sgTypecode) === sgType).length;
+  const proportionalCands = activeCands.filter(c => PROPORTIONAL_SG_TYPES.has(String(c.sgTypecode)));
+  const majorProportionalCount = proportionalCands.filter(c => MAJOR_PARTIES.includes(c.jdName)).length;
   const totalParties = new Set(activeCands.map(c => c.jdName)).size;
 
   // 시도 목록 (sdName 기준, '전국'·통합 alias 제외)
@@ -4569,6 +4571,12 @@ function renderHome() {
           <span class="summary-card-value"><strong>${uc.totalCandidates.toLocaleString()}</strong>명</span>
           <span class="summary-card-sub">${uc.totalDistricts.toLocaleString()}개 선거구 · 지역구·단체장 ${uc.nonProportionalCandidates.toLocaleString()}명 · 비례 ${uc.proportionalCandidates.toLocaleString()}명 →</span>
         </a>` : ''}
+      ${proportionalCands.length ? `
+        <a class="summary-card" href="#proportional">
+          <span class="summary-card-label">비례 명부</span>
+          <span class="summary-card-value"><strong>${proportionalCands.length.toLocaleString()}</strong>명</span>
+          <span class="summary-card-sub">민주당·국민의힘 ${majorProportionalCount.toLocaleString()}명 · 순번·전과·체납 함께 보기 →</span>
+        </a>` : ''}
     </div>` : '';
 
   const html = `
@@ -4579,6 +4587,11 @@ function renderHome() {
           <div class="stat-label">${s.title} ${candidateSuffix}</div>
           <div class="stat-value">${countBy(s.sgTypecode).toLocaleString()}명</div>
         </div>`).join('')}
+      <a class="stat stat-link" href="#proportional">
+        <div class="stat-label">비례 명부 후보</div>
+        <div class="stat-value">${proportionalCands.length.toLocaleString()}명</div>
+        <div class="stat-sub">전체 명단 보기</div>
+      </a>
       <div class="stat"><div class="stat-label">참여 정당</div><div class="stat-value">${totalParties}개</div><div class="stat-sub">무소속 포함</div></div>
     </div>
     ${renderAddressFinder()}
@@ -4692,6 +4705,272 @@ function focusConstituency(sggName) {
   });
 }
 
+// ============ Render: 비례 명부 ============
+function proportionalRank(candidate) {
+  const text = String(candidate?.giho || candidate?.gihoSangse || '').trim();
+  const m = text.match(/\d+/);
+  return m ? parseInt(m[0], 10) : null;
+}
+
+function proportionalOfficeTitle(candidate) {
+  return String(candidate?.sgTypecode) === '8' ? '광역의원 비례' : '기초의원 비례';
+}
+
+function proportionalRegionLabel(candidate) {
+  return formatRegionLabel(candidate).replace(/\s+/g, ' ').trim();
+}
+
+function proportionalRows() {
+  const seatStats = buildSeatStats(PROPORTIONAL_SG_TYPES);
+  return (state.data?.candidates || [])
+    .filter(c => isActiveCandidate(c) && PROPORTIONAL_SG_TYPES.has(String(c.sgTypecode)))
+    .map(candidate => {
+      const id = String(candidate.huboid || '');
+      const detail = state.candidateDetails?.[id] || null;
+      const disclosures = detail?.disclosures || {};
+      const record = criminalOcrRecordFor(id);
+      const categories = (record?.categories || []).filter(Boolean).sort(compareCrimeCategories);
+      const rank = proportionalRank(candidate);
+      const seats = seatStats?.seats?.[seatKey(candidate)] || 0;
+      const criminal = parseCriminalCount(disclosures.criminal_record);
+      const tax5y = parseDisclosureNumber(disclosures.tax_arrears_5y_thousand_krw) || 0;
+      const taxCurrent = parseDisclosureNumber(disclosures.tax_arrears_current_thousand_krw) || 0;
+      return {
+        candidate,
+        detail,
+        record,
+        huboid: id,
+        name: candidate.name || '',
+        party: candidate.jdName || '무소속',
+        office: proportionalOfficeTitle(candidate),
+        sgTypecode: String(candidate.sgTypecode || ''),
+        sd: sidoFor(candidate),
+        region: proportionalRegionLabel(candidate),
+        rank,
+        seats,
+        electable: !!rank && !!seats && rank <= seats,
+        criminal,
+        hasCriminal: criminal > 0,
+        tax5y,
+        taxCurrent,
+        hasTax: tax5y > 0 || taxCurrent > 0,
+        categories,
+      };
+    })
+    .sort((a, b) => {
+      const officeOrder = (a.sgTypecode === '8' ? 0 : 1) - (b.sgTypecode === '8' ? 0 : 1);
+      if (officeOrder) return officeOrder;
+      const sdOrder = sidoSort(a.sd, b.sd);
+      if (sdOrder) return sdOrder;
+      const regionOrder = koSort(a.region, b.region);
+      if (regionOrder) return regionOrder;
+      const partyOrder = (MAJOR_PARTIES.indexOf(a.party) === -1 ? 99 : MAJOR_PARTIES.indexOf(a.party))
+        - (MAJOR_PARTIES.indexOf(b.party) === -1 ? 99 : MAJOR_PARTIES.indexOf(b.party));
+      if (partyOrder) return partyOrder;
+      return (a.rank || 999) - (b.rank || 999) || koSort(a.name, b.name);
+    });
+}
+
+function summarizeProportionalRows(rows) {
+  const electable = rows.filter(r => r.electable);
+  const flagged = rows.filter(r => r.hasCriminal || r.hasTax);
+  const electableFlagged = electable.filter(r => r.hasCriminal || r.hasTax);
+  const byParty = Object.entries(groupDisclosureRows(rows, r => r.party))
+    .map(([party, items]) => ({
+      party,
+      total: items.length,
+      electable: items.filter(r => r.electable).length,
+      electableFlagged: items.filter(r => r.electable && (r.hasCriminal || r.hasTax)).length,
+      criminal: items.filter(r => r.hasCriminal).length,
+      tax: items.filter(r => r.hasTax).length,
+    }))
+    .sort((a, b) => b.total - a.total || koSort(a.party, b.party));
+  return {
+    total: rows.length,
+    electable: electable.length,
+    flagged: flagged.length,
+    electableFlagged: electableFlagged.length,
+    byParty,
+  };
+}
+
+function proportionalTagsHtml(row) {
+  const tags = [];
+  if (row.electable) tags.push('<span class="proportional-tag is-electable">선출인원 안 순번</span>');
+  if (row.hasCriminal) tags.push(`<span class="proportional-tag is-criminal">전과 ${row.criminal.toLocaleString()}건</span>`);
+  if (row.tax5y > 0) tags.push(`<span class="proportional-tag is-tax">최근 5년 체납 ${moneyDisclosure(row.tax5y)}</span>`);
+  if (row.taxCurrent > 0) tags.push(`<span class="proportional-tag is-tax-current">현 체납 ${moneyDisclosure(row.taxCurrent)}</span>`);
+  if (row.categories.length) {
+    tags.push(...row.categories.slice(0, 3).map(cat =>
+      `<a class="proportional-tag is-category" href="${criminalCategoryHref(cat)}">${escapeHtml(cat)}</a>`));
+    if (row.categories.length > 3) tags.push(`<span class="proportional-tag">+${row.categories.length - 3}</span>`);
+  }
+  return tags.length ? `<div class="proportional-tags">${tags.join('')}</div>` : '<div class="proportional-tags"><span class="proportional-tag muted">공개 특이사항 없음</span></div>';
+}
+
+function proportionalRowHtml(row) {
+  const partyStyle = `style="--party:${partyColor(row.party)}"`;
+  const rank = row.rank ? `${row.rank}` : '-';
+  const seat = row.seats ? `/${row.seats}` : '';
+  return `
+    <li class="proportional-row" ${partyStyle}>
+      <span class="proportional-rank"><strong>${rank}</strong><small>${seat}</small></span>
+      <button type="button" class="proportional-name candidate-detail-trigger" data-huboid="${escapeHtml(row.huboid)}" title="${escapeHtml(row.name)} 상세 정보">${escapeHtml(row.name)}</button>
+      <span class="proportional-party">${escapeHtml(row.party)}</span>
+      <span class="proportional-region">${escapeHtml(row.region)}</span>
+      <span class="proportional-office">${escapeHtml(row.office)}</span>
+      ${proportionalTagsHtml(row)}
+    </li>`;
+}
+
+function proportionalPartyMiniBars(summary) {
+  const items = summary.byParty.filter(row => MAJOR_PARTIES.includes(row.party));
+  if (!items.length) return '';
+  const max = Math.max(...items.map(row => row.total), 1);
+  return `
+    <div class="proportional-party-bars">
+      ${items.map(row => metricBar(
+        row.party,
+        row.total,
+        max,
+        partyColor(row.party),
+        `${row.total.toLocaleString()}명`,
+        `선출인원 안 순번 ${row.electable.toLocaleString()}명 · 그중 전과·체납 ${row.electableFlagged.toLocaleString()}명`
+      )).join('')}
+    </div>`;
+}
+
+function proportionalPriorityHtml(rows) {
+  const priority = rows
+    .filter(r => r.electable && (r.hasCriminal || r.hasTax))
+    .sort((a, b) => {
+      const partyOrder = (MAJOR_PARTIES.indexOf(a.party) === -1 ? 99 : MAJOR_PARTIES.indexOf(a.party))
+        - (MAJOR_PARTIES.indexOf(b.party) === -1 ? 99 : MAJOR_PARTIES.indexOf(b.party));
+      if (partyOrder) return partyOrder;
+      return (b.hasCriminal - a.hasCriminal) || (b.hasTax - a.hasTax) || koSort(a.region, b.region);
+    });
+  if (!priority.length) return '<p class="trend-meta">선출인원 안 순번에서 전과·체납 공개정보가 있는 비례 후보가 없습니다.</p>';
+  const partyGroups = Object.entries(groupDisclosureRows(priority, r => MAJOR_PARTIES.includes(r.party) ? r.party : '기타 정당'))
+    .sort(([a], [b]) => {
+      const ai = MAJOR_PARTIES.includes(a) ? MAJOR_PARTIES.indexOf(a) : 99;
+      const bi = MAJOR_PARTIES.includes(b) ? MAJOR_PARTIES.indexOf(b) : 99;
+      return ai - bi || koSort(a, b);
+    });
+  return `
+    <div class="proportional-priority-grid">
+      ${partyGroups.map(([party, items]) => `
+        <div class="proportional-priority-block">
+          <h4>${escapeHtml(party)} <small>${items.length.toLocaleString()}명</small></h4>
+          <ul class="proportional-list">${items.map(proportionalRowHtml).join('')}</ul>
+        </div>`).join('')}
+    </div>`;
+}
+
+function proportionalFullListHtml(rows) {
+  const groups = Object.entries(groupDisclosureRows(rows, r => `${r.office}|${r.region}`))
+    .map(([key, items]) => {
+      const [office, region] = key.split('|');
+      return {
+        key,
+        office,
+        region,
+        items,
+        electable: items.filter(r => r.electable).length,
+        flagged: items.filter(r => r.hasCriminal || r.hasTax).length,
+      };
+    })
+    .sort((a, b) => {
+      const officeOrder = (a.office === '광역의원 비례' ? 0 : 1) - (b.office === '광역의원 비례' ? 0 : 1);
+      return officeOrder || koSort(a.region, b.region);
+    });
+  return `
+    <div class="proportional-district-list">
+      ${groups.map((group, idx) => `
+        <details class="proportional-district" ${idx < 4 ? 'open' : ''}>
+          <summary>
+            <strong>${escapeHtml(group.region)}</strong>
+            <span>${escapeHtml(group.office)}</span>
+            <small>${group.items.length.toLocaleString()}명 · 선출인원 안 순번 ${group.electable.toLocaleString()}명${group.flagged ? ` · 전과·체납 ${group.flagged.toLocaleString()}명` : ''}</small>
+          </summary>
+          <ul class="proportional-list">${group.items.map(proportionalRowHtml).join('')}</ul>
+        </details>`).join('')}
+    </div>`;
+}
+
+function renderProportionalFull() {
+  const rows = proportionalRows();
+  const summary = summarizeProportionalRows(rows);
+  const kim = rows.find(r => r.huboid === '100165618');
+  const majorTotal = rows.filter(r => MAJOR_PARTIES.includes(r.party)).length;
+  const html = `
+    <nav class="breadcrumb">
+      <a href="#">전국</a>
+      <span class="sep">›</span>
+      <span class="current">비례 명부</span>
+    </nav>
+    <div class="detail-head">
+      <h1 class="detail-title">비례 후보 명부</h1>
+      <div class="detail-inline-stats">
+        <span>전체 ${summary.total.toLocaleString()}명</span>
+        <span>민주당·국민의힘 ${majorTotal.toLocaleString()}명</span>
+        <span>전과·체납 ${summary.flagged.toLocaleString()}명</span>
+      </div>
+    </div>
+    <p class="page-intro">주소 검색 안쪽에 흩어져 있던 광역의원·기초의원 비례 후보를 한 화면에 모았습니다. 순번이 해당 선거의 선출 인원 이하인 후보를 따로 표시했습니다. 실제 의석 배분 결과 예측이 아니라 명부 검증을 위한 기준입니다.</p>
+    <section class="trend-section proportional-overview-section">
+      <div class="disclosure-overview proportional-overview">
+        <div class="disclosure-card">
+          <span class="disclosure-label">비례 후보 전체</span>
+          <strong>${summary.total.toLocaleString()}명</strong>
+          <small>광역·기초 비례 명부 전체</small>
+        </div>
+        <div class="disclosure-card">
+          <span class="disclosure-label">선출인원 안 순번</span>
+          <strong>${summary.electable.toLocaleString()}명</strong>
+          <small>순번 ≤ 선출 인원</small>
+        </div>
+        <div class="disclosure-card">
+          <span class="disclosure-label">순번 안 전과·체납</span>
+          <strong>${summary.electableFlagged.toLocaleString()}명</strong>
+          <small>전과 신고 또는 최근 5년·현 체납</small>
+        </div>
+        <div class="disclosure-card">
+          <span class="disclosure-label">양당 비례 후보</span>
+          <strong>${majorTotal.toLocaleString()}명</strong>
+          <small>더불어민주당·국민의힘 합계</small>
+        </div>
+      </div>
+      ${proportionalPartyMiniBars(summary)}
+    </section>
+    ${kim ? `
+      <section class="trend-section proportional-case">
+        <div>
+          <span class="trend-section-kicker">확인 사례</span>
+          <h3 class="trend-section-title">경북 상주시의원 비례 2순위 김장환 후보</h3>
+          <p class="trend-meta">국민의힘 · 기초의원 비례 · 선출 인원 2명. 후보자 상세 페이지 전과 원문에는 윤락행위등방지법위반 벌금형 2건이 기재돼 있습니다. 인용 시 선관위 후보자 상세 페이지 원문 확인이 필요합니다.</p>
+        </div>
+        <button type="button" class="proportional-case-link candidate-detail-trigger" data-huboid="${escapeHtml(kim.huboid)}">후보 상세 보기</button>
+      </section>` : ''}
+    <section class="trend-section">
+      <div class="trend-section-head">
+        <h3 class="trend-section-title">선출인원 안 순번의 전과·체납 후보</h3>
+        <span class="trend-section-kicker">${summary.electableFlagged.toLocaleString()}명</span>
+      </div>
+      ${proportionalPriorityHtml(rows)}
+    </section>
+    <section class="trend-section">
+      <div class="trend-section-head">
+        <h3 class="trend-section-title">비례 명부 전체</h3>
+        <span class="trend-section-kicker">지역별로 펼쳐 보기</span>
+      </div>
+      ${proportionalFullListHtml(rows)}
+    </section>`;
+  const app = document.getElementById('app');
+  app.className = '';
+  app.innerHTML = html;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 // ============ Routing ============
 function updateSidoNavActive(hash) {
   // 통합특별시 alias 처리: 광주광역시·전라남도 페이지 → 시도지사 진입이면 둘 다 강조 가능,
@@ -4710,6 +4989,7 @@ function siteNavSectionForHash(hash) {
   if (hash === 'disclosure/criminal' || hash.startsWith('criminal/') || hash.startsWith('trend/criminal/')) return 'criminal';
   if (hash === 'disclosure/tax' || hash === 'tax-arrears' || hash.startsWith('tax-arrears/') || hash.startsWith('trend/tax5y/') || hash.startsWith('trend/taxCurrent/')) return 'tax';
   if (hash === 'uncontested' || hash.startsWith('uncontested/')) return 'uncontested';
+  if (hash === 'proportional') return 'proportional';
   if (hash === 'trend' || hash.startsWith('trend/') || hash === 'competition') return 'trend';
   if (hash.startsWith('disclosure/')) return 'trend';
   if (hash === 'changes') return 'changes';
@@ -4784,6 +5064,7 @@ async function route() {
     return renderAfterData('후보자 공개정보', [ensureCandidateDetails], () => renderTrendRegionFull(parts[1]), runId);
   }
   if (hash === 'history') return renderAfterData('지난 선거 개표 결과', [ensureHistoryCounting], renderHistoryFull, runId);
+  if (hash === 'proportional') return renderAfterData('비례 명부 공개정보', [ensureCandidateDetails, ensureCriminalOcr], renderProportionalFull, runId);
   if (hash === 'schedule') return renderScheduleFull();
   if (hash === 'candidates') return renderCandidatesFull();
   if (hash.startsWith('cand/')) {

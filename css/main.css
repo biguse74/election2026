@@ -193,6 +193,10 @@ main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
 }
 .stat-value { font-family: var(--serif); font-size: 1.7rem; font-weight: 700; line-height: 1; }
 .stat-sub { font-size: 0.76rem; color: var(--ink-sub); margin-top: auto; padding-top: 0.4rem; }
+.stat-link { color: inherit; text-decoration: none; transition: background 0.18s ease, color 0.18s ease; }
+.stat-link:hover { background: var(--ink); color: #fff; }
+.stat-link:hover .stat-label,
+.stat-link:hover .stat-sub { color: rgba(255,255,255,0.78); }
 
 /* Section */
 .section-title { font-family: var(--serif); font-weight: 700; font-size: 1.75rem; margin: 2.5rem 0 1.25rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--ink); }
@@ -1387,6 +1391,88 @@ footer a:hover { text-decoration: underline; }
 .summary-card-unit { font-family: var(--sans); font-size: 1.1rem; font-weight: 400; color: var(--ink-sub); margin-left: 0.1rem; }
 .summary-card-sub { font-size: 0.82rem; color: var(--ink-sub); line-height: 1.5; }
 
+/* 비례 명부 */
+.proportional-overview-section { display: grid; gap: 1rem; }
+.proportional-party-bars { display: grid; gap: 0.55rem; }
+.proportional-case {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem;
+  align-items: center; border-color: rgba(196, 25, 55, 0.35);
+}
+.proportional-case .trend-section-title { margin-bottom: 0.45rem; }
+.proportional-case-link {
+  border: 1px solid var(--ink); background: var(--ink); color: #fff;
+  font-weight: 700; padding: 0.55rem 0.8rem; cursor: pointer;
+}
+.proportional-case-link:hover { background: var(--accent); border-color: var(--accent); }
+.proportional-priority-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1rem;
+}
+.proportional-priority-block h4 {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-family: var(--serif); font-size: 1.05rem; margin-bottom: 0.55rem;
+  border-bottom: 1px solid var(--rule); padding-bottom: 0.45rem;
+}
+.proportional-priority-block h4 small { font-family: var(--sans); color: var(--ink-sub); font-size: 0.78rem; font-weight: 500; }
+.proportional-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; }
+.proportional-row {
+  --party: #777;
+  display: grid;
+  grid-template-columns: 48px minmax(92px, 1fr) 96px minmax(116px, 1.1fr) 92px;
+  gap: 0.25rem 0.7rem;
+  align-items: center;
+  background: #fff; border: 1px solid var(--rule); border-left: 4px solid var(--party);
+  padding: 0.58rem 0.75rem 0.58rem 0.6rem;
+}
+.proportional-rank {
+  grid-row: 1 / span 2;
+  font-family: var(--serif); color: var(--ink); line-height: 1;
+}
+.proportional-rank strong { font-size: 1.25rem; font-weight: 900; }
+.proportional-rank small { color: var(--ink-sub); font-family: var(--sans); font-size: 0.72rem; margin-left: 0.1rem; }
+.proportional-name {
+  border: 0; background: transparent; padding: 0; text-align: left;
+  font-family: var(--serif); font-weight: 800; font-size: 1rem; color: var(--ink);
+  cursor: pointer; min-width: 0; overflow-wrap: anywhere;
+}
+.proportional-name:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.proportional-party,
+.proportional-region,
+.proportional-office {
+  font-size: 0.78rem; color: var(--ink-sub); min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.proportional-party { color: var(--ink); font-weight: 700; }
+.proportional-tags {
+  grid-column: 2 / -1;
+  display: flex; flex-wrap: wrap; gap: 0.25rem;
+}
+.proportional-tag {
+  display: inline-flex; align-items: center; min-height: 22px;
+  border: 1px solid var(--rule); background: var(--bg);
+  color: var(--ink-sub); border-radius: 999px; padding: 0.15rem 0.45rem;
+  font-size: 0.72rem; line-height: 1.2; text-decoration: none;
+}
+.proportional-tag.is-electable { border-color: var(--ink); color: var(--ink); font-weight: 700; }
+.proportional-tag.is-criminal { border-color: rgba(196, 25, 55, 0.45); color: var(--accent); background: rgba(196, 25, 55, 0.06); }
+.proportional-tag.is-tax,
+.proportional-tag.is-tax-current { border-color: rgba(178, 92, 0, 0.45); color: #8a4700; background: rgba(178, 92, 0, 0.08); }
+.proportional-tag.is-category:hover { border-color: var(--accent); color: var(--accent); }
+.proportional-tag.muted { color: #aaa; }
+.proportional-district-list { display: grid; gap: 0.55rem; }
+.proportional-district {
+  background: #fff; border: 1px solid var(--rule);
+}
+.proportional-district[open] { border-color: rgba(43, 38, 32, 0.35); }
+.proportional-district summary {
+  display: grid; grid-template-columns: minmax(110px, 1fr) 110px minmax(180px, auto);
+  gap: 0.5rem; align-items: baseline; cursor: pointer;
+  padding: 0.7rem 0.9rem;
+}
+.proportional-district summary strong { font-family: var(--serif); font-size: 1rem; }
+.proportional-district summary span,
+.proportional-district summary small { color: var(--ink-sub); font-size: 0.78rem; }
+.proportional-district .proportional-list { padding: 0 0.9rem 0.9rem; }
+
 /* 내 주소로 후보 찾기 */
 .address-finder {
   background: var(--bg-card);
@@ -2113,6 +2199,23 @@ body.modal-open { overflow: hidden; }
   .history-result-cards { grid-template-columns: 1fr; }
   .trend-section-head { flex-direction: column; align-items: stretch; gap: 0.25rem; }
   .trend-section-kicker { text-align: left; }
+  .proportional-case { grid-template-columns: 1fr; align-items: stretch; }
+  .proportional-case-link { width: 100%; }
+  .proportional-priority-grid { grid-template-columns: 1fr; }
+  .proportional-row {
+    grid-template-columns: 42px minmax(0, 1fr) minmax(82px, max-content);
+    gap: 0.22rem 0.55rem;
+  }
+  .proportional-rank { grid-column: 1; grid-row: 1 / span 3; }
+  .proportional-name { grid-column: 2; grid-row: 1; }
+  .proportional-party { grid-column: 3; grid-row: 1; text-align: right; }
+  .proportional-region { grid-column: 2 / -1; grid-row: 2; white-space: normal; }
+  .proportional-office { grid-column: 2 / -1; grid-row: 3; white-space: normal; }
+  .proportional-tags { grid-column: 2 / -1; grid-row: 4; }
+  .proportional-district summary {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
   .history-battle-grid { grid-template-columns: 1fr; }
   .history-battle-head { grid-template-columns: 1fr; }
   .history-battle-head em {
