@@ -401,7 +401,7 @@ const loadTimeseries = () => safeJson('data/timeseries.json', null);
 const loadHistory = () => safeJson('data/history.json', null);
 const loadHistoryTurnout = () => safeJson('data/history_turnout.json', null);
 const loadHistoryCounting = () => safeJson('data/history_counting_results.json?v=202605180330', null);
-const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605171015', null);
+const loadCriminalOcr = () => safeJson('data/criminal_ocr.json?v=202605191230', null);
 let candidateDetailsPromise = null;
 let addressIndexPromise = null;
 let criminalOcrPromise = null;
@@ -1002,8 +1002,9 @@ const CRIME_CATEGORY_META = {
   '허위공문서·문서위조·공용서류': { group: '공직 검증', tone: 'priority', order: 18 },
   '성범죄': { group: '공직 검증', tone: 'priority', order: 22 },
   '특가법': { group: '공직 검증', tone: 'priority', order: 24 },
-  '음주·위험운전': { group: '공직 검증', tone: 'priority', order: 25 },
-  '무면허운전': { group: '공직 검증', tone: 'priority', order: 26 },
+  '위험운전': { group: '공직 검증', tone: 'priority', order: 25 },
+  '음주운전': { group: '공직 검증', tone: 'priority', order: 26 },
+  '무면허운전': { group: '공직 검증', tone: 'priority', order: 27 },
   '절도': { group: '공직 검증', tone: 'priority', order: 28 },
   '조세': { group: '공직 검증', tone: 'priority', order: 29 },
   '보조금': { group: '공직 검증', tone: 'priority', order: 30 },
@@ -3931,7 +3932,7 @@ function crimeAuditSnapshotHtml(rows, records, meta) {
       <div class="crime-stat">
         <span>검증 유형</span>
         <strong>${priority.toLocaleString()}명</strong>
-        <small>부패·공직윤리·성범죄·음주·위험운전 등</small>
+        <small>부패·공직윤리·성범죄·위험운전·음주운전 등</small>
       </div>
       <div class="crime-stat">
         <span>분류 완료</span>
@@ -3990,7 +3991,7 @@ function criminalCategoryChipsHtml(currentCategory = '') {
   const items = criminalOcrCategoryItems();
   if (!items.length) return '';
   const groups = [
-    { group: '공직 검증', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 허위공문서·문서위조, 성범죄, 음주·위험운전 등' },
+    { group: '공직 검증', note: '사기, 횡령, 배임, 뇌물, 청탁금지, 직권남용, 허위공문서·문서위조, 성범죄, 위험운전, 음주운전 등' },
     { group: '폭력·질서', note: '폭력·공무집행방해·업무방해 등' },
     { group: '교통·안전 법규', note: '일반 교통사고·도로교통·자동차 관련 법규 위반' },
     { group: '경제·금융 법규', note: '보험·대부·수표·전자금융 등 경제거래 관련 법규 위반' },

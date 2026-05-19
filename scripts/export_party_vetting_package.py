@@ -38,7 +38,7 @@ ECONOMIC_TRUST = ("사기", "횡령", "배임", "뇌물")
 ELECTION_INTEGRITY = ("공직선거법", "정치자금법", "청탁금지법")
 PUBLIC_ADMIN = ("직권남용", "허위공문서·문서위조·공용서류", "국가공무원법", "지방공무원법")
 TAX_PUBLIC_MONEY = ("조세", "보조금")
-TRAFFIC_SAFETY = ("음주·위험운전", "무면허운전")
+TRAFFIC_SAFETY = ("위험운전", "음주운전", "무면허운전")
 
 
 def read_json(path: Path) -> Any:

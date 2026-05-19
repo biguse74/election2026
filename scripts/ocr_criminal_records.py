@@ -30,7 +30,7 @@ DETAILS_FILE = ROOT / "data" / "candidate_details.json"
 CANDIDATE_DIR = ROOT / "data" / "candidates" / "20260603"
 OUT_FILE = ROOT / "data" / "criminal_ocr.json"
 CACHE_DIR = ROOT / "data" / ".criminal_ocr_cache"
-CLASSIFICATION_VERSION = 15
+CLASSIFICATION_VERSION = 17
 PDF_HEADERS = {
     "User-Agent": "newtamsa-election2026/1.0 (+https://github.com/biguse74/election2026)",
     "Referer": "https://info.nec.go.kr/",
@@ -77,7 +77,8 @@ CRIME_KEYWORDS = {
     "성범죄": ["성폭력", "강제추행", "성매매", "윤락행위", "아동청소년"],
     "마약": ["마약", "향정"],
     "특가법": ["특정범죄가중처벌"],
-    "음주·위험운전": ["음주운전", "음주측정거부", "위험운전치사상"],
+    "위험운전": ["위험운전"],
+    "음주운전": ["음주운전", "음주측정거부"],
     "무면허운전": ["무면허운전"],
     "교통사고": [
         "교통사고처리특례법",
@@ -177,8 +178,9 @@ CATEGORY_META = {
     "허위공문서·문서위조·공용서류": {"group": "공직 검증", "tone": "priority", "order": 18},
     "성범죄": {"group": "공직 검증", "tone": "priority", "order": 22},
     "특가법": {"group": "공직 검증", "tone": "priority", "order": 24},
-    "음주·위험운전": {"group": "공직 검증", "tone": "priority", "order": 25},
-    "무면허운전": {"group": "공직 검증", "tone": "priority", "order": 26},
+    "위험운전": {"group": "공직 검증", "tone": "priority", "order": 25},
+    "음주운전": {"group": "공직 검증", "tone": "priority", "order": 26},
+    "무면허운전": {"group": "공직 검증", "tone": "priority", "order": 27},
     "절도": {"group": "공직 검증", "tone": "priority", "order": 28},
     "조세": {"group": "공직 검증", "tone": "priority", "order": 29},
     "보조금": {"group": "공직 검증", "tone": "priority", "order": 30},
@@ -359,10 +361,21 @@ def normalize_date(raw: str) -> str:
 
 def classify(text: str) -> tuple[list[str], dict[str, list[str]]]:
     compact = offense_section(text)
+    full_text = compact_text(text)
     categories = []
     matched = {}
     for category, terms in CRIME_KEYWORDS.items():
         hits = [term for term in terms if compact_text(term) in compact]
+        if hits:
+            categories.append(category)
+            matched[category] = hits
+    if categories or compact == full_text:
+        return categories, matched
+
+    for category, terms in CRIME_KEYWORDS.items():
+        if category in matched:
+            continue
+        hits = [term for term in terms if compact_text(term) in full_text]
         if hits:
             categories.append(category)
             matched[category] = hits
