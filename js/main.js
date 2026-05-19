@@ -4907,7 +4907,6 @@ function proportionalFullListHtml(rows) {
 function renderProportionalFull() {
   const rows = proportionalRows();
   const summary = summarizeProportionalRows(rows);
-  const kim = rows.find(r => r.huboid === '100165618');
   const majorTotal = rows.filter(r => MAJOR_PARTIES.includes(r.party)).length;
   const html = `
     <nav class="breadcrumb">
@@ -4949,15 +4948,6 @@ function renderProportionalFull() {
       </div>
       ${proportionalPartyMiniBars(summary)}
     </section>
-    ${kim ? `
-      <section class="trend-section proportional-case">
-        <div>
-          <span class="trend-section-kicker">확인 사례</span>
-          <h3 class="trend-section-title">경북 상주시의원 비례 2순위 김장환 후보</h3>
-          <p class="trend-meta">국민의힘 · 기초의원 비례 · 선출 인원 2명. 후보자 상세 페이지 전과 원문에는 윤락행위등방지법위반 벌금형 2건이 기재돼 있습니다. 인용 시 선관위 후보자 상세 페이지 원문 확인이 필요합니다.</p>
-        </div>
-        <button type="button" class="proportional-case-link candidate-detail-trigger" data-huboid="${escapeHtml(kim.huboid)}">후보 상세 보기</button>
-      </section>` : ''}
     <section class="trend-section">
       <div class="trend-section-head">
         <h3 class="trend-section-title">선출인원 안 순번의 전과·체납 후보</h3>

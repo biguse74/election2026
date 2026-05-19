@@ -1394,16 +1394,6 @@ footer a:hover { text-decoration: underline; }
 /* 비례 명부 */
 .proportional-overview-section { display: grid; gap: 1rem; }
 .proportional-party-bars { display: grid; gap: 0.55rem; }
-.proportional-case {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem;
-  align-items: center; border-color: rgba(196, 25, 55, 0.35);
-}
-.proportional-case .trend-section-title { margin-bottom: 0.45rem; }
-.proportional-case-link {
-  border: 1px solid var(--ink); background: var(--ink); color: #fff;
-  font-weight: 700; padding: 0.55rem 0.8rem; cursor: pointer;
-}
-.proportional-case-link:hover { background: var(--accent); border-color: var(--accent); }
 .proportional-priority-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1rem;
 }
@@ -2215,8 +2205,6 @@ body.modal-open { overflow: hidden; }
   .history-result-cards { grid-template-columns: 1fr; }
   .trend-section-head { flex-direction: column; align-items: stretch; gap: 0.25rem; }
   .trend-section-kicker { text-align: left; }
-  .proportional-case { grid-template-columns: 1fr; align-items: stretch; }
-  .proportional-case-link { width: 100%; }
   .proportional-priority-grid { grid-template-columns: 1fr; }
   .proportional-row {
     grid-template-columns: 42px minmax(0, 1fr);
