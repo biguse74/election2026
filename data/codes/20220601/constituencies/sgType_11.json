@@ -1,0 +1,172 @@
+[
+  {
+    "num": "1",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "서울특별시",
+    "sdName": "서울특별시",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "1"
+  },
+  {
+    "num": "2",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "부산광역시",
+    "sdName": "부산광역시",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "2"
+  },
+  {
+    "num": "3",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "대구광역시",
+    "sdName": "대구광역시",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "3"
+  },
+  {
+    "num": "4",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "인천광역시",
+    "sdName": "인천광역시",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "4"
+  },
+  {
+    "num": "5",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "광주광역시",
+    "sdName": "광주광역시",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "5"
+  },
+  {
+    "num": "6",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "대전광역시",
+    "sdName": "대전광역시",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "6"
+  },
+  {
+    "num": "7",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "울산광역시",
+    "sdName": "울산광역시",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "7"
+  },
+  {
+    "num": "8",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "세종특별자치시",
+    "sdName": "세종특별자치시",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "8"
+  },
+  {
+    "num": "9",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "경기도",
+    "sdName": "경기도",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "9"
+  },
+  {
+    "num": "10",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "강원도",
+    "sdName": "강원도",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "10"
+  },
+  {
+    "num": "11",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "충청북도",
+    "sdName": "충청북도",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "11"
+  },
+  {
+    "num": "12",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "충청남도",
+    "sdName": "충청남도",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "12"
+  },
+  {
+    "num": "13",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "전라북도",
+    "sdName": "전라북도",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "13"
+  },
+  {
+    "num": "14",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "전라남도",
+    "sdName": "전라남도",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "14"
+  },
+  {
+    "num": "15",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "경상북도",
+    "sdName": "경상북도",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "15"
+  },
+  {
+    "num": "16",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "경상남도",
+    "sdName": "경상남도",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "16"
+  },
+  {
+    "num": "17",
+    "sgId": "20220601",
+    "sgTypecode": "11",
+    "sggName": "제주특별자치도",
+    "sdName": "제주특별자치도",
+    "wiwName": "",
+    "sggJungsu": "1",
+    "sOrder": "17"
+  }
+]

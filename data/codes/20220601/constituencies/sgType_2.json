@@ -1,0 +1,72 @@
+[
+  {
+    "num": "1",
+    "sgId": "20220601",
+    "sgTypecode": "2",
+    "sggName": "수성구을",
+    "sdName": "대구광역시",
+    "wiwName": "수성구",
+    "sggJungsu": "1",
+    "sOrder": "75"
+  },
+  {
+    "num": "2",
+    "sgId": "20220601",
+    "sgTypecode": "2",
+    "sggName": "계양구을",
+    "sdName": "인천광역시",
+    "wiwName": "계양구",
+    "sggJungsu": "1",
+    "sOrder": "90"
+  },
+  {
+    "num": "3",
+    "sgId": "20220601",
+    "sgTypecode": "2",
+    "sggName": "성남시분당구갑",
+    "sdName": "경기도",
+    "wiwName": "성남시분당구",
+    "sggJungsu": "1",
+    "sOrder": "123"
+  },
+  {
+    "num": "4",
+    "sgId": "20220601",
+    "sgTypecode": "2",
+    "sggName": "원주시갑",
+    "sdName": "강원도",
+    "wiwName": "원주시",
+    "sggJungsu": "1",
+    "sOrder": "177"
+  },
+  {
+    "num": "5",
+    "sgId": "20220601",
+    "sgTypecode": "2",
+    "sggName": "보령시서천군",
+    "sdName": "충청남도",
+    "wiwName": "보령시",
+    "sggJungsu": "1",
+    "sOrder": "195"
+  },
+  {
+    "num": "6",
+    "sgId": "20220601",
+    "sgTypecode": "2",
+    "sggName": "창원시의창구",
+    "sdName": "경상남도",
+    "wiwName": "창원시의창구",
+    "sggJungsu": "1",
+    "sOrder": "235"
+  },
+  {
+    "num": "7",
+    "sgId": "20220601",
+    "sgTypecode": "2",
+    "sggName": "제주시을",
+    "sdName": "제주특별자치도",
+    "wiwName": "제주시",
+    "sggJungsu": "1",
+    "sOrder": "252"
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "num": "1",
+    "sgId": "20220601",
+    "sgTypecode": "10",
+    "sggName": "제주특별자치도 교육의원 제주시 동부선거구",
+    "sdName": "제주특별자치도",
+    "wiwName": "제주시",
+    "sggJungsu": "1",
+    "sOrder": "1"
+  },
+  {
+    "num": "2",
+    "sgId": "20220601",
+    "sgTypecode": "10",
+    "sggName": "제주특별자치도 교육의원 제주시 중부선거구",
+    "sdName": "제주특별자치도",
+    "wiwName": "제주시",
+    "sggJungsu": "1",
+    "sOrder": "2"
+  },
+  {
+    "num": "3",
+    "sgId": "20220601",
+    "sgTypecode": "10",
+    "sggName": "제주특별자치도 교육의원 제주시 서부선거구",
+    "sdName": "제주특별자치도",
+    "wiwName": "제주시",
+    "sggJungsu": "1",
+    "sOrder": "3"
+  },
+  {
+    "num": "4",
+    "sgId": "20220601",
+    "sgTypecode": "10",
+    "sggName": "제주특별자치도 교육의원 서귀포시 동부선거구",
+    "sdName": "제주특별자치도",
+    "wiwName": "서귀포시",
+    "sggJungsu": "1",
+    "sOrder": "4"
+  },
+  {
+    "num": "5",
+    "sgId": "20220601",
+    "sgTypecode": "10",
+    "sggName": "제주특별자치도 교육의원 서귀포시 서부선거구",
+    "sdName": "제주특별자치도",
+    "wiwName": "서귀포시",
+    "sggJungsu": "1",
+    "sOrder": "5"
+  }
+]
