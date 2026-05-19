@@ -1,18 +1,18 @@
 {
   "meta": {
-    "generated_at": "2026-05-19T04:31:34.803888+00:00",
+    "generated_at": "2026-05-19T04:35:31.309873+00:00",
     "engine": "tesseract",
     "classification_version": 17,
-    "processed": 2627,
+    "processed": 2626,
     "failures": 0,
-    "selected_candidates": 2627,
-    "total_candidates_with_criminal_pdf": 2627,
+    "selected_candidates": 2626,
+    "total_candidates_with_criminal_pdf": 2626,
     "partial": false
   },
   "categories": [
     {
       "category": "사기",
-      "count": 100,
+      "count": 99,
       "group": "공직 검증",
       "tone": "priority",
       "order": 10
@@ -68,7 +68,7 @@
     },
     {
       "category": "허위공문서·문서위조·공용서류",
-      "count": 61,
+      "count": 60,
       "group": "공직 검증",
       "tone": "priority",
       "order": 18
@@ -110,7 +110,7 @@
     },
     {
       "category": "절도",
-      "count": 14,
+      "count": 13,
       "group": "공직 검증",
       "tone": "priority",
       "order": 28
@@ -187,7 +187,7 @@
     },
     {
       "category": "교통사고",
-      "count": 330,
+      "count": 329,
       "group": "교통·안전 법규",
       "tone": "standard",
       "order": 50
@@ -336,7 +336,7 @@
   "offense_categories": [
     {
       "category": "사기",
-      "count": 78,
+      "count": 77,
       "group": "공직 검증",
       "tone": "priority",
       "order": 10
@@ -392,7 +392,7 @@
     },
     {
       "category": "허위공문서·문서위조·공용서류",
-      "count": 51,
+      "count": 50,
       "group": "공직 검증",
       "tone": "priority",
       "order": 18
@@ -434,7 +434,7 @@
     },
     {
       "category": "절도",
-      "count": 10,
+      "count": 9,
       "group": "공직 검증",
       "tone": "priority",
       "order": 28
@@ -511,7 +511,7 @@
     },
     {
       "category": "교통사고",
-      "count": 286,
+      "count": 285,
       "group": "교통·안전 법규",
       "tone": "standard",
       "order": 50
@@ -110500,76 +110500,6 @@
       "pdf_count": 1,
       "pdf_urls": [
         "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg2803/Hb100163925/junkwa/20260511172311738_1.PDF"
-      ]
-    },
-    {
-      "huboid": "100163931",
-      "name": "조양덕",
-      "party": "국민의힘",
-      "sdName": "전북특별자치도",
-      "sggName": "전주시",
-      "wiwName": "전주시완산구",
-      "criminal_record": "2건",
-      "categories": [
-        "사기",
-        "허위공문서·문서위조·공용서류",
-        "교통사고",
-        "절도"
-      ],
-      "matched_terms": {
-        "사기": [
-          "사기"
-        ],
-        "허위공문서·문서위조·공용서류": [
-          "사문서",
-          "위조"
-        ],
-        "교통사고": [
-          "교통사고처리특례법",
-          "교통사고처리특례",
-          "교통사고처리"
-        ],
-        "절도": [
-          "절도"
-        ]
-      },
-      "offenses": [
-        {
-          "date": "1992-02-15",
-          "offense": "교통사고처리특례법위반사문서의조-위조사문서행사절도사기미수조양덕처분일자1992.02152008.06.13",
-          "sentence": "",
-          "categories": [
-            "사기",
-            "허위공문서·문서위조·공용서류",
-            "교통사고",
-            "절도"
-          ],
-          "matched_terms": {
-            "사기": [
-              "사기"
-            ],
-            "허위공문서·문서위조·공용서류": [
-              "사문서",
-              "위조"
-            ],
-            "교통사고": [
-              "교통사고처리특례법",
-              "교통사고처리특례",
-              "교통사고처리"
-            ],
-            "절도": [
-              "절도"
-            ]
-          },
-          "raw": "교통사고처리특례법위반사문서의조-위조사문서행사절도사기미수조양덕처분일자1992.02152008.06.13"
-        }
-      ],
-      "offense_text": "교통사고처리특례법위반사문서의조-위조사문서행사절도사기미수조양덕처분일자1992.02152008.06.13",
-      "ocr_text": "정당•예비후보자클 위한 선거사무안내 불임 1-2 선 [규칙 별지 제12호서식의㈘] 전과기록중명에 관한 제출서 거 명 전주시장선거 국민의힘 전 과 기 록 형 *처 분결과) 벌금3,000,000원 벌금1,000,000원 선거구명 후보자성명 소속정 당명 죄 명 교통사고처 리 특례법 위반 사문서의조 - 위 조사문서 행사 절도 사기미수 조양덕 처분일자 1992.0215 2008.06.13 첨부서류 : 범죄경력조회 회보서 1부. 2026년 6월 3일 실시하는 전주시장선거에서 「공직선거법] 제60조의2제2항에 따라 전과기록에 관한 증명서를 위와 같이 제출합니다. 2026년 05월 11일 위 예비후보자 조 양 전주시 완산구선거관리위원회 귀중 는 \"선거구명\"란은 작성하지 아니합니다. 주: 1. 지방자치단체의 장선거에서 는 \"공직선거후보자용″으로 발급된 회보서를 제출하여야 합니다. 2. 첨부하는 범죄경력조회 회보서 3. 전과기록은 선거기간개시일 전 150일 이후에 발급받은 범최경력조회 회보서에 의하여 작성 하여야 합니다. 부록 3. 각종 신고•신정• 제출 서식 99",
-      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100163931",
-      "pdf_count": 1,
-      "pdf_urls": [
-        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg5301/Hb100163931/junkwa/20260511174323160_1.PDF"
       ]
     },
     {
