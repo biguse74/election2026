@@ -1,0 +1,38 @@
+{
+  "checked_at": "2026-05-19T09:12:47+09:00",
+  "same_person_status": "동일인",
+  "same_person_basis": "후보자 기본정보 huboid 100165618, 이름 김장환, 국민의힘, 경상북도 상주시, sgTypecode 9, 나이 69세와 전과 PDF의 비례대표상주시의회의원선거·국민의힘·후보자성명 김장환 표기가 일치",
+  "candidate_registration": {
+    "huboid": "100165618",
+    "name": "김장환",
+    "party": "국민의힘",
+    "sdName": "경상북도",
+    "sggName": "상주시",
+    "office": "기초의원 비례",
+    "list_rank": 2,
+    "seat_count": 2,
+    "estimated_electable": "Y",
+    "age": "69",
+    "birthday": "19570403",
+    "status": "등록"
+  },
+  "offenses_from_pdf": [
+    {
+      "disposition_date": "1999-10-13",
+      "offense_name": "윤락행위등방지법위반",
+      "offense_article": "PDF 죄명란에 조항 별도 표기 없음",
+      "sentence": "벌금 2,000,000원",
+      "before_2004_repeal": "Y"
+    },
+    {
+      "disposition_date": "2000-02-22",
+      "offense_name": "윤락행위등방지법위반",
+      "offense_article": "PDF 죄명란에 조항 별도 표기 없음",
+      "sentence": "벌금 1,000,000원",
+      "before_2004_repeal": "Y"
+    }
+  ],
+  "detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100165618",
+  "criminal_pdf_url": "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4710/Hb100165618/junkwa/20260515134104431_9.PDF",
+  "pdf_cache_image": "data/.criminal_ocr_cache/e5e0e2daebdaef4f_1.jpg"
+}

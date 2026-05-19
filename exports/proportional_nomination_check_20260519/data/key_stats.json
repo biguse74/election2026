@@ -1,0 +1,83 @@
+{
+  "checked_at": "2026-05-19T09:12:47+09:00",
+  "kim_janghwan": {
+    "checked_at": "2026-05-19T09:12:47+09:00",
+    "same_person_status": "동일인",
+    "same_person_basis": "후보자 기본정보 huboid 100165618, 이름 김장환, 국민의힘, 경상북도 상주시, sgTypecode 9, 나이 69세와 전과 PDF의 비례대표상주시의회의원선거·국민의힘·후보자성명 김장환 표기가 일치",
+    "candidate_registration": {
+      "huboid": "100165618",
+      "name": "김장환",
+      "party": "국민의힘",
+      "sdName": "경상북도",
+      "sggName": "상주시",
+      "office": "기초의원 비례",
+      "list_rank": 2,
+      "seat_count": 2,
+      "estimated_electable": "Y",
+      "age": "69",
+      "birthday": "19570403",
+      "status": "등록"
+    },
+    "offenses_from_pdf": [
+      {
+        "disposition_date": "1999-10-13",
+        "offense_name": "윤락행위등방지법위반",
+        "offense_article": "PDF 죄명란에 조항 별도 표기 없음",
+        "sentence": "벌금 2,000,000원",
+        "before_2004_repeal": "Y"
+      },
+      {
+        "disposition_date": "2000-02-22",
+        "offense_name": "윤락행위등방지법위반",
+        "offense_article": "PDF 죄명란에 조항 별도 표기 없음",
+        "sentence": "벌금 1,000,000원",
+        "before_2004_repeal": "Y"
+      }
+    ],
+    "detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100165618",
+    "criminal_pdf_url": "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4710/Hb100165618/junkwa/20260515134104431_9.PDF",
+    "pdf_cache_image": "data/.criminal_ocr_cache/e5e0e2daebdaef4f_1.jpg"
+  },
+  "proportional_summary": {
+    "total_by_party_type": {
+      "더불어민주당": {
+        "광역의원 비례": 105,
+        "기초의원 비례": 323,
+        "total": 428
+      },
+      "국민의힘": {
+        "광역의원 비례": 79,
+        "기초의원 비례": 268,
+        "total": 347
+      }
+    },
+    "electable_criminal_or_tax_counts": {
+      "더불어민주당": 103,
+      "국민의힘": 90
+    },
+    "electable_criminal_counts": {
+      "더불어민주당": 65,
+      "국민의힘": 56
+    }
+  },
+  "denominator_recheck": [
+    {
+      "party": "더불어민주당",
+      "candidate_rows_in_latest_snapshot": 3214,
+      "active_registered_candidates": 3213,
+      "withdrawn_candidates": 1,
+      "invalidated_candidates": 0,
+      "status_breakdown": "등록 3213; 사퇴 1",
+      "note": "2026-05-19 스냅샷 기준. 기존 3,214/2,744는 사퇴·등록무효 반영 전 후보 행 수와 일치"
+    },
+    {
+      "party": "국민의힘",
+      "candidate_rows_in_latest_snapshot": 2744,
+      "active_registered_candidates": 2742,
+      "withdrawn_candidates": 1,
+      "invalidated_candidates": 1,
+      "status_breakdown": "등록 2742; 등록무효 1; 사퇴 1",
+      "note": "2026-05-19 스냅샷 기준. 기존 3,214/2,744는 사퇴·등록무효 반영 전 후보 행 수와 일치"
+    }
+  ]
+}
