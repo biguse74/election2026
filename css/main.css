@@ -1397,12 +1397,20 @@ footer a:hover { text-decoration: underline; }
 .proportional-priority-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 1rem;
 }
-.proportional-priority-block h4 {
-  display: flex; justify-content: space-between; align-items: baseline;
-  font-family: var(--serif); font-size: 1.05rem; margin-bottom: 0.55rem;
-  border-bottom: 1px solid var(--rule); padding-bottom: 0.45rem;
+.proportional-priority-block {
+  background: #fff; border: 1px solid var(--rule);
 }
-.proportional-priority-block h4 small { font-family: var(--sans); color: var(--ink-sub); font-size: 0.78rem; font-weight: 500; }
+.proportional-priority-block[open] { border-color: rgba(43, 38, 32, 0.35); }
+.proportional-priority-block summary {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 0.75rem; cursor: pointer;
+  padding: 0.7rem 0.9rem;
+}
+.proportional-priority-block summary strong {
+  font-family: var(--serif); font-size: 1.05rem;
+}
+.proportional-priority-block summary small { font-family: var(--sans); color: var(--ink-sub); font-size: 0.78rem; font-weight: 500; }
+.proportional-priority-block .proportional-list { padding: 0 0.9rem 0.9rem; }
 .proportional-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.45rem; }
 .proportional-row {
   --party: #777;

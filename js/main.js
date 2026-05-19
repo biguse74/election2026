@@ -4642,6 +4642,8 @@ function renderSidoDetail(sidoName, focusSgg) {
   const stats = sectionData
     .filter(d => d.candidates.length > 0)
     .map(d => ({ label: d.section.title, count: d.candidates.length }));
+  const proportionalCount = getProportionalRowsForSido(sidoName).length;
+  if (proportionalCount > 0) stats.push({ label: '비례 명부', count: proportionalCount });
 
   const headData = sectionData.find(d => d.section.id === 'head');
   if (headData && headData.candidates.length > 0) {
@@ -4663,6 +4665,7 @@ function renderSidoDetail(sidoName, focusSgg) {
       </div>
     </div>
     ${SECTIONS.filter(s => s.detail).map(s => renderDetailSection(s, sidoName)).join('')}
+    ${renderSidoProportionalSection(sidoName)}
   `;
 
   const app = document.getElementById('app');
@@ -4796,7 +4799,6 @@ function summarizeProportionalRows(rows) {
 
 function proportionalTagsHtml(row) {
   const tags = [];
-  if (row.electable) tags.push('<span class="proportional-tag is-electable">선출인원 안 순번</span>');
   if (row.hasCriminal) tags.push(`<span class="proportional-tag is-criminal">전과 ${row.criminal.toLocaleString()}건</span>`);
   if (row.tax5y > 0) tags.push(`<span class="proportional-tag is-tax">최근 5년 체납 ${moneyDisclosure(row.tax5y)}</span>`);
   if (row.taxCurrent > 0) tags.push(`<span class="proportional-tag is-tax-current">현 체납 ${moneyDisclosure(row.taxCurrent)}</span>`);
@@ -4806,6 +4808,16 @@ function proportionalTagsHtml(row) {
     if (row.categories.length > 3) tags.push(`<span class="proportional-tag">+${row.categories.length - 3}</span>`);
   }
   return tags.length ? `<div class="proportional-tags">${tags.join('')}</div>` : '';
+}
+
+function proportionalRowBelongsToSido(row, sidoName) {
+  const candidate = row.candidate || {};
+  if (row.sd === sidoName || candidate.sdName === sidoName) return true;
+  return candidate.sggName === JOINT_SIDO && JOINT_SIDO_MEMBERS.includes(sidoName);
+}
+
+function getProportionalRowsForSido(sidoName) {
+  return proportionalRows().filter(row => proportionalRowBelongsToSido(row, sidoName));
 }
 
 function proportionalRowHtml(row) {
@@ -4864,12 +4876,12 @@ function proportionalPriorityHtml(rows) {
       return ai - bi || koSort(a, b);
     });
   return `
-    <div class="proportional-priority-grid">
+    <div id="proportional-priority-list" class="proportional-priority-grid">
       ${partyGroups.map(([party, items]) => `
-        <div class="proportional-priority-block">
-          <h4>${escapeHtml(party)} <small>${items.length.toLocaleString()}명</small></h4>
+        <details class="proportional-priority-block">
+          <summary><strong>${escapeHtml(party)}</strong><small>${items.length.toLocaleString()}명</small></summary>
           <ul class="proportional-list">${items.map(proportionalRowHtml).join('')}</ul>
-        </div>`).join('')}
+        </details>`).join('')}
     </div>`;
 }
 
@@ -4891,13 +4903,47 @@ function proportionalFullListHtml(rows) {
       return officeOrder || koSort(a.region, b.region);
     });
   return `
-    <div class="proportional-district-list">
+    <div id="proportional-full-list" class="proportional-district-list">
       ${groups.map((group, idx) => `
-        <details class="proportional-district" ${idx < 4 ? 'open' : ''}>
+        <details class="proportional-district">
           <summary>
             <strong>${escapeHtml(group.region)}</strong>
             <span>${escapeHtml(group.office)}</span>
             <small>${group.items.length.toLocaleString()}명 · 선출인원 안 순번 ${group.electable.toLocaleString()}명${group.flagged ? ` · 전과·체납 ${group.flagged.toLocaleString()}명` : ''}</small>
+          </summary>
+          <ul class="proportional-list">${group.items.map(proportionalRowHtml).join('')}</ul>
+        </details>`).join('')}
+    </div>`;
+}
+
+function renderSidoProportionalSection(sidoName) {
+  const rows = getProportionalRowsForSido(sidoName);
+  if (!rows.length) return '';
+  const groups = Object.entries(groupDisclosureRows(rows, r => `${r.office}|${r.region}`))
+    .map(([key, items]) => {
+      const [office, region] = key.split('|');
+      return { office, region, items };
+    })
+    .sort((a, b) => {
+      const officeOrder = (a.office === '광역의원 비례' ? 0 : 1) - (b.office === '광역의원 비례' ? 0 : 1);
+      return officeOrder || koSort(a.region, b.region);
+    });
+  const gridId = `proportional-sido-${compactAddressText(sidoName)}`;
+  return `
+    <h3 class="section-title">비례 명부
+      <span class="section-count">후보 ${rows.length.toLocaleString()}명 · 광역·기초 비례</span>
+      <span class="section-toolbar">
+        <a class="section-link" href="#proportional">전국 비례 명부 →</a>
+        <button type="button" class="expand-toggle" data-target="${gridId}" data-open="false">모두 펼치기</button>
+      </span>
+    </h3>
+    <div id="${gridId}" class="proportional-district-list proportional-sido-list">
+      ${groups.map(group => `
+        <details class="proportional-district">
+          <summary>
+            <strong>${escapeHtml(group.region)}</strong>
+            <span>${escapeHtml(group.office)}</span>
+            <small>${group.items.length.toLocaleString()}명</small>
           </summary>
           <ul class="proportional-list">${group.items.map(proportionalRowHtml).join('')}</ul>
         </details>`).join('')}
@@ -4951,14 +4997,19 @@ function renderProportionalFull() {
     <section class="trend-section">
       <div class="trend-section-head">
         <h3 class="trend-section-title">선출인원 안 순번의 전과·체납 후보</h3>
-        <span class="trend-section-kicker">${summary.electableFlagged.toLocaleString()}명</span>
+        <span class="section-toolbar">
+          <span class="trend-section-kicker">${summary.electableFlagged.toLocaleString()}명 · 정당별 접힘</span>
+          <button type="button" class="expand-toggle" data-target="proportional-priority-list" data-open="false">모두 펼치기</button>
+        </span>
       </div>
       ${proportionalPriorityHtml(rows)}
     </section>
     <section class="trend-section">
       <div class="trend-section-head">
         <h3 class="trend-section-title">비례 명부 전체</h3>
-        <span class="trend-section-kicker">지역별로 펼쳐 보기</span>
+        <span class="section-toolbar">
+          <button type="button" class="expand-toggle" data-target="proportional-full-list" data-open="false">모두 펼치기</button>
+        </span>
       </div>
       ${proportionalFullListHtml(rows)}
     </section>`;
