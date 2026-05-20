@@ -1,9 +1,44 @@
 {
-  "updated_at": "2026-05-20T00:29:21+09:00",
+  "updated_at": "2026-05-20T12:47:34+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 319,
+  "count": 321,
   "articles": [
+    {
+      "date": "2026-05-20",
+      "title": "시그니처 호텔 사장과 이원택, 송하진 캠프서 한솥밥 먹던 사이",
+      "url": "https://newtamsa.org/news/28qhuZ",
+      "category": "단독보도",
+      "tags": [
+        "지방선거",
+        "전북",
+        "전북지사",
+        "이원택",
+        "김관영",
+        "시그니처호텔",
+        "송하진",
+        "CCTV",
+        "채널A"
+      ],
+      "author": "강진구"
+    },
+    {
+      "date": "2026-05-20",
+      "title": "김두겸 캠프 '비밀의 방'…지인 휴대폰 받아 본인 명의 지지 문자",
+      "url": "https://newtamsa.org/news/X30rIj",
+      "category": "단독보도",
+      "tags": [
+        "지방선거",
+        "울산시",
+        "김두겸",
+        "임현철",
+        "비밀의방",
+        "문자",
+        "여론조사",
+        "휴대폰"
+      ],
+      "author": "권지연, 강진구"
+    },
     {
       "date": "2026-05-19",
       "title": "정천수, '영상 삭제 = 유죄 확정' 가짜 인과…실제는 정정 위한 비공개",
