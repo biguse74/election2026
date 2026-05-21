@@ -24,9 +24,17 @@
   const liveState = {
     current: null,
     meta: null,
+    history: null,
+    historyLoaded: false,
     pollTimer: null,
     lastPolledAt: null,
     listenersAttached: false,
+  };
+
+  // 8회(2022) 데이터는 옛 시도명을 쓴다. 9회 신명칭 → 옛명칭 매핑.
+  const SIDO_HISTORY_ALIAS = {
+    '강원특별자치도': '강원도',
+    '전북특별자치도': '전라북도',
   };
 
   function fmtTime(iso) {
@@ -53,6 +61,20 @@
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
+  function fmtCompare(current, prev) {
+    if (current == null || prev == null) return '';
+    const diff = Number(current) - Number(prev);
+    const sign = diff > 0 ? '+' : (diff < 0 ? '−' : '±');
+    return `${Number(prev).toFixed(1)}% · ${sign}${Math.abs(diff).toFixed(1)}%p`;
+  }
+
+  function lookupHistoryRate(sdName, history) {
+    if (!history) return null;
+    const alias = SIDO_HISTORY_ALIAS[sdName] || sdName;
+    const entry = history.by_sido[alias];
+    return entry ? entry.rate : null;
+  }
+
   async function loadJson(url) {
     try {
       const sep = url.includes('?') ? '&' : '?';
@@ -62,6 +84,31 @@
     } catch {
       return null;
     }
+  }
+
+  async function ensureHistory() {
+    if (liveState.historyLoaded) return liveState.history;
+    liveState.historyLoaded = true;
+    const data = await loadJson('data/history_turnout.json');
+    if (!data || !Array.isArray(data.elections) || !data.elections.length) {
+      liveState.history = null;
+      return null;
+    }
+    // 가장 최근 회차 = 직전 지방선거. by_sido는 시도+시군구 섞여 있어 sunsu 최댓값 = 시도 합계.
+    const last = data.elections[data.elections.length - 1];
+    const top = {};
+    for (const s of last.by_sido || []) {
+      const name = s.sdName;
+      if (!name) continue;
+      if (!top[name] || (s.sunsu || 0) > (top[name].sunsu || 0)) top[name] = s;
+    }
+    liveState.history = {
+      round: last.round,
+      year: last.year,
+      national: last.total,
+      by_sido: top,
+    };
+    return liveState.history;
   }
 
   function detectFreshness(polledAtIso) {
@@ -160,20 +207,31 @@
       </section>`;
   }
 
-  function renderTurnoutSection(turnout) {
+  function renderTurnoutSection(turnout, history, showCompare) {
     if (!turnout) return '';
     const national = turnout.national || {};
     const sido = turnout.by_sido || [];
+    const histLabel = history ? `${history.round}회` : '';
+    const histNationalRate = history?.national?.rate;
+
+    const nationalCompare = (showCompare && histNationalRate != null && national.turnout_pct != null)
+      ? `<span class="live-turnout-national-compare">${histLabel} ${fmtCompare(national.turnout_pct, histNationalRate)}</span>`
+      : '';
 
     const nationalHtml = national.turnout_pct != null ? `
       <div class="live-turnout-national">
         <span class="live-turnout-national-label">전국 투표율</span>
         <span class="live-turnout-national-pct">${Number(national.turnout_pct).toFixed(2)}%</span>
+        ${nationalCompare}
         <span class="live-turnout-national-votes">${fmtVotes(national.voters_so_far)} / 선거인 ${Number(national.eligible_voters || 0).toLocaleString('ko-KR')}명</span>
       </div>` : '';
 
     const cards = sido.map(s => {
       const pct = s.turnout_pct == null ? 0 : Math.max(0, Math.min(s.turnout_pct, 100));
+      const prevRate = lookupHistoryRate(s.sd_name, history);
+      const compareTxt = (showCompare && prevRate != null && s.turnout_pct != null)
+        ? `<div class="live-turnout-compare">${histLabel} ${fmtCompare(s.turnout_pct, prevRate)}</div>`
+        : '';
       return `
         <article class="live-turnout-card">
           <div class="live-turnout-region">${escapeHtml(s.sd_name || '—')}</div>
@@ -182,12 +240,14 @@
             <span class="live-turnout-pct">${fmtPct(s.turnout_pct)}</span>
             <span class="live-turnout-votes">${fmtVotes(s.voters_so_far)}</span>
           </div>
+          ${compareTxt}
         </article>`;
     }).join('');
 
+    const countSuffix = (history && showCompare) ? ` · ${histLabel} 비교` : '';
     return `
       <section class="live-section">
-        <h2 class="live-section-title">투표율<span class="live-section-count">시도별 ${sido.length}개</span></h2>
+        <h2 class="live-section-title">투표율<span class="live-section-count">시도별 ${sido.length}개${countSuffix}</span></h2>
         ${nationalHtml}
         <div class="live-turnout-grid">${cards}</div>
       </section>`;
@@ -214,7 +274,7 @@
     const ordered = ORDER.filter(k => sgGroups.has(k))
       .concat([...sgGroups.keys()].filter(k => !ORDER.includes(k)));
     const sectionsHtml = ordered.map(k => renderSection(k, sgGroups.get(k))).join('');
-    const turnoutHtml = renderTurnoutSection(current.turnout);
+    const turnoutHtml = renderTurnoutSection(current.turnout, liveState.history, current.phase !== 'pre');
 
     const demoBanner = fresh.tone === 'demo' ? `
         <div class="live-demo-banner" role="alert">
@@ -282,6 +342,10 @@
   function renderLiveRoute(/* hash */) {
     renderLoading();
     attachListenersOnce();
+    // 과거 투표율은 한 번만 받아 캐시. 도착하면 라이브 화면을 다시 그려 비교 텍스트 채움.
+    ensureHistory().then(() => {
+      if (isLiveHash() && liveState.current) renderBoard();
+    }).catch(() => {});
     startPolling();
   }
 

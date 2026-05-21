@@ -125,3 +125,18 @@
   font-variant-numeric: tabular-nums;
 }
 .live-turnout-pct { font-weight: 700; color: #1a1a1a; }
+
+.live-turnout-compare {
+  font-size: 0.74rem;
+  color: #777;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed #e8e8e8;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+.live-turnout-national-compare {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
