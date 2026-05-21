@@ -1,12 +1,12 @@
 {
   "source": "candidates",
-  "today_date": "20260519",
-  "previous_date": "20260518",
+  "today_date": "20260521",
+  "previous_date": "20260520",
   "summary": {
     "new": 0,
     "gone": 0,
     "party": 0,
-    "status": 4
+    "status": 8
   },
   "samples": {
     "new": [],
@@ -14,40 +14,76 @@
     "party": [],
     "status": [
       {
-        "name": "송지민",
-        "jdName": "국민의힘",
-        "sdName": "경기도",
-        "sggName": "안양시아선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "정재충",
+        "name": "이승희",
         "jdName": "무소속",
         "sdName": "경상북도",
-        "sggName": "안동시라선거구",
-        "sgTypecode": "6",
+        "sggName": "예천군제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김동미",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장흥군",
+        "sgTypecode": "9",
         "status_prev": "등록",
         "status_now": "등록무효"
       },
       {
-        "name": "김솔샘",
-        "jdName": "더불어민주당",
-        "sdName": "서울특별시",
-        "sggName": "강동구나선거구",
+        "name": "배금강",
+        "jdName": "국민의힘",
+        "sdName": "부산광역시",
+        "sggName": "부산진구라선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "조양덕",
-        "jdName": "국민의힘",
-        "sdName": "전북특별자치도",
-        "sggName": "전주시",
-        "sgTypecode": "4",
+        "name": "추은주",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "나주시",
+        "sgTypecode": "9",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "최기순",
+        "jdName": "무소속",
+        "sdName": "전남광주통합특별시",
+        "sggName": "장흥군제2선거구",
+        "sgTypecode": "5",
         "status_prev": "등록",
         "status_now": "등록무효"
+      },
+      {
+        "name": "장명숙",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "성남시가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "정원식",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "영광군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "조용석",
+        "jdName": "무소속",
+        "sdName": "강원특별자치도",
+        "sggName": "원주시나선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
       }
     ]
   },
@@ -57,42 +93,78 @@
     "party": [],
     "status": [
       {
-        "name": "송지민",
-        "jdName": "국민의힘",
-        "sdName": "경기도",
-        "sggName": "안양시아선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "정재충",
+        "name": "이승희",
         "jdName": "무소속",
         "sdName": "경상북도",
-        "sggName": "안동시라선거구",
-        "sgTypecode": "6",
+        "sggName": "예천군제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김동미",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장흥군",
+        "sgTypecode": "9",
         "status_prev": "등록",
         "status_now": "등록무효"
       },
       {
-        "name": "김솔샘",
-        "jdName": "더불어민주당",
-        "sdName": "서울특별시",
-        "sggName": "강동구나선거구",
+        "name": "배금강",
+        "jdName": "국민의힘",
+        "sdName": "부산광역시",
+        "sggName": "부산진구라선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "사퇴"
       },
       {
-        "name": "조양덕",
-        "jdName": "국민의힘",
-        "sdName": "전북특별자치도",
-        "sggName": "전주시",
-        "sgTypecode": "4",
+        "name": "추은주",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "나주시",
+        "sgTypecode": "9",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "최기순",
+        "jdName": "무소속",
+        "sdName": "전남광주통합특별시",
+        "sggName": "장흥군제2선거구",
+        "sgTypecode": "5",
         "status_prev": "등록",
         "status_now": "등록무효"
+      },
+      {
+        "name": "장명숙",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "성남시가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "정원식",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "영광군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "조용석",
+        "jdName": "무소속",
+        "sdName": "강원특별자치도",
+        "sggName": "원주시나선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "사퇴"
       }
     ]
   },
-  "generated_at": "2026-05-19T06:06:45+09:00"
+  "generated_at": "2026-05-21T06:01:59+09:00"
 }

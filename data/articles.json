@@ -1,9 +1,101 @@
 {
-  "updated_at": "2026-05-19T12:47:03+09:00",
+  "updated_at": "2026-05-21T18:46:31+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 317,
+  "count": 322,
   "articles": [
+    {
+      "date": "2026-05-21",
+      "title": "김건희, 줄리 재판 증인 출석… 첫 결혼엔 진술거부",
+      "url": "https://newtamsa.org/news/sXazeM",
+      "category": "특별기획",
+      "tags": [
+        "김건희",
+        "쥴리",
+        "제니",
+        "양재택",
+        "조남욱",
+        "정대택",
+        "안해욱",
+        "김태희",
+        "산부인과",
+        "국정원",
+        "건진법사",
+        "아크로비스타"
+      ],
+      "author": "강진구, 박대용"
+    },
+    {
+      "date": "2026-05-20",
+      "title": "시그니처 호텔 사장과 이원택, 송하진 캠프서 한솥밥 먹던 사이",
+      "url": "https://newtamsa.org/news/28qhuZ",
+      "category": "단독보도",
+      "tags": [
+        "지방선거",
+        "전북",
+        "전북지사",
+        "이원택",
+        "김관영",
+        "시그니처호텔",
+        "송하진",
+        "CCTV",
+        "채널A"
+      ],
+      "author": "강진구"
+    },
+    {
+      "date": "2026-05-20",
+      "title": "김두겸 캠프 '비밀의 방'…지인 휴대폰 받아 본인 명의 지지 문자",
+      "url": "https://newtamsa.org/news/X30rIj",
+      "category": "단독보도",
+      "tags": [
+        "지방선거",
+        "울산시",
+        "김두겸",
+        "임현철",
+        "비밀의방",
+        "문자",
+        "여론조사",
+        "휴대폰"
+      ],
+      "author": "권지연, 강진구"
+    },
+    {
+      "date": "2026-05-19",
+      "title": "정천수, '영상 삭제 = 유죄 확정' 가짜 인과…실제는 정정 위한 비공개",
+      "url": "https://newtamsa.org/news/8qHwY5",
+      "category": "미디어비평",
+      "tags": [
+        "정천수",
+        "유죄",
+        "성일종",
+        "박성민",
+        "강진구",
+        "국민의힘",
+        "밀정"
+      ],
+      "author": "뉴탐사"
+    },
+    {
+      "date": "2026-05-19",
+      "title": "지방선거 양당 공천 잣대, 8개 지점에서 갈렸다",
+      "url": "https://newtamsa.org/news/hGYkN0",
+      "category": "데이터",
+      "tags": [
+        "공천",
+        "기준",
+        "사기",
+        "횡령",
+        "배임",
+        "뇌물",
+        "체납",
+        "병역",
+        "미필",
+        "음주운전",
+        "위험운전"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-05-19",
       "title": "김관영 CCTV 제보 음식점 사장, '이원택 비서' 통화 한 건만 빼고 선관위 제출",
