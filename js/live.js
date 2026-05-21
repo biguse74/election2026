@@ -160,6 +160,39 @@
       </section>`;
   }
 
+  function renderTurnoutSection(turnout) {
+    if (!turnout) return '';
+    const national = turnout.national || {};
+    const sido = turnout.by_sido || [];
+
+    const nationalHtml = national.turnout_pct != null ? `
+      <div class="live-turnout-national">
+        <span class="live-turnout-national-label">전국 투표율</span>
+        <span class="live-turnout-national-pct">${Number(national.turnout_pct).toFixed(2)}%</span>
+        <span class="live-turnout-national-votes">${fmtVotes(national.voters_so_far)} / 선거인 ${Number(national.eligible_voters || 0).toLocaleString('ko-KR')}명</span>
+      </div>` : '';
+
+    const cards = sido.map(s => {
+      const pct = s.turnout_pct == null ? 0 : Math.max(0, Math.min(s.turnout_pct, 100));
+      return `
+        <article class="live-turnout-card">
+          <div class="live-turnout-region">${escapeHtml(s.sd_name || '—')}</div>
+          <div class="live-turnout-bar-wrap"><div class="live-turnout-bar" style="width:${pct}%"></div></div>
+          <div class="live-turnout-meta">
+            <span class="live-turnout-pct">${fmtPct(s.turnout_pct)}</span>
+            <span class="live-turnout-votes">${fmtVotes(s.voters_so_far)}</span>
+          </div>
+        </article>`;
+    }).join('');
+
+    return `
+      <section class="live-section">
+        <h2 class="live-section-title">투표율<span class="live-section-count">시도별 ${sido.length}개</span></h2>
+        ${nationalHtml}
+        <div class="live-turnout-grid">${cards}</div>
+      </section>`;
+  }
+
   function renderBoard() {
     const app = document.getElementById('app');
     if (!app) return;
@@ -181,6 +214,7 @@
     const ordered = ORDER.filter(k => sgGroups.has(k))
       .concat([...sgGroups.keys()].filter(k => !ORDER.includes(k)));
     const sectionsHtml = ordered.map(k => renderSection(k, sgGroups.get(k))).join('');
+    const turnoutHtml = renderTurnoutSection(current.turnout);
 
     const demoBanner = fresh.tone === 'demo' ? `
         <div class="live-demo-banner" role="alert">
@@ -201,6 +235,7 @@
           </div>
           <p class="live-disclaimer">예측·전망이 아닌 선관위 개표 데이터 기준 현재 시점 누계입니다.</p>
         </div>
+        ${turnoutHtml}
         ${sectionsHtml || '<p class="live-empty">집계된 선거구가 없습니다.</p>'}
       </div>`;
   }

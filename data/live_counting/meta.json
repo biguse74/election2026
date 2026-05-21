@@ -7,7 +7,9 @@
   "avg_progress_pct": 52.04,
   "openapi_empty": false,
   "progress_calc": "(yutusu + mutusu) / sunsu * 100",
-  "calls_total": 51,
-  "calls_failed": 0,
+  "turnout_available": true,
+  "national_turnout_pct": 51.70,
+  "counting_calls_total": 51,
+  "counting_calls_failed": 0,
   "elapsed_seconds": 41.3
 }

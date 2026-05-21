@@ -64,3 +64,64 @@
   line-height: 1.5;
   opacity: 0.95;
 }
+
+/* === 투표율 섹션 === */
+.live-turnout-national {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.live-turnout-national-label { font-size: 0.9rem; opacity: 0.75; }
+.live-turnout-national-pct {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.live-turnout-national-votes {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  font-variant-numeric: tabular-nums;
+  flex: 1;
+  text-align: right;
+}
+
+.live-turnout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+.live-turnout-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fafafa;
+}
+.live-turnout-region { font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; }
+.live-turnout-bar-wrap {
+  height: 6px;
+  background: #f0f0f0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.live-turnout-bar {
+  height: 100%;
+  background: #1a8754;
+  transition: width 0.6s ease;
+}
+.live-turnout-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #666;
+  font-variant-numeric: tabular-nums;
+}
+.live-turnout-pct { font-weight: 700; color: #1a1a1a; }
