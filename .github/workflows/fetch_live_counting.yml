@@ -1,0 +1,130 @@
+name: 라이브 투개표 폴링
+
+# 6/3 선거 당일 KST 06:00 ~ 6/4 KST 06:00 사이 자동 폴링.
+# 그 외 시기: 5/22 ~ 6/2 매일 KST 18:00 dry-run 정찰 (OpenAPI 응답 확인용).
+#
+# 시간대별 호출 분리:
+#   - 본투표 시간대 (KST 06:00~17:50): 투표율만 (--skip-counting), 10분 간격
+#   - 개표 시간대   (KST 18:00 ~ 익일 06:00): 풀 호출, 5분 간격
+#
+# GitHub Actions cron은 UTC.  KST = UTC + 9.
+#   KST 06:00 = UTC 21:00 (전날)
+#   KST 18:00 = UTC 09:00
+#   KST 익일 06:00 = UTC 21:00
+
+on:
+  schedule:
+    # 정찰: 5/22~5/31 매일 KST 18:00 (UTC 09:00) → dry-run
+    - cron: '0 9 22-31 5 *'
+    # 정찰: 6/1~6/2 매일 KST 18:00
+    - cron: '0 9 1-2 6 *'
+
+    # 본투표 시간대 (6/3 KST 06:00~17:50) — 투표율만, 10분 간격
+    - cron: '*/10 21-23 2 6 *'   # KST 6/3 06:00~08:50 (UTC 6/2 21:00~23:50)
+    - cron: '*/10 0-8 3 6 *'     # KST 6/3 09:00~17:50 (UTC 6/3 00:00~08:50)
+
+    # 개표 시간대 (6/3 KST 18:00 ~ 6/4 KST 06:00) — 풀 호출, 5분 간격
+    - cron: '*/5 9-20 3 6 *'     # UTC 6/3 09:00~20:55  =  KST 6/3 18:00 ~ 6/4 05:55
+    - cron: '0 21 3 6 *'         # KST 6/4 06:00 마지막 폴링
+
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '실행 모드 (auto는 현재 KST 시각으로 자동 분기)'
+        required: true
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - dry-run
+          - turnout-only
+          - full
+      sg-id:
+        description: '선거 ID (기본 20260603 · 시뮬레이션 20220601)'
+        required: false
+        default: '20260603'
+
+# 폴링이 겹치지 않게 직렬화. 진행 중인 push가 있으면 다음 cron은 대기.
+concurrency:
+  group: fetch-live-counting
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 실행 모드 결정
+        id: mode
+        env:
+          INPUT_MODE: ${{ github.event.inputs.mode || 'auto' }}
+        run: |
+          set -euo pipefail
+          kst_date=$(TZ=Asia/Seoul date +%Y%m%d)
+          kst_hhmm=$(TZ=Asia/Seoul date +%H%M)
+          kst_full="${kst_date}${kst_hhmm}"
+          echo "현재 KST: ${kst_date} ${kst_hhmm}"
+
+          mode="$INPUT_MODE"
+          if [ "$mode" = "auto" ]; then
+            if   [ "$kst_full" -lt "202606030600" ]; then mode="dry-run"
+            elif [ "$kst_full" -lt "202606031800" ]; then mode="turnout-only"
+            elif [ "$kst_full" -lt "202606040700" ]; then mode="full"
+            else                                          mode="skip"
+            fi
+          fi
+
+          echo "실행 모드: $mode"
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+
+      - name: 폴링 실행
+        if: steps.mode.outputs.mode != 'skip'
+        env:
+          NEC_API_KEY: ${{ secrets.NEC_API_KEY }}
+          MODE: ${{ steps.mode.outputs.mode }}
+          SG_ID: ${{ github.event.inputs.sg-id || '20260603' }}
+        run: |
+          set -euo pipefail
+          args="--sg-id $SG_ID"
+          case "$MODE" in
+            dry-run)      args="$args --dry-run" ;;
+            turnout-only) args="$args --skip-counting" ;;
+            full)         ;;
+            *) echo "알 수 없는 모드: $MODE"; exit 1 ;;
+          esac
+          echo "$ python scripts/fetch_live_counting.py $args"
+          python scripts/fetch_live_counting.py $args
+
+      - name: 변경사항 커밋·푸시
+        if: steps.mode.outputs.mode != 'skip' && steps.mode.outputs.mode != 'dry-run'
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/live_counting/
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+            exit 0
+          fi
+          git commit -m "data: 라이브 폴링 $(TZ=Asia/Seoul date +%Y-%m-%d-%H%M)"
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "push reject — pull --rebase 후 재시도 ($attempt/3)"
+            git pull --rebase origin "$(git rev-parse --abbrev-ref HEAD)"
+          done
+          echo "push 3회 실패"; exit 1

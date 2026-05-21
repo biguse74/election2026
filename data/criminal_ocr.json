@@ -1,12 +1,12 @@
 {
   "meta": {
-    "generated_at": "2026-05-19T04:35:31.309873+00:00",
+    "generated_at": "2026-05-21T13:01:57.611244+00:00",
     "engine": "tesseract",
     "classification_version": 17,
-    "processed": 2626,
+    "processed": 2622,
     "failures": 0,
-    "selected_candidates": 2626,
-    "total_candidates_with_criminal_pdf": 2626,
+    "selected_candidates": 2622,
+    "total_candidates_with_criminal_pdf": 2622,
     "partial": false
   },
   "categories": [
@@ -47,7 +47,7 @@
     },
     {
       "category": "공직선거법",
-      "count": 443,
+      "count": 441,
       "group": "공직 검증",
       "tone": "priority",
       "order": 15
@@ -131,7 +131,7 @@
     },
     {
       "category": "폭력",
-      "count": 452,
+      "count": 451,
       "group": "폭력·질서",
       "tone": "standard",
       "order": 40
@@ -145,7 +145,7 @@
     },
     {
       "category": "업무방해",
-      "count": 107,
+      "count": 106,
       "group": "폭력·질서",
       "tone": "standard",
       "order": 42
@@ -371,7 +371,7 @@
     },
     {
       "category": "공직선거법",
-      "count": 167,
+      "count": 166,
       "group": "공직 검증",
       "tone": "priority",
       "order": 15
@@ -455,7 +455,7 @@
     },
     {
       "category": "폭력",
-      "count": 364,
+      "count": 363,
       "group": "폭력·질서",
       "tone": "standard",
       "order": 40
@@ -469,7 +469,7 @@
     },
     {
       "category": "업무방해",
-      "count": 78,
+      "count": 77,
       "group": "폭력·질서",
       "tone": "standard",
       "order": 42
@@ -40966,31 +40966,6 @@
       "pdf_count": 1,
       "pdf_urls": [
         "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4143/Hb100158306/junkwa/20260322104657083_1.PDF"
-      ]
-    },
-    {
-      "huboid": "100158312",
-      "name": "최병국",
-      "party": "무소속",
-      "sdName": "경상북도",
-      "sggName": "경산시",
-      "wiwName": "경산시",
-      "criminal_record": "2건",
-      "categories": [
-        "공직선거법"
-      ],
-      "matched_terms": {
-        "공직선거법": [
-          "공직선거법"
-        ]
-      },
-      "offenses": [],
-      "offense_text": "전과기록중명에관한제출서부모시久)人d거격-국7仟명뚜소후보자성명전과기록형량(처분결과)主l岑국처분일자가•위뼐듬게鬱쏘별É紲힌되질림\\홀촪리+晷Å卜무수十h",
-      "ocr_text": "이 문서는 선거관리위원회의 동의없이 수정, 변경젤 복사할 수 없습니다. 불임 1-2 [규칙 별지 제12호서식의㈘] 선 거 명 소속정당명 죄 명 전과기록중명에 관한 제출서 부모시久)人d거 격-국7仟명 뚜 소 후보자성명 전 과 기 록 형량(처분결과) 主l岑국 처분일자 가•위뼐듬게鬱쏘별É紲힌되 질림\\홀촪리+晷Å卜무수十h 첨부서류 : 범죄경력조회 회보서 1부. 2026년 6월 3일 실시하는 시R片 선거에서 「공직선거법」 제60조의2제2항 에 따라 전과기록에 관한 증명서를 위와 같이 제출합니다. 2026년 ) 월 1卜일 위 예비후보자 최 국 경산시선거관리위원희 귀중 주: 1. 지방자치단체의 장선거에서는 \"선거구명말란은 작성하지 아니합니다. 2』 첨부하는 범조]경력조회 회보서는 \"공직선거후보자용″으로 발급된 회보서를 제출하여야 합니다. 3. 전과기록은 선거기간개시일 전 150일 이후에 발급받은 범최경력조회 회보서에 의하여 작성 하여야 합니다. 2026-03-16 10:23:24 / 경산시선거관리위원회 / im*******",
-      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100158312",
-      "pdf_count": 1,
-      "pdf_urls": [
-        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4713/Hb100158312/junkwa/20260316113158496_1.PDF"
       ]
     },
     {
@@ -107476,46 +107451,6 @@
       ]
     },
     {
-      "huboid": "100163576",
-      "name": "배금강",
-      "party": "국민의힘",
-      "sdName": "부산광역시",
-      "sggName": "부산진구라선거구",
-      "wiwName": "부산진구",
-      "criminal_record": "1건",
-      "categories": [
-        "업무방해"
-      ],
-      "matched_terms": {
-        "업무방해": [
-          "업무방해"
-        ]
-      },
-      "offenses": [
-        {
-          "date": "2000-11-30",
-          "offense": "업무방해국민의힘",
-          "sentence": "벌금1,000,000원",
-          "categories": [
-            "업무방해"
-          ],
-          "matched_terms": {
-            "업무방해": [
-              "업무방해"
-            ]
-          },
-          "raw": "업무방해국민의힘전과기록형량(처분결과)벌금1,000,000원후보자성명부산진구라선거구배금강처분일자2000.1130"
-        }
-      ],
-      "offense_text": "업무방해국민의힘전과기록형량(처분결과)벌금1,000,000원후보자성명부산진구라선거구배금강처분일자2000.1130",
-      "ocr_text": "불임 1-2 [규칙 별지 제12호서식의(카)] 전과기록증명에 관한 제출서 부산진구의회의원선거 선거구명 선 거 명 소속정당명 죄 명 업무방해 국민의힘 전 과 기 록 형 량(처분결과) 벌금 1,000,000원 후보자성명 부산진구라선거구 배 금 강 처분일자 2000.1130 첨부서류 : 범죄경력조회 회보서 1부 2026년 6월 3일 실시하는 부산진구의회의원선거에서 「공직선거법」 제60조 의2제2항에 따라 전과기록에 관한 증명서를 위와 같이 제출합니다. 2026년 5 월 7 일 예비 후보자 배 금 강 위 부산진구선거관리위원회 귀중 주: 1. 지방자치단체의 장선거에서는 ″선거구명\"란은 작성하지 아니합니다. 2. 첨부하는 범죄경력조회 회보서는 \"공직선거후보자용″으로 발급된 회보서를 제출하여야 합니다. 3. 전과기록은 선거기간개시일 전 150일 이후에 발급받은 범죄경력조회 회보서에 의하여 작성 하여야 합니다.",
-      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100163576",
-      "pdf_count": 1,
-      "pdf_urls": [
-        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg2605/Hb100163576/junkwa/20260507114418922_1.PDF"
-      ]
-    },
-    {
       "huboid": "100163581",
       "name": "이헌봉",
       "party": "무소속",
@@ -110879,46 +110814,6 @@
       "pdf_count": 1,
       "pdf_urls": [
         "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg3100/Hb100164034/junkwa/20260513214033292_4.PDF"
-      ]
-    },
-    {
-      "huboid": "100164035",
-      "name": "최기순",
-      "party": "무소속",
-      "sdName": "전남광주통합특별시",
-      "sggName": "장흥군제2선거구",
-      "wiwName": "장흥군",
-      "criminal_record": "1건",
-      "categories": [
-        "공직선거법"
-      ],
-      "matched_terms": {
-        "공직선거법": [
-          "공직선거법"
-        ]
-      },
-      "offenses": [
-        {
-          "date": "",
-          "offense": "공직선거법위반",
-          "sentence": "",
-          "categories": [
-            "공직선거법"
-          ],
-          "matched_terms": {
-            "공직선거법": [
-              "공직선거법"
-            ]
-          },
-          "raw": "공직선거법위반"
-        }
-      ],
-      "offense_text": "공직선거법위반",
-      "ocr_text": "[별지 제12호서식의(카)] 전과기록증명에 관한 제출서 전남광주통합특별시 의 회 선 거 명 선 거 구 명 후보자성명 전 과 기 록 형량(처분결과) 벌금 5,000,000원 장흥군제2선거구 의원선거 口 勢`소 소속정 당명 죄 명 공직선거법위반 첨부서류 : 범죄경력조회 회보서 1부. 2026년 6월 3일 실시하는 전남광주통합특별시의회의원선거에서 조제10항에 따라 전과기록에 관한 증명서를 위와 같이 제출합니다. 최기순 처분일자 2021.2.18. 『공직선거법』 제49 2026년 5월 14일 위 후보자 최기 순 장흥군선거관리위원회 귀중",
-      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100164035",
-      "pdf_count": 1,
-      "pdf_urls": [
-        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4615/Hb100164035/junkwa/20260513194402615_9.PDF"
       ]
     },
     {
@@ -114937,48 +114832,6 @@
       "pdf_count": 1,
       "pdf_urls": [
         "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg5316/Hb100164732/junkwa/20260514173459067_1.PDF"
-      ]
-    },
-    {
-      "huboid": "100164733",
-      "name": "김동미",
-      "party": "더불어민주당",
-      "sdName": "전라남도",
-      "sggName": "장흥군",
-      "wiwName": "장흥군",
-      "criminal_record": "1건",
-      "categories": [
-        "폭력"
-      ],
-      "matched_terms": {
-        "폭력": [
-          "폭력행위",
-          "상해"
-        ]
-      },
-      "offenses": [
-        {
-          "date": "",
-          "offense": "별지제12호서식의(카)]선거소속정당명",
-          "sentence": "벌금1,000,000원",
-          "categories": [
-            "폭력"
-          ],
-          "matched_terms": {
-            "폭력": [
-              "폭력행위",
-              "상해"
-            ]
-          },
-          "raw": "[별지제12호서식의(카)]선거소속정당명전과기록중명에관한제출서비례대표장홍군의회의원선거구명선거후보자성명더불어민주당김등미전과기형량(처분결과)폭력행위등처벌에관한법를위반벌금1,000,000원(공동상해)"
-        }
-      ],
-      "offense_text": "[별지제12호서식의(카)]선거소속정당명전과기록중명에관한제출서비례대표장홍군의회의원선거구명선거후보자성명더불어민주당김등미전과기형량(처분결과)폭력행위등처벌에관한법를위반벌금1,000,000원(공동상해)",
-      "ocr_text": "[별지 제12호서식의(카)] 선 거 소속정당명 전과기록중명에 관한 제출서 비 례대표장홍군의회의원 선 거 구명 선거 후보자성 명 더불어 민주당 김등미 전 과 기 형량(처분결과) 폭력행위등처벌에관한법를위반 벌금 1,000,000원 (공동상해) 첨부서류 : 범최경력조회 회보서 1부. 2026년 6월 3일 실시하는 비례대표장홍군의회의원선거에서 10항에 따라 전과기특에 관한 증명서를 위와 같이 제출합니다. 장홍군선거관리위원회 귀중 처분일자 2012.10.30. 『공직선거법』 제49조제 2026년 5월 14일 위 후보자 김동미 주,",
-      "nec_detail_url": "https://info.nec.go.kr/electioninfo/candidate_detail_info.xhtml?electionId=0020260603&huboId=100164733",
-      "pdf_count": 1,
-      "pdf_urls": [
-        "https://info.nec.go.kr/unielec_pdf_file/20260603/open/Gsg4615/Hb100164733/junkwa/20260514134913301_7.PDF"
       ]
     },
     {

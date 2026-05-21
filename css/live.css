@@ -1,0 +1,191 @@
+/* css/live.css — #live 라우트 전용. 기존 css/main.css와 독립. */
+
+.live-root { max-width: 1200px; margin: 0 auto; padding: 16px 20px 64px; }
+
+.live-hero { margin: 8px 0 24px; padding: 16px 0 20px; border-bottom: 1px solid #e5e5e5; }
+.live-title { font-size: 1.8rem; font-weight: 800; margin: 0 0 12px; letter-spacing: -0.02em; }
+.live-hero-meta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; font-size: 0.95rem; }
+.live-stat { color: #555; }
+.live-disclaimer { margin: 12px 0 0; font-size: 0.85rem; color: #666; line-height: 1.5; }
+
+.live-badge { padding: 4px 10px; border-radius: 999px; font-weight: 600; font-size: 0.85rem; }
+.live-badge-fresh { background: #e8f3ec; color: #176d3a; }
+.live-badge-stale { background: #fdecea; color: #b3261e; }
+.live-badge-demo  { background: #fff4e3; color: #8b6500; }
+
+.live-section { margin-top: 36px; }
+.live-section-title { font-size: 1.3rem; font-weight: 700; margin: 0 0 14px; padding-bottom: 6px; border-bottom: 2px solid #1a1a1a; }
+.live-section-count { font-size: 0.85rem; color: #888; margin-left: 10px; font-weight: 500; }
+
+.live-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
+
+.live-race { border: 1px solid #ddd; border-radius: 8px; padding: 14px 16px; background: #fff; }
+.live-race-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #eee; gap: 8px; }
+.live-race-region { font-weight: 700; font-size: 1.05rem; }
+.live-race-progress { font-weight: 600; color: #444; font-size: 0.9rem; white-space: nowrap; }
+
+.live-cand { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px dashed #eee; }
+.live-cand:last-child { border-bottom: none; }
+.live-cand-rank { flex: 0 0 22px; font-weight: 800; color: #888; font-size: 1.05rem; padding-top: 2px; }
+.live-cand-body { flex: 1; min-width: 0; }
+.live-cand-line1 { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.live-cand-name { font-weight: 700; font-size: 1rem; }
+.live-cand-party { font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
+.live-cand-bar-wrap { height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; margin: 6px 0; }
+.live-cand-bar { height: 100%; transition: width 0.6s ease; }
+.live-cand-line3 { display: flex; justify-content: space-between; gap: 8px; font-size: 0.85rem; color: #555; font-variant-numeric: tabular-nums; }
+.live-cand-share { font-weight: 700; color: #1a1a1a; }
+
+.live-gap { padding: 8px 0 0; margin-top: 6px; font-size: 0.85rem; color: #555; border-top: 1px solid #f0f0f0; }
+.live-gap-tight { padding: 8px 0 0; margin-top: 6px; font-size: 0.9rem; color: #c41e3a; font-weight: 700; border-top: 1px solid #f0f0f0; }
+
+.live-empty { color: #888; padding: 24px 0; }
+.live-empty-mini { color: #aaa; font-size: 0.85rem; margin: 0; }
+
+.live-demo-banner {
+  background: #c41e3a;
+  color: #fff;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin: 12px 0 24px;
+  box-shadow: 0 2px 6px rgba(196, 30, 58, 0.25);
+}
+.live-demo-banner-title {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.live-demo-banner-body {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.5;
+  opacity: 0.95;
+}
+
+/* === 투표율 섹션 === */
+.live-turnout-national {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.live-turnout-national-label { font-size: 0.9rem; opacity: 0.75; }
+.live-turnout-national-pct {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.live-turnout-national-votes {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  font-variant-numeric: tabular-nums;
+  flex: 1;
+  text-align: right;
+}
+
+.live-turnout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+.live-turnout-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  background: #fafafa;
+}
+.live-turnout-region { font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; }
+.live-turnout-bar-wrap {
+  height: 6px;
+  background: #f0f0f0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.live-turnout-bar {
+  height: 100%;
+  background: #1a8754;
+  transition: width 0.6s ease;
+}
+.live-turnout-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #666;
+  font-variant-numeric: tabular-nums;
+}
+.live-turnout-pct { font-weight: 700; color: #1a1a1a; }
+
+.live-turnout-compare {
+  font-size: 0.74rem;
+  color: #777;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed #e8e8e8;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+.live-turnout-national-compare {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+
+/* === 시간대별 투표율 라인 차트 === */
+.live-chart-wrap {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 14px 16px 6px;
+  margin-bottom: 14px;
+}
+.live-chart-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #1a1a1a;
+}
+.live-chart { width: 100%; height: auto; display: block; }
+.chart-line {
+  fill: none;
+  stroke: #1a8754;
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.chart-ref {
+  stroke: #999;
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+.chart-ref-label {
+  fill: #555;
+  font-size: 11px;
+  font-weight: 600;
+}
+.chart-dot { fill: #1a8754; }
+.chart-end-label {
+  fill: #1a1a1a;
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.chart-axis-label {
+  fill: #888;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.chart-tick {
+  stroke: #f3f3f3;
+  stroke-width: 1;
+}
