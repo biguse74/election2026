@@ -364,6 +364,61 @@ def atomic_write(path: Path, payload: dict) -> None:
     tmp.replace(path)
 
 
+def update_timeseries(
+    path: Path,
+    sg_id: str,
+    polled_at: datetime,
+    turnout: dict | None,
+) -> None:
+    """기존 timeseries.json을 읽어 새 폴링의 투표율 포인트를 append 후 저장.
+
+    프론트 라인 차트가 읽는 파일. national + by_sido 양쪽 다 누적한다.
+    같은 시각 중복 append를 막기 위해 polled_at이 동일하면 마지막 항목을 덮어쓴다.
+    """
+    if not turnout:
+        return
+
+    existing: dict = {"sgId": sg_id, "national": [], "by_sido": {}}
+    if path.exists():
+        try:
+            existing = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+
+    ts_iso = polled_at.isoformat(timespec="seconds")
+    existing.setdefault("national", [])
+    existing.setdefault("by_sido", {})
+    existing["sgId"] = sg_id
+    existing["updated_at"] = ts_iso
+
+    def _append(series: list[dict], point: dict) -> None:
+        if series and series[-1].get("polled_at") == point["polled_at"]:
+            series[-1] = point
+        else:
+            series.append(point)
+
+    nat = turnout.get("national") or {}
+    if nat.get("turnout_pct") is not None:
+        _append(existing["national"], {
+            "polled_at": ts_iso,
+            "turnout_pct": nat.get("turnout_pct"),
+            "voters_so_far": nat.get("voters_so_far"),
+        })
+
+    for s in turnout.get("by_sido") or []:
+        name = s.get("sd_name")
+        if not name or s.get("turnout_pct") is None:
+            continue
+        series = existing["by_sido"].setdefault(name, [])
+        _append(series, {
+            "polled_at": ts_iso,
+            "turnout_pct": s.get("turnout_pct"),
+            "voters_so_far": s.get("voters_so_far"),
+        })
+
+    atomic_write(path, existing)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="선관위 투개표·투표율 OpenAPI 폴링 (1회 호출)")
     parser.add_argument("--sg-id", default=DEFAULT_SG_ID, help="기본 20260603")
@@ -445,9 +500,11 @@ def main() -> None:
     )
     atomic_write(OUT_DIR / "current.json", current)
     atomic_write(OUT_DIR / "meta.json", meta)
+    update_timeseries(OUT_DIR / "timeseries.json", args.sg_id, polled_at, turnout)
     print(f"\n  저장: {raw_path.relative_to(ROOT)}")
     print(f"        {(OUT_DIR / 'current.json').relative_to(ROOT)}")
     print(f"        {(OUT_DIR / 'meta.json').relative_to(ROOT)}")
+    print(f"        {(OUT_DIR / 'timeseries.json').relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

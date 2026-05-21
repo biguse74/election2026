@@ -26,6 +26,7 @@
     meta: null,
     history: null,
     historyLoaded: false,
+    timeseries: null,
     pollTimer: null,
     lastPolledAt: null,
     listenersAttached: false,
@@ -207,7 +208,82 @@
       </section>`;
   }
 
-  function renderTurnoutSection(turnout, history, showCompare) {
+  function renderChart(timeseries, history) {
+    if (!timeseries || !Array.isArray(timeseries.national) || timeseries.national.length < 2) {
+      return '';
+    }
+    const data = timeseries.national.slice().sort((a, b) =>
+      new Date(a.polled_at).getTime() - new Date(b.polled_at).getTime()
+    );
+
+    const W = 800, H = 260;
+    const padL = 44, padR = 70, padT = 16, padB = 28;
+    const innerW = W - padL - padR;
+    const innerH = H - padT - padB;
+
+    const startTs = Date.parse('2026-06-03T06:00:00+09:00');
+    const endTsBase = Date.parse('2026-06-03T18:00:00+09:00');
+    const lastTs = new Date(data[data.length - 1].polled_at).getTime();
+    const xEnd = Math.max(endTsBase, lastTs);
+
+    const refRate = history?.national?.rate;
+    const dataMax = Math.max(...data.map(d => d.turnout_pct || 0));
+    const yMax = Math.max(60, Math.ceil(Math.max(dataMax, refRate || 0) / 10) * 10 + 5);
+
+    const xScale = ts => padL + (ts - startTs) / (xEnd - startTs) * innerW;
+    const yScale = v => padT + (1 - v / yMax) * innerH;
+
+    const points = data
+      .map(d => `${xScale(new Date(d.polled_at).getTime()).toFixed(1)},${yScale(d.turnout_pct).toFixed(1)}`)
+      .join(' ');
+
+    let refLine = '';
+    if (refRate != null) {
+      const y = yScale(refRate);
+      refLine = `
+        <line class="chart-ref" x1="${padL}" x2="${padL + innerW}" y1="${y}" y2="${y}" />
+        <text class="chart-ref-label" x="${padL + innerW - 4}" y="${y - 5}" text-anchor="end">${history.round}회 최종 ${refRate.toFixed(1)}%</text>`;
+    }
+
+    const last = data[data.length - 1];
+    const lastX = xScale(new Date(last.polled_at).getTime());
+    const lastY = yScale(last.turnout_pct);
+    const endAnno = `
+      <circle class="chart-dot" cx="${lastX}" cy="${lastY}" r="4.5" />
+      <text class="chart-end-label" x="${lastX + 7}" y="${lastY + 4}">${Number(last.turnout_pct).toFixed(2)}%</text>`;
+
+    const hourMarks = [];
+    const hourLabels = [];
+    [6, 8, 10, 12, 14, 16, 18].forEach(h => {
+      const ts = Date.parse(`2026-06-03T${String(h).padStart(2, '0')}:00:00+09:00`);
+      if (ts > xEnd + 60_000) return;
+      const x = xScale(ts);
+      hourMarks.push(`<line class="chart-tick" x1="${x}" x2="${x}" y1="${padT}" y2="${padT + innerH}" />`);
+      hourLabels.push(`<text class="chart-axis-label" x="${x}" y="${H - padB + 18}" text-anchor="middle">${h}시</text>`);
+    });
+
+    const pctMarks = [];
+    const pctLabels = [];
+    for (let p = 0; p <= yMax; p += 20) {
+      const y = yScale(p);
+      pctMarks.push(`<line class="chart-tick" x1="${padL}" x2="${padL + innerW}" y1="${y}" y2="${y}" />`);
+      pctLabels.push(`<text class="chart-axis-label" x="${padL - 8}" y="${y + 3}" text-anchor="end">${p}%</text>`);
+    }
+
+    return `
+      <div class="live-chart-wrap">
+        <div class="live-chart-title">투표율 진행 — 전국</div>
+        <svg class="live-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="전국 투표율 시간대별 진행 차트">
+          ${pctMarks.join('')}${hourMarks.join('')}
+          ${pctLabels.join('')}${hourLabels.join('')}
+          ${refLine}
+          <polyline class="chart-line" points="${points}" />
+          ${endAnno}
+        </svg>
+      </div>`;
+  }
+
+  function renderTurnoutSection(turnout, history, showCompare, timeseries) {
     if (!turnout) return '';
     const national = turnout.national || {};
     const sido = turnout.by_sido || [];
@@ -225,6 +301,8 @@
         ${nationalCompare}
         <span class="live-turnout-national-votes">${fmtVotes(national.voters_so_far)} / 선거인 ${Number(national.eligible_voters || 0).toLocaleString('ko-KR')}명</span>
       </div>` : '';
+
+    const chartHtml = renderChart(timeseries, history);
 
     const cards = sido.map(s => {
       const pct = s.turnout_pct == null ? 0 : Math.max(0, Math.min(s.turnout_pct, 100));
@@ -249,6 +327,7 @@
       <section class="live-section">
         <h2 class="live-section-title">투표율<span class="live-section-count">시도별 ${sido.length}개${countSuffix}</span></h2>
         ${nationalHtml}
+        ${chartHtml}
         <div class="live-turnout-grid">${cards}</div>
       </section>`;
   }
@@ -274,7 +353,7 @@
     const ordered = ORDER.filter(k => sgGroups.has(k))
       .concat([...sgGroups.keys()].filter(k => !ORDER.includes(k)));
     const sectionsHtml = ordered.map(k => renderSection(k, sgGroups.get(k))).join('');
-    const turnoutHtml = renderTurnoutSection(current.turnout, liveState.history, current.phase !== 'pre');
+    const turnoutHtml = renderTurnoutSection(current.turnout, liveState.history, current.phase !== 'pre', liveState.timeseries);
 
     const demoBanner = fresh.tone === 'demo' ? `
         <div class="live-demo-banner" role="alert">
@@ -301,14 +380,16 @@
   }
 
   async function refresh() {
-    const [current, meta] = await Promise.all([
+    const [current, meta, timeseries] = await Promise.all([
       loadJson('data/live_counting/current.json'),
       loadJson('data/live_counting/meta.json'),
+      loadJson('data/live_counting/timeseries.json'),
     ]);
     if (!current) { renderEmpty(); return; }
     if (current.polled_at === liveState.lastPolledAt) return; // 깜빡임 방지
     liveState.current = current;
     liveState.meta = meta;
+    liveState.timeseries = timeseries;
     liveState.lastPolledAt = current.polled_at;
     renderBoard();
   }

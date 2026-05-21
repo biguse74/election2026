@@ -140,3 +140,52 @@
   opacity: 0.75;
   font-variant-numeric: tabular-nums;
 }
+
+/* === 시간대별 투표율 라인 차트 === */
+.live-chart-wrap {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 14px 16px 6px;
+  margin-bottom: 14px;
+}
+.live-chart-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #1a1a1a;
+}
+.live-chart { width: 100%; height: auto; display: block; }
+.chart-line {
+  fill: none;
+  stroke: #1a8754;
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.chart-ref {
+  stroke: #999;
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+.chart-ref-label {
+  fill: #555;
+  font-size: 11px;
+  font-weight: 600;
+}
+.chart-dot { fill: #1a8754; }
+.chart-end-label {
+  fill: #1a1a1a;
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.chart-axis-label {
+  fill: #888;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.chart-tick {
+  stroke: #f3f3f3;
+  stroke-width: 1;
+}
