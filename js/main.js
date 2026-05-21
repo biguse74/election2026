@@ -5073,6 +5073,7 @@ async function route() {
   const runId = ++routeRunId;
   const hash = decodeURIComponent(location.hash.slice(1));
   if (!hash.startsWith('cand/')) closeCandidateModal();
+  if (hash === 'live' || hash.startsWith('live/')) return window.renderLiveRoute?.(hash);
   updateSidoNavActive(hash);
   updateSiteNavActive(hash);
   if (!hash) return renderHome();

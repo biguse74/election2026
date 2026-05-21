@@ -1,0 +1,135 @@
+{
+  "sgId": "20260603",
+  "polled_at": "2026-06-03T22:35:00+09:00",
+  "source": "openapi",
+  "phase": "live",
+  "races": [
+    {
+      "race_key": "3|서울특별시",
+      "sg_type_code": "3",
+      "sg_type_label": "시도지사",
+      "sd_name": "서울특별시",
+      "sgg_name": null,
+      "wiw_name": "합계",
+      "eligible_voters": 8345211,
+      "valid_votes": 4250000,
+      "invalid_votes": 70000,
+      "progress_pct": 51.74,
+      "rank1_minus_rank2_pp": 4.35,
+      "candidates": [
+        { "name": "후보가", "jd_name": "더불어민주당", "votes": 2150000, "share_pct": 50.59, "current_rank": 1 },
+        { "name": "후보나", "jd_name": "국민의힘",     "votes": 1965000, "share_pct": 46.24, "current_rank": 2 },
+        { "name": "후보다", "jd_name": "조국혁신당",   "votes": 90000,   "share_pct": 2.12,  "current_rank": 3 },
+        { "name": "후보라", "jd_name": "무소속",       "votes": 45000,   "share_pct": 1.05,  "current_rank": 4 }
+      ]
+    },
+    {
+      "race_key": "3|부산광역시",
+      "sg_type_code": "3",
+      "sg_type_label": "시도지사",
+      "sd_name": "부산광역시",
+      "sgg_name": null,
+      "wiw_name": "합계",
+      "eligible_voters": 2900000,
+      "valid_votes": 2050000,
+      "invalid_votes": 35000,
+      "progress_pct": 71.90,
+      "rank1_minus_rank2_pp": 12.44,
+      "candidates": [
+        { "name": "부산후보가", "jd_name": "국민의힘",     "votes": 1140000, "share_pct": 55.61, "current_rank": 1 },
+        { "name": "부산후보나", "jd_name": "더불어민주당", "votes": 885000,  "share_pct": 43.17, "current_rank": 2 },
+        { "name": "부산후보다", "jd_name": "녹색당",       "votes": 25000,   "share_pct": 1.22,  "current_rank": 3 }
+      ]
+    },
+    {
+      "race_key": "3|경기도",
+      "sg_type_code": "3",
+      "sg_type_label": "시도지사",
+      "sd_name": "경기도",
+      "sgg_name": null,
+      "wiw_name": "합계",
+      "eligible_voters": 11200000,
+      "valid_votes": 4100000,
+      "invalid_votes": 80000,
+      "progress_pct": 37.32,
+      "rank1_minus_rank2_pp": 0.43,
+      "candidates": [
+        { "name": "경기후보가", "jd_name": "더불어민주당", "votes": 2010000, "share_pct": 49.02, "current_rank": 1 },
+        { "name": "경기후보나", "jd_name": "국민의힘",     "votes": 1992000, "share_pct": 48.59, "current_rank": 2 },
+        { "name": "경기후보다", "jd_name": "조국혁신당",   "votes": 98000,   "share_pct": 2.39,  "current_rank": 3 }
+      ]
+    },
+    {
+      "race_key": "3|전남광주통합특별시",
+      "sg_type_code": "3",
+      "sg_type_label": "시도지사",
+      "sd_name": "전남광주통합특별시",
+      "sgg_name": null,
+      "wiw_name": "합계",
+      "eligible_voters": 3400000,
+      "valid_votes": 1100000,
+      "invalid_votes": 25000,
+      "progress_pct": 33.09,
+      "rank1_minus_rank2_pp": 31.18,
+      "candidates": [
+        { "name": "통합후보가", "jd_name": "더불어민주당", "votes": 720000, "share_pct": 65.45, "current_rank": 1 },
+        { "name": "통합후보나", "jd_name": "국민의힘",     "votes": 377000, "share_pct": 34.27, "current_rank": 2 },
+        { "name": "통합후보다", "jd_name": "무소속",       "votes": 3000,   "share_pct": 0.27,  "current_rank": 3 }
+      ]
+    },
+    {
+      "race_key": "11|서울특별시",
+      "sg_type_code": "11",
+      "sg_type_label": "교육감",
+      "sd_name": "서울특별시",
+      "sgg_name": null,
+      "wiw_name": "합계",
+      "eligible_voters": 8345211,
+      "valid_votes": 3900000,
+      "invalid_votes": 250000,
+      "progress_pct": 49.71,
+      "rank1_minus_rank2_pp": 6.80,
+      "candidates": [
+        { "name": "교육감후보가", "jd_name": "", "votes": 1700000, "share_pct": 43.59, "current_rank": 1 },
+        { "name": "교육감후보나", "jd_name": "", "votes": 1435000, "share_pct": 36.79, "current_rank": 2 },
+        { "name": "교육감후보다", "jd_name": "", "votes": 765000,  "share_pct": 19.62, "current_rank": 3 }
+      ]
+    },
+    {
+      "race_key": "4|서울특별시|종로구",
+      "sg_type_code": "4",
+      "sg_type_label": "기초단체장",
+      "sd_name": "서울특별시",
+      "sgg_name": "종로구",
+      "wiw_name": "합계",
+      "eligible_voters": 130000,
+      "valid_votes": 75000,
+      "invalid_votes": 1500,
+      "progress_pct": 58.85,
+      "rank1_minus_rank2_pp": 2.14,
+      "candidates": [
+        { "name": "종로후보가", "jd_name": "더불어민주당", "votes": 38000, "share_pct": 50.67, "current_rank": 1 },
+        { "name": "종로후보나", "jd_name": "국민의힘",     "votes": 36400, "share_pct": 48.53, "current_rank": 2 },
+        { "name": "종로후보다", "jd_name": "무소속",       "votes": 600,   "share_pct": 0.80,  "current_rank": 3 }
+      ]
+    },
+    {
+      "race_key": "4|서울특별시|강남구",
+      "sg_type_code": "4",
+      "sg_type_label": "기초단체장",
+      "sd_name": "서울특별시",
+      "sgg_name": "강남구",
+      "wiw_name": "합계",
+      "eligible_voters": 480000,
+      "valid_votes": 290000,
+      "invalid_votes": 6000,
+      "progress_pct": 61.67,
+      "rank1_minus_rank2_pp": 18.52,
+      "candidates": [
+        { "name": "강남후보가", "jd_name": "국민의힘",     "votes": 170000, "share_pct": 58.62, "current_rank": 1 },
+        { "name": "강남후보나", "jd_name": "더불어민주당", "votes": 116300, "share_pct": 40.10, "current_rank": 2 },
+        { "name": "강남후보다", "jd_name": "정의당",       "votes": 3700,   "share_pct": 1.28,  "current_rank": 3 }
+      ]
+    }
+  ]
+}

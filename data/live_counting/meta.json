@@ -1,0 +1,13 @@
+{
+  "polled_at": "2026-06-03T22:35:00+09:00",
+  "source": "openapi",
+  "phase": "live",
+  "races_total": 7,
+  "races_with_data": 7,
+  "avg_progress_pct": 52.04,
+  "openapi_empty": false,
+  "progress_calc": "(yutusu + mutusu) / sunsu * 100",
+  "calls_total": 51,
+  "calls_failed": 0,
+  "elapsed_seconds": 41.3
+}
