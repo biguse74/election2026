@@ -189,3 +189,99 @@
   stroke: #f3f3f3;
   stroke-width: 1;
 }
+
+/* 직전 회차 시간대별 점선 — 8회는 굵고 진하게, 7회는 가늘고 옅게 */
+.chart-line-hist {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.chart-line-hist-8 {
+  stroke: #444;
+  stroke-width: 1.8;
+  stroke-dasharray: 6 3;
+  opacity: 0.85;
+}
+.chart-line-hist-7 {
+  stroke: #999;
+  stroke-width: 1.4;
+  stroke-dasharray: 3 3;
+  opacity: 0.85;
+}
+.chart-line-hist-other {
+  stroke: #bbb;
+  stroke-width: 1.2;
+  stroke-dasharray: 2 4;
+  opacity: 0.7;
+}
+
+/* 차트 범례 */
+.live-chart-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 2px 4px 8px;
+  font-size: 0.8rem;
+  color: #555;
+}
+.chart-legend-item { display: inline-flex; align-items: center; gap: 6px; }
+.chart-legend-swatch {
+  display: inline-block;
+  width: 18px;
+  height: 0;
+  border-top-width: 2.4px;
+  border-top-style: solid;
+}
+.chart-legend-swatch-live { border-top-color: #1a8754; }
+.chart-legend-swatch-8 { border-top-color: #444;  border-top-style: dashed; }
+.chart-legend-swatch-7 { border-top-color: #999;  border-top-style: dashed; }
+
+/* 시도 카드 펼치기 */
+.live-turnout-hint {
+  margin: 0 2px 8px;
+  font-size: 0.8rem;
+  color: #777;
+}
+.live-turnout-card.is-expandable {
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.live-turnout-card.is-expandable:hover {
+  border-color: #bbb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.live-turnout-card.is-expandable:focus-visible {
+  outline: 2px solid #1a8754;
+  outline-offset: 2px;
+}
+.live-turnout-card.is-open {
+  grid-column: 1 / -1;          /* 펼쳐졌을 때는 전체 너비 차지 */
+  background: #fff;
+  border-color: #1a1a1a;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+.live-turnout-region {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.live-turnout-expand-icon {
+  font-size: 0.8rem;
+  color: #888;
+  line-height: 1;
+}
+.live-turnout-card.is-open .live-turnout-expand-icon { color: #1a1a1a; }
+.live-turnout-expanded {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+/* 시도 미니 차트 */
+.live-chart-wrap-mini {
+  padding: 6px 4px 0;
+  border: none;
+  margin-bottom: 0;
+  background: transparent;
+}

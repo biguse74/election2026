@@ -26,10 +26,13 @@
     meta: null,
     history: null,
     historyLoaded: false,
+    historyHourly: null,
+    historyHourlyLoaded: false,
     timeseries: null,
     pollTimer: null,
     lastPolledAt: null,
     listenersAttached: false,
+    expandedSido: new Set(),
   };
 
   // 8회(2022) 데이터는 옛 시도명을 쓴다. 9회 신명칭 → 옛명칭 매핑.
@@ -110,6 +113,39 @@
       by_sido: top,
     };
     return liveState.history;
+  }
+
+  // 시간대별 누계 투표율 (8회 + 7회 지선). history_turnout.json보다 풍부.
+  // 시도명은 신표준명(강원특별자치도·전북특별자치도)으로 정규화되어 있어 alias 불필요.
+  async function ensureHistoryHourly() {
+    if (liveState.historyHourlyLoaded) return liveState.historyHourly;
+    liveState.historyHourlyLoaded = true;
+    const data = await loadJson('data/history_turnout_hourly.json');
+    if (!data || !Array.isArray(data.rounds) || !data.rounds.length) {
+      liveState.historyHourly = null;
+      return null;
+    }
+    liveState.historyHourly = data;
+    return data;
+  }
+
+  // 시도명을 시간대별 데이터의 키로 변환 (신이름 그대로 + 옛이름 fallback).
+  function hourlyForSido(historyHourly, sdName) {
+    if (!historyHourly || !sdName) return [];
+    const alias = SIDO_HISTORY_ALIAS[sdName] || sdName;
+    return historyHourly.rounds.map(r => ({
+      round: r.round,
+      year: r.year,
+      points: r.by_sido[sdName] || r.by_sido[alias] || [],
+    })).filter(r => r.points.length >= 2);
+  }
+  function hourlyNational(historyHourly) {
+    if (!historyHourly) return [];
+    return historyHourly.rounds.map(r => ({
+      round: r.round,
+      year: r.year,
+      points: r.national || [],
+    })).filter(r => r.points.length >= 2);
   }
 
   function detectFreshness(polledAtIso) {
@@ -208,82 +244,136 @@
       </section>`;
   }
 
-  function renderChart(timeseries, history) {
-    if (!timeseries || !Array.isArray(timeseries.national) || timeseries.national.length < 2) {
-      return '';
-    }
-    const data = timeseries.national.slice().sort((a, b) =>
+  // 시간대별 회차 시리즈를 9회 X축 timestamp로 매핑해 polyline points 문자열로.
+  function historyPolylinePoints(points, xScale, yScale) {
+    return points.map(p => {
+      const [hh, mm] = p.time.split(':').map(Number);
+      const ts = Date.parse(`2026-06-03T${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:00+09:00`);
+      return `${xScale(ts).toFixed(1)},${yScale(p.turnout_pct).toFixed(1)}`;
+    }).join(' ');
+  }
+
+  // 라이브 시계열 + 8회/7회 시간대별 점선을 한 차트에. variant: 'national' | 'sido'
+  function renderChart(opts) {
+    const {
+      live = [],
+      historyHourlySeries = [],   // [{round, year, points: [{time, turnout_pct}]}]
+      title,
+      variant = 'national',
+      ariaLabel,
+    } = opts;
+
+    const liveSorted = (live || []).slice().sort((a, b) =>
       new Date(a.polled_at).getTime() - new Date(b.polled_at).getTime()
     );
+    const histSeries = (historyHourlySeries || []).filter(h => h.points && h.points.length >= 2);
 
-    const W = 800, H = 260;
-    const padL = 44, padR = 70, padT = 16, padB = 28;
+    if (liveSorted.length < 2 && !histSeries.length) return '';
+
+    const isMini = variant === 'sido';
+    const W = isMini ? 520 : 800;
+    const H = isMini ? 180 : 260;
+    const padL = isMini ? 36 : 44;
+    const padR = isMini ? 18 : 70;
+    const padT = isMini ? 12 : 16;
+    const padB = isMini ? 24 : 28;
     const innerW = W - padL - padR;
     const innerH = H - padT - padB;
 
     const startTs = Date.parse('2026-06-03T06:00:00+09:00');
-    const endTsBase = Date.parse('2026-06-03T18:00:00+09:00');
-    const lastTs = new Date(data[data.length - 1].polled_at).getTime();
-    const xEnd = Math.max(endTsBase, lastTs);
+    const endTsBase = Date.parse('2026-06-03T20:00:00+09:00'); // 8회 19:30까지 보이게 확장
+    const lastLiveTs = liveSorted.length
+      ? new Date(liveSorted[liveSorted.length - 1].polled_at).getTime()
+      : startTs;
+    const xEnd = Math.max(endTsBase, lastLiveTs);
 
-    const refRate = history?.national?.rate;
-    const dataMax = Math.max(...data.map(d => d.turnout_pct || 0));
-    const yMax = Math.max(60, Math.ceil(Math.max(dataMax, refRate || 0) / 10) * 10 + 5);
+    const allMax = Math.max(
+      ...liveSorted.map(d => d.turnout_pct || 0),
+      ...histSeries.flatMap(h => h.points.map(p => p.turnout_pct || 0)),
+      40,
+    );
+    const yMax = Math.ceil(allMax / 10) * 10 + 5;
 
     const xScale = ts => padL + (ts - startTs) / (xEnd - startTs) * innerW;
     const yScale = v => padT + (1 - v / yMax) * innerH;
 
-    const points = data
-      .map(d => `${xScale(new Date(d.polled_at).getTime()).toFixed(1)},${yScale(d.turnout_pct).toFixed(1)}`)
-      .join(' ');
+    // 회차별 점선 스타일: 8회는 진한 회색, 7회는 더 옅게.
+    const HIST_CLASS = { 8: 'chart-line-hist-8', 7: 'chart-line-hist-7' };
+    const historyPolys = histSeries.map(h => {
+      const pts = historyPolylinePoints(h.points, xScale, yScale);
+      const cls = HIST_CLASS[h.round] || 'chart-line-hist-other';
+      return `<polyline class="chart-line-hist ${cls}" points="${pts}" />
+        <title>${h.round}회 (${h.year}) 시간대별</title>`;
+    }).join('');
 
-    let refLine = '';
-    if (refRate != null) {
-      const y = yScale(refRate);
-      refLine = `
-        <line class="chart-ref" x1="${padL}" x2="${padL + innerW}" y1="${y}" y2="${y}" />
-        <text class="chart-ref-label" x="${padL + innerW - 4}" y="${y - 5}" text-anchor="end">${history.round}회 최종 ${refRate.toFixed(1)}%</text>`;
+    // 라이브 polyline + 끝점 도트·라벨
+    let livePoly = '';
+    let endAnno = '';
+    if (liveSorted.length >= 2) {
+      const points = liveSorted
+        .map(d => `${xScale(new Date(d.polled_at).getTime()).toFixed(1)},${yScale(d.turnout_pct).toFixed(1)}`)
+        .join(' ');
+      livePoly = `<polyline class="chart-line" points="${points}" />`;
+      const last = liveSorted[liveSorted.length - 1];
+      const lastX = xScale(new Date(last.polled_at).getTime());
+      const lastY = yScale(last.turnout_pct);
+      endAnno = `
+        <circle class="chart-dot" cx="${lastX}" cy="${lastY}" r="${isMini ? 3.5 : 4.5}" />
+        <text class="chart-end-label" x="${lastX + 6}" y="${lastY + 4}">${Number(last.turnout_pct).toFixed(2)}%</text>`;
     }
 
-    const last = data[data.length - 1];
-    const lastX = xScale(new Date(last.polled_at).getTime());
-    const lastY = yScale(last.turnout_pct);
-    const endAnno = `
-      <circle class="chart-dot" cx="${lastX}" cy="${lastY}" r="4.5" />
-      <text class="chart-end-label" x="${lastX + 7}" y="${lastY + 4}">${Number(last.turnout_pct).toFixed(2)}%</text>`;
-
+    // 축 눈금
     const hourMarks = [];
     const hourLabels = [];
-    [6, 8, 10, 12, 14, 16, 18].forEach(h => {
+    const xTicks = isMini ? [6, 9, 12, 15, 18] : [6, 8, 10, 12, 14, 16, 18];
+    xTicks.forEach(h => {
       const ts = Date.parse(`2026-06-03T${String(h).padStart(2, '0')}:00:00+09:00`);
       if (ts > xEnd + 60_000) return;
       const x = xScale(ts);
       hourMarks.push(`<line class="chart-tick" x1="${x}" x2="${x}" y1="${padT}" y2="${padT + innerH}" />`);
-      hourLabels.push(`<text class="chart-axis-label" x="${x}" y="${H - padB + 18}" text-anchor="middle">${h}시</text>`);
+      hourLabels.push(`<text class="chart-axis-label" x="${x}" y="${H - padB + 16}" text-anchor="middle">${h}시</text>`);
     });
 
     const pctMarks = [];
     const pctLabels = [];
-    for (let p = 0; p <= yMax; p += 20) {
+    const pctStep = isMini ? 20 : 20;
+    for (let p = 0; p <= yMax; p += pctStep) {
       const y = yScale(p);
       pctMarks.push(`<line class="chart-tick" x1="${padL}" x2="${padL + innerW}" y1="${y}" y2="${y}" />`);
-      pctLabels.push(`<text class="chart-axis-label" x="${padL - 8}" y="${y + 3}" text-anchor="end">${p}%</text>`);
+      pctLabels.push(`<text class="chart-axis-label" x="${padL - 6}" y="${y + 3}" text-anchor="end">${p}%</text>`);
     }
 
+    // 범례 (메인 차트에만)
+    let legend = '';
+    if (!isMini) {
+      const items = [];
+      if (liveSorted.length >= 2) {
+        items.push('<span class="chart-legend-item"><span class="chart-legend-swatch chart-legend-swatch-live"></span>9회 라이브</span>');
+      }
+      histSeries.forEach(h => {
+        items.push(`<span class="chart-legend-item"><span class="chart-legend-swatch chart-legend-swatch-${h.round}"></span>${h.round}회 (${h.year})</span>`);
+      });
+      if (items.length) {
+        legend = `<div class="live-chart-legend">${items.join('')}</div>`;
+      }
+    }
+
+    const titleHtml = title ? `<div class="live-chart-title">${escapeHtml(title)}</div>` : '';
     return `
-      <div class="live-chart-wrap">
-        <div class="live-chart-title">투표율 진행 — 전국</div>
-        <svg class="live-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="전국 투표율 시간대별 진행 차트">
+      <div class="live-chart-wrap${isMini ? ' live-chart-wrap-mini' : ''}">
+        ${titleHtml}
+        <svg class="live-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${escapeHtml(ariaLabel || title || '투표율 차트')}">
           ${pctMarks.join('')}${hourMarks.join('')}
           ${pctLabels.join('')}${hourLabels.join('')}
-          ${refLine}
-          <polyline class="chart-line" points="${points}" />
+          ${historyPolys}
+          ${livePoly}
           ${endAnno}
         </svg>
+        ${legend}
       </div>`;
   }
 
-  function renderTurnoutSection(turnout, history, showCompare, timeseries) {
+  function renderTurnoutSection(turnout, history, showCompare, timeseries, historyHourly) {
     if (!turnout) return '';
     const national = turnout.national || {};
     const sido = turnout.by_sido || [];
@@ -302,32 +392,69 @@
         <span class="live-turnout-national-votes">${fmtVotes(national.voters_so_far)} / 선거인 ${Number(national.eligible_voters || 0).toLocaleString('ko-KR')}명</span>
       </div>` : '';
 
-    const chartHtml = renderChart(timeseries, history);
+    const nationalChart = renderChart({
+      live: timeseries?.national || [],
+      historyHourlySeries: hourlyNational(historyHourly),
+      title: '투표율 진행 — 전국',
+      variant: 'national',
+      ariaLabel: '전국 투표율 시간대별 진행 차트 (9회 라이브 + 8회 + 7회 점선 비교)',
+    });
 
     const cards = sido.map(s => {
+      const sdName = s.sd_name || '';
       const pct = s.turnout_pct == null ? 0 : Math.max(0, Math.min(s.turnout_pct, 100));
-      const prevRate = lookupHistoryRate(s.sd_name, history);
+      const prevRate = lookupHistoryRate(sdName, history);
       const compareTxt = (showCompare && prevRate != null && s.turnout_pct != null)
         ? `<div class="live-turnout-compare">${histLabel} ${fmtCompare(s.turnout_pct, prevRate)}</div>`
         : '';
+      const isExpanded = liveState.expandedSido.has(sdName);
+      const histSeries = hourlyForSido(historyHourly, sdName);
+      const liveSidoSeries = (timeseries && timeseries.by_sido && timeseries.by_sido[sdName]) || [];
+      const canExpand = histSeries.length > 0 || liveSidoSeries.length >= 2;
+      const expandIcon = isExpanded ? '▾' : '▸';
+
+      let expandedHtml = '';
+      if (isExpanded && canExpand) {
+        const miniChart = renderChart({
+          live: liveSidoSeries,
+          historyHourlySeries: histSeries,
+          title: '',
+          variant: 'sido',
+          ariaLabel: `${sdName} 시간대별 투표율 비교 차트`,
+        });
+        expandedHtml = `<div class="live-turnout-expanded">${miniChart || '<p class="live-empty-mini">차트를 그릴 데이터가 부족합니다.</p>'}</div>`;
+      }
+
+      const clsExpand = canExpand ? ' is-expandable' : '';
+      const clsOpen = isExpanded ? ' is-open' : '';
+      const ariaExpanded = canExpand ? `aria-expanded="${isExpanded ? 'true' : 'false'}"` : '';
+      const dataAttr = canExpand ? `data-sido="${escapeHtml(sdName)}"` : '';
+      const role = canExpand ? 'role="button" tabindex="0"' : '';
+
       return `
-        <article class="live-turnout-card">
-          <div class="live-turnout-region">${escapeHtml(s.sd_name || '—')}</div>
+        <article class="live-turnout-card${clsExpand}${clsOpen}" ${dataAttr} ${role} ${ariaExpanded}>
+          <div class="live-turnout-region">
+            <span>${escapeHtml(sdName || '—')}</span>
+            ${canExpand ? `<span class="live-turnout-expand-icon" aria-hidden="true">${expandIcon}</span>` : ''}
+          </div>
           <div class="live-turnout-bar-wrap"><div class="live-turnout-bar" style="width:${pct}%"></div></div>
           <div class="live-turnout-meta">
             <span class="live-turnout-pct">${fmtPct(s.turnout_pct)}</span>
             <span class="live-turnout-votes">${fmtVotes(s.voters_so_far)}</span>
           </div>
           ${compareTxt}
+          ${expandedHtml}
         </article>`;
     }).join('');
 
     const countSuffix = (history && showCompare) ? ` · ${histLabel} 비교` : '';
+    const expandHint = historyHourly ? `<p class="live-turnout-hint">시도 카드를 누르면 그 시도의 시간대별 8회·7회 비교 차트가 펼쳐집니다.</p>` : '';
     return `
       <section class="live-section">
         <h2 class="live-section-title">투표율<span class="live-section-count">시도별 ${sido.length}개${countSuffix}</span></h2>
         ${nationalHtml}
-        ${chartHtml}
+        ${nationalChart}
+        ${expandHint}
         <div class="live-turnout-grid">${cards}</div>
       </section>`;
   }
@@ -353,7 +480,13 @@
     const ordered = ORDER.filter(k => sgGroups.has(k))
       .concat([...sgGroups.keys()].filter(k => !ORDER.includes(k)));
     const sectionsHtml = ordered.map(k => renderSection(k, sgGroups.get(k))).join('');
-    const turnoutHtml = renderTurnoutSection(current.turnout, liveState.history, current.phase !== 'pre', liveState.timeseries);
+    const turnoutHtml = renderTurnoutSection(
+      current.turnout,
+      liveState.history,
+      current.phase !== 'pre',
+      liveState.timeseries,
+      liveState.historyHourly,
+    );
 
     const demoBanner = fresh.tone === 'demo' ? `
         <div class="live-demo-banner" role="alert">
@@ -408,6 +541,16 @@
     if (liveState.pollTimer) { clearInterval(liveState.pollTimer); liveState.pollTimer = null; }
   }
 
+  function toggleSido(sdName) {
+    if (!sdName) return;
+    if (liveState.expandedSido.has(sdName)) {
+      liveState.expandedSido.delete(sdName);
+    } else {
+      liveState.expandedSido.add(sdName);
+    }
+    if (liveState.current) renderBoard();
+  }
+
   function attachListenersOnce() {
     if (liveState.listenersAttached) return;
     liveState.listenersAttached = true;
@@ -418,13 +561,28 @@
     window.addEventListener('hashchange', () => {
       if (!isLiveHash()) stopPolling();
     });
+    // 시도 카드 클릭/키보드로 펼침 토글. 라이브 화면일 때만 반응.
+    document.addEventListener('click', (e) => {
+      if (!isLiveHash()) return;
+      const card = e.target.closest && e.target.closest('.live-turnout-card.is-expandable');
+      if (!card) return;
+      toggleSido(card.getAttribute('data-sido'));
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!isLiveHash()) return;
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const card = e.target.closest && e.target.closest('.live-turnout-card.is-expandable');
+      if (!card) return;
+      e.preventDefault();
+      toggleSido(card.getAttribute('data-sido'));
+    });
   }
 
   function renderLiveRoute(/* hash */) {
     renderLoading();
     attachListenersOnce();
-    // 과거 투표율은 한 번만 받아 캐시. 도착하면 라이브 화면을 다시 그려 비교 텍스트 채움.
-    ensureHistory().then(() => {
+    // 과거 투표율(최종값) + 시간대별 시리즈를 병렬로 받고, 도착하면 화면 재렌더.
+    Promise.all([ensureHistory(), ensureHistoryHourly()]).then(() => {
       if (isLiveHash() && liveState.current) renderBoard();
     }).catch(() => {});
     startPolling();

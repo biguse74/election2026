@@ -1,0 +1,1897 @@
+{
+  "generated_at": "2026-05-21T23:48:04+09:00",
+  "source": "중앙선거관리위원회 선거통계시스템 (수동 다운로드 xlsx)",
+  "note": "회차별 시간대별 누계 투표율(%). 시도명은 신표준명으로 정규화 (강원특별자치도·전북특별자치도). 13시 점프는 사전투표 합산 시점.",
+  "rounds": [
+    {
+      "round": 8,
+      "year": 2022,
+      "election_type": "지방선거",
+      "sgId": "20220601",
+      "source_file": "투표현황[제8회][지방선거].xlsx",
+      "national": [
+        {
+          "time": "07:00",
+          "turnout_pct": 1.7
+        },
+        {
+          "time": "08:00",
+          "turnout_pct": 3.8
+        },
+        {
+          "time": "09:00",
+          "turnout_pct": 6.0
+        },
+        {
+          "time": "10:00",
+          "turnout_pct": 8.7
+        },
+        {
+          "time": "11:00",
+          "turnout_pct": 12.0
+        },
+        {
+          "time": "12:00",
+          "turnout_pct": 15.0
+        },
+        {
+          "time": "13:00",
+          "turnout_pct": 38.3
+        },
+        {
+          "time": "14:00",
+          "turnout_pct": 40.7
+        },
+        {
+          "time": "15:00",
+          "turnout_pct": 43.1
+        },
+        {
+          "time": "16:00",
+          "turnout_pct": 45.4
+        },
+        {
+          "time": "17:00",
+          "turnout_pct": 47.6
+        },
+        {
+          "time": "18:00",
+          "turnout_pct": 50.0
+        },
+        {
+          "time": "19:30",
+          "turnout_pct": 50.9
+        }
+      ],
+      "by_sido": {
+        "서울특별시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.6
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.5
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 5.6
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 8.2
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 11.4
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 14.6
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 38.5
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 41.5
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 44.2
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 46.8
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 49.2
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 52.1
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 53.2
+          }
+        ],
+        "부산광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.6
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.5
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 5.7
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 8.4
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 11.7
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 15.2
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 36.5
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 38.8
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 41.1
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 43.4
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 45.7
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 48.1
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 49.1
+          }
+        ],
+        "대구광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.6
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.6
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 5.8
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 8.4
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 11.5
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 14.4
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 31.7
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 33.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 35.8
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 37.8
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 39.8
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 42.2
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 43.2
+          }
+        ],
+        "인천광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.6
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.5
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 5.6
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 8.0
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 11.0
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 13.9
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 36.8
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 39.1
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 41.5
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 43.7
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 45.9
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 48.0
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 48.9
+          }
+        ],
+        "광주광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.0
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 2.1
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 3.4
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 5.2
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 7.8
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 9.6
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 28.7
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 30.3
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 31.6
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 33.6
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 35.1
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 36.8
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 37.7
+          }
+        ],
+        "대전광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.0
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.1
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.5
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 9.3
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 12.5
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 15.5
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 37.8
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 39.9
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 42.1
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 44.3
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 46.4
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 48.8
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 49.7
+          }
+        ],
+        "울산광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.8
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.0
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.2
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 9.2
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 12.7
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 16.1
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 38.6
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 41.2
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 43.7
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 46.2
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 48.7
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 51.4
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 52.3
+          }
+        ],
+        "세종특별자치시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.4
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.1
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 5.0
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 7.5
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 10.4
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 13.4
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 38.0
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 39.2
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 43.1
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 45.3
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 46.3
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 50.3
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 51.2
+          }
+        ],
+        "경기도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.7
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.8
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.0
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 8.7
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 12.0
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 15.1
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 37.2
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 39.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 42.3
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 44.7
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 47.1
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 49.6
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 50.6
+          }
+        ],
+        "강원특별자치도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.3
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.9
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 7.7
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 11.3
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 15.2
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 18.4
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 46.4
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 48.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 51.0
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 53.1
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 55.1
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 57.1
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 57.8
+          }
+        ],
+        "충청북도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.0
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.3
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.9
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 9.9
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 13.2
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 16.0
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 39.7
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 41.8
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 43.8
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 45.9
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 47.5
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 49.6
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 50.6
+          }
+        ],
+        "충청남도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.0
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.3
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.9
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 9.9
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 13.2
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 16.1
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 38.7
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 40.8
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 43.0
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 45.0
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 47.0
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 49.0
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 49.8
+          }
+        ],
+        "전북특별자치도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.4
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.1
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 5.2
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 7.6
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 10.3
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 12.6
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 39.1
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 40.8
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 42.7
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 44.4
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 46.1
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 47.9
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 48.6
+          }
+        ],
+        "전라남도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.8
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.9
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.4
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 9.3
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 12.2
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 14.8
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 48.1
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 50.0
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 52.3
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 54.1
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 56.0
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 57.8
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 58.4
+          }
+        ],
+        "경상북도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.1
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.4
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.7
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 9.8
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 13.3
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 16.3
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 41.9
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 43.8
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 46.1
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 48.1
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 50.1
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 52.1
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 52.7
+          }
+        ],
+        "경상남도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.0
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.3
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.6
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 9.7
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 13.3
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 16.3
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 40.7
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 43.0
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 45.5
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 47.7
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 50.1
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 52.4
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 53.4
+          }
+        ],
+        "제주특별자치도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.0
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.4
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 7.1
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 10.2
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 13.6
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 16.9
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 41.3
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 43.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 46.0
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 48.2
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 50.3
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 52.6
+          },
+          {
+            "time": "19:30",
+            "turnout_pct": 53.1
+          }
+        ]
+      }
+    },
+    {
+      "round": 7,
+      "year": 2018,
+      "election_type": "지방선거",
+      "sgId": "20180613",
+      "source_file": "투표현황[제7회][지방선거].xlsx",
+      "national": [
+        {
+          "time": "07:00",
+          "turnout_pct": 2.2
+        },
+        {
+          "time": "08:00",
+          "turnout_pct": 4.6
+        },
+        {
+          "time": "09:00",
+          "turnout_pct": 7.7
+        },
+        {
+          "time": "10:00",
+          "turnout_pct": 11.5
+        },
+        {
+          "time": "11:00",
+          "turnout_pct": 15.7
+        },
+        {
+          "time": "12:00",
+          "turnout_pct": 19.7
+        },
+        {
+          "time": "13:00",
+          "turnout_pct": 43.5
+        },
+        {
+          "time": "14:00",
+          "turnout_pct": 46.8
+        },
+        {
+          "time": "15:00",
+          "turnout_pct": 50.1
+        },
+        {
+          "time": "16:00",
+          "turnout_pct": 53.2
+        },
+        {
+          "time": "17:00",
+          "turnout_pct": 56.1
+        },
+        {
+          "time": "18:00",
+          "turnout_pct": 60.2
+        }
+      ],
+      "by_sido": {
+        "서울특별시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.7
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.8
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.5
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 9.9
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 14.1
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 18.2
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 41.3
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 44.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 48.5
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 52.1
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 55.3
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 59.9
+          }
+        ],
+        "부산광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.0
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.3
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 7.3
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 11.1
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 15.5
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 19.8
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 41.0
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 44.5
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 48.1
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 51.2
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 54.3
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 58.8
+          }
+        ],
+        "대구광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.1
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.5
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 7.6
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 11.5
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 15.8
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 20.0
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 40.2
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 43.4
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 46.5
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 49.5
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 52.5
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 57.3
+          }
+        ],
+        "인천광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.8
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.1
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.9
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 10.2
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 14.0
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 17.8
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 39.0
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 42.2
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 45.3
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 48.2
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 51.0
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 55.3
+          }
+        ],
+        "광주광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.9
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.0
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 6.7
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 10.1
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 13.8
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 17.3
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 44.1
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 46.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 49.7
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 52.5
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 55.2
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 59.2
+          }
+        ],
+        "대전광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.4
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.8
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 7.9
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 11.4
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 15.6
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 19.5
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 42.5
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 45.5
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 48.6
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 51.4
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 54.1
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 58.0
+          }
+        ],
+        "울산광역시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.1
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.4
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 7.4
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 11.2
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 15.8
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 20.3
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 44.9
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 49.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 52.6
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 56.7
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 60.2
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 64.8
+          }
+        ],
+        "세종특별자치시": [
+          {
+            "time": "07:00",
+            "turnout_pct": 1.4
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 3.3
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 5.8
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 9.0
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 13.0
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 17.2
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 45.6
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 48.9
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 51.9
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 54.6
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 57.4
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 61.7
+          }
+        ],
+        "경기도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.0
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 4.3
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 7.3
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 11.0
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 15.1
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 19.1
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 40.4
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 44.1
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 47.5
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 50.7
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 53.6
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 57.8
+          }
+        ],
+        "강원특별자치도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 3.2
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 6.5
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 10.2
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 14.7
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 19.4
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 23.4
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 49.1
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 52.2
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 55.2
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 57.8
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 60.0
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 63.2
+          }
+        ],
+        "충청북도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.5
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 5.3
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 8.5
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 13.0
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 17.2
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 20.9
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 44.8
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 47.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 50.6
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 53.0
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 55.7
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 59.3
+          }
+        ],
+        "충청남도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.6
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 5.4
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 9.0
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 13.1
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 17.3
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 21.1
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 43.8
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 46.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 49.6
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 52.2
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 54.7
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 58.1
+          }
+        ],
+        "전북특별자치도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.7
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 5.5
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 8.8
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 12.9
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 16.9
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 20.3
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 51.4
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 54.1
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 57.0
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 59.6
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 61.9
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 65.2
+          }
+        ],
+        "전라남도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.7
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 5.9
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 9.7
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 13.8
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 17.9
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 21.2
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 55.9
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 58.7
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 61.4
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 63.9
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 66.2
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 69.2
+          }
+        ],
+        "경상북도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.8
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 5.5
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 8.8
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 12.7
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 17.5
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 21.6
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 49.5
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 52.8
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 56.6
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 59.0
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 61.3
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 64.7
+          }
+        ],
+        "경상남도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 2.5
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 5.2
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 8.6
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 12.9
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 17.3
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 21.5
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 48.8
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 52.2
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 55.5
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 58.4
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 61.5
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 65.8
+          }
+        ],
+        "제주특별자치도": [
+          {
+            "time": "07:00",
+            "turnout_pct": 3.3
+          },
+          {
+            "time": "08:00",
+            "turnout_pct": 7.0
+          },
+          {
+            "time": "09:00",
+            "turnout_pct": 11.1
+          },
+          {
+            "time": "10:00",
+            "turnout_pct": 15.4
+          },
+          {
+            "time": "11:00",
+            "turnout_pct": 20.1
+          },
+          {
+            "time": "12:00",
+            "turnout_pct": 24.3
+          },
+          {
+            "time": "13:00",
+            "turnout_pct": 50.5
+          },
+          {
+            "time": "14:00",
+            "turnout_pct": 53.9
+          },
+          {
+            "time": "15:00",
+            "turnout_pct": 57.0
+          },
+          {
+            "time": "16:00",
+            "turnout_pct": 59.8
+          },
+          {
+            "time": "17:00",
+            "turnout_pct": 62.4
+          },
+          {
+            "time": "18:00",
+            "turnout_pct": 65.9
+          }
+        ]
+      }
+    }
+  ]
+}
