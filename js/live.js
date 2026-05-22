@@ -183,22 +183,36 @@
   }
 
   // 시도명을 시간대별 데이터의 키로 변환 (신이름 그대로 + 옛이름 fallback).
+  // earlyFinalPct/Voters는 회차별 사전+거소 최종 누계 — 사전투표율(%)·절대수.
   function hourlyForSido(historyHourly, sdName) {
     if (!historyHourly || !sdName) return [];
     const alias = SIDO_HISTORY_ALIAS[sdName] || sdName;
-    return historyHourly.rounds.map(r => ({
-      round: r.round,
-      year: r.year,
-      points: r.by_sido[sdName] || r.by_sido[alias] || [],
-    })).filter(r => r.points.length >= 2);
+    return historyHourly.rounds.map(r => {
+      const points = r.by_sido[sdName] || r.by_sido[alias] || [];
+      const earlyData = (r.early_vote_final && r.early_vote_final.by_sido)
+        ? (r.early_vote_final.by_sido[sdName] || r.early_vote_final.by_sido[alias] || null)
+        : null;
+      return {
+        round: r.round,
+        year: r.year,
+        points,
+        earlyFinalPct: earlyData ? earlyData.early_pct : null,
+        earlyFinalVoters: earlyData ? earlyData.early_voters : null,
+      };
+    }).filter(r => r.points.length >= 2);
   }
   function hourlyNational(historyHourly) {
     if (!historyHourly) return [];
-    return historyHourly.rounds.map(r => ({
-      round: r.round,
-      year: r.year,
-      points: r.national || [],
-    })).filter(r => r.points.length >= 2);
+    return historyHourly.rounds.map(r => {
+      const earlyData = (r.early_vote_final && r.early_vote_final.national) || null;
+      return {
+        round: r.round,
+        year: r.year,
+        points: r.national || [],
+        earlyFinalPct: earlyData ? earlyData.early_pct : null,
+        earlyFinalVoters: earlyData ? earlyData.early_voters : null,
+      };
+    }).filter(r => r.points.length >= 2);
   }
 
   // phase + 폴링 시각을 보고 사용자에게 보여줄 상태 메시지 결정.
@@ -389,10 +403,11 @@
   function renderChart(opts) {
     const {
       live = [],
-      historyHourlySeries = [],   // [{round, year, points: [{time, turnout_pct}]}]
+      historyHourlySeries = [],   // [{round, year, points: [...], earlyFinalPct, earlyFinalVoters}]
       title,
       variant = 'national',
       ariaLabel,
+      liveEarlyRate = null,        // 9회 라이브 사전+거소 비율 (%) — 데이터 들어왔을 때만
     } = opts;
 
     const liveSorted = (live || []).slice().sort((a, b) =>
@@ -498,39 +513,63 @@
       }
     }
 
-    // 사전투표 효과(12→13시 점프) 요약 — 회차별 한 줄.
+    // 사전투표 비교 — 회차별: ① 12→13시 점프량(시간대 효과), ② 최종 사전투표율(절대 비중)
     const earlyVoteRows = [];
     const liveJump = liveEarlyVoteJump(liveSorted);
-    if (liveJump) {
+    if (liveJump || liveEarlyRate != null) {
       earlyVoteRows.push({
         label: '9회 라이브',
-        diff: liveJump.diff,
+        diff: liveJump ? liveJump.diff : null,
+        finalPct: liveEarlyRate,
         cls: 'early-vote-live',
       });
     }
     histSeries.forEach(h => {
       const j = historyEarlyVoteJump(h.points);
-      if (j) {
-        earlyVoteRows.push({
-          label: `${h.round}회 (${h.year})`,
-          diff: j.diff,
-          cls: `early-vote-${h.round}`,
-        });
-      }
+      earlyVoteRows.push({
+        label: `${h.round}회 (${h.year})`,
+        diff: j ? j.diff : null,
+        finalPct: h.earlyFinalPct != null ? h.earlyFinalPct : null,
+        cls: `early-vote-${h.round}`,
+      });
     });
+    const hasAnyEarly = earlyVoteRows.some(r => r.diff != null || r.finalPct != null);
+
     let earlyVoteBox = '';
-    if (earlyVoteRows.length && !isMini) {
-      const rows = earlyVoteRows.map(r =>
-        `<div class="early-vote-row"><span class="early-vote-dot ${r.cls}"></span><span class="early-vote-label">${r.label}</span><span class="early-vote-diff">+${r.diff.toFixed(1)}%p</span></div>`
-      ).join('');
+    if (hasAnyEarly && !isMini) {
+      const fmtCol = v => v == null ? '<span class="early-vote-na">—</span>' : `<strong>${v.toFixed(1)}%${v ? (v < 5 ? 'p' : '') : 'p'}</strong>`;
+      // diff는 +%p, finalPct는 % — 별도 포매팅
+      const rows = earlyVoteRows.map(r => {
+        const diffTxt = r.diff == null
+          ? '<span class="early-vote-na">—</span>'
+          : `<strong class="early-vote-diff">+${r.diff.toFixed(1)}%p</strong>`;
+        const finalTxt = r.finalPct == null
+          ? '<span class="early-vote-na">—</span>'
+          : `<strong class="early-vote-final-pct">${r.finalPct.toFixed(2)}%</strong>`;
+        return `<div class="early-vote-row">
+          <span class="early-vote-dot ${r.cls}"></span>
+          <span class="early-vote-label">${r.label}</span>
+          <span class="early-vote-col">${diffTxt}</span>
+          <span class="early-vote-col">${finalTxt}</span>
+        </div>`;
+      }).join('');
       earlyVoteBox = `
         <div class="early-vote-box">
-          <div class="early-vote-title">사전투표 효과 <span class="early-vote-sub">12시 → 13시 점프 폭</span></div>
+          <div class="early-vote-title">사전투표 비교</div>
+          <div class="early-vote-header">
+            <span class="early-vote-label"></span>
+            <span class="early-vote-col">12→13시 점프</span>
+            <span class="early-vote-col">사전+거소 최종</span>
+          </div>
           ${rows}
         </div>`;
-    } else if (earlyVoteRows.length && isMini) {
-      const parts = earlyVoteRows.map(r => `<span class="${r.cls}-text">${r.label} +${r.diff.toFixed(1)}%p</span>`).join(' · ');
-      earlyVoteBox = `<div class="early-vote-mini">사전투표 효과 ${parts}</div>`;
+    } else if (hasAnyEarly && isMini) {
+      const parts = earlyVoteRows.filter(r => r.finalPct != null || r.diff != null).map(r => {
+        const a = r.diff != null ? `+${r.diff.toFixed(1)}%p` : '—';
+        const b = r.finalPct != null ? `사전 ${r.finalPct.toFixed(1)}%` : '';
+        return `<span class="${r.cls}-text">${r.label} ${a}${b ? ' / ' + b : ''}</span>`;
+      }).join(' · ');
+      earlyVoteBox = `<div class="early-vote-mini">사전투표 ${parts}</div>`;
     }
 
     const titleHtml = title ? `<div class="live-chart-title">${escapeHtml(title)}</div>` : '';
@@ -575,6 +614,7 @@
       title: '투표율 진행 — 전국',
       variant: 'national',
       ariaLabel: '전국 투표율 시간대별 진행 차트 (9회 라이브 + 8회 + 7회 점선 비교)',
+      liveEarlyRate: national.early_vote_rate_pct ?? null,
     });
 
     const cards = sido.map(s => {
@@ -598,6 +638,7 @@
           title: '',
           variant: 'sido',
           ariaLabel: `${sdName} 시간대별 투표율 비교 차트`,
+          liveEarlyRate: s.early_vote_rate_pct ?? null,
         });
         expandedHtml = `<div class="live-turnout-expanded">${miniChart || '<p class="live-empty-mini">차트를 그릴 데이터가 부족합니다.</p>'}</div>`;
       }

@@ -8,26 +8,185 @@
       "sd_name": "전국",
       "eligible_voters": 43755211,
       "voters_so_far": 22621000,
-      "turnout_pct": 51.70
+      "turnout_pct": 51.7,
+      "day_voters_so_far": 13379623,
+      "early_voters_so_far": 9241377,
+      "day_eligible_voters": 34536959,
+      "early_eligible_voters": 9218252,
+      "early_share_of_total_pct": 40.85,
+      "early_vote_rate_pct": 21.12
     },
     "by_sido": [
-      { "sd_name": "서울특별시",     "eligible_voters": 8345211,  "voters_so_far": 4248000, "turnout_pct": 50.91 },
-      { "sd_name": "부산광역시",     "eligible_voters": 2900000,  "voters_so_far": 1369000, "turnout_pct": 47.21 },
-      { "sd_name": "대구광역시",     "eligible_voters": 2000000,  "voters_so_far": 1036000, "turnout_pct": 51.80 },
-      { "sd_name": "인천광역시",     "eligible_voters": 2500000,  "voters_so_far": 1153000, "turnout_pct": 46.12 },
-      { "sd_name": "광주광역시",     "eligible_voters": 1200000,  "voters_so_far": 630000,  "turnout_pct": 52.50 },
-      { "sd_name": "대전광역시",     "eligible_voters": 1200000,  "voters_so_far": 580000,  "turnout_pct": 48.33 },
-      { "sd_name": "울산광역시",     "eligible_voters": 930000,   "voters_so_far": 462000,  "turnout_pct": 49.68 },
-      { "sd_name": "세종특별자치시", "eligible_voters": 300000,   "voters_so_far": 169000,  "turnout_pct": 56.33 },
-      { "sd_name": "경기도",         "eligible_voters": 11200000, "voters_so_far": 5354000, "turnout_pct": 47.80 },
-      { "sd_name": "강원특별자치도", "eligible_voters": 1320000,  "voters_so_far": 701000,  "turnout_pct": 53.11 },
-      { "sd_name": "충청북도",       "eligible_voters": 1360000,  "voters_so_far": 699000,  "turnout_pct": 51.40 },
-      { "sd_name": "충청남도",       "eligible_voters": 1790000,  "voters_so_far": 909000,  "turnout_pct": 50.78 },
-      { "sd_name": "전북특별자치도", "eligible_voters": 1510000,  "voters_so_far": 826000,  "turnout_pct": 54.70 },
-      { "sd_name": "전라남도",       "eligible_voters": 1570000,  "voters_so_far": 914000,  "turnout_pct": 58.22 },
-      { "sd_name": "경상북도",       "eligible_voters": 2230000,  "voters_so_far": 1173000, "turnout_pct": 52.60 },
-      { "sd_name": "경상남도",       "eligible_voters": 2850000,  "voters_so_far": 1453000, "turnout_pct": 50.98 },
-      { "sd_name": "제주특별자치도", "eligible_voters": 550000,   "voters_so_far": 305000,  "turnout_pct": 55.45 }
+      {
+        "sd_name": "서울특별시",
+        "eligible_voters": 8345211,
+        "voters_so_far": 4248000,
+        "turnout_pct": 50.91,
+        "day_voters_so_far": 2468802,
+        "early_voters_so_far": 1779198,
+        "early_share_of_total_pct": 41.88,
+        "early_vote_rate_pct": 21.32
+      },
+      {
+        "sd_name": "부산광역시",
+        "eligible_voters": 2900000,
+        "voters_so_far": 1369000,
+        "turnout_pct": 47.21,
+        "day_voters_so_far": 824960,
+        "early_voters_so_far": 544040,
+        "early_share_of_total_pct": 39.74,
+        "early_vote_rate_pct": 18.76
+      },
+      {
+        "sd_name": "대구광역시",
+        "eligible_voters": 2000000,
+        "voters_so_far": 1036000,
+        "turnout_pct": 51.8,
+        "day_voters_so_far": 737400,
+        "early_voters_so_far": 298600,
+        "early_share_of_total_pct": 28.82,
+        "early_vote_rate_pct": 14.93
+      },
+      {
+        "sd_name": "인천광역시",
+        "eligible_voters": 2500000,
+        "voters_so_far": 1153000,
+        "turnout_pct": 46.12,
+        "day_voters_so_far": 647500,
+        "early_voters_so_far": 505500,
+        "early_share_of_total_pct": 43.84,
+        "early_vote_rate_pct": 20.22
+      },
+      {
+        "sd_name": "광주광역시",
+        "eligible_voters": 1200000,
+        "voters_so_far": 630000,
+        "turnout_pct": 52.5,
+        "day_voters_so_far": 420720,
+        "early_voters_so_far": 209280,
+        "early_share_of_total_pct": 33.22,
+        "early_vote_rate_pct": 17.44
+      },
+      {
+        "sd_name": "대전광역시",
+        "eligible_voters": 1200000,
+        "voters_so_far": 580000,
+        "turnout_pct": 48.33,
+        "day_voters_so_far": 341440,
+        "early_voters_so_far": 238560,
+        "early_share_of_total_pct": 41.13,
+        "early_vote_rate_pct": 19.88
+      },
+      {
+        "sd_name": "울산광역시",
+        "eligible_voters": 930000,
+        "voters_so_far": 462000,
+        "turnout_pct": 49.68,
+        "day_voters_so_far": 277953,
+        "early_voters_so_far": 184047,
+        "early_share_of_total_pct": 39.84,
+        "early_vote_rate_pct": 19.79
+      },
+      {
+        "sd_name": "세종특별자치시",
+        "eligible_voters": 300000,
+        "voters_so_far": 169000,
+        "turnout_pct": 56.33,
+        "day_voters_so_far": 101410,
+        "early_voters_so_far": 67590,
+        "early_share_of_total_pct": 39.99,
+        "early_vote_rate_pct": 22.53
+      },
+      {
+        "sd_name": "경기도",
+        "eligible_voters": 11200000,
+        "voters_so_far": 5354000,
+        "turnout_pct": 47.8,
+        "day_voters_so_far": 3203600,
+        "early_voters_so_far": 2150400,
+        "early_share_of_total_pct": 40.16,
+        "early_vote_rate_pct": 19.2
+      },
+      {
+        "sd_name": "강원특별자치도",
+        "eligible_voters": 1320000,
+        "voters_so_far": 701000,
+        "turnout_pct": 53.11,
+        "day_voters_so_far": 363608,
+        "early_voters_so_far": 337392,
+        "early_share_of_total_pct": 48.13,
+        "early_vote_rate_pct": 25.56
+      },
+      {
+        "sd_name": "충청북도",
+        "eligible_voters": 1360000,
+        "voters_so_far": 699000,
+        "turnout_pct": 51.4,
+        "day_voters_so_far": 406737,
+        "early_voters_so_far": 292263,
+        "early_share_of_total_pct": 41.81,
+        "early_vote_rate_pct": 21.49
+      },
+      {
+        "sd_name": "충청남도",
+        "eligible_voters": 1790000,
+        "voters_so_far": 909000,
+        "turnout_pct": 50.78,
+        "day_voters_so_far": 543303,
+        "early_voters_so_far": 365697,
+        "early_share_of_total_pct": 40.23,
+        "early_vote_rate_pct": 20.43
+      },
+      {
+        "sd_name": "전북특별자치도",
+        "eligible_voters": 1510000,
+        "voters_so_far": 826000,
+        "turnout_pct": 54.7,
+        "day_voters_so_far": 452426,
+        "early_voters_so_far": 373574,
+        "early_share_of_total_pct": 45.23,
+        "early_vote_rate_pct": 24.74
+      },
+      {
+        "sd_name": "전라남도",
+        "eligible_voters": 1570000,
+        "voters_so_far": 914000,
+        "turnout_pct": 58.22,
+        "day_voters_so_far": 419136,
+        "early_voters_so_far": 494864,
+        "early_share_of_total_pct": 54.14,
+        "early_vote_rate_pct": 31.52
+      },
+      {
+        "sd_name": "경상북도",
+        "eligible_voters": 2230000,
+        "voters_so_far": 1173000,
+        "turnout_pct": 52.6,
+        "day_voters_so_far": 648727,
+        "early_voters_so_far": 524273,
+        "early_share_of_total_pct": 44.7,
+        "early_vote_rate_pct": 23.51
+      },
+      {
+        "sd_name": "경상남도",
+        "eligible_voters": 2850000,
+        "voters_so_far": 1453000,
+        "turnout_pct": 50.98,
+        "day_voters_so_far": 828280,
+        "early_voters_so_far": 624720,
+        "early_share_of_total_pct": 43.0,
+        "early_vote_rate_pct": 21.92
+      },
+      {
+        "sd_name": "제주특별자치도",
+        "eligible_voters": 550000,
+        "voters_so_far": 305000,
+        "turnout_pct": 55.45,
+        "day_voters_so_far": 186090,
+        "early_voters_so_far": 118910,
+        "early_share_of_total_pct": 38.99,
+        "early_vote_rate_pct": 21.62
+      }
     ]
   },
   "races": [
@@ -44,10 +203,34 @@
       "progress_pct": 51.74,
       "rank1_minus_rank2_pp": 4.35,
       "candidates": [
-        { "name": "후보가", "jd_name": "더불어민주당", "votes": 2150000, "share_pct": 50.59, "current_rank": 1 },
-        { "name": "후보나", "jd_name": "국민의힘",     "votes": 1965000, "share_pct": 46.24, "current_rank": 2 },
-        { "name": "후보다", "jd_name": "조국혁신당",   "votes": 90000,   "share_pct": 2.12,  "current_rank": 3 },
-        { "name": "후보라", "jd_name": "무소속",       "votes": 45000,   "share_pct": 1.05,  "current_rank": 4 }
+        {
+          "name": "후보가",
+          "jd_name": "더불어민주당",
+          "votes": 2150000,
+          "share_pct": 50.59,
+          "current_rank": 1
+        },
+        {
+          "name": "후보나",
+          "jd_name": "국민의힘",
+          "votes": 1965000,
+          "share_pct": 46.24,
+          "current_rank": 2
+        },
+        {
+          "name": "후보다",
+          "jd_name": "조국혁신당",
+          "votes": 90000,
+          "share_pct": 2.12,
+          "current_rank": 3
+        },
+        {
+          "name": "후보라",
+          "jd_name": "무소속",
+          "votes": 45000,
+          "share_pct": 1.05,
+          "current_rank": 4
+        }
       ]
     },
     {
@@ -60,12 +243,30 @@
       "eligible_voters": 2900000,
       "valid_votes": 2050000,
       "invalid_votes": 35000,
-      "progress_pct": 71.90,
+      "progress_pct": 71.9,
       "rank1_minus_rank2_pp": 12.44,
       "candidates": [
-        { "name": "부산후보가", "jd_name": "국민의힘",     "votes": 1140000, "share_pct": 55.61, "current_rank": 1 },
-        { "name": "부산후보나", "jd_name": "더불어민주당", "votes": 885000,  "share_pct": 43.17, "current_rank": 2 },
-        { "name": "부산후보다", "jd_name": "녹색당",       "votes": 25000,   "share_pct": 1.22,  "current_rank": 3 }
+        {
+          "name": "부산후보가",
+          "jd_name": "국민의힘",
+          "votes": 1140000,
+          "share_pct": 55.61,
+          "current_rank": 1
+        },
+        {
+          "name": "부산후보나",
+          "jd_name": "더불어민주당",
+          "votes": 885000,
+          "share_pct": 43.17,
+          "current_rank": 2
+        },
+        {
+          "name": "부산후보다",
+          "jd_name": "녹색당",
+          "votes": 25000,
+          "share_pct": 1.22,
+          "current_rank": 3
+        }
       ]
     },
     {
@@ -81,9 +282,27 @@
       "progress_pct": 37.32,
       "rank1_minus_rank2_pp": 0.43,
       "candidates": [
-        { "name": "경기후보가", "jd_name": "더불어민주당", "votes": 2010000, "share_pct": 49.02, "current_rank": 1 },
-        { "name": "경기후보나", "jd_name": "국민의힘",     "votes": 1992000, "share_pct": 48.59, "current_rank": 2 },
-        { "name": "경기후보다", "jd_name": "조국혁신당",   "votes": 98000,   "share_pct": 2.39,  "current_rank": 3 }
+        {
+          "name": "경기후보가",
+          "jd_name": "더불어민주당",
+          "votes": 2010000,
+          "share_pct": 49.02,
+          "current_rank": 1
+        },
+        {
+          "name": "경기후보나",
+          "jd_name": "국민의힘",
+          "votes": 1992000,
+          "share_pct": 48.59,
+          "current_rank": 2
+        },
+        {
+          "name": "경기후보다",
+          "jd_name": "조국혁신당",
+          "votes": 98000,
+          "share_pct": 2.39,
+          "current_rank": 3
+        }
       ]
     },
     {
@@ -99,9 +318,27 @@
       "progress_pct": 33.09,
       "rank1_minus_rank2_pp": 31.18,
       "candidates": [
-        { "name": "통합후보가", "jd_name": "더불어민주당", "votes": 720000, "share_pct": 65.45, "current_rank": 1 },
-        { "name": "통합후보나", "jd_name": "국민의힘",     "votes": 377000, "share_pct": 34.27, "current_rank": 2 },
-        { "name": "통합후보다", "jd_name": "무소속",       "votes": 3000,   "share_pct": 0.27,  "current_rank": 3 }
+        {
+          "name": "통합후보가",
+          "jd_name": "더불어민주당",
+          "votes": 720000,
+          "share_pct": 65.45,
+          "current_rank": 1
+        },
+        {
+          "name": "통합후보나",
+          "jd_name": "국민의힘",
+          "votes": 377000,
+          "share_pct": 34.27,
+          "current_rank": 2
+        },
+        {
+          "name": "통합후보다",
+          "jd_name": "무소속",
+          "votes": 3000,
+          "share_pct": 0.27,
+          "current_rank": 3
+        }
       ]
     },
     {
@@ -115,11 +352,29 @@
       "valid_votes": 3900000,
       "invalid_votes": 250000,
       "progress_pct": 49.71,
-      "rank1_minus_rank2_pp": 6.80,
+      "rank1_minus_rank2_pp": 6.8,
       "candidates": [
-        { "name": "교육감후보가", "jd_name": "", "votes": 1700000, "share_pct": 43.59, "current_rank": 1 },
-        { "name": "교육감후보나", "jd_name": "", "votes": 1435000, "share_pct": 36.79, "current_rank": 2 },
-        { "name": "교육감후보다", "jd_name": "", "votes": 765000,  "share_pct": 19.62, "current_rank": 3 }
+        {
+          "name": "교육감후보가",
+          "jd_name": "",
+          "votes": 1700000,
+          "share_pct": 43.59,
+          "current_rank": 1
+        },
+        {
+          "name": "교육감후보나",
+          "jd_name": "",
+          "votes": 1435000,
+          "share_pct": 36.79,
+          "current_rank": 2
+        },
+        {
+          "name": "교육감후보다",
+          "jd_name": "",
+          "votes": 765000,
+          "share_pct": 19.62,
+          "current_rank": 3
+        }
       ]
     },
     {
@@ -135,9 +390,27 @@
       "progress_pct": 58.85,
       "rank1_minus_rank2_pp": 2.14,
       "candidates": [
-        { "name": "종로후보가", "jd_name": "더불어민주당", "votes": 38000, "share_pct": 50.67, "current_rank": 1 },
-        { "name": "종로후보나", "jd_name": "국민의힘",     "votes": 36400, "share_pct": 48.53, "current_rank": 2 },
-        { "name": "종로후보다", "jd_name": "무소속",       "votes": 600,   "share_pct": 0.80,  "current_rank": 3 }
+        {
+          "name": "종로후보가",
+          "jd_name": "더불어민주당",
+          "votes": 38000,
+          "share_pct": 50.67,
+          "current_rank": 1
+        },
+        {
+          "name": "종로후보나",
+          "jd_name": "국민의힘",
+          "votes": 36400,
+          "share_pct": 48.53,
+          "current_rank": 2
+        },
+        {
+          "name": "종로후보다",
+          "jd_name": "무소속",
+          "votes": 600,
+          "share_pct": 0.8,
+          "current_rank": 3
+        }
       ]
     },
     {
@@ -153,9 +426,27 @@
       "progress_pct": 61.67,
       "rank1_minus_rank2_pp": 18.52,
       "candidates": [
-        { "name": "강남후보가", "jd_name": "국민의힘",     "votes": 170000, "share_pct": 58.62, "current_rank": 1 },
-        { "name": "강남후보나", "jd_name": "더불어민주당", "votes": 116300, "share_pct": 40.10, "current_rank": 2 },
-        { "name": "강남후보다", "jd_name": "정의당",       "votes": 3700,   "share_pct": 1.28,  "current_rank": 3 }
+        {
+          "name": "강남후보가",
+          "jd_name": "국민의힘",
+          "votes": 170000,
+          "share_pct": 58.62,
+          "current_rank": 1
+        },
+        {
+          "name": "강남후보나",
+          "jd_name": "더불어민주당",
+          "votes": 116300,
+          "share_pct": 40.1,
+          "current_rank": 2
+        },
+        {
+          "name": "강남후보다",
+          "jd_name": "정의당",
+          "votes": 3700,
+          "share_pct": 1.28,
+          "current_rank": 3
+        }
       ]
     }
   ]

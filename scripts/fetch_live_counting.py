@@ -272,6 +272,11 @@ def normalize_turnout(raw: dict) -> dict | None:
     """getVoteSttusInfoInqire 응답을 클린 스키마로 변환. 데이터 없으면 None.
 
     선관위 응답은 회차에 따라 필드명이 다르므로 _pick으로 여러 후보를 시도한다.
+    OpenAPI v4.3 가이드 기준 분리 필드:
+      psTusu     = 선거일 투표자수 (당일분)
+      psEtcTusu  = 거소·사전·선상·재외 투표자수 (사전+거소 통합)
+      psSunsu    = 선거일투표 선거인수
+      psEtcSunsu = 거소·사전·선상·재외 선거인수
     합계 행이 빠져 있으면 시도 합산으로 추정해 national을 만든다.
     """
     items = raw.get("items") or []
@@ -286,11 +291,30 @@ def normalize_turnout(raw: dict) -> dict | None:
         rate = _to_num(_pick(it, "Turnout", "turnout", "votRate", "votngRate"))
         if rate is None and eligible and voted:
             rate = round(voted / eligible * 100, 2)
+        # 분리 필드 — 본투표(당일) vs 사전+거소
+        day_voted = _to_num(_pick(it, "psTusu", "ps_Tusu"))
+        early_voted = _to_num(_pick(it, "psEtcTusu", "ps_Etc_Tusu"))
+        day_eligible = _to_num(_pick(it, "psSunsu", "ps_Sunsu"))
+        early_eligible = _to_num(_pick(it, "psEtcSunsu", "ps_Etc_Sunsu"))
+        # 사전투표가 차지하는 비중 (사전+거소) / 총투표자 * 100
+        early_share = None
+        if early_voted is not None and voted:
+            early_share = round(early_voted / voted * 100, 2)
+        # 사전+거소 투표율 = 사전투표자 / 총 선거인수 (전체 유권자 대비 사전투표 비율)
+        early_pct_of_eligible = None
+        if early_voted is not None and eligible:
+            early_pct_of_eligible = round(early_voted / eligible * 100, 2)
         entry = {
             "sd_name": sd_raw or None,
             "eligible_voters": eligible,
             "voters_so_far": voted,
             "turnout_pct": rate,
+            "day_voters_so_far": day_voted,
+            "early_voters_so_far": early_voted,
+            "day_eligible_voters": day_eligible,
+            "early_eligible_voters": early_eligible,
+            "early_share_of_total_pct": early_share,
+            "early_vote_rate_pct": early_pct_of_eligible,
         }
         if sd_raw in ("합계", "계", "전국", ""):
             entry["sd_name"] = "전국"
@@ -298,14 +322,26 @@ def normalize_turnout(raw: dict) -> dict | None:
         else:
             by_sido.append(entry)
     if not national and by_sido:
-        elig = sum((s["eligible_voters"] or 0) for s in by_sido)
-        voted = sum((s["voters_so_far"] or 0) for s in by_sido)
-        rate = round(voted / elig * 100, 2) if elig else None
+        def _sum(key):
+            return sum((s[key] or 0) for s in by_sido if s.get(key) is not None) or None
+        elig = _sum("eligible_voters")
+        voted = _sum("voters_so_far")
+        day_voted = _sum("day_voters_so_far")
+        early_voted = _sum("early_voters_so_far")
+        rate = round(voted / elig * 100, 2) if elig and voted else None
+        early_share = round(early_voted / voted * 100, 2) if voted and early_voted else None
+        early_pct = round(early_voted / elig * 100, 2) if elig and early_voted else None
         national = {
             "sd_name": "전국",
             "eligible_voters": elig,
             "voters_so_far": voted,
             "turnout_pct": rate,
+            "day_voters_so_far": day_voted,
+            "early_voters_so_far": early_voted,
+            "day_eligible_voters": _sum("day_eligible_voters"),
+            "early_eligible_voters": _sum("early_eligible_voters"),
+            "early_share_of_total_pct": early_share,
+            "early_vote_rate_pct": early_pct,
         }
     return {"national": national, "by_sido": by_sido}
 

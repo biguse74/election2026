@@ -435,11 +435,23 @@
   color: #777;
   font-size: 0.78rem;
 }
+.early-vote-header {
+  display: grid;
+  grid-template-columns: 16px 110px 1fr 1fr;
+  gap: 8px;
+  font-size: 0.74rem;
+  color: #999;
+  font-weight: 600;
+  padding: 4px 0 4px 0;
+  margin-bottom: 2px;
+  border-bottom: 1px solid #efe3e3;
+}
 .early-vote-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 16px 110px 1fr 1fr;
   align-items: center;
   gap: 8px;
-  padding: 2px 0;
+  padding: 4px 0;
   font-variant-numeric: tabular-nums;
 }
 .early-vote-dot {
@@ -447,13 +459,16 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  flex: 0 0 8px;
+  justify-self: center;
 }
 .early-vote-dot.early-vote-live { background: #1a8754; }
 .early-vote-dot.early-vote-8 { background: #444; }
 .early-vote-dot.early-vote-7 { background: #999; }
-.early-vote-label { color: #444; min-width: 90px; }
-.early-vote-diff { font-weight: 700; color: #c41e3a; }
+.early-vote-label { color: #444; }
+.early-vote-col { font-size: 0.86rem; color: #1a1a1a; }
+.early-vote-diff { color: #c41e3a; }
+.early-vote-final-pct { color: #1a1a1a; }
+.early-vote-na { color: #c8c8c8; }
 
 /* 미니 차트(시도)용 압축 표기 */
 .early-vote-mini {

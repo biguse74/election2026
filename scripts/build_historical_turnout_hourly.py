@@ -124,6 +124,20 @@ def parse_pct(v) -> float | None:
         return None
 
 
+def parse_int(v):
+    """xlsx 셀의 정수 (콤마·공백 허용). None/하이픈은 None."""
+    if v is None:
+        return None
+    s = str(v).strip()
+    if not s or s == "-":
+        return None
+    s = s.replace(",", "").replace(" ", "")
+    try:
+        return int(float(s))
+    except ValueError:
+        return None
+
+
 def parse_hour_header(label) -> str | None:
     """'7시' → '07:00', '19시 30분' → '19:30'. 다른 값은 None."""
     if not label:
@@ -159,11 +173,16 @@ def extract_round(meta: dict, rows: list[list]) -> dict:
     # row 7 이후 매 3행 묶음. 첫 행 셀[0]에 시도명(또는 '합계').
     national: list[dict] = []
     by_sido: dict[str, list[dict]] = {}
+    # 사전+거소 최종 누적 — '사전+거소' 행의 마지막(또는 가장 큰) 값.
+    # 같은 행 인덱스 1번에는 사전+거소 *최종 누적* 절대값이, 인덱스 8 이후엔 시간대별 누적이 들어있다.
+    early_national: dict | None = None
+    early_by_sido: dict[str, dict] = {}
 
     i = 6  # 0-based: row 7
     while i + 2 < len(rows):
         first = rows[i]
-        third = rows[i + 2]  # 투표율(%) 행
+        second = rows[i + 1]  # '사전+거소' 행
+        third = rows[i + 2]   # 투표율(%) 행
         sido_raw = (first[0] if first else "") or ""
         sido_raw = str(sido_raw).strip()
         if not sido_raw:
@@ -171,26 +190,35 @@ def extract_round(meta: dict, rows: list[list]) -> dict:
             continue
 
         # 투표율 행은 시도명 자리에 '투표율(%)'이 들어가서 컬럼이 한 칸 당겨진다.
-        # 헤더 '7시'가 col=3에 있으면, 투표율 행에서 7시 값은 col=2에 있다.
         series: list[dict] = []
         for col_idx, hhmm in times:
             src_idx = col_idx - 1
             pct = parse_pct(third[src_idx] if 0 <= src_idx < len(third) else None)
             if pct is None:
                 continue
-            # 동일 시각 중복은 마지막값 채택
             if series and series[-1]["time"] == hhmm:
                 series[-1] = {"time": hhmm, "turnout_pct": pct}
             else:
                 series.append({"time": hhmm, "turnout_pct": pct})
 
+        # 사전+거소 합계 (인덱스 1) + 선거인수 (첫 행 인덱스 2)
+        early_total = parse_int(second[1] if len(second) > 1 else None)
+        eligible_total = parse_int(first[2] if len(first) > 2 else None)
+        early_pct = round(early_total / eligible_total * 100, 2) if (early_total and eligible_total) else None
+        early_info = {
+            "eligible_voters": eligible_total,
+            "early_voters": early_total,
+            "early_pct": early_pct,
+        }
+
         if sido_raw == "합계":
             national = series
+            early_national = early_info
         else:
             sido_norm = normalize_sido(sido_raw)
             if sido_norm in KNOWN_SIDOS:
                 by_sido[sido_norm] = series
-            # 알 수 없는 라벨은 조용히 무시 (소계행 등)
+                early_by_sido[sido_norm] = early_info
         i += 3
 
     return {
@@ -201,6 +229,10 @@ def extract_round(meta: dict, rows: list[list]) -> dict:
         "source_file": meta["filename"],
         "national": national,
         "by_sido": by_sido,
+        "early_vote_final": {
+            "national": early_national,
+            "by_sido": early_by_sido,
+        },
     }
 
 

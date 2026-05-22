@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-21T23:48:04+09:00",
+  "generated_at": "2026-05-23T07:48:00+09:00",
   "source": "중앙선거관리위원회 선거통계시스템 (수동 다운로드 xlsx)",
   "note": "회차별 시간대별 누계 투표율(%). 시도명은 신표준명으로 정규화 (강원특별자치도·전북특별자치도). 13시 점프는 사전투표 합산 시점.",
   "rounds": [
@@ -982,6 +982,100 @@
             "turnout_pct": 53.1
           }
         ]
+      },
+      "early_vote_final": {
+        "national": {
+          "eligible_voters": 44303449,
+          "early_voters": 9218252,
+          "early_pct": 20.81
+        },
+        "by_sido": {
+          "서울특별시": {
+            "eligible_voters": 8378339,
+            "early_voters": 1786372,
+            "early_pct": 21.32
+          },
+          "부산광역시": {
+            "eligible_voters": 2916832,
+            "early_voters": 547183,
+            "early_pct": 18.76
+          },
+          "대구광역시": {
+            "eligible_voters": 2044579,
+            "early_voters": 305185,
+            "early_pct": 14.93
+          },
+          "인천광역시": {
+            "eligible_voters": 2534338,
+            "early_voters": 512505,
+            "early_pct": 20.22
+          },
+          "광주광역시": {
+            "eligible_voters": 1206886,
+            "early_voters": 210469,
+            "early_pct": 17.44
+          },
+          "대전광역시": {
+            "eligible_voters": 1233557,
+            "early_voters": 245179,
+            "early_pct": 19.88
+          },
+          "울산광역시": {
+            "eligible_voters": 941189,
+            "early_voters": 186234,
+            "early_pct": 19.79
+          },
+          "세종특별자치시": {
+            "eligible_voters": 292259,
+            "early_voters": 65835,
+            "early_pct": 22.53
+          },
+          "경기도": {
+            "eligible_voters": 11497206,
+            "early_voters": 2207866,
+            "early_pct": 19.2
+          },
+          "강원특별자치도": {
+            "eligible_voters": 1336080,
+            "early_voters": 341526,
+            "early_pct": 25.56
+          },
+          "충청북도": {
+            "eligible_voters": 1368779,
+            "early_voters": 294127,
+            "early_pct": 21.49
+          },
+          "충청남도": {
+            "eligible_voters": 1803096,
+            "early_voters": 368373,
+            "early_pct": 20.43
+          },
+          "전북특별자치도": {
+            "eligible_voters": 1532133,
+            "early_voters": 379015,
+            "early_pct": 24.74
+          },
+          "전라남도": {
+            "eligible_voters": 1580098,
+            "early_voters": 498109,
+            "early_pct": 31.52
+          },
+          "경상북도": {
+            "eligible_voters": 2268707,
+            "early_voters": 533459,
+            "early_pct": 23.51
+          },
+          "경상남도": {
+            "eligible_voters": 2804287,
+            "early_voters": 614633,
+            "early_pct": 21.92
+          },
+          "제주특별자치도": {
+            "eligible_voters": 565084,
+            "early_voters": 122182,
+            "early_pct": 21.62
+          }
+        }
       }
     },
     {
@@ -1891,6 +1985,100 @@
             "turnout_pct": 65.9
           }
         ]
+      },
+      "early_vote_final": {
+        "national": {
+          "eligible_voters": 42907715,
+          "early_voters": 8722927,
+          "early_pct": 20.33
+        },
+        "by_sido": {
+          "서울특별시": {
+            "eligible_voters": 8380947,
+            "early_voters": 1609179,
+            "early_pct": 19.2
+          },
+          "부산광역시": {
+            "eligible_voters": 2939046,
+            "early_voters": 509447,
+            "early_pct": 17.33
+          },
+          "대구광역시": {
+            "eligible_voters": 2047286,
+            "early_voters": 339415,
+            "early_pct": 16.58
+          },
+          "인천광역시": {
+            "eligible_voters": 2440779,
+            "early_voters": 432732,
+            "early_pct": 17.73
+          },
+          "광주광역시": {
+            "eligible_voters": 1172429,
+            "early_voters": 279053,
+            "early_pct": 23.8
+          },
+          "대전광역시": {
+            "eligible_voters": 1219513,
+            "early_voters": 241367,
+            "early_pct": 19.79
+          },
+          "울산광역시": {
+            "eligible_voters": 942550,
+            "early_voters": 203921,
+            "early_pct": 21.64
+          },
+          "세종특별자치시": {
+            "eligible_voters": 222852,
+            "early_voters": 55439,
+            "early_pct": 24.88
+          },
+          "경기도": {
+            "eligible_voters": 10533027,
+            "early_voters": 1855091,
+            "early_pct": 17.61
+          },
+          "강원특별자치도": {
+            "eligible_voters": 1296196,
+            "early_voters": 293518,
+            "early_pct": 22.64
+          },
+          "충청북도": {
+            "eligible_voters": 1318186,
+            "early_voters": 276296,
+            "early_pct": 20.96
+          },
+          "충청남도": {
+            "eligible_voters": 1740413,
+            "early_voters": 343793,
+            "early_pct": 19.75
+          },
+          "전북특별자치도": {
+            "eligible_voters": 1527729,
+            "early_voters": 430516,
+            "early_pct": 28.18
+          },
+          "전라남도": {
+            "eligible_voters": 1577224,
+            "early_voters": 507480,
+            "early_pct": 32.18
+          },
+          "경상북도": {
+            "eligible_voters": 2251538,
+            "early_voters": 558224,
+            "early_pct": 24.79
+          },
+          "경상남도": {
+            "eligible_voters": 2765485,
+            "early_voters": 667667,
+            "early_pct": 24.14
+          },
+          "제주특별자치도": {
+            "eligible_voters": 532515,
+            "early_voters": 119789,
+            "early_pct": 22.49
+          }
+        }
       }
     }
   ]
