@@ -1,7 +1,7 @@
 {
   "source": "candidates",
-  "today_date": "20260522",
-  "previous_date": "20260521",
+  "today_date": "20260523",
+  "previous_date": "20260522",
   "summary": {
     "new": 0,
     "gone": 0,
@@ -14,29 +14,29 @@
     "party": [],
     "status": [
       {
-        "name": "이정식",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "연제구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "박신욱",
-        "jdName": "자유와혁신",
-        "sdName": "부산광역시",
-        "sggName": "부산진구아선거구",
+        "name": "윤선희",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "파주시라선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "등록무효"
       },
       {
-        "name": "윤현숙",
-        "jdName": "국민의힘",
-        "sdName": "인천광역시",
-        "sggName": "검단구나선거구",
-        "sgTypecode": "6",
+        "name": "김진석",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "강상규",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "울주군",
+        "sgTypecode": "4",
         "status_prev": "등록",
         "status_now": "사퇴"
       }
@@ -48,33 +48,33 @@
     "party": [],
     "status": [
       {
-        "name": "이정식",
-        "jdName": "더불어민주당",
-        "sdName": "부산광역시",
-        "sggName": "연제구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "박신욱",
-        "jdName": "자유와혁신",
-        "sdName": "부산광역시",
-        "sggName": "부산진구아선거구",
+        "name": "윤선희",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "파주시라선거구",
         "sgTypecode": "6",
         "status_prev": "등록",
         "status_now": "등록무효"
       },
       {
-        "name": "윤현숙",
-        "jdName": "국민의힘",
-        "sdName": "인천광역시",
-        "sggName": "검단구나선거구",
-        "sgTypecode": "6",
+        "name": "김진석",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "강상규",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "울주군",
+        "sgTypecode": "4",
         "status_prev": "등록",
         "status_now": "사퇴"
       }
     ]
   },
-  "generated_at": "2026-05-22T05:27:32+09:00"
+  "generated_at": "2026-05-23T05:22:22+09:00"
 }
