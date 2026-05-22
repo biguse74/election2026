@@ -1,9 +1,61 @@
 {
-  "updated_at": "2026-05-22T00:33:25+09:00",
+  "updated_at": "2026-05-22T12:53:45+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 322,
+  "count": 325,
   "articles": [
+    {
+      "date": "2026-05-22",
+      "title": "김영환 한옥 73억 근저당, 폐기물업체 돈줄 의혹",
+      "url": "https://newtamsa.org/news/YXKf_7",
+      "category": "단독보도",
+      "tags": [
+        "충북지사",
+        "김영환",
+        "한옥",
+        "근저당",
+        "미래에너지산업",
+        "폐기물업체",
+        "도지사"
+      ],
+      "author": "권지연, 강진구"
+    },
+    {
+      "date": "2026-05-22",
+      "title": "강은희 교육감 '차명주식 35억 신고누락' 의혹",
+      "url": "https://newtamsa.org/news/Wf7foJ",
+      "category": "단독보도",
+      "tags": [
+        "대구",
+        "교육감",
+        "강은희",
+        "공직자",
+        "재산신고",
+        "위이텍",
+        "이양순",
+        "남편",
+        "이혼",
+        "재산분할"
+      ],
+      "author": "강진구, 김시몬, 김은도"
+    },
+    {
+      "date": "2026-05-22",
+      "title": "정천수의 더탐사 내로남불 \"내 회사 소유\" vs \"그들이 만든 채널\"",
+      "url": "https://newtamsa.org/news/jrKy3s",
+      "category": "심층분석",
+      "tags": [
+        "정천수",
+        "더탐사",
+        "열린공감TV",
+        "천공",
+        "비번",
+        "고소장",
+        "법인",
+        "내로남불"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-05-21",
       "title": "김건희, 줄리 재판 증인 출석… 첫 결혼엔 진술거부",
