@@ -148,6 +148,39 @@
     })).filter(r => r.points.length >= 2);
   }
 
+  // phase + 폴링 시각을 보고 사용자에게 보여줄 상태 메시지 결정.
+  // fetch_live_counting.py의 phase: pre / live / official-pending / final
+  // 우리는 시각 정보로 'live'를 'voting'(06~17:55)과 'counting'(18:00~)으로 더 쪼갠다.
+  function describePhase(phase, polledAtIso) {
+    const polled = polledAtIso ? new Date(polledAtIso).getTime() : Date.now();
+    const tElectionStart = Date.parse('2026-06-03T06:00:00+09:00');
+    const tCountingStart = Date.parse('2026-06-03T18:00:00+09:00');
+    const tNextDay06     = Date.parse('2026-06-04T06:00:00+09:00');
+
+    if (phase === 'final') {
+      return { tone: 'final', title: '최종 결과', body: '선관위 OpenAPI 정식 개표 결과입니다.' };
+    }
+    if (phase === 'pre' || polled < tElectionStart) {
+      return { tone: 'pre', title: '투표 시작 전',
+        body: '6월 3일 오전 6시 본투표 시작 후 투표율이 자동 갱신됩니다. 개표는 오후 6시부터.' };
+    }
+    if (polled < tCountingStart) {
+      return { tone: 'voting', title: '본투표 진행 중',
+        body: '시간대별 투표율을 5분마다 갱신합니다. 개표는 오후 6시 본투표 마감 직후 시작.' };
+    }
+    if (phase === 'official-pending') {
+      if (polled > tNextDay06) {
+        return { tone: 'pending', title: '개표 진행 중 · 정식 결과 대기',
+          body: '선관위 OpenAPI 정식 갱신을 30분 간격으로 폴링하고 있습니다.' };
+      }
+      return { tone: 'pending', title: '개표 데이터 수신 대기',
+        body: '오후 6시 본투표 마감 직후 첫 개표 응답이 들어옵니다.' };
+    }
+    // phase === 'live' & 18시 이후
+    return { tone: 'live', title: '개표 진행 중',
+      body: '평균 개표율과 후보별 누적 득표를 5~10분마다 갱신합니다.' };
+  }
+
   function detectFreshness(polledAtIso) {
     if (!polledAtIso) return { label: '데이터 없음', tone: 'stale' };
     const polled = new Date(polledAtIso).getTime();
@@ -564,10 +597,38 @@
           <span class="live-demo-banner-body">실제 개표 데이터는 2026년 6월 3일 18시 본투표 마감 이후 자동으로 갱신됩니다. 아래 후보 이름·득표수·득표율은 모두 화면 검증용 가짜 값입니다.</span>
         </div>` : '';
 
+    const phaseInfo = describePhase(current.phase, current.polled_at);
+    const phaseBanner = `
+        <div class="live-phase-banner live-phase-${phaseInfo.tone}" role="status">
+          <strong class="live-phase-title">${escapeHtml(phaseInfo.title)}</strong>
+          <span class="live-phase-body">${escapeHtml(phaseInfo.body)}</span>
+        </div>`;
+
+    // 개표 카드(sectionsHtml)는 18시 이전 또는 개표 데이터 없는 경우 phase별 안내로 대체.
+    let countingArea;
+    if (sectionsHtml && current.races && current.races.length) {
+      countingArea = sectionsHtml;
+    } else if (phaseInfo.tone === 'pre' || phaseInfo.tone === 'voting') {
+      countingArea = `
+        <section class="live-section">
+          <h2 class="live-section-title">개표 결과<span class="live-section-count">대기 중</span></h2>
+          <p class="live-empty">${phaseInfo.tone === 'pre'
+            ? '6월 3일 오후 6시 본투표 마감 후 개표가 시작됩니다.'
+            : '본투표 마감(오후 6시) 직후 첫 개표 데이터가 들어오면 자동으로 표시됩니다.'}</p>
+        </section>`;
+    } else {
+      countingArea = `
+        <section class="live-section">
+          <h2 class="live-section-title">개표 결과<span class="live-section-count">대기 중</span></h2>
+          <p class="live-empty">${escapeHtml(phaseInfo.body)}</p>
+        </section>`;
+    }
+
     app.innerHTML = `
       <div class="live-root">
         <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">실시간 개표</span></nav>
         ${demoBanner}
+        ${phaseBanner}
         <div class="live-hero">
           <h1 class="live-title">실시간 개표</h1>
           <div class="live-hero-meta">
@@ -578,7 +639,7 @@
           <p class="live-disclaimer">예측·전망이 아닌 선관위 개표 데이터 기준 현재 시점 누계입니다.</p>
         </div>
         ${turnoutHtml}
-        ${sectionsHtml || '<p class="live-empty">집계된 선거구가 없습니다.</p>'}
+        ${countingArea}
       </div>`;
   }
 

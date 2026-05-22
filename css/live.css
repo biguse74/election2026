@@ -42,6 +42,38 @@
 .live-empty { color: #888; padding: 24px 0; }
 .live-empty-mini { color: #aaa; font-size: 0.85rem; margin: 0; }
 
+/* phase 안내 배너 — 화면 최상단, 데모 배너 다음 */
+.live-phase-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 12px 0 16px;
+  border-left: 4px solid;
+  background: #fafafa;
+}
+.live-phase-title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.live-phase-body {
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.5;
+}
+.live-phase-pre     { border-left-color: #888;     background: #f6f6f6; }
+.live-phase-pre     .live-phase-title { color: #444; }
+.live-phase-voting  { border-left-color: #2563eb;  background: #eff4fd; }
+.live-phase-voting  .live-phase-title { color: #1e40af; }
+.live-phase-live    { border-left-color: #1a8754;  background: #ecf6f0; }
+.live-phase-live    .live-phase-title { color: #126b3f; }
+.live-phase-pending { border-left-color: #b8860b;  background: #fff8e3; }
+.live-phase-pending .live-phase-title { color: #8b6500; }
+.live-phase-final   { border-left-color: #1a1a1a;  background: #f0f0f0; }
+.live-phase-final   .live-phase-title { color: #1a1a1a; }
+
 .live-demo-banner {
   background: #c41e3a;
   color: #fff;
