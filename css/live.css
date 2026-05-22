@@ -21,8 +21,47 @@
 
 .live-race { border: 1px solid #ddd; border-radius: 8px; padding: 14px 16px; background: #fff; }
 .live-race-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #eee; gap: 8px; }
-.live-race-region { font-weight: 700; font-size: 1.05rem; }
+.live-race-region { font-weight: 700; font-size: 1.05rem; display: inline-flex; align-items: center; gap: 8px; }
 .live-race-progress { font-weight: 600; color: #444; font-size: 0.9rem; white-space: nowrap; }
+
+/* 출구조사 배지 — race 카드 헤더에 표시 */
+.live-race-exit-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: #fff4e3;
+  color: #8b6500;
+  border: 1px solid #f0d68f;
+  letter-spacing: -0.01em;
+}
+.live-race.has-exit {
+  border-color: #d8c08a;
+  box-shadow: 0 0 0 1px rgba(216, 192, 138, 0.3) inset;
+}
+
+/* 출구조사 면책 박스 — phase 배너 다음 */
+.live-exit-notice {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 0 0 16px;
+  background: #fff8e3;
+  border-left: 4px solid #b8860b;
+}
+.live-exit-notice-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #8b6500;
+}
+.live-exit-notice-body {
+  font-size: 0.84rem;
+  color: #6a4e00;
+  line-height: 1.5;
+}
 
 .live-cand { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px dashed #eee; }
 .live-cand:last-child { border-bottom: none; }
@@ -31,8 +70,50 @@
 .live-cand-line1 { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
 .live-cand-name { font-weight: 700; font-size: 1rem; }
 .live-cand-party { font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
-.live-cand-bar-wrap { height: 6px; background: #f0f0f0; border-radius: 3px; overflow: hidden; margin: 6px 0; }
-.live-cand-bar { height: 100%; transition: width 0.6s ease; }
+.live-cand-bar-wrap {
+  position: relative;
+  height: 6px;
+  background: #f0f0f0;
+  border-radius: 3px;
+  margin: 6px 0;
+}
+.live-cand-bar { height: 100%; transition: width 0.6s ease; border-radius: 3px; }
+
+/* 출구조사 위치 표식 — 막대 위 세로선 + 작은 삼각형. 후보 정당 색상으로 테두리. */
+.live-cand-exit-marker {
+  position: absolute;
+  top: -3px;
+  width: 0;
+  height: 12px;
+  border-left: 2px dashed #888;
+  transform: translateX(-1px);
+}
+.live-cand-exit-marker::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -4px;
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  color: inherit;
+}
+.live-cand-exit-line {
+  font-size: 0.74rem;
+  color: #555;
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.live-cand-exit-line strong {
+  color: #1a1a1a;
+  font-weight: 800;
+}
+.live-cand-exit-range {
+  color: #999;
+  font-weight: 400;
+  margin-left: 4px;
+}
 .live-cand-line3 { display: flex; justify-content: space-between; gap: 8px; font-size: 0.85rem; color: #555; font-variant-numeric: tabular-nums; }
 .live-cand-share { font-weight: 700; color: #1a1a1a; }
 

@@ -29,6 +29,8 @@
     historyHourly: null,
     historyHourlyLoaded: false,
     timeseries: null,
+    exitPoll: null,
+    exitPollLoaded: false,
     pollTimer: null,
     lastPolledAt: null,
     listenersAttached: false,
@@ -129,6 +131,57 @@
     return data;
   }
 
+  // 출구조사 — 6/3 18:00 방송 3사 발표 후 표시. released_at 이전엔 노출 금지(선거법).
+  // 최초 1회 fetch만 하고 그 이후엔 시각 게이트만 재평가 → released_at 통과 시점에
+  // 페이지 새로고침 없이 자동 노출.
+  async function ensureExitPoll() {
+    if (!liveState.exitPollLoaded) {
+      liveState.exitPollLoaded = true;
+      liveState._exitPollRaw = await loadJson('data/exit_poll.json');
+    }
+    return reevaluateExitPoll();
+  }
+
+  function reevaluateExitPoll() {
+    const data = liveState._exitPollRaw;
+    if (!data || !data.released_at) { liveState.exitPoll = null; return null; }
+    const t = new Date(data.released_at).getTime();
+    if (Number.isNaN(t) || Date.now() < t) { liveState.exitPoll = null; return null; }
+    if (liveState.exitPoll && liveState.exitPoll._lookup) return liveState.exitPoll;
+    const lookup = new Map();
+    for (const r of data.races || []) {
+      if (r && !r._example) {
+        const key = [r.sg_type_code || '', (r.sd_name || '').trim(), (r.sgg_name || '').trim()].join('|');
+        lookup.set(key, r);
+      }
+    }
+    liveState.exitPoll = { ...data, _lookup: lookup };
+    return liveState.exitPoll;
+  }
+
+  function exitPollForRace(race) {
+    const ep = liveState.exitPoll;
+    if (!ep) return null;
+    const key = [
+      String(race.sg_type_code || ''),
+      (race.sd_name || '').trim(),
+      (race.sgg_name || '').trim(),
+    ].join('|');
+    return ep._lookup.get(key) || null;
+  }
+
+  function exitPollEstimateFor(candName, jdName, exitRace) {
+    if (!exitRace || !exitRace.candidates) return null;
+    const trim = s => String(s || '').trim();
+    // 이름+정당 우선, 없으면 이름만, 그래도 없으면 정당만으로 fallback.
+    const byNamePartyExact = exitRace.candidates.find(c => trim(c.name) === trim(candName) && trim(c.jd_name) === trim(jdName));
+    if (byNamePartyExact) return byNamePartyExact;
+    const byName = exitRace.candidates.find(c => trim(c.name) === trim(candName));
+    if (byName) return byName;
+    const byParty = exitRace.candidates.find(c => trim(c.jd_name) === trim(jdName));
+    return byParty || null;
+  }
+
   // 시도명을 시간대별 데이터의 키로 변환 (신이름 그대로 + 옛이름 fallback).
   function hourlyForSido(historyHourly, sdName) {
     if (!historyHourly || !sdName) return [];
@@ -216,10 +269,24 @@
       </div>`;
   }
 
-  function renderCandRow(c) {
+  function renderCandRow(c, exitRace) {
     const share = c.share_pct == null ? 0 : Math.max(0, Math.min(c.share_pct, 100));
     const color = partyColor(c.jd_name);
     const partyTxt = c.jd_name ? escapeHtml(c.jd_name) : '—';
+
+    // 출구조사 추정치 — 매칭되면 후보 막대 위에 작은 표식.
+    let exitOverlay = '';
+    let exitLine = '';
+    const est = exitPollEstimateFor(c.name, c.jd_name, exitRace);
+    if (est && est.estimate_pct != null) {
+      const ePct = Math.max(0, Math.min(Number(est.estimate_pct), 100));
+      exitOverlay = `<div class="live-cand-exit-marker" style="left:${ePct}%;border-color:${color}" title="출구조사 ${ePct}%"></div>`;
+      const range = (est.low != null && est.high != null)
+        ? ` <span class="live-cand-exit-range">[${Number(est.low).toFixed(1)}~${Number(est.high).toFixed(1)}]</span>`
+        : '';
+      exitLine = `<div class="live-cand-exit-line">출구조사 <strong>${ePct.toFixed(1)}%</strong>${range}</div>`;
+    }
+
     return `
       <div class="live-cand">
         <div class="live-cand-rank">${c.current_rank ?? '·'}</div>
@@ -230,11 +297,13 @@
           </div>
           <div class="live-cand-bar-wrap">
             <div class="live-cand-bar" style="width:${share}%;background:${color}"></div>
+            ${exitOverlay}
           </div>
           <div class="live-cand-line3">
             <span class="live-cand-votes">${fmtVotes(c.votes)}</span>
             <span class="live-cand-share">${fmtPct(c.share_pct)}</span>
           </div>
+          ${exitLine}
         </div>
       </div>`;
   }
@@ -244,7 +313,8 @@
     const region = race.sgg_name
       ? `${escapeHtml(race.sd_name)} · ${escapeHtml(race.sgg_name)}`
       : escapeHtml(race.sd_name || '—');
-    const rows = cands.map(renderCandRow).join('') ||
+    const exitRace = exitPollForRace(race);
+    const rows = cands.map(c => renderCandRow(c, exitRace)).join('') ||
       '<p class="live-empty-mini">후보 데이터 없음</p>';
 
     const gap = race.rank1_minus_rank2_pp;
@@ -256,10 +326,14 @@
       gapHtml = `<div class="${cls}">현재 1·2위 격차 ${Number(gap).toFixed(2)}%p</div>`;
     }
 
+    const exitBadge = exitRace
+      ? '<span class="live-race-exit-badge" title="이 선거구 출구조사 표시 중">출구조사</span>'
+      : '';
+
     return `
-      <article class="live-race">
+      <article class="live-race${exitRace ? ' has-exit' : ''}">
         <header class="live-race-head">
-          <div class="live-race-region">${region}</div>
+          <div class="live-race-region">${region}${exitBadge}</div>
           <div class="live-race-progress">개표율 ${fmtPct(race.progress_pct)}</div>
         </header>
         <div class="live-race-cands">${rows}</div>
@@ -604,6 +678,17 @@
           <span class="live-phase-body">${escapeHtml(phaseInfo.body)}</span>
         </div>`;
 
+    // 출구조사 면책 박스 (출구조사 데이터가 로드되어 있을 때만)
+    let exitNotice = '';
+    const ep = liveState.exitPoll;
+    if (ep && ep._lookup && ep._lookup.size) {
+      exitNotice = `
+        <div class="live-exit-notice" role="note">
+          <strong class="live-exit-notice-title">📊 출구조사 표시 중 — ${escapeHtml(ep.source || '방송 3사 컨소시엄')}</strong>
+          <span class="live-exit-notice-body">${escapeHtml(ep.note || '추정치이며 실제 개표 결과와 다를 수 있습니다.')} 각 후보 막대 위 표식은 출구조사 추정 득표율입니다.</span>
+        </div>`;
+    }
+
     // 개표 카드(sectionsHtml)는 18시 이전 또는 개표 데이터 없는 경우 phase별 안내로 대체.
     let countingArea;
     if (sectionsHtml && current.races && current.races.length) {
@@ -629,6 +714,7 @@
         <nav class="breadcrumb"><a href="#">전국</a><span class="sep">›</span><span class="current">실시간 개표</span></nav>
         ${demoBanner}
         ${phaseBanner}
+        ${exitNotice}
         <div class="live-hero">
           <h1 class="live-title">실시간 개표</h1>
           <div class="live-hero-meta">
@@ -650,6 +736,8 @@
       loadJson('data/live_counting/timeseries.json'),
     ]);
     if (!current) { renderEmpty(); return; }
+    // 출구조사 시각 게이트 재평가 (released_at 통과 시점 자동 노출)
+    reevaluateExitPoll();
     if (current.polled_at === liveState.lastPolledAt) return; // 깜빡임 방지
     liveState.current = current;
     liveState.meta = meta;
@@ -712,8 +800,8 @@
   function renderLiveRoute(/* hash */) {
     renderLoading();
     attachListenersOnce();
-    // 과거 투표율(최종값) + 시간대별 시리즈를 병렬로 받고, 도착하면 화면 재렌더.
-    Promise.all([ensureHistory(), ensureHistoryHourly()]).then(() => {
+    // 과거 투표율 + 시간대별 + 출구조사를 병렬로 받고, 도착하면 화면 재렌더.
+    Promise.all([ensureHistory(), ensureHistoryHourly(), ensureExitPoll()]).then(() => {
       if (isLiveHash() && liveState.current) renderBoard();
     }).catch(() => {});
     startPolling();

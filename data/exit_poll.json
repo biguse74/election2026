@@ -1,0 +1,18 @@
+{
+  "_doc": "6/3 18:00 방송 3사 컨소시엄(KBS·MBC·SBS) 출구조사 발표 결과를 수동 입력. released_at이 null이거나 클라이언트 시각이 그 이전이면 화면에 표시되지 않음. 6/3 17:50쯤 races 빈 배열로 채워 PR을 미리 만들어 두고, 18:00 발표 직후 값을 채워 push하면 동시 노출. 추정 구간(low/high)은 옵션.",
+  "released_at": null,
+  "source": "방송 3사 컨소시엄 (KBS·MBC·SBS)",
+  "note": "출구조사 추정치. 실제 개표 결과와 다를 수 있습니다.",
+  "races": [
+    {
+      "_example": "아래는 입력 양식 예시. 실제 입력 시 _example과 _doc 키는 제거해도 됨.",
+      "sg_type_code": "3",
+      "sd_name": "서울특별시",
+      "sgg_name": null,
+      "candidates": [
+        { "name": "후보 A", "jd_name": "더불어민주당", "estimate_pct": 45.2, "low": 43.0, "high": 47.4 },
+        { "name": "후보 B", "jd_name": "국민의힘",     "estimate_pct": 42.8, "low": 40.5, "high": 45.1 }
+      ]
+    }
+  ]
+}
