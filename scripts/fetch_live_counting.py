@@ -65,6 +65,14 @@ ELECTION_DAY_KST = datetime(2026, 6, 3, 18, 0, tzinfo=KST)
 DEFAULT_SG_ID = "20260603"
 
 
+class PortalQuotaError(RuntimeError):
+    """공공데이터포털 레벨 에러 (한도 초과·미등록 IP 등). 후속 호출 모두 실패하므로 fail-fast."""
+    def __init__(self, code: str, msg: str):
+        super().__init__(f"PortalError[{code}] {msg}")
+        self.code = code
+        self.msg = msg
+
+
 def _pick(d: dict, *keys: str) -> Any:
     for k in keys:
         v = d.get(k)
@@ -110,7 +118,7 @@ def call_counting(sg_id: str, sg_type: str, sd_name: str) -> dict:
             "sgTypecode": sg_type,
             "sdName": sd_name,
             "pageNo": page,
-            "numOfRows": 200,
+            "numOfRows": 100,    # OpenAPI 가이드(v4.3) 최대값
             "resultType": "json",
         }
         # 시도지사: fetch_past_counting_results.py와 동일 규약 (sggName도 시도명).
@@ -120,6 +128,15 @@ def call_counting(sg_id: str, sg_type: str, sd_name: str) -> dict:
         res = requests.get(f"{BASE_URL}/{OP_COUNTING}", params=params, timeout=30)
         res.raise_for_status()
         payload = res.json()
+
+        # 공공데이터포털 레벨 에러 (22=요청제한 초과, 32=미등록IP 등)
+        portal = payload.get("OpenAPI_ServiceResponse", {}).get("cmmMsgHeader") if isinstance(payload, dict) else None
+        if portal:
+            raise PortalQuotaError(
+                code=str(portal.get("returnReasonCode", "?")),
+                msg=str(portal.get("returnAuthMsg") or portal.get("errMsg") or "PORTAL_ERROR"),
+            )
+
         header = payload.get("response", {}).get("header", {})
         result_code = header.get("resultCode", "?")
         if result_code in ("INFO-03", "ERROR-03"):
@@ -210,7 +227,9 @@ def normalize_row(row: dict) -> dict:
 # ============ 투표율 호출 ============
 
 def call_turnout(sg_id: str) -> dict:
-    """전국 시도별 투표율 1회 호출. 응답이 없거나 실패해도 items=[] 반환."""
+    """전국 시도별 투표율 1회 호출. 응답이 없거나 실패해도 items=[] 반환.
+    포털 레벨 한도/IP 에러는 PortalQuotaError로 즉시 전파해 main에서 fail-fast.
+    """
     items: list[dict] = []
     result_code = "?"
     try:
@@ -219,12 +238,20 @@ def call_turnout(sg_id: str) -> dict:
             "sgId": sg_id,
             "sgTypecode": 3,   # 시도지사 단위 = 지방선거 본투표율
             "pageNo": 1,
-            "numOfRows": 200,
+            "numOfRows": 100,    # OpenAPI 가이드(v4.3) 최대값
             "resultType": "json",
         }
         res = requests.get(f"{BASE_URL}/{OP_TURNOUT}", params=params, timeout=30)
         res.raise_for_status()
         payload = res.json()
+
+        portal = payload.get("OpenAPI_ServiceResponse", {}).get("cmmMsgHeader") if isinstance(payload, dict) else None
+        if portal:
+            raise PortalQuotaError(
+                code=str(portal.get("returnReasonCode", "?")),
+                msg=str(portal.get("returnAuthMsg") or portal.get("errMsg") or "PORTAL_ERROR"),
+            )
+
         header = payload.get("response", {}).get("header", {})
         result_code = header.get("resultCode", "?")
         if result_code in ("INFO-00", "00"):
@@ -234,6 +261,8 @@ def call_turnout(sg_id: str) -> dict:
             if isinstance(chunk, dict):
                 chunk = [chunk]
             items = chunk or []
+    except PortalQuotaError:
+        raise
     except Exception as e:
         print(f"  ! 투표율 호출 실패: {e}", file=sys.stderr)
     return {"result_code": result_code, "items": items}
@@ -445,7 +474,10 @@ def main() -> None:
     turnout_raw: dict = {"result_code": "skipped", "items": []}
     turnout: dict | None = None
     if not args.skip_turnout:
-        turnout_raw = call_turnout(args.sg_id)
+        try:
+            turnout_raw = call_turnout(args.sg_id)
+        except PortalQuotaError as e:
+            sys.exit(f"포털 한도/권한 에러 (투표율). 후속 호출 중단: {e}")
         turnout = normalize_turnout(turnout_raw)
         if turnout:
             print(
@@ -455,14 +487,21 @@ def main() -> None:
         else:
             print(f"  · 투표율  resultCode={turnout_raw.get('result_code')}  데이터 없음")
 
-    # 개표 — sg_types × 시도 호출
+    # 개표 — sg_types × 시도 호출. 포털 한도 초과 감지 시 즉시 중단.
     counting_calls: list[dict] = []
     failed = 0
+    portal_aborted = False
     if not args.skip_counting:
         for sg_type in sg_types:
+            if portal_aborted:
+                break
             for sido in SIDOS:
                 try:
                     result = call_counting(args.sg_id, sg_type, sido)
+                except PortalQuotaError as e:
+                    print(f"  ✕ 포털 한도/권한 에러 (개표). 후속 호출 중단: {e}", file=sys.stderr)
+                    portal_aborted = True
+                    break
                 except Exception as e:
                     failed += 1
                     print(f"  ! 실패 sg_type={sg_type} sd={sido}: {e}", file=sys.stderr)
@@ -477,6 +516,7 @@ def main() -> None:
     current, meta = build_current(args.sg_id, polled_at, counting_calls, turnout)
     meta["counting_calls_total"] = len(counting_calls) + failed
     meta["counting_calls_failed"] = failed
+    meta["portal_aborted"] = portal_aborted
     meta["elapsed_seconds"] = round(time.monotonic() - started, 1)
 
     print(
@@ -505,6 +545,10 @@ def main() -> None:
     print(f"        {(OUT_DIR / 'current.json').relative_to(ROOT)}")
     print(f"        {(OUT_DIR / 'meta.json').relative_to(ROOT)}")
     print(f"        {(OUT_DIR / 'timeseries.json').relative_to(ROOT)}")
+
+    # 포털 한도/권한 에러로 중단됐다면 워크플로우가 실패로 인식하도록 exit 1.
+    if portal_aborted:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
