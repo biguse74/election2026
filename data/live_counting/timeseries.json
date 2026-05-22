@@ -3,64 +3,59 @@
   "updated_at": "2026-06-03T22:35:00+09:00",
   "national": [
     {
-      "polled_at": "2026-06-03T06:00:00+09:00",
-      "turnout_pct": 0.1,
-      "voters_so_far": 43755
-    },
-    {
       "polled_at": "2026-06-03T07:00:00+09:00",
-      "turnout_pct": 1.8,
-      "voters_so_far": 787594
+      "turnout_pct": 1.76,
+      "voters_so_far": 770076
     },
     {
       "polled_at": "2026-06-03T08:00:00+09:00",
-      "turnout_pct": 5.2,
-      "voters_so_far": 2275271
+      "turnout_pct": 3.93,
+      "voters_so_far": 1719546
     },
     {
       "polled_at": "2026-06-03T09:00:00+09:00",
-      "turnout_pct": 9.5,
-      "voters_so_far": 4156745
+      "turnout_pct": 6.2,
+      "voters_so_far": 2712769
     },
     {
       "polled_at": "2026-06-03T10:00:00+09:00",
-      "turnout_pct": 14.3,
-      "voters_so_far": 6257095
+      "turnout_pct": 9.0,
+      "voters_so_far": 3937891
     },
     {
       "polled_at": "2026-06-03T11:00:00+09:00",
-      "turnout_pct": 19.6,
-      "voters_so_far": 8576021
+      "turnout_pct": 12.41,
+      "voters_so_far": 5429915
     },
     {
       "polled_at": "2026-06-03T12:00:00+09:00",
-      "turnout_pct": 24.8,
-      "voters_so_far": 10851293
+      "turnout_pct": 15.51,
+      "voters_so_far": 6786300
     },
     {
       "polled_at": "2026-06-03T13:00:00+09:00",
-      "turnout_pct": 30.1,
-      "voters_so_far": 13170319
+      "turnout_pct": 39.6,
+      "voters_so_far": 17326723
     },
     {
       "polled_at": "2026-06-03T14:00:00+09:00",
-      "turnout_pct": 34.7,
-      "voters_so_far": 15183058
+      "turnout_pct": 42.08,
+      "voters_so_far": 18411831
     },
     {
       "polled_at": "2026-06-03T15:00:00+09:00",
-      "turnout_pct": 39.2,
-      "voters_so_far": 17152043
+      "turnout_pct": 44.57,
+      "voters_so_far": 19501314
     },
     {
       "polled_at": "2026-06-03T16:00:00+09:00",
-      "turnout_pct": 43.5,
-      "voters_so_far": 19033517
+      "turnout_pct": 46.94,
+      "voters_so_far": 20538292
     },
     {
       "polled_at": "2026-06-03T17:00:00+09:00",
-      "turnout_pct": 47.8,
-      "voters_so_far": 20915000
+      "turnout_pct": 49.22,
+      "voters_so_far": 21535892
     },
     {
       "polled_at": "2026-06-03T18:00:00+09:00",

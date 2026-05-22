@@ -253,6 +253,31 @@
     }).join(' ');
   }
 
+  // 12시→13시 점프 = 사전투표 합산 효과. 데이터 부족하면 null.
+  function historyEarlyVoteJump(points) {
+    if (!points) return null;
+    const before = points.find(p => p.time === '12:00');
+    const after  = points.find(p => p.time === '13:00');
+    if (!before || !after) return null;
+    return {
+      before: before.turnout_pct,
+      after:  after.turnout_pct,
+      diff:   Math.round((after.turnout_pct - before.turnout_pct) * 10) / 10,
+    };
+  }
+  function liveEarlyVoteJump(series) {
+    if (!series || series.length < 2) return null;
+    const cutoff = Date.parse('2026-06-03T13:00:00+09:00');
+    const before = series.filter(p => new Date(p.polled_at).getTime() < cutoff).slice(-1)[0];
+    const after  = series.find(p => new Date(p.polled_at).getTime() >= cutoff);
+    if (!before || !after) return null;
+    return {
+      before: before.turnout_pct,
+      after:  after.turnout_pct,
+      diff:   Math.round((after.turnout_pct - before.turnout_pct) * 10) / 10,
+    };
+  }
+
   // 라이브 시계열 + 8회/7회 시간대별 점선을 한 차트에. variant: 'national' | 'sido'
   function renderChart(opts) {
     const {
@@ -334,6 +359,14 @@
       hourLabels.push(`<text class="chart-axis-label" x="${x}" y="${H - padB + 16}" text-anchor="middle">${h}시</text>`);
     });
 
+    // 13시 강조선 — 사전투표 합산 시점
+    const ts13 = Date.parse('2026-06-03T13:00:00+09:00');
+    const x13 = xScale(ts13);
+    const earlyVoteMark = `
+      <line class="chart-early-vote-line" x1="${x13}" x2="${x13}" y1="${padT}" y2="${padT + innerH}" />
+      ${isMini ? '' : `<text class="chart-early-vote-label" x="${x13 + 4}" y="${padT + 10}">13시 — 사전투표 합산</text>`}
+    `;
+
     const pctMarks = [];
     const pctLabels = [];
     const pctStep = isMini ? 20 : 20;
@@ -358,6 +391,41 @@
       }
     }
 
+    // 사전투표 효과(12→13시 점프) 요약 — 회차별 한 줄.
+    const earlyVoteRows = [];
+    const liveJump = liveEarlyVoteJump(liveSorted);
+    if (liveJump) {
+      earlyVoteRows.push({
+        label: '9회 라이브',
+        diff: liveJump.diff,
+        cls: 'early-vote-live',
+      });
+    }
+    histSeries.forEach(h => {
+      const j = historyEarlyVoteJump(h.points);
+      if (j) {
+        earlyVoteRows.push({
+          label: `${h.round}회 (${h.year})`,
+          diff: j.diff,
+          cls: `early-vote-${h.round}`,
+        });
+      }
+    });
+    let earlyVoteBox = '';
+    if (earlyVoteRows.length && !isMini) {
+      const rows = earlyVoteRows.map(r =>
+        `<div class="early-vote-row"><span class="early-vote-dot ${r.cls}"></span><span class="early-vote-label">${r.label}</span><span class="early-vote-diff">+${r.diff.toFixed(1)}%p</span></div>`
+      ).join('');
+      earlyVoteBox = `
+        <div class="early-vote-box">
+          <div class="early-vote-title">사전투표 효과 <span class="early-vote-sub">12시 → 13시 점프 폭</span></div>
+          ${rows}
+        </div>`;
+    } else if (earlyVoteRows.length && isMini) {
+      const parts = earlyVoteRows.map(r => `<span class="${r.cls}-text">${r.label} +${r.diff.toFixed(1)}%p</span>`).join(' · ');
+      earlyVoteBox = `<div class="early-vote-mini">사전투표 효과 ${parts}</div>`;
+    }
+
     const titleHtml = title ? `<div class="live-chart-title">${escapeHtml(title)}</div>` : '';
     return `
       <div class="live-chart-wrap${isMini ? ' live-chart-wrap-mini' : ''}">
@@ -365,11 +433,13 @@
         <svg class="live-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="${escapeHtml(ariaLabel || title || '투표율 차트')}">
           ${pctMarks.join('')}${hourMarks.join('')}
           ${pctLabels.join('')}${hourLabels.join('')}
+          ${earlyVoteMark}
           ${historyPolys}
           ${livePoly}
           ${endAnno}
         </svg>
         ${legend}
+        ${earlyVoteBox}
       </div>`;
   }
 
