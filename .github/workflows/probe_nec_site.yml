@@ -1,0 +1,51 @@
+name: 선관위 사이트 활성화 감지
+
+# info.nec.go.kr의 9회 지선 페이지/엔드포인트가 활성화되는 순간을 자동 감지.
+# 활성화 감지 시 워크플로우 실패(exit 1) → GitHub Actions 자동 알림(이메일·푸시).
+# 그 시점부터 fallback 스크래퍼 패턴 파악 작업 시작.
+#
+# 빈도:
+#   · 5/24 ~ 5/28        매시간          (평상시)
+#   · 5/29 ~ 5/30        30분            (사전투표일 — 핫존)
+#   · 5/31 ~ 6/2         매시간
+#   · 6/3                10분            (본투표·개표 D-day)
+#   · 6/4 이후           워크플로우 비활성 (cron 없음)
+
+on:
+  schedule:
+    # 5/24 ~ 5/28 매시간
+    - cron: '0 * 24-28 5 *'
+    # 5/29 ~ 5/30 30분 (사전투표일)
+    - cron: '*/30 * 29-30 5 *'
+    # 5/31 매시간
+    - cron: '0 * 31 5 *'
+    # 6/1 ~ 6/2 매시간
+    - cron: '0 * 1-2 6 *'
+    # 6/3 10분 (본 D-day)
+    - cron: '*/10 * 3 6 *'
+  workflow_dispatch:
+
+concurrency:
+  group: probe-nec-site
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        run: pip install -r requirements.txt
+
+      - name: 선관위 사이트 정찰
+        run: python scripts/probe_nec_site.py
