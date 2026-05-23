@@ -383,6 +383,29 @@ function calculateDDay() {
   const diffDays = Math.ceil((electionDay - today) / 86_400_000);
   const el = document.getElementById('dday');
   el.textContent = diffDays > 0 ? `D-${diffDays}` : diffDays === 0 ? 'D-DAY' : `D+${-diffDays}`;
+  applyElectionDayBrand(diffDays);
+}
+
+// 6/3 본투표 당일·6/4 개표 익일은 브랜드 타이틀을 '실시간/결과'로 전환.
+// 그 외엔 HTML의 정적값('6·3 선거 출마자 2026') 유지.
+function applyElectionDayBrand(diffDays) {
+  const titleEl = document.querySelector('.brand .title');
+  const subEl = document.querySelector('.brand .subtitle');
+  let titleHtml = null, subText = null, docTitle = null;
+  if (diffDays === 0) {
+    titleHtml = '6·3 지방선거 실시간 <span class="title-year">2026</span>';
+    subText = '전국동시지방선거 · 투표·개표 실황';
+    docTitle = '6·3 지방선거 실시간 — 뉴탐사';
+  } else if (diffDays === -1) {
+    titleHtml = '6·3 지방선거 결과 <span class="title-year">2026</span>';
+    subText = '전국동시지방선거 · 개표 결과';
+    docTitle = '6·3 지방선거 결과 — 뉴탐사';
+  } else {
+    return;
+  }
+  if (titleEl) titleEl.innerHTML = titleHtml;
+  if (subEl) subEl.textContent = subText;
+  if (docTitle) document.title = docTitle;
 }
 
 // ============ Loaders ============
