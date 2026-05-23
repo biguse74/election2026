@@ -142,6 +142,16 @@
     return reevaluateExitPoll();
   }
 
+  // race 매칭 키. 시도지사(sgTypecode=3) 응답은 sggName이 sdName과 같은 값으로 옴 →
+  // 공백으로 정규화해 exit_poll의 sgg_name=null과 매칭. 시도 단일 선거 일반화.
+  function _raceMatchKey(race) {
+    const sgType = String(race.sg_type_code || race.sgTypecode || '');
+    const sd = (race.sd_name || '').trim();
+    let sgg = (race.sgg_name || '').trim();
+    if (sgg && sgg === sd) sgg = '';
+    return [sgType, sd, sgg].join('|');
+  }
+
   function reevaluateExitPoll() {
     const data = liveState._exitPollRaw;
     if (!data || !data.released_at) { liveState.exitPoll = null; return null; }
@@ -151,8 +161,7 @@
     const lookup = new Map();
     for (const r of data.races || []) {
       if (r && !r._example) {
-        const key = [r.sg_type_code || '', (r.sd_name || '').trim(), (r.sgg_name || '').trim()].join('|');
-        lookup.set(key, r);
+        lookup.set(_raceMatchKey(r), r);
       }
     }
     liveState.exitPoll = { ...data, _lookup: lookup };
@@ -162,12 +171,7 @@
   function exitPollForRace(race) {
     const ep = liveState.exitPoll;
     if (!ep) return null;
-    const key = [
-      String(race.sg_type_code || ''),
-      (race.sd_name || '').trim(),
-      (race.sgg_name || '').trim(),
-    ].join('|');
-    return ep._lookup.get(key) || null;
+    return ep._lookup.get(_raceMatchKey(race)) || null;
   }
 
   function exitPollEstimateFor(candName, jdName, exitRace) {
@@ -549,8 +553,8 @@
         return `<div class="early-vote-row">
           <span class="early-vote-dot ${r.cls}"></span>
           <span class="early-vote-label">${r.label}</span>
-          <span class="early-vote-col">${diffTxt}</span>
-          <span class="early-vote-col">${finalTxt}</span>
+          <span class="early-vote-col" data-label="12→13시 점프">${diffTxt}</span>
+          <span class="early-vote-col" data-label="사전+거소 최종">${finalTxt}</span>
         </div>`;
       }).join('');
       earlyVoteBox = `

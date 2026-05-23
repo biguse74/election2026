@@ -492,3 +492,88 @@
 .early-vote-mini .early-vote-live-text { color: #1a8754; font-weight: 700; }
 .early-vote-mini .early-vote-8-text { color: #444; font-weight: 600; }
 .early-vote-mini .early-vote-7-text { color: #888; }
+
+/* ===========================
+   모바일 대응 (max-width 760px / 380px)
+   =========================== */
+@media (max-width: 760px) {
+  .live-root { padding: 12px 14px 56px; }
+  .live-title { font-size: 1.45rem; }
+  .live-hero { margin: 4px 0 16px; padding: 12px 0 14px; }
+  .live-hero-meta { gap: 8px; font-size: 0.88rem; }
+
+  /* 전국 투표율 검은 박스 — 모바일에선 세로 스택 */
+  .live-turnout-national {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 12px 14px;
+  }
+  .live-turnout-national-pct { font-size: 1.55rem; }
+  .live-turnout-national-votes { text-align: left; flex: none; font-size: 0.8rem; }
+  .live-turnout-national-compare { font-size: 0.8rem; }
+
+  /* 차트 박스 안쪽 패딩 줄여 폭 절약 */
+  .live-chart-wrap { padding: 12px 12px 6px; }
+  .live-chart-wrap-mini { padding: 6px 0 0; }
+  .live-chart-title { font-size: 0.9rem; }
+
+  /* 차트 범례 — 모바일에선 작게 + 두 줄 */
+  .live-chart-legend { font-size: 0.74rem; gap: 10px; }
+
+  /* 사전투표 비교 박스 — 4컬럼이 폭에 안 맞아 2컬럼으로 재배치 */
+  .early-vote-box { padding: 10px 12px; }
+  .early-vote-header { display: none; }            /* 헤더 라벨 숨김 — 행 안에서 직접 표시 */
+  .early-vote-row {
+    grid-template-columns: 14px 1fr;
+    gap: 6px 8px;
+    row-gap: 2px;
+    padding: 8px 0;
+    border-top: 1px dashed #efe3e3;
+    align-items: start;
+  }
+  .early-vote-row:first-of-type { border-top: none; }
+  .early-vote-label { grid-column: 2; font-weight: 700; }
+  .early-vote-col {
+    grid-column: 2;
+    font-size: 0.84rem;
+  }
+  .early-vote-col::before {
+    content: attr(data-label) " ";
+    color: #999;
+    font-weight: 400;
+    font-size: 0.75rem;
+    display: inline-block;
+    margin-right: 4px;
+  }
+
+  /* 시도 카드 — 폭이 좁으니 minmax 줄여 2-3열 유지 */
+  .live-turnout-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+  }
+  .live-turnout-card { padding: 10px; }
+  .live-turnout-region { font-size: 0.9rem; }
+  .live-turnout-pct { font-size: 0.85rem; }
+  .live-turnout-card.is-open { padding: 12px; }
+
+  /* 출구조사 면책 + phase 배너 — 패딩 압축 */
+  .live-phase-banner { padding: 10px 12px; }
+  .live-phase-title { font-size: 0.92rem; }
+  .live-phase-body { font-size: 0.8rem; }
+  .live-exit-notice { padding: 10px 12px; }
+  .live-exit-notice-title { font-size: 0.9rem; }
+  .live-exit-notice-body { font-size: 0.78rem; }
+
+  /* 후보 카드 그리드 — 1열 */
+  .live-grid { grid-template-columns: 1fr; gap: 12px; }
+  .live-race { padding: 12px 14px; }
+}
+
+@media (max-width: 380px) {
+  /* 매우 좁은 폭 (구형 폰) — 시도 카드 1열 */
+  .live-turnout-grid { grid-template-columns: 1fr; }
+  .live-title { font-size: 1.3rem; }
+  .live-turnout-national-pct { font-size: 1.4rem; }
+  .early-vote-row .early-vote-col { font-size: 0.78rem; }
+}
