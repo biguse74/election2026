@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-05-22T23:43:52+09:00",
+  "updated_at": "2026-05-23T12:29:46+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 325,
+  "count": 326,
   "articles": [
+    {
+      "date": "2026-05-23",
+      "title": "4년 전 짚은 관저 예산 비리, 특검이 확인했다",
+      "url": "https://newtamsa.org/news/B51A53",
+      "category": "긴급보도",
+      "tags": [
+        "관저이전",
+        "대통령실",
+        "21그램",
+        "김건희",
+        "정부청사관리본부",
+        "김대기",
+        "윤재순"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-05-22",
       "title": "김영환 한옥 73억 근저당, 폐기물업체 돈줄 의혹",
