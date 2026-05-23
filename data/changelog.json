@@ -1,80 +1,24 @@
 {
   "source": "candidates",
-  "today_date": "20260523",
-  "previous_date": "20260522",
+  "today_date": "20260524",
+  "previous_date": "20260523",
   "summary": {
     "new": 0,
     "gone": 0,
     "party": 0,
-    "status": 3
+    "status": 0
   },
   "samples": {
     "new": [],
     "gone": [],
     "party": [],
-    "status": [
-      {
-        "name": "윤선희",
-        "jdName": "국민의힘",
-        "sdName": "경기도",
-        "sggName": "파주시라선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김진석",
-        "jdName": "진보당",
-        "sdName": "울산광역시",
-        "sggName": "남구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "강상규",
-        "jdName": "진보당",
-        "sdName": "울산광역시",
-        "sggName": "울주군",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      }
-    ]
+    "status": []
   },
   "full": {
     "new": [],
     "gone": [],
     "party": [],
-    "status": [
-      {
-        "name": "윤선희",
-        "jdName": "국민의힘",
-        "sdName": "경기도",
-        "sggName": "파주시라선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김진석",
-        "jdName": "진보당",
-        "sdName": "울산광역시",
-        "sggName": "남구",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "강상규",
-        "jdName": "진보당",
-        "sdName": "울산광역시",
-        "sggName": "울주군",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      }
-    ]
+    "status": []
   },
-  "generated_at": "2026-05-23T05:22:22+09:00"
+  "generated_at": "2026-05-24T04:45:15+09:00"
 }
