@@ -1374,28 +1374,34 @@ footer a:hover { text-decoration: underline; }
 
 /* 관전 포인트 — 홈에 보이는 요약 카드(경쟁률·경쟁없음 진입) */
 .summary-row {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem; margin-bottom: 2.5rem;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.6rem; margin-bottom: 2.5rem;
 }
 .summary-card {
-  display: flex; flex-direction: column; gap: 0.45rem;
+  display: flex; flex-direction: column; gap: 0.35rem;
   background: var(--bg-card); border: 1px solid var(--rule);
-  padding: 1.1rem 1.4rem;
+  padding: 0.9rem 1rem;
   text-decoration: none; color: inherit;
   transition: all 0.18s ease;
+  min-width: 0;
 }
 .summary-card:hover { border-color: var(--ink); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 .summary-card-label {
-  font-size: 0.78rem; color: var(--ink-sub);
-  text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 0.72rem; color: var(--ink-sub);
+  text-transform: uppercase; letter-spacing: 0.05em;
 }
 .summary-card-value {
-  font-family: var(--serif); font-size: 2.4rem; font-weight: 900;
+  font-family: var(--serif); font-size: 1.9rem; font-weight: 900;
   line-height: 1; color: var(--ink);
 }
 .summary-card-value strong { color: var(--accent); font-weight: 900; }
-.summary-card-unit { font-family: var(--sans); font-size: 1.1rem; font-weight: 400; color: var(--ink-sub); margin-left: 0.1rem; }
-.summary-card-sub { font-size: 0.82rem; color: var(--ink-sub); line-height: 1.5; }
+.summary-card-unit { font-family: var(--sans); font-size: 0.95rem; font-weight: 400; color: var(--ink-sub); margin-left: 0.1rem; }
+.summary-card-sub { font-size: 0.74rem; color: var(--ink-sub); line-height: 1.45; }
+
+/* 1100px 이상의 데스크탑에서는 5개 강제 한 줄 — auto-fit이 wrap하지 않도록 명시 */
+@media (min-width: 1100px) {
+  .summary-row { grid-template-columns: repeat(5, 1fr); }
+}
 
 /* 비례 명부 */
 .proportional-overview-section { display: grid; gap: 1rem; }
