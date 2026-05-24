@@ -78,7 +78,10 @@ def check_findmenu(verbose: bool) -> dict:
     return {"ok": True, "active": not baseline, "summary": summary}
 
 
-BASELINE_SUBMENU_IDS = {"Hbj", "MySgg", "PrePoll"}
+BASELINE_SUBMENU_IDS = {"Hbj", "MySgg", "Poll", "PrePoll"}
+# 5/24 baseline = {Hbj, MySgg, PrePoll}
+# 5/24 13시경 — 'Poll'(선거일투표소, /main/main_vote.jsp) 추가됨 (본투표 준비).
+#   여전히 BI와 VC 응답 동일.  VC 본격 활성화 신호로 분류하지 않고 baseline에 흡수.
 
 
 def check_vc_submenu(verbose: bool) -> dict:
