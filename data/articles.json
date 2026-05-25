@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-05-24T22:40:34+09:00",
+  "updated_at": "2026-05-25T13:02:41+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 327,
+  "count": 328,
   "articles": [
+    {
+      "date": "2026-05-25",
+      "title": "노관규 순천시장 '윤석열 당선 바란다' 대선 당일 녹취",
+      "url": "https://newtamsa.org/news/rOupYt",
+      "category": "취재플러스",
+      "tags": [
+        "전남",
+        "순천시",
+        "노관규",
+        "이재명",
+        "윤석열",
+        "정책기획단장",
+        "금고",
+        "골프연습장"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-05-24",
       "title": "박우량 동생 땅은 묘목밭, 신안군 나무값 139억은 제주 부부에",
