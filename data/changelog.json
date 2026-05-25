@@ -1,7 +1,7 @@
 {
   "source": "candidates",
-  "today_date": "20260525",
-  "previous_date": "20260524",
+  "today_date": "20260526",
+  "previous_date": "20260525",
   "summary": {
     "new": 0,
     "gone": 0,
@@ -14,13 +14,13 @@
     "party": [],
     "status": [
       {
-        "name": "고봉기",
+        "name": "조성범",
         "jdName": "무소속",
-        "sdName": "전라남도",
-        "sggName": "신안군",
+        "sdName": "서울특별시",
+        "sggName": "동작구",
         "sgTypecode": "4",
         "status_prev": "등록",
-        "status_now": "사퇴"
+        "status_now": "등록무효"
       }
     ]
   },
@@ -30,15 +30,15 @@
     "party": [],
     "status": [
       {
-        "name": "고봉기",
+        "name": "조성범",
         "jdName": "무소속",
-        "sdName": "전라남도",
-        "sggName": "신안군",
+        "sdName": "서울특별시",
+        "sggName": "동작구",
         "sgTypecode": "4",
         "status_prev": "등록",
-        "status_now": "사퇴"
+        "status_now": "등록무효"
       }
     ]
   },
-  "generated_at": "2026-05-25T04:49:46+09:00"
+  "generated_at": "2026-05-26T05:09:30+09:00"
 }
