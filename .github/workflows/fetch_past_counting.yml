@@ -1,0 +1,63 @@
+name: 역대 개표 결과 수동 갱신
+
+# 라이브 화면 race 카드의 '8회 당선' 한 줄에 쓰는 data/history_counting_results.json.
+# 1~2년에 한 번 정도면 충분(과거 데이터). 다음 회차 결과가 OpenAPI에 들어온 뒤
+# 다시 실행. 기본값으로 시도지사·기초단체장·시도의원·구시군의회의원·교육감 모두 수집.
+#
+# 호출량: 5개 sg_type × 17 시도 × 6 회차 ≈ 1,500~2,000 호출 (1회 실행)
+# 소요: 약 7~10분.  1만/일 한도 마진 충분.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sg_types:
+        description: '수집할 sgTypecode (쉼표 구분). 기본 3,4,5,6,11'
+        required: true
+        default: '3,4,5,6,11'
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+
+      - name: 역대 개표 결과 수집
+        env:
+          NEC_API_KEY: ${{ secrets.NEC_API_KEY }}
+          SG_TYPES: ${{ github.event.inputs.sg_types }}
+        run: |
+          set -euo pipefail
+          args=""
+          IFS=',' read -ra TYPES <<< "$SG_TYPES"
+          for t in "${TYPES[@]}"; do
+            t=$(echo "$t" | tr -d ' ')
+            [ -n "$t" ] && args="$args --sg-type $t"
+          done
+          echo "$ python scripts/fetch_past_counting_results.py $args"
+          python scripts/fetch_past_counting_results.py $args
+
+      - name: 변경사항 커밋·푸시
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/history_counting_results.json
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (커밋 생략)"
+            exit 0
+          fi
+          git commit -m "data: 역대 개표 결과 수동 갱신 $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            git pull --rebase origin "$(git rev-parse --abbrev-ref HEAD)"
+          done
+          exit 1
