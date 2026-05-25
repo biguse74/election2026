@@ -120,6 +120,62 @@
 .live-gap { padding: 8px 0 0; margin-top: 6px; font-size: 0.85rem; color: #555; border-top: 1px solid #f0f0f0; }
 .live-gap-tight { padding: 8px 0 0; margin-top: 6px; font-size: 0.9rem; color: #c41e3a; font-weight: 700; border-top: 1px solid #f0f0f0; }
 
+/* 8회 당선 비교 한 줄 — race 카드 footer */
+.live-race-history {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed #eee;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #555;
+  line-height: 1.4;
+}
+.live-race-history-label {
+  color: #999;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.live-race-history-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 8px;
+}
+.live-race-history-name { font-weight: 700; color: #1a1a1a; }
+.live-race-history-party { font-weight: 600; font-size: 0.78rem; }
+.live-race-history-pct {
+  color: #444;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.live-race-history-gap {
+  color: #777;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.76rem;
+}
+.live-race-history-regime {
+  margin-left: auto;
+  font-weight: 700;
+  font-size: 0.74rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.live-race-history-regime.regime-hold {
+  background: #ecf6f0;
+  color: #126b3f;
+  border: 1px solid #c8e3d4;
+}
+.live-race-history-regime.regime-flip {
+  background: #fff4f4;
+  color: #b3261e;
+  border: 1px solid #f3c8c8;
+}
+
 .live-empty { color: #888; padding: 24px 0; }
 .live-empty-mini { color: #aaa; font-size: 0.85rem; margin: 0; }
 

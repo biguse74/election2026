@@ -31,6 +31,8 @@
     timeseries: null,
     exitPoll: null,
     exitPollLoaded: false,
+    countingHistory: null,
+    countingHistoryLoaded: false,
     pollTimer: null,
     lastPolledAt: null,
     listenersAttached: false,
@@ -115,6 +117,57 @@
       by_sido: top,
     };
     return liveState.history;
+  }
+
+  // 8회(2022) 시도지사·기초단체장 개표 결과 district 단위 lookup.
+  // 라이브 race ↔ history district 매칭 후 후보 카드에 비교 영역 표시.
+  async function ensureCountingHistory() {
+    if (liveState.countingHistoryLoaded) return liveState.countingHistory;
+    liveState.countingHistoryLoaded = true;
+    const data = await loadJson('data/history_counting_results.json');
+    if (!data || !Array.isArray(data.elections) || !data.elections.length) {
+      liveState.countingHistory = null;
+      return null;
+    }
+    const last = data.elections[data.elections.length - 1];
+    // 옛 ↔ 신 시도명 양방향 매핑. lookup에 신·옛 두 키 모두 등록해 어느 쪽 입력도 매칭.
+    const NEW_TO_OLD = SIDO_HISTORY_ALIAS;          // {신: 옛}
+    const OLD_TO_NEW = Object.fromEntries(
+      Object.entries(NEW_TO_OLD).map(([n, o]) => [o, n])
+    );
+    const lookup = new Map();
+    for (const res of (last.results || [])) {
+      const sgType = String(res.sgTypecode || res.sg_type_code || '');
+      for (const dist of (res.districts || [])) {
+        const sdRaw = (dist.sdName || dist.sd_name || '').trim();
+        const sgg = (dist.sggName || dist.sgg_name || '').trim();
+        const sds = new Set([sdRaw]);
+        if (OLD_TO_NEW[sdRaw]) sds.add(OLD_TO_NEW[sdRaw]);
+        if (NEW_TO_OLD[sdRaw]) sds.add(NEW_TO_OLD[sdRaw]);
+        for (const sd of sds) {
+          let s = sgg;
+          if (s && s === sd) s = '';
+          lookup.set([sgType, sd, s].join('|'), dist);
+        }
+      }
+    }
+    liveState.countingHistory = {
+      round: last.round,
+      year: last.year,
+      date: last.date,
+      _lookup: lookup,
+    };
+    return liveState.countingHistory;
+  }
+
+  function historyForRace(race) {
+    const ch = liveState.countingHistory;
+    if (!ch) return null;
+    const sgType = String(race.sg_type_code || race.sgTypecode || '');
+    const sd = (race.sd_name || '').trim();
+    let sgg = (race.sgg_name || '').trim();
+    if (sgg && sgg === sd) sgg = '';
+    return ch._lookup.get([sgType, sd, sgg].join('|')) || null;
   }
 
   // 시간대별 누계 투표율 (8회 + 7회 지선). history_turnout.json보다 풍부.
@@ -348,6 +401,8 @@
       ? '<span class="live-race-exit-badge" title="이 선거구 출구조사 표시 중">출구조사</span>'
       : '';
 
+    const historyFooter = renderHistoryFooter(race);
+
     return `
       <article class="live-race${exitRace ? ' has-exit' : ''}">
         <header class="live-race-head">
@@ -356,7 +411,50 @@
         </header>
         <div class="live-race-cands">${rows}</div>
         ${gapHtml}
+        ${historyFooter}
       </article>`;
+  }
+
+  // 라이브 race 카드 하단 '8회 당선' 한 줄 — 당선자·정당색·득표율·1·2위 격차·정권 유지/탈환 추세.
+  function renderHistoryFooter(race) {
+    const dist = historyForRace(race);
+    if (!dist || !dist.winner) return '';
+    const w = dist.winner;
+    const ch = liveState.countingHistory;
+    const round = ch ? ch.round : 8;
+    const color = partyColor(w.party);
+
+    // 1·2위 격차 계산 (history candidates에서)
+    let gapTxt = '';
+    const sorted = (dist.candidates || []).slice().filter(c => c.vote_share != null);
+    sorted.sort((a, b) => (b.vote_share || 0) - (a.vote_share || 0));
+    if (sorted.length >= 2) {
+      const diff = (sorted[0].vote_share - sorted[1].vote_share);
+      gapTxt = `격차 ${diff.toFixed(1)}%p`;
+    }
+
+    // 현 라이브 1위 정당과 비교 — 개표 10% 이상 진행됐을 때만 추세 표시 (조기 단정 방지)
+    let regime = '';
+    const liveTop = (race.candidates || [])[0];
+    if (liveTop && liveTop.jd_name && race.progress_pct != null && race.progress_pct >= 10) {
+      regime = (liveTop.jd_name === w.party)
+        ? `<span class="live-race-history-regime regime-hold">정당 유지 추세</span>`
+        : `<span class="live-race-history-regime regime-flip">${escapeHtml(liveTop.jd_name)} 탈환 추세</span>`;
+    }
+
+    const pct = w.vote_share != null ? `${Number(w.vote_share).toFixed(1)}%` : '';
+    const gapHtml = gapTxt ? `<span class="live-race-history-gap">${gapTxt}</span>` : '';
+
+    return `
+      <div class="live-race-history" title="${round}회 (${ch?.year ?? ''}) 개표 결과">
+        <span class="live-race-history-label">${round}회 당선</span>
+        <span class="live-race-history-dot" style="background:${color}"></span>
+        <span class="live-race-history-name">${escapeHtml(w.name || '—')}</span>
+        <span class="live-race-history-party" style="color:${color}">${escapeHtml(w.party || '')}</span>
+        <span class="live-race-history-pct">${pct}</span>
+        ${gapHtml}
+        ${regime}
+      </div>`;
   }
 
   function renderSection(sgTypeCode, races) {
@@ -846,7 +944,7 @@
     renderLoading();
     attachListenersOnce();
     // 과거 투표율 + 시간대별 + 출구조사를 병렬로 받고, 도착하면 화면 재렌더.
-    Promise.all([ensureHistory(), ensureHistoryHourly(), ensureExitPoll()]).then(() => {
+    Promise.all([ensureHistory(), ensureHistoryHourly(), ensureExitPoll(), ensureCountingHistory()]).then(() => {
       if (isLiveHash() && liveState.current) renderBoard();
     }).catch(() => {});
     startPolling();
