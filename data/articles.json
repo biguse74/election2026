@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-05-25T23:57:15+09:00",
+  "updated_at": "2026-05-26T12:47:27+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 329,
+  "count": 330,
   "articles": [
+    {
+      "date": "2026-05-26",
+      "title": "정청래가 밝히지 않은 김관영 CCTV 제보자",
+      "url": "https://newtamsa.org/news/iarTa1",
+      "category": "단독보도",
+      "tags": [
+        "전북",
+        "김관영",
+        "CCTV",
+        "이원택",
+        "시그니쳐호텔",
+        "채널A",
+        "공작",
+        "송하진",
+        "전북경찰청"
+      ],
+      "author": "강진구, 김시몬"
+    },
     {
       "date": "2026-05-25",
       "title": "삼성전자 vs SK하이닉스 뭘 살까, 5가지 기준으로 따졌다",
