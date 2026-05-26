@@ -1,12 +1,12 @@
 {
   "source": "candidates",
-  "today_date": "20260526",
-  "previous_date": "20260525",
+  "today_date": "20260527",
+  "previous_date": "20260526",
   "summary": {
     "new": 0,
     "gone": 0,
     "party": 0,
-    "status": 1
+    "status": 8
   },
   "samples": {
     "new": [],
@@ -14,11 +14,74 @@
     "party": [],
     "status": [
       {
-        "name": "조성범",
-        "jdName": "무소속",
+        "name": "홍승희",
+        "jdName": "개혁신당",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "김정선",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "구리시",
+        "sgTypecode": "9",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "황보희득",
+        "jdName": "자유통일당",
         "sdName": "서울특별시",
-        "sggName": "동작구",
-        "sgTypecode": "4",
+        "sggName": "서울특별시",
+        "sgTypecode": "8",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "최경화",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "용산구",
+        "sgTypecode": "9",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "신선애",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "강릉시가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "서혜주",
+        "jdName": "국민당",
+        "sdName": "서울특별시",
+        "sggName": "서울특별시",
+        "sgTypecode": "8",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "서용택",
+        "jdName": "자유와혁신",
+        "sdName": "서울특별시",
+        "sggName": "서초구라선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "신민주",
+        "jdName": "국민연합",
+        "sdName": "인천광역시",
+        "sggName": "인천광역시",
+        "sgTypecode": "8",
         "status_prev": "등록",
         "status_now": "등록무효"
       }
@@ -30,15 +93,78 @@
     "party": [],
     "status": [
       {
-        "name": "조성범",
-        "jdName": "무소속",
+        "name": "홍승희",
+        "jdName": "개혁신당",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "김정선",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "구리시",
+        "sgTypecode": "9",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "황보희득",
+        "jdName": "자유통일당",
         "sdName": "서울특별시",
-        "sggName": "동작구",
-        "sgTypecode": "4",
+        "sggName": "서울특별시",
+        "sgTypecode": "8",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "최경화",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "용산구",
+        "sgTypecode": "9",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "신선애",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "강릉시가선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "서혜주",
+        "jdName": "국민당",
+        "sdName": "서울특별시",
+        "sggName": "서울특별시",
+        "sgTypecode": "8",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "서용택",
+        "jdName": "자유와혁신",
+        "sdName": "서울특별시",
+        "sggName": "서초구라선거구",
+        "sgTypecode": "6",
+        "status_prev": "등록",
+        "status_now": "등록무효"
+      },
+      {
+        "name": "신민주",
+        "jdName": "국민연합",
+        "sdName": "인천광역시",
+        "sggName": "인천광역시",
+        "sgTypecode": "8",
         "status_prev": "등록",
         "status_now": "등록무효"
       }
     ]
   },
-  "generated_at": "2026-05-26T05:09:30+09:00"
+  "generated_at": "2026-05-27T05:36:26+09:00"
 }
