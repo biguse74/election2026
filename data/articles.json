@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-05-26T12:47:27+09:00",
+  "updated_at": "2026-05-26T19:00:43+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 330,
+  "count": 331,
   "articles": [
+    {
+      "date": "2026-05-26",
+      "title": "법원, 심덕섭 고창군수 가처분 신청 대부분 기각... 선거운동 방해 의도 부정",
+      "url": "https://newtamsa.org/news/-uPmVm",
+      "category": "긴급보도",
+      "tags": [
+        "정읍지원",
+        "법원",
+        "심덕섭",
+        "고창군",
+        "가처분",
+        "기각",
+        "선거운동"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-05-26",
       "title": "정청래가 밝히지 않은 김관영 CCTV 제보자",
