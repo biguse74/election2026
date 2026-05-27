@@ -1,0 +1,41 @@
+name: 22대 재보궐 14개 선거구 결과 수집
+
+# 9회 동시 국회의원 재·보궐 14개 선거구의 22대(2024-04-10) 개표 결과를
+# OpenAPI에서 받는다. 시뮬 prior 보강용.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - name: 22대 14개 선거구 결과 수집
+        env:
+          NEC_API_KEY: ${{ secrets.NEC_API_KEY }}
+        run: python scripts/fetch_22nd_repoll_results.py
+      - name: 커밋·푸시
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/assembly_22nd_repoll_results.json
+          if git diff --staged --quiet; then
+            echo "변경사항 없음"
+            exit 0
+          fi
+          git commit -m "data: 22대 14개 재보궐 선거구 결과 수집"
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            git pull --rebase origin "$(git rev-parse --abbrev-ref HEAD)"
+          done
+          exit 1
