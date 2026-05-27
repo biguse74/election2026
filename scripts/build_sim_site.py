@@ -23,91 +23,41 @@ ROOT = Path(__file__).resolve().parent.parent
 EXPORTS = ROOT / "exports"
 SIM_ROOT = ROOT / "sim"
 
-RELEASE_ISO = "2026-06-03T18:00:00+09:00"
-PREVIEW_TOKEN = "newtamsa-2026"
+# 게이트는 제거하고 면책 박스로 대체.
+# 이 자료는 여론조사·예측조사가 아닌 과거 개표결과 기반 시뮬레이션이므로
+# 공직선거법 108조의 직접 적용 대상이 아니라는 게 운영자(뉴탐사)의 법적 판단.
+# 다만 만약을 위해 면책 박스로 분쟁 시 방어 근거 확보 + robots.txt로 검색엔진 차단 유지.
 
-
-GATE_JS = """(function () {
-  // 공직선거법 108조 — 6/3 18:00 KST 전엔 콘텐츠 숨김.
-  // ?preview=newtamsa-2026 으로 운영자 검증 가능.
-  var RELEASE_AT = Date.parse('""" + RELEASE_ISO + """');
-  var params = new URLSearchParams(location.search);
-  var preview = params.get('preview') === '""" + PREVIEW_TOKEN + """';
-  var now = Date.now();
-  var locked = now < RELEASE_AT && !preview;
-
-  document.addEventListener('DOMContentLoaded', function () {
-    var lock = document.getElementById('sim-gate-lock');
-    var content = document.getElementById('sim-gate-content');
-    if (!lock || !content) return;
-    if (locked) {
-      content.style.display = 'none';
-      lock.style.display = 'block';
-      var diff = RELEASE_AT - now;
-      var d = Math.floor(diff / 86400000);
-      var h = Math.floor((diff % 86400000) / 3600000);
-      var m = Math.floor((diff % 3600000) / 60000);
-      var label = document.getElementById('sim-gate-countdown');
-      if (label) {
-        if (d > 0) label.textContent = 'D-' + d + ' (' + d + '일 ' + h + '시간 ' + m + '분)';
-        else if (h > 0) label.textContent = '' + h + '시간 ' + m + '분 후 공개';
-        else label.textContent = m + '분 후 공개';
-      }
-    } else {
-      lock.style.display = 'none';
-      content.style.display = 'block';
-      if (preview) {
-        var banner = document.createElement('div');
-        banner.style.cssText = 'background:#fff8e3;border-left:4px solid #b8860b;padding:8px 14px;margin-bottom:12px;font-size:0.82rem;color:#8b6500;font-weight:600';
-        banner.textContent = '⚠️ 미리보기 모드 — 외부 공개 금지. 운영자 검증용만.';
-        content.insertBefore(banner, content.firstChild);
-      }
-    }
-  });
-})();
-"""
-
-
-GATE_LOCK_HTML = """<div id="sim-gate-lock" style="display:none;max-width:760px;margin:80px auto;padding:36px 32px;border:1px solid #ddd;border-radius:10px;background:#fafafa;text-align:center;font-family:-apple-system,'Pretendard',sans-serif;color:#1a1a1a;line-height:1.6">
-  <div style="font-size:0.85rem;color:#b3261e;font-weight:700;margin-bottom:8px;letter-spacing:0.04em">⚠️ 공직선거법 제108조</div>
-  <h1 style="font-size:1.4rem;margin:0 0 14px">선거일 투표마감 이후에만 공개됩니다</h1>
-  <p style="color:#555;margin:0 0 18px;font-size:0.92rem">
-    공직선거법 제108조에 따라 선거 6일 전부터 투표마감 시각(2026-06-03 18:00 KST)까지는<br>
-    여론조사·시뮬레이션 결과의 공표·인용보도가 금지됩니다.
-  </p>
-  <div style="display:inline-block;padding:10px 22px;background:#1a1a1a;color:#fff;border-radius:6px;font-weight:700;font-variant-numeric:tabular-nums">
-    <span style="display:block;font-size:0.72rem;font-weight:400;opacity:0.7">공개까지</span>
-    <span id="sim-gate-countdown" style="font-size:1.2rem">—</span>
-  </div>
-  <p style="color:#999;font-size:0.78rem;margin:18px 0 0">시민언론 뉴탐사 · 9회 전국동시지방선거 시뮬레이션</p>
+DISCLAIMER_HTML = """<div style="max-width:880px;margin:0 auto 20px;padding:14px 18px;background:#fdecea;border-left:4px solid #c41e3a;border-radius:4px;font-family:-apple-system,'Pretendard',sans-serif;font-size:0.86rem;color:#1a1a1a;line-height:1.6">
+  <strong style="color:#b3261e;display:block;margin-bottom:4px;font-size:0.92rem">⚠️ 자료의 성격 안내 · 반드시 읽어주세요</strong>
+  · 본 자료는 <strong>여론조사·예측조사가 아닙니다</strong>. 과거 6회차 개표결과(2002~2022) 기반의 단순 시뮬레이션입니다.<br>
+  · 특정 후보·정당의 당락을 <strong>단정하지 않습니다</strong>. 환경에 따른 시나리오별 의석 분포를 보여주는 패턴 자료입니다.<br>
+  · 외부 충격·후보 효과·사전투표 변화 등이 반영되지 않아 실제 결과와 큰 차이가 날 수 있습니다.<br>
+  · 인용·재가공 시 위 한계를 반드시 함께 표기해 주십시오.
 </div>
 """
 
 
-def inject_gate(html: str, page_title: str) -> str:
-    """exports의 HTML에 게이트 wrapper 삽입.
-    원본은 <body>...<h1>...</h1>...</body> 구조. body 직후에 lock, h1 부터 닫는 body까지를 content로 감싼다.
-    """
-    # <body> 직후 컨텐츠 시작 위치 찾기
+def inject_disclaimer(html: str) -> str:
+    """본문 <body> 직후에 면책 박스 삽입. 기존 페이지의 .legal 박스는 그대로 유지."""
     body_open = re.search(r"<body[^>]*>", html)
-    body_close = html.rfind("</body>")
-    if not body_open or body_close == -1:
+    if not body_open:
         return html
     start = body_open.end()
-    inner = html[start:body_close]
-    new_inner = (
-        GATE_LOCK_HTML
-        + '\n<div id="sim-gate-content" style="display:none">\n'
-        + inner
-        + "\n</div>\n"
-        + '<script src="/sim/_gate.js" defer></script>\n'
-    )
-    return html[:start] + new_inner + html[body_close:]
+    return html[:start] + "\n" + DISCLAIMER_HTML + "\n" + html[start:]
 
 
 def build_sub_page(src: Path, dst: Path, title: str):
     src_html = src.read_text(encoding="utf-8")
-    new_html = inject_gate(src_html, title)
+    new_html = inject_disclaimer(src_html)
+    # 기존 페이지에 있던 '6/3 18시 전 금지' 빨간 박스는 제거 (이제 즉시 공개)
+    new_html = re.sub(
+        r'<div class="legal">.*?</div>',
+        "",
+        new_html,
+        count=1,
+        flags=re.DOTALL,
+    )
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_text(new_html, encoding="utf-8")
     print(f"  · {dst.relative_to(ROOT)}")
@@ -133,8 +83,7 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
 .intro strong { color: #8b6500; }
 </style></head><body>
 
-""" + GATE_LOCK_HTML + """
-<div id="sim-gate-content" style="display:none">
+""" + DISCLAIMER_HTML + """
 
 <h1>9회 전국동시지방선거 의석 시뮬레이션</h1>
 <p class="sub">2026-05-27 작성 · 과거 6회차(3~8회) 개표결과 기반 몬테카를로 1만회 · 시민언론 뉴탐사</p>
@@ -159,8 +108,6 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
 
 <p style="text-align:center;color:#aaa;font-size:0.75rem;margin-top:40px">시민언론 뉴탐사 · election2026.newtamsa.org</p>
 
-</div>
-<script src="/sim/_gate.js" defer></script>
 </body></html>
 """
 
@@ -169,11 +116,13 @@ def main():
     SIM_ROOT.mkdir(parents=True, exist_ok=True)
     print("=== sim/ 빌드 ===")
 
-    # 게이트 JS
-    (SIM_ROOT / "_gate.js").write_text(GATE_JS, encoding="utf-8")
-    print(f"  · {(SIM_ROOT / '_gate.js').relative_to(ROOT)}")
+    # 이전 빌드의 게이트 JS는 제거 (이제 즉시 공개)
+    gate_js_path = SIM_ROOT / "_gate.js"
+    if gate_js_path.exists():
+        gate_js_path.unlink()
+        print(f"  · {gate_js_path.relative_to(ROOT)} (제거)")
 
-    # robots.txt — sim/ 디렉터리 검색엔진 차단 (선거법 + 사후 비공개 안전망)
+    # robots.txt — sim/ 디렉터리 검색엔진 차단 유지 (카톡·구글 미리보기 사고 방지)
     robots = ROOT / "robots.txt"
     if not robots.exists():
         robots.write_text("User-agent: *\nDisallow: /sim/\n", encoding="utf-8")
@@ -210,11 +159,10 @@ def main():
             html = html.replace("<head>", '<head>\n<meta name="robots" content="noindex,nofollow">', 1)
             p.write_text(html, encoding="utf-8")
 
-    print("\n사이트 통합 완료. 미리보기 URL:")
-    print("  https://election2026.newtamsa.org/sim/?preview=" + PREVIEW_TOKEN)
-    print("  https://election2026.newtamsa.org/sim/sido/?preview=" + PREVIEW_TOKEN)
-    print("  https://election2026.newtamsa.org/sim/basic-head/?preview=" + PREVIEW_TOKEN)
-    print(f"\n공개 시각: {RELEASE_ISO}")
+    print("\n사이트 통합 완료. 공개 URL (게이트 해제됨):")
+    print("  https://election2026.newtamsa.org/sim/")
+    print("  https://election2026.newtamsa.org/sim/sido/")
+    print("  https://election2026.newtamsa.org/sim/basic-head/")
 
 
 if __name__ == "__main__":

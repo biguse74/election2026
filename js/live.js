@@ -821,19 +821,16 @@
           <span class="live-phase-body">${escapeHtml(phaseInfo.body)}</span>
         </div>`;
 
-    // 6/3 18:00 KST 이후 시뮬 페이지 링크 노출 (공직선거법 108조 게이트)
-    const SIM_RELEASE = Date.parse('2026-06-03T18:00:00+09:00');
-    const simReleased = Date.now() >= SIM_RELEASE
-      || (current.polled_at && new Date(current.polled_at).getTime() >= SIM_RELEASE);
-    const simLinkBox = simReleased ? `
+    // 시뮬 페이지는 여론조사·예측조사가 아닌 패턴 자료이므로 상시 노출.
+    const simLinkBox = `
         <a class="live-sim-link" href="/sim/" target="_blank" rel="noopener">
           <span class="live-sim-link-icon">🎲</span>
           <span class="live-sim-link-body">
-            <strong>시뮬레이션 vs 실제 비교</strong>
-            <span>과거 6회차 기반 몬테카를로 1만 회 — 시도지사 17·기초단체장 226</span>
+            <strong>의석 시뮬레이션 (과거 6회차 기반)</strong>
+            <span>몬테카를로 1만 회 — 시도지사 17·기초단체장 226 · 단정 예측 아님</span>
           </span>
           <span class="live-sim-link-arrow">→</span>
-        </a>` : '';
+        </a>`;
 
     // 출구조사 면책 박스 (출구조사 데이터가 로드되어 있을 때만)
     let exitNotice = '';
