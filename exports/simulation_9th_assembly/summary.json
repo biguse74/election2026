@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-05-27",
-  "source": "poll-mbc.co.kr region_data/assembly/boxplot_data.js",
-  "model": "MBC 베이지안 추정치 prior + Normal noise (residual SD 6%p)",
+  "source": "2026-05-27까지 보도된 공개 여론조사 (언론 종합)",
+  "model": "공개 여론조사 추정치 prior + Normal noise (residual SD 6%p)",
   "n_simulations": 10000,
   "races": [
     {
@@ -396,10 +396,10 @@
     }
   },
   "limitations": [
-    "14개 선거구 각각 표본 작음 — 특히 'null' 분류 선거구는 여론조사 누적 적음",
+    "14개 선거구 각각 표본 작음 — 특히 자료 부족 분류 선거구는 여론조사 누적 적음",
     "현직 이점·후보 효과·정당 변동 미반영",
-    "MBC SD 외 모델 잡음 SD 6%p 가정 — 보수적 추정",
-    "MBC 데이터가 갱신되면 결과도 갱신해야 함",
+    "여론조사 신뢰구간 외 모델 잡음 SD 6%p 가정 — 보수적 추정",
+    "참고한 여론조사가 갱신되면 결과도 갱신해야 함",
     "여론조사 인용보도 아닌 모델 내부 변수로만 사용"
   ]
 }

@@ -30,11 +30,11 @@ SIM_ROOT = ROOT / "sim"
 
 DISCLAIMER_HTML = """<div style="max-width:880px;margin:0 auto 20px;padding:14px 18px;background:#fdecea;border-left:4px solid #c41e3a;border-radius:4px;font-family:-apple-system,'Pretendard',sans-serif;font-size:0.86rem;color:#1a1a1a;line-height:1.6">
   <strong style="color:#b3261e;display:block;margin-bottom:4px;font-size:0.92rem">⚠️ 자료의 성격 안내 · 반드시 읽어주세요</strong>
-  · 본 자료는 <strong>여론조사·예측조사 결과가 아닙니다</strong>. 과거 개표결과·공개된 여론조사 추정치를 입력으로 한 시뮬레이션의 출력 분포입니다.<br>
+  · 본 자료는 <strong>여론조사·예측조사 결과가 아닙니다</strong>. 과거 개표결과와 <strong>2026년 5월 27일까지 언론에 보도된 공개 여론조사</strong>를 입력으로 한 시뮬레이션의 출력 분포입니다.<br>
   · 특정 후보·정당의 당락을 <strong>단정하지 않습니다</strong>. 환경에 따른 시나리오별 의석 분포를 보여주는 패턴 자료입니다.<br>
-  · 메인 시나리오는 <strong>"이재명 정부 출범 1년차"</strong> 가정 + (시도지사·재보궐의 경우) 5/27 기준 공개 여론조사 베이지안 추정치 prior.<br>
+  · 메인 시나리오는 <strong>"이재명 정부 출범 1년차"</strong> 가정 + (시도지사·재보궐의 경우) 5월 27일까지 보도된 여론조사 추정치 prior.<br>
   · 외부 충격·후보 효과·정당 변동·사전투표 패턴 변화 등은 미반영. 모델 잡음 SD를 보수적으로 둠.<br>
-  · 인용·재가공 시 위 한계를 반드시 함께 표기해 주십시오. 여론조사 prior 사용은 모델 내부 변수이며 여론조사 인용보도가 아닙니다.
+  · 인용·재가공 시 위 한계를 반드시 함께 표기해 주십시오. 보도된 여론조사 prior 사용은 모델 내부 변수이며 여론조사 인용보도가 아닙니다.
 </div>
 """
 
@@ -98,7 +98,7 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
 <div class="cards">
   <a class="card" href="/sim/sido/">
     <div class="card-title">시도지사 17석</div>
-    <p class="card-sub">광역단체장 17개 시도. MBC 여론조사 + 역사 패턴.</p>
+    <p class="card-sub">광역단체장 17개 시도. 공개 여론조사 + 역사 패턴.</p>
     <div class="card-meta">8회 백테스트 88%</div>
   </a>
   <a class="card" href="/sim/basic-head/">
@@ -108,8 +108,8 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
   </a>
   <a class="card" href="/sim/assembly/">
     <div class="card-title">국회의원 재·보궐 14석</div>
-    <p class="card-sub">6/3 동시 재보궐 14개 선거구. MBC 베이지안 추정치 + 22대 fallback.</p>
-    <div class="card-meta">MBC 자료 기반 · 정량 검증 안 됨</div>
+    <p class="card-sub">6/3 동시 재보궐 14개 선거구. 보도된 여론조사 추정치 + 22대 fallback.</p>
+    <div class="card-meta">언론 보도 기반 · 정량 검증 안 됨</div>
   </a>
 </div>
 

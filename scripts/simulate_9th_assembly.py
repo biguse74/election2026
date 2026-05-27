@@ -369,8 +369,8 @@ def main():
     # CSV·summary
     summary = {
         "generated_at": "2026-05-27",
-        "source": "poll-mbc.co.kr region_data/assembly/boxplot_data.js",
-        "model": "MBC 베이지안 추정치 prior + Normal noise (residual SD 6%p)",
+        "source": "2026-05-27까지 보도된 공개 여론조사 (언론 종합)",
+        "model": "공개 여론조사 추정치 prior + Normal noise (residual SD 6%p)",
         "n_simulations": n,
         "races": priors,
         "result": {
@@ -385,10 +385,10 @@ def main():
             "race_dem_prob": {k: round(v / n, 4) for k, v in sim["race_dem_wins"].items()},
         },
         "limitations": [
-            "14개 선거구 각각 표본 작음 — 특히 'null' 분류 선거구는 여론조사 누적 적음",
+            "14개 선거구 각각 표본 작음 — 특히 자료 부족 분류 선거구는 여론조사 누적 적음",
             "현직 이점·후보 효과·정당 변동 미반영",
-            "MBC SD 외 모델 잡음 SD 6%p 가정 — 보수적 추정",
-            "MBC 데이터가 갱신되면 결과도 갱신해야 함",
+            "여론조사 신뢰구간 외 모델 잡음 SD 6%p 가정 — 보수적 추정",
+            "참고한 여론조사가 갱신되면 결과도 갱신해야 함",
             "여론조사 인용보도 아닌 모델 내부 변수로만 사용",
         ],
     }
@@ -459,9 +459,9 @@ def write_html(summary, priors, sim):
 
     DISCLAIMER = """<div style="max-width:880px;margin:0 auto 20px;padding:14px 18px;background:#fdecea;border-left:4px solid #c41e3a;border-radius:4px;font-size:0.86rem;line-height:1.6">
   <strong style="color:#b3261e;display:block;margin-bottom:4px;font-size:0.92rem">⚠️ 자료의 성격 안내</strong>
-  · 본 자료는 <strong>여론조사·예측조사가 아닙니다</strong>. MBC 여론M 시도별 베이지안 추정치를 prior로 한 시뮬레이션.<br>
+  · 본 자료는 <strong>여론조사·예측조사가 아닙니다</strong>. 2026-05-27까지 언론에 보도된 공개 여론조사 추정치를 prior로 한 시뮬레이션.<br>
   · 특정 후보·정당의 당락을 <strong>단정하지 않습니다</strong>.<br>
-  · MBC 베이지안 모형의 신뢰구간을 prior 입력, 추가 잡음 SD 6%p를 부여한 보수적 추정.<br>
+  · 보도된 여론조사 신뢰구간을 prior로, 추가 잡음 SD 6%p를 부여한 보수적 추정.<br>
   · 14개 선거구 각각 표본이 작아 신뢰구간이 넓음. 인용·재가공 시 한계 함께 표기 부탁.
 </div>"""
 
@@ -509,7 +509,7 @@ table.races th {{ font-size: 0.74rem; color: #555; }}
 </style></head><body>
 {DISCLAIMER}
 <h1>9회 동시 국회의원 재·보궐 14개 선거구 시뮬레이션</h1>
-<p class="sub">2026-05-27 기준 · MBC 베이지안 추정치 prior + 1만 회 몬테카를로 · 시민언론 뉴탐사</p>
+<p class="sub">2026-05-27 기준 · 보도된 공개 여론조사 prior + 1만 회 몬테카를로 · 시민언론 뉴탐사</p>
 
 <div class="summary-pills">
   <div class="pill d"><span class="lbl">민주당</span> <strong class="val">{r['dem_mean']}석</strong><p class="sub">최빈 {r['dem_mode']}석 · 80% CI [{r['dem_80_ci'][0]}~{r['dem_80_ci'][1]}]</p></div>
@@ -519,10 +519,10 @@ table.races th {{ font-size: 0.74rem; color: #555; }}
 <div class="charts">{dem_chart}{con_chart}</div>
 
 <section>
-  <h2 style="font-size:1.1rem">14개 선거구별 민주 우세도</h2>
-  <p style="color:#666;font-size:0.84rem;margin:0 0 8px"><strong>진보 진영 1위 vs 보수 진영 1위</strong> 매치업.<br>진보 = 더불어민주당·조국혁신당·진보당·정의당. 보수 = 국민의힘·자유와혁신·자유통일당 + 한동훈(보수계 무소속). 작은 글자는 같은 진영의 2위 이상 후보.</p>
+  <h2 style="font-size:1.1rem">14개 선거구별 민주당 승리 확률</h2>
+  <p style="color:#666;font-size:0.84rem;margin:0 0 8px"><strong>민주당 진영 1위 vs 비민주당 진영 1위</strong> 매치업.<br>민주당 진영 = 더불어민주당·조국혁신당·진보당·정의당. 비민주당 진영 = 국민의힘·자유와혁신·자유통일당 + 한동훈(비민주당 무소속). 작은 글자는 같은 진영의 2위 이상 후보.</p>
   <table class="races">
-    <thead><tr><th>시도</th><th>선거구</th><th>진보 1위 후보</th><th>보수 1위 후보</th><th>격차</th><th>민주 승리 확률</th><th>MBC 분류</th></tr></thead>
+    <thead><tr><th>시도</th><th>선거구</th><th>민주당 진영 1위</th><th>비민주당 진영 1위</th><th>격차</th><th>민주당 승리 확률</th><th>분류</th></tr></thead>
     <tbody>{rows_html}</tbody>
   </table>
 </section>
