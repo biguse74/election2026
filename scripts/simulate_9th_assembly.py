@@ -141,6 +141,56 @@ def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict]) -> list[dict
                 elif party in CONSERVATIVE and con is None:
                     con = entry
 
+        # graph_data 없거나 부족하면 bar_data의 raw 여론조사 사용 (단순 평균)
+        if (not dem or not con) and race.get("bar_data"):
+            bar = race.get("bar_data") or []
+            cand_party = {c["name"]: c["party"] for c in candis}
+            dem_vals, con_vals = [], []
+            dem_names, con_names = set(), set()
+            for bd in bar:
+                for sv in (bd.get("survey_data") or []):
+                    for name, vals in sv.items():
+                        party = cand_party.get(name)
+                        if party in PROGRESSIVE:
+                            dem_vals.append(vals.get("mean"))
+                            dem_names.add(name)
+                        elif party in CONSERVATIVE:
+                            con_vals.append(vals.get("mean"))
+                            con_names.add(name)
+            dem_vals = [v for v in dem_vals if v is not None]
+            con_vals = [v for v in con_vals if v is not None]
+            if dem_vals and con_vals:
+                dem_mean = sum(dem_vals) / len(dem_vals)
+                con_mean = sum(con_vals) / len(con_vals)
+                # 조사 수 적을 때 SD 크게 (적은 표본은 불확실)
+                base_sd = 4.0 if len(dem_vals) < 4 else 2.5
+                dem_sd = (statistics.stdev(dem_vals) if len(dem_vals) >= 2 else base_sd)
+                con_sd = (statistics.stdev(con_vals) if len(con_vals) >= 2 else base_sd)
+                # SD 하한
+                dem_sd = max(dem_sd, base_sd)
+                con_sd = max(con_sd, base_sd)
+                dem = {"name": ", ".join(sorted(dem_names)) or "—", "party": "더불어민주당",
+                       "mean": round(dem_mean, 2), "sd": round(dem_sd, 2)}
+                con = {"name": ", ".join(sorted(con_names)) or "—", "party": "국민의힘",
+                       "mean": round(con_mean, 2), "sd": round(con_sd, 2)}
+                # bar_data 사용 표시 (fallback과 구분)
+                margin = dem["mean"] - con["mean"]
+                margin_sd = (dem["sd"] ** 2 + con["sd"] ** 2) ** 0.5
+                out.append({
+                    "consti": consti,
+                    "region1": region1,
+                    "region2": region2,
+                    "state_label": (state or "") + f" (raw 여론조사 {len(dem_vals)}회 평균)",
+                    "last_date": None,
+                    "dem": dem,
+                    "con": con,
+                    "margin": round(margin, 2),
+                    "margin_sd": round(margin_sd, 2),
+                    "fallback": False,
+                    "bar_data_count": len(dem_vals),
+                })
+                continue
+
         if not dem or not con:
             # Fallback: repoll의 22대 당선 정당 기반
             used_fallback = True
