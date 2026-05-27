@@ -38,6 +38,56 @@ th { font-size: 0.78rem; color: #666; }
 .prob-bar > span { display: block; height: 100%; transition: width 0.2s; }
 .prob-num { font-variant-numeric: tabular-nums; font-weight: 700; color: #1a1a1a; min-width: 38px; text-align: right; }
 </style></head><body>
+
+<header class="sim-header">
+  <div class="sim-header-inner">
+    <a href="https://election2026.newtamsa.org/" class="sim-brand">
+      <span class="sim-brand-title">뉴탐사 · 6·3 선거 2026</span>
+      <span class="sim-brand-sub">의석 시뮬레이션</span>
+    </a>
+    <nav class="sim-nav"><a class="sim-nav-link" href="/sim/">시뮬 홈</a><a class="sim-nav-link" href="/sim/sido/">시도지사 17</a><a class="sim-nav-link sim-nav-link-active" href="/sim/basic-head/" aria-current="page">기초단체장 226</a><a class="sim-nav-link" href="/sim/assembly/">재·보궐 14</a></nav>
+    <a class="sim-live-link" href="https://election2026.newtamsa.org/#live">실시간 개표 →</a>
+  </div>
+</header>
+<style>
+  body { margin: 0 !important; padding: 0 !important; max-width: none !important; }
+  .sim-page { max-width: 1100px; margin: 0 auto; padding: 20px 24px 48px; }
+  .sim-header {
+    background: #1a1a1a; color: #fff; border-bottom: 3px solid #c41e3a;
+    font-family: -apple-system, 'Pretendard', sans-serif;
+  }
+  .sim-header-inner {
+    max-width: 1200px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .sim-brand {
+    color: #fff; text-decoration: none; display: flex; flex-direction: column; line-height: 1.2; margin-right: auto;
+  }
+  .sim-brand-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; }
+  .sim-brand-sub { font-size: 0.78rem; color: #c41e3a; font-weight: 700; }
+  .sim-nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  .sim-nav-link {
+    color: rgba(255,255,255,0.78); text-decoration: none; font-size: 0.86rem; font-weight: 600;
+    padding: 6px 12px; border-radius: 999px; transition: background 0.15s, color 0.15s;
+  }
+  .sim-nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .sim-nav-link-active { background: #c41e3a; color: #fff; }
+  .sim-live-link {
+    background: #c41e3a; color: #fff; text-decoration: none; padding: 7px 14px;
+    border-radius: 6px; font-size: 0.84rem; font-weight: 700;
+  }
+  .sim-live-link:hover { background: #a31628; }
+  @media (max-width: 720px) {
+    .sim-header-inner { padding: 10px 16px; gap: 10px; }
+    .sim-brand-title { font-size: 0.95rem; }
+    .sim-brand-sub { font-size: 0.72rem; }
+    .sim-nav-link { font-size: 0.78rem; padding: 5px 10px; }
+    .sim-live-link { padding: 6px 12px; font-size: 0.78rem; }
+    .sim-page { padding: 16px 16px 40px; }
+  }
+</style>
+
+<main class="sim-page">
 <div style="max-width:880px;margin:0 auto 20px;padding:14px 18px;background:#fdecea;border-left:4px solid #c41e3a;border-radius:4px;font-family:-apple-system,'Pretendard',sans-serif;font-size:0.86rem;color:#1a1a1a;line-height:1.6">
   <strong style="color:#b3261e;display:block;margin-bottom:4px;font-size:0.92rem">⚠️ 자료의 성격 안내 · 반드시 읽어주세요</strong>
   · 본 자료는 <strong>여론조사·예측조사 결과가 아닙니다</strong>. 과거 개표결과와 <strong>2026년 5월 27일까지 언론에 보도된 공개 여론조사</strong>를 입력으로 한 시뮬레이션의 출력 분포입니다.<br>
@@ -197,4 +247,6 @@ th { font-size: 0.78rem; color: #666; }
 <section><h2>모델 검증 (Leave-one-out)</h2>
 <table style="max-width:380px"><thead><tr><th>대상</th><th>적중</th><th>정확도</th></tr></thead><tbody><tr><td>7회 (2018)</td><td>114/226</td><td>50.4%</td></tr><tr><td>8회 (2022)</td><td>177/219</td><td>80.8%</td></tr></tbody></table></section>
 <section class="limits"><h2>모델 한계</h2><ul><li>표본 6회차만 (1995~2022) — 시군구당 평균 4~6회</li><li>선거구 통합·분리 변동 (5회→6회 226→222 등) 매칭 안 되는 행 무시</li><li>정당 진영 매핑의 자의성 (예: 새정치민주연합 → 진보)</li><li>현직 이점·후보 효과·지역 토호 영향 미반영</li><li>사전투표·당일투표 패턴 변화 미반영</li><li>시군구 226곳 단위 공개 여론조사는 자료가 충분치 않아 prior로 사용 안 됨 (시도지사·재보궐은 반영)</li></ul></section>
+
+</main>
 </body></html>

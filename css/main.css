@@ -157,6 +157,14 @@ a { color: inherit; }
 .site-nav-link.active {
   color: #fff; border-color: var(--ink); background: var(--ink);
 }
+.site-nav-link-sim {
+  color: var(--accent); border-color: rgba(196,30,58,0.25);
+  font-weight: 700;
+}
+.site-nav-link-sim::before { content: "🎲"; margin-right: 4px; font-size: 0.86em; }
+.site-nav-link-sim:hover {
+  background: var(--accent); color: #fff; border-color: var(--accent);
+}
 /* 외부 링크 (뉴탐사·후원) */
 .sido-chip-external { color: var(--ink-sub); font-weight: 500; }
 .sido-chip-external:hover { background: var(--ink); color: #fff; border-color: var(--ink); }

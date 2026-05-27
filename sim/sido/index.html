@@ -50,6 +50,56 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
 </style>
 </head>
 <body>
+
+<header class="sim-header">
+  <div class="sim-header-inner">
+    <a href="https://election2026.newtamsa.org/" class="sim-brand">
+      <span class="sim-brand-title">뉴탐사 · 6·3 선거 2026</span>
+      <span class="sim-brand-sub">의석 시뮬레이션</span>
+    </a>
+    <nav class="sim-nav"><a class="sim-nav-link" href="/sim/">시뮬 홈</a><a class="sim-nav-link sim-nav-link-active" href="/sim/sido/" aria-current="page">시도지사 17</a><a class="sim-nav-link" href="/sim/basic-head/">기초단체장 226</a><a class="sim-nav-link" href="/sim/assembly/">재·보궐 14</a></nav>
+    <a class="sim-live-link" href="https://election2026.newtamsa.org/#live">실시간 개표 →</a>
+  </div>
+</header>
+<style>
+  body { margin: 0 !important; padding: 0 !important; max-width: none !important; }
+  .sim-page { max-width: 1100px; margin: 0 auto; padding: 20px 24px 48px; }
+  .sim-header {
+    background: #1a1a1a; color: #fff; border-bottom: 3px solid #c41e3a;
+    font-family: -apple-system, 'Pretendard', sans-serif;
+  }
+  .sim-header-inner {
+    max-width: 1200px; margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+  .sim-brand {
+    color: #fff; text-decoration: none; display: flex; flex-direction: column; line-height: 1.2; margin-right: auto;
+  }
+  .sim-brand-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; }
+  .sim-brand-sub { font-size: 0.78rem; color: #c41e3a; font-weight: 700; }
+  .sim-nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  .sim-nav-link {
+    color: rgba(255,255,255,0.78); text-decoration: none; font-size: 0.86rem; font-weight: 600;
+    padding: 6px 12px; border-radius: 999px; transition: background 0.15s, color 0.15s;
+  }
+  .sim-nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .sim-nav-link-active { background: #c41e3a; color: #fff; }
+  .sim-live-link {
+    background: #c41e3a; color: #fff; text-decoration: none; padding: 7px 14px;
+    border-radius: 6px; font-size: 0.84rem; font-weight: 700;
+  }
+  .sim-live-link:hover { background: #a31628; }
+  @media (max-width: 720px) {
+    .sim-header-inner { padding: 10px 16px; gap: 10px; }
+    .sim-brand-title { font-size: 0.95rem; }
+    .sim-brand-sub { font-size: 0.72rem; }
+    .sim-nav-link { font-size: 0.78rem; padding: 5px 10px; }
+    .sim-live-link { padding: 6px 12px; font-size: 0.78rem; }
+    .sim-page { padding: 16px 16px 40px; }
+  }
+</style>
+
+<main class="sim-page">
 <div style="max-width:880px;margin:0 auto 20px;padding:14px 18px;background:#fdecea;border-left:4px solid #c41e3a;border-radius:4px;font-family:-apple-system,'Pretendard',sans-serif;font-size:0.86rem;color:#1a1a1a;line-height:1.6">
   <strong style="color:#b3261e;display:block;margin-bottom:4px;font-size:0.92rem">⚠️ 자료의 성격 안내 · 반드시 읽어주세요</strong>
   · 본 자료는 <strong>여론조사·예측조사 결과가 아닙니다</strong>. 과거 개표결과와 <strong>2026년 5월 27일까지 언론에 보도된 공개 여론조사</strong>를 입력으로 한 시뮬레이션의 출력 분포입니다.<br>
@@ -165,5 +215,7 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
 </section>
 
 <p style="text-align:center;color:#aaa;font-size:0.75rem;margin-top:36px;">제9회 전국동시지방선거 시도지사 시뮬레이션 · 시민언론 뉴탐사</p>
+
+</main>
 </body>
 </html>
