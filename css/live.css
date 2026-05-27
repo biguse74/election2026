@@ -191,6 +191,30 @@
   color: #666;
 }
 
+/* 시뮬레이션 진입 링크 — 6/3 18:00 이후 노출 */
+.live-sim-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0 16px;
+  padding: 12px 16px;
+  border: 1px solid #1a1a1a;
+  border-radius: 8px;
+  background: #1a1a1a;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.live-sim-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+.live-sim-link-icon { font-size: 1.4rem; flex: 0 0 auto; }
+.live-sim-link-body { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.live-sim-link-body strong { font-size: 0.95rem; }
+.live-sim-link-body span { font-size: 0.78rem; opacity: 0.8; }
+.live-sim-link-arrow { font-size: 1.1rem; font-weight: 700; opacity: 0.7; }
+
 /* phase 안내 배너 — 화면 최상단, 데모 배너 다음 */
 .live-phase-banner {
   display: flex;

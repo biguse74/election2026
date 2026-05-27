@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta name="robots" content="noindex,nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9회 지방선거 시도지사 시뮬레이션 — 뉴탐사</title>
+<style>
+body { font-family: -apple-system, 'Pretendard', sans-serif; max-width: 1100px; margin: 0 auto; padding: 24px; color: #1a1a1a; line-height: 1.5; }
+h1 { font-size: 1.6rem; margin: 0 0 8px; }
+.intro { background: #fff8e3; border-left: 4px solid #b8860b; padding: 14px 16px; margin-bottom: 24px; border-radius: 4px; }
+.intro strong { color: #8b6500; }
+.scenario { border: 1px solid #ddd; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; background: #fff; }
+.scenario-title { font-size: 1.2rem; margin: 0 0 4px; }
+.scenario-desc { font-size: 0.85rem; color: #666; margin: 0 0 14px; }
+.scenario-stats { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.stat-pill { flex: 1; min-width: 200px; padding: 10px 14px; border-radius: 8px; }
+.stat-pill.stat-d { background: #eef2fb; border-left: 4px solid #152484; }
+.stat-pill.stat-r { background: #fdecee; border-left: 4px solid #E61E2B; }
+.pill-label { display: block; font-size: 0.78rem; color: #555; font-weight: 700; }
+.pill-value { display: block; font-size: 1.6rem; font-weight: 800; margin: 2px 0; }
+.pill-sub { font-size: 0.74rem; color: #555; }
+.charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .charts { grid-template-columns: 1fr; } }
+.bar-chart-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: #444; }
+.bar-row { display: grid; grid-template-columns: 38px 1fr 50px; align-items: center; gap: 8px; margin-bottom: 3px; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
+.bar-label { color: #888; }
+.bar-track { background: #f3f3f3; height: 14px; border-radius: 3px; overflow: hidden; }
+.bar-fill { display: block; height: 100%; transition: width 0.3s; }
+.bar-value { font-weight: 600; color: #1a1a1a; text-align: right; }
+.sido-marginal { margin: 28px 0; }
+.sido-marginal table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.sido-marginal th, .sido-marginal td { padding: 6px 8px; border-bottom: 1px solid #eee; text-align: left; }
+.sido-marginal th { font-size: 0.78rem; color: #666; }
+.sido-name { font-weight: 700; width: 130px; }
+.prob-bar { display: inline-block; width: 160px; background: #f0f0f0; height: 8px; border-radius: 2px; overflow: hidden; vertical-align: middle; }
+.prob-bar span { display: block; height: 100%; background: #152484; }
+.prob-num { display: inline-block; margin-left: 8px; font-variant-numeric: tabular-nums; font-size: 0.78rem; color: #555; }
+.backtest table { width: 100%; border-collapse: collapse; max-width: 480px; }
+.backtest th, .backtest td { padding: 6px 10px; border-bottom: 1px solid #eee; text-align: left; font-variant-numeric: tabular-nums; }
+.acc-good { color: #126b3f; font-weight: 700; }
+.acc-warn { color: #8b6500; font-weight: 700; }
+.acc-bad { color: #b3261e; font-weight: 700; }
+.limits { background: #f6f6f6; padding: 14px 20px; border-radius: 4px; margin-top: 28px; font-size: 0.85rem; }
+.limits h2 { font-size: 1rem; margin: 0 0 8px; }
+.limits ul { margin: 0; padding-left: 20px; color: #555; }
+.legal { background: #fdecea; border-left: 4px solid #c41e3a; padding: 12px 16px; margin: 16px 0; font-size: 0.85rem; color: #b3261e; }
+</style>
+</head>
+<body><div id="sim-gate-lock" style="display:none;max-width:760px;margin:80px auto;padding:36px 32px;border:1px solid #ddd;border-radius:10px;background:#fafafa;text-align:center;font-family:-apple-system,'Pretendard',sans-serif;color:#1a1a1a;line-height:1.6">
+  <div style="font-size:0.85rem;color:#b3261e;font-weight:700;margin-bottom:8px;letter-spacing:0.04em">⚠️ 공직선거법 제108조</div>
+  <h1 style="font-size:1.4rem;margin:0 0 14px">선거일 투표마감 이후에만 공개됩니다</h1>
+  <p style="color:#555;margin:0 0 18px;font-size:0.92rem">
+    공직선거법 제108조에 따라 선거 6일 전부터 투표마감 시각(2026-06-03 18:00 KST)까지는<br>
+    여론조사·시뮬레이션 결과의 공표·인용보도가 금지됩니다.
+  </p>
+  <div style="display:inline-block;padding:10px 22px;background:#1a1a1a;color:#fff;border-radius:6px;font-weight:700;font-variant-numeric:tabular-nums">
+    <span style="display:block;font-size:0.72rem;font-weight:400;opacity:0.7">공개까지</span>
+    <span id="sim-gate-countdown" style="font-size:1.2rem">—</span>
+  </div>
+  <p style="color:#999;font-size:0.78rem;margin:18px 0 0">시민언론 뉴탐사 · 9회 전국동시지방선거 시뮬레이션</p>
+</div>
+
+<div id="sim-gate-content" style="display:none">
+
+<h1>9회 전국동시지방선거 시도지사 의석 시뮬레이션</h1>
+<p style="color:#666;font-size:0.85rem;margin:0 0 16px;">2026-05-27 기준 · 과거 6회차(3~8회) 개표결과 기반 몬테카를로 1만회 · 뉴탐사</p>
+
+<div class="legal">
+  ⚠️ <strong>법적 주의</strong> — 공직선거법 제108조에 따라 선거 6일 전(2026-05-28)부터 투표마감(6/3 18:00)까지 본 시뮬레이션 결과는 <strong>공표·인용보도가 금지</strong>됩니다. 6/3 18:00 이후에만 사용할 수 있습니다.
+</div>
+
+<div class="intro">
+  <strong>읽는 법</strong> — 9회 지선의 정치 환경이 어떨지 모르므로 세 시나리오로 분리해 보여줍니다. 9회 결과는 셋 중 어느 시나리오에 가깝게 나타나는지에 따라 달라질 것입니다. 단일 예측이 아닙니다.
+</div>
+
+
+    <section class="scenario">
+      <h2 class="scenario-title">혼합 환경</h2>
+      <p class="scenario-desc">6회차(3~8회) 분위기를 모두 무작위로 추출. 시대 효과 불확실성을 그대로 반영.</p>
+      <div class="scenario-stats">
+        <div class="stat-pill stat-d">
+          <span class="pill-label">민주</span>
+          <strong class="pill-value">7.24석</strong>
+          <span class="pill-sub">최빈 7 · 80% [4~13]</span>
+        </div>
+        <div class="stat-pill stat-r">
+          <span class="pill-label">국힘</span>
+          <strong class="pill-value">9.76석</strong>
+          <span class="pill-sub">최빈 10 · 80% [4~13]</span>
+        </div>
+      </div>
+      <div class="charts"><div class="bar-chart"><div class="bar-chart-title">민주당 의석 분포</div><div class="bar-row"><span class="bar-label">1석</span><span class="bar-track"><span class="bar-fill" style="width:0.2%;background:#152484"></span></span><span class="bar-value">0.0%</span></div><div class="bar-row"><span class="bar-label">2석</span><span class="bar-track"><span class="bar-fill" style="width:3.1%;background:#152484"></span></span><span class="bar-value">0.5%</span></div><div class="bar-row"><span class="bar-label">3석</span><span class="bar-track"><span class="bar-fill" style="width:34.6%;background:#152484"></span></span><span class="bar-value">5.7%</span></div><div class="bar-row"><span class="bar-label">4석</span><span class="bar-track"><span class="bar-fill" style="width:67.9%;background:#152484"></span></span><span class="bar-value">11.2%</span></div><div class="bar-row"><span class="bar-label">5석</span><span class="bar-track"><span class="bar-fill" style="width:90.3%;background:#152484"></span></span><span class="bar-value">14.8%</span></div><div class="bar-row"><span class="bar-label">6석</span><span class="bar-track"><span class="bar-fill" style="width:98.9%;background:#152484"></span></span><span class="bar-value">16.2%</span></div><div class="bar-row"><span class="bar-label">7석</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#152484"></span></span><span class="bar-value">16.4%</span></div><div class="bar-row"><span class="bar-label">8석</span><span class="bar-track"><span class="bar-fill" style="width:67.4%;background:#152484"></span></span><span class="bar-value">11.1%</span></div><div class="bar-row"><span class="bar-label">9석</span><span class="bar-track"><span class="bar-fill" style="width:33.1%;background:#152484"></span></span><span class="bar-value">5.4%</span></div><div class="bar-row"><span class="bar-label">10석</span><span class="bar-track"><span class="bar-fill" style="width:13.1%;background:#152484"></span></span><span class="bar-value">2.1%</span></div><div class="bar-row"><span class="bar-label">11석</span><span class="bar-track"><span class="bar-fill" style="width:11.3%;background:#152484"></span></span><span class="bar-value">1.9%</span></div><div class="bar-row"><span class="bar-label">12석</span><span class="bar-track"><span class="bar-fill" style="width:20.3%;background:#152484"></span></span><span class="bar-value">3.3%</span></div><div class="bar-row"><span class="bar-label">13석</span><span class="bar-track"><span class="bar-fill" style="width:29.1%;background:#152484"></span></span><span class="bar-value">4.8%</span></div><div class="bar-row"><span class="bar-label">14석</span><span class="bar-track"><span class="bar-fill" style="width:24.7%;background:#152484"></span></span><span class="bar-value">4.1%</span></div><div class="bar-row"><span class="bar-label">15석</span><span class="bar-track"><span class="bar-fill" style="width:12.4%;background:#152484"></span></span><span class="bar-value">2.0%</span></div><div class="bar-row"><span class="bar-label">16석</span><span class="bar-track"><span class="bar-fill" style="width:1.7%;background:#152484"></span></span><span class="bar-value">0.3%</span></div><div class="bar-row"><span class="bar-label">17석</span><span class="bar-track"><span class="bar-fill" style="width:0.4%;background:#152484"></span></span><span class="bar-value">0.1%</span></div></div><div class="bar-chart"><div class="bar-chart-title">국민의힘 의석 분포</div><div class="bar-row"><span class="bar-label">0석</span><span class="bar-track"><span class="bar-fill" style="width:0.4%;background:#E61E2B"></span></span><span class="bar-value">0.1%</span></div><div class="bar-row"><span class="bar-label">1석</span><span class="bar-track"><span class="bar-fill" style="width:1.7%;background:#E61E2B"></span></span><span class="bar-value">0.3%</span></div><div class="bar-row"><span class="bar-label">2석</span><span class="bar-track"><span class="bar-fill" style="width:12.4%;background:#E61E2B"></span></span><span class="bar-value">2.0%</span></div><div class="bar-row"><span class="bar-label">3석</span><span class="bar-track"><span class="bar-fill" style="width:24.7%;background:#E61E2B"></span></span><span class="bar-value">4.1%</span></div><div class="bar-row"><span class="bar-label">4석</span><span class="bar-track"><span class="bar-fill" style="width:29.1%;background:#E61E2B"></span></span><span class="bar-value">4.8%</span></div><div class="bar-row"><span class="bar-label">5석</span><span class="bar-track"><span class="bar-fill" style="width:20.3%;background:#E61E2B"></span></span><span class="bar-value">3.3%</span></div><div class="bar-row"><span class="bar-label">6석</span><span class="bar-track"><span class="bar-fill" style="width:11.3%;background:#E61E2B"></span></span><span class="bar-value">1.9%</span></div><div class="bar-row"><span class="bar-label">7석</span><span class="bar-track"><span class="bar-fill" style="width:13.1%;background:#E61E2B"></span></span><span class="bar-value">2.1%</span></div><div class="bar-row"><span class="bar-label">8석</span><span class="bar-track"><span class="bar-fill" style="width:33.1%;background:#E61E2B"></span></span><span class="bar-value">5.4%</span></div><div class="bar-row"><span class="bar-label">9석</span><span class="bar-track"><span class="bar-fill" style="width:67.4%;background:#E61E2B"></span></span><span class="bar-value">11.1%</span></div><div class="bar-row"><span class="bar-label">10석</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#E61E2B"></span></span><span class="bar-value">16.4%</span></div><div class="bar-row"><span class="bar-label">11석</span><span class="bar-track"><span class="bar-fill" style="width:98.9%;background:#E61E2B"></span></span><span class="bar-value">16.2%</span></div><div class="bar-row"><span class="bar-label">12석</span><span class="bar-track"><span class="bar-fill" style="width:90.3%;background:#E61E2B"></span></span><span class="bar-value">14.8%</span></div><div class="bar-row"><span class="bar-label">13석</span><span class="bar-track"><span class="bar-fill" style="width:67.9%;background:#E61E2B"></span></span><span class="bar-value">11.2%</span></div><div class="bar-row"><span class="bar-label">14석</span><span class="bar-track"><span class="bar-fill" style="width:34.6%;background:#E61E2B"></span></span><span class="bar-value">5.7%</span></div><div class="bar-row"><span class="bar-label">15석</span><span class="bar-track"><span class="bar-fill" style="width:3.1%;background:#E61E2B"></span></span><span class="bar-value">0.5%</span></div><div class="bar-row"><span class="bar-label">16석</span><span class="bar-track"><span class="bar-fill" style="width:0.2%;background:#E61E2B"></span></span><span class="bar-value">0.0%</span></div></div></div>
+    </section>
+    <section class="scenario">
+      <h2 class="scenario-title">보통 환경 (8회 직후 가정)</h2>
+      <p class="scenario-desc">5·6·8회처럼 평년 분위기가 9회에도 이어진다 가정. 격변기(7회) 제외.</p>
+      <div class="scenario-stats">
+        <div class="stat-pill stat-d">
+          <span class="pill-label">민주</span>
+          <strong class="pill-value">6.11석</strong>
+          <span class="pill-sub">최빈 5 · 80% [4~9]</span>
+        </div>
+        <div class="stat-pill stat-r">
+          <span class="pill-label">국힘</span>
+          <strong class="pill-value">10.89석</strong>
+          <span class="pill-sub">최빈 12 · 80% [8~13]</span>
+        </div>
+      </div>
+      <div class="charts"><div class="bar-chart"><div class="bar-chart-title">민주당 의석 분포</div><div class="bar-row"><span class="bar-label">1석</span><span class="bar-track"><span class="bar-fill" style="width:0.1%;background:#152484"></span></span><span class="bar-value">0.0%</span></div><div class="bar-row"><span class="bar-label">2석</span><span class="bar-track"><span class="bar-fill" style="width:2.9%;background:#152484"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">3석</span><span class="bar-track"><span class="bar-fill" style="width:34.4%;background:#152484"></span></span><span class="bar-value">6.8%</span></div><div class="bar-row"><span class="bar-label">4석</span><span class="bar-track"><span class="bar-fill" style="width:73.9%;background:#152484"></span></span><span class="bar-value">14.6%</span></div><div class="bar-row"><span class="bar-label">5석</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#152484"></span></span><span class="bar-value">19.7%</span></div><div class="bar-row"><span class="bar-label">6석</span><span class="bar-track"><span class="bar-fill" style="width:98.6%;background:#152484"></span></span><span class="bar-value">19.4%</span></div><div class="bar-row"><span class="bar-label">7석</span><span class="bar-track"><span class="bar-fill" style="width:79.4%;background:#152484"></span></span><span class="bar-value">15.7%</span></div><div class="bar-row"><span class="bar-label">8석</span><span class="bar-track"><span class="bar-fill" style="width:57.6%;background:#152484"></span></span><span class="bar-value">11.3%</span></div><div class="bar-row"><span class="bar-label">9석</span><span class="bar-track"><span class="bar-fill" style="width:32.7%;background:#152484"></span></span><span class="bar-value">6.4%</span></div><div class="bar-row"><span class="bar-label">10석</span><span class="bar-track"><span class="bar-fill" style="width:17.1%;background:#152484"></span></span><span class="bar-value">3.4%</span></div><div class="bar-row"><span class="bar-label">11석</span><span class="bar-track"><span class="bar-fill" style="width:7.3%;background:#152484"></span></span><span class="bar-value">1.4%</span></div><div class="bar-row"><span class="bar-label">12석</span><span class="bar-track"><span class="bar-fill" style="width:2.2%;background:#152484"></span></span><span class="bar-value">0.4%</span></div><div class="bar-row"><span class="bar-label">13석</span><span class="bar-track"><span class="bar-fill" style="width:0.7%;background:#152484"></span></span><span class="bar-value">0.1%</span></div><div class="bar-row"><span class="bar-label">14석</span><span class="bar-track"><span class="bar-fill" style="width:0.3%;background:#152484"></span></span><span class="bar-value">0.1%</span></div></div><div class="bar-chart"><div class="bar-chart-title">국민의힘 의석 분포</div><div class="bar-row"><span class="bar-label">3석</span><span class="bar-track"><span class="bar-fill" style="width:0.3%;background:#E61E2B"></span></span><span class="bar-value">0.1%</span></div><div class="bar-row"><span class="bar-label">4석</span><span class="bar-track"><span class="bar-fill" style="width:0.7%;background:#E61E2B"></span></span><span class="bar-value">0.1%</span></div><div class="bar-row"><span class="bar-label">5석</span><span class="bar-track"><span class="bar-fill" style="width:2.2%;background:#E61E2B"></span></span><span class="bar-value">0.4%</span></div><div class="bar-row"><span class="bar-label">6석</span><span class="bar-track"><span class="bar-fill" style="width:7.3%;background:#E61E2B"></span></span><span class="bar-value">1.4%</span></div><div class="bar-row"><span class="bar-label">7석</span><span class="bar-track"><span class="bar-fill" style="width:17.1%;background:#E61E2B"></span></span><span class="bar-value">3.4%</span></div><div class="bar-row"><span class="bar-label">8석</span><span class="bar-track"><span class="bar-fill" style="width:32.7%;background:#E61E2B"></span></span><span class="bar-value">6.4%</span></div><div class="bar-row"><span class="bar-label">9석</span><span class="bar-track"><span class="bar-fill" style="width:57.6%;background:#E61E2B"></span></span><span class="bar-value">11.3%</span></div><div class="bar-row"><span class="bar-label">10석</span><span class="bar-track"><span class="bar-fill" style="width:79.4%;background:#E61E2B"></span></span><span class="bar-value">15.7%</span></div><div class="bar-row"><span class="bar-label">11석</span><span class="bar-track"><span class="bar-fill" style="width:98.6%;background:#E61E2B"></span></span><span class="bar-value">19.4%</span></div><div class="bar-row"><span class="bar-label">12석</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#E61E2B"></span></span><span class="bar-value">19.7%</span></div><div class="bar-row"><span class="bar-label">13석</span><span class="bar-track"><span class="bar-fill" style="width:73.9%;background:#E61E2B"></span></span><span class="bar-value">14.6%</span></div><div class="bar-row"><span class="bar-label">14석</span><span class="bar-track"><span class="bar-fill" style="width:34.4%;background:#E61E2B"></span></span><span class="bar-value">6.8%</span></div><div class="bar-row"><span class="bar-label">15석</span><span class="bar-track"><span class="bar-fill" style="width:2.9%;background:#E61E2B"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">16석</span><span class="bar-track"><span class="bar-fill" style="width:0.1%;background:#E61E2B"></span></span><span class="bar-value">0.0%</span></div></div></div>
+    </section>
+    <section class="scenario">
+      <h2 class="scenario-title">정권심판 환경 (7회 직후 가정)</h2>
+      <p class="scenario-desc">7회(박근혜 탄핵 후) 같은 진보 압승 분위기를 9회에도 가정. 외부 충격 가정.</p>
+      <div class="scenario-stats">
+        <div class="stat-pill stat-d">
+          <span class="pill-label">민주</span>
+          <strong class="pill-value">12.7석</strong>
+          <span class="pill-sub">최빈 14 · 80% [9~16]</span>
+        </div>
+        <div class="stat-pill stat-r">
+          <span class="pill-label">국힘</span>
+          <strong class="pill-value">4.3석</strong>
+          <span class="pill-sub">최빈 3 · 80% [1~8]</span>
+        </div>
+      </div>
+      <div class="charts"><div class="bar-chart"><div class="bar-chart-title">민주당 의석 분포</div><div class="bar-row"><span class="bar-label">2석</span><span class="bar-track"><span class="bar-fill" style="width:0.1%;background:#152484"></span></span><span class="bar-value">0.0%</span></div><div class="bar-row"><span class="bar-label">3석</span><span class="bar-track"><span class="bar-fill" style="width:1.2%;background:#152484"></span></span><span class="bar-value">0.2%</span></div><div class="bar-row"><span class="bar-label">4석</span><span class="bar-track"><span class="bar-fill" style="width:4.2%;background:#152484"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">5석</span><span class="bar-track"><span class="bar-fill" style="width:5.4%;background:#152484"></span></span><span class="bar-value">0.7%</span></div><div class="bar-row"><span class="bar-label">6석</span><span class="bar-track"><span class="bar-fill" style="width:11.8%;background:#152484"></span></span><span class="bar-value">1.6%</span></div><div class="bar-row"><span class="bar-label">7석</span><span class="bar-track"><span class="bar-fill" style="width:17.2%;background:#152484"></span></span><span class="bar-value">2.4%</span></div><div class="bar-row"><span class="bar-label">8석</span><span class="bar-track"><span class="bar-fill" style="width:27.1%;background:#152484"></span></span><span class="bar-value">3.7%</span></div><div class="bar-row"><span class="bar-label">9석</span><span class="bar-track"><span class="bar-fill" style="width:38.5%;background:#152484"></span></span><span class="bar-value">5.3%</span></div><div class="bar-row"><span class="bar-label">10석</span><span class="bar-track"><span class="bar-fill" style="width:48.7%;background:#152484"></span></span><span class="bar-value">6.7%</span></div><div class="bar-row"><span class="bar-label">11석</span><span class="bar-track"><span class="bar-fill" style="width:68.5%;background:#152484"></span></span><span class="bar-value">9.4%</span></div><div class="bar-row"><span class="bar-label">12석</span><span class="bar-track"><span class="bar-fill" style="width:84.5%;background:#152484"></span></span><span class="bar-value">11.6%</span></div><div class="bar-row"><span class="bar-label">13석</span><span class="bar-track"><span class="bar-fill" style="width:99.9%;background:#152484"></span></span><span class="bar-value">13.7%</span></div><div class="bar-row"><span class="bar-label">14석</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#152484"></span></span><span class="bar-value">13.7%</span></div><div class="bar-row"><span class="bar-label">15석</span><span class="bar-track"><span class="bar-fill" style="width:95.3%;background:#152484"></span></span><span class="bar-value">13.1%</span></div><div class="bar-row"><span class="bar-label">16석</span><span class="bar-track"><span class="bar-fill" style="width:78.7%;background:#152484"></span></span><span class="bar-value">10.8%</span></div><div class="bar-row"><span class="bar-label">17석</span><span class="bar-track"><span class="bar-fill" style="width:48.2%;background:#152484"></span></span><span class="bar-value">6.6%</span></div></div><div class="bar-chart"><div class="bar-chart-title">국민의힘 의석 분포</div><div class="bar-row"><span class="bar-label">0석</span><span class="bar-track"><span class="bar-fill" style="width:48.2%;background:#E61E2B"></span></span><span class="bar-value">6.6%</span></div><div class="bar-row"><span class="bar-label">1석</span><span class="bar-track"><span class="bar-fill" style="width:78.7%;background:#E61E2B"></span></span><span class="bar-value">10.8%</span></div><div class="bar-row"><span class="bar-label">2석</span><span class="bar-track"><span class="bar-fill" style="width:95.3%;background:#E61E2B"></span></span><span class="bar-value">13.1%</span></div><div class="bar-row"><span class="bar-label">3석</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#E61E2B"></span></span><span class="bar-value">13.7%</span></div><div class="bar-row"><span class="bar-label">4석</span><span class="bar-track"><span class="bar-fill" style="width:99.9%;background:#E61E2B"></span></span><span class="bar-value">13.7%</span></div><div class="bar-row"><span class="bar-label">5석</span><span class="bar-track"><span class="bar-fill" style="width:84.5%;background:#E61E2B"></span></span><span class="bar-value">11.6%</span></div><div class="bar-row"><span class="bar-label">6석</span><span class="bar-track"><span class="bar-fill" style="width:68.5%;background:#E61E2B"></span></span><span class="bar-value">9.4%</span></div><div class="bar-row"><span class="bar-label">7석</span><span class="bar-track"><span class="bar-fill" style="width:48.7%;background:#E61E2B"></span></span><span class="bar-value">6.7%</span></div><div class="bar-row"><span class="bar-label">8석</span><span class="bar-track"><span class="bar-fill" style="width:38.5%;background:#E61E2B"></span></span><span class="bar-value">5.3%</span></div><div class="bar-row"><span class="bar-label">9석</span><span class="bar-track"><span class="bar-fill" style="width:27.1%;background:#E61E2B"></span></span><span class="bar-value">3.7%</span></div><div class="bar-row"><span class="bar-label">10석</span><span class="bar-track"><span class="bar-fill" style="width:17.2%;background:#E61E2B"></span></span><span class="bar-value">2.4%</span></div><div class="bar-row"><span class="bar-label">11석</span><span class="bar-track"><span class="bar-fill" style="width:11.8%;background:#E61E2B"></span></span><span class="bar-value">1.6%</span></div><div class="bar-row"><span class="bar-label">12석</span><span class="bar-track"><span class="bar-fill" style="width:5.4%;background:#E61E2B"></span></span><span class="bar-value">0.7%</span></div><div class="bar-row"><span class="bar-label">13석</span><span class="bar-track"><span class="bar-fill" style="width:4.2%;background:#E61E2B"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">14석</span><span class="bar-track"><span class="bar-fill" style="width:1.2%;background:#E61E2B"></span></span><span class="bar-value">0.2%</span></div><div class="bar-row"><span class="bar-label">15석</span><span class="bar-track"><span class="bar-fill" style="width:0.1%;background:#E61E2B"></span></span><span class="bar-value">0.0%</span></div></div></div>
+    </section>
+
+
+    <section class="sido-marginal">
+      <h2>시도별 민주당 승리 확률</h2>
+      <table>
+        <thead><tr><th>시도</th><th>혼합</th><th>보통</th><th>정권심판</th></tr></thead>
+        <tbody>
+        <tr>
+          <td class="sido-name">전라남도</td>
+          <td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td>
+          <td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td>
+          <td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">광주광역시</td>
+          <td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td>
+          <td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td>
+          <td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">전북특별자치도</td>
+          <td><div class="prob-bar"><span style="width:98%"></span></div><span class="prob-num">98%</span></td>
+          <td><div class="prob-bar"><span style="width:98%"></span></div><span class="prob-num">98%</span></td>
+          <td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">세종특별자치시</td>
+          <td><div class="prob-bar"><span style="width:64%"></span></div><span class="prob-num">64%</span></td>
+          <td><div class="prob-bar"><span style="width:57%"></span></div><span class="prob-num">57%</span></td>
+          <td><div class="prob-bar"><span style="width:95%"></span></div><span class="prob-num">95%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">제주특별자치도</td>
+          <td><div class="prob-bar"><span style="width:54%"></span></div><span class="prob-num">54%</span></td>
+          <td><div class="prob-bar"><span style="width:47%"></span></div><span class="prob-num">47%</span></td>
+          <td><div class="prob-bar"><span style="width:88%"></span></div><span class="prob-num">88%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">충청남도</td>
+          <td><div class="prob-bar"><span style="width:46%"></span></div><span class="prob-num">46%</span></td>
+          <td><div class="prob-bar"><span style="width:38%"></span></div><span class="prob-num">38%</span></td>
+          <td><div class="prob-bar"><span style="width:88%"></span></div><span class="prob-num">88%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">서울특별시</td>
+          <td><div class="prob-bar"><span style="width:44%"></span></div><span class="prob-num">44%</span></td>
+          <td><div class="prob-bar"><span style="width:33%"></span></div><span class="prob-num">33%</span></td>
+          <td><div class="prob-bar"><span style="width:88%"></span></div><span class="prob-num">88%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">대전광역시</td>
+          <td><div class="prob-bar"><span style="width:39%"></span></div><span class="prob-num">39%</span></td>
+          <td><div class="prob-bar"><span style="width:29%"></span></div><span class="prob-num">29%</span></td>
+          <td><div class="prob-bar"><span style="width:87%"></span></div><span class="prob-num">87%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">인천광역시</td>
+          <td><div class="prob-bar"><span style="width:38%"></span></div><span class="prob-num">38%</span></td>
+          <td><div class="prob-bar"><span style="width:27%"></span></div><span class="prob-num">27%</span></td>
+          <td><div class="prob-bar"><span style="width:86%"></span></div><span class="prob-num">86%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">강원특별자치도</td>
+          <td><div class="prob-bar"><span style="width:36%"></span></div><span class="prob-num">36%</span></td>
+          <td><div class="prob-bar"><span style="width:24%"></span></div><span class="prob-num">24%</span></td>
+          <td><div class="prob-bar"><span style="width:81%"></span></div><span class="prob-num">81%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">충청북도</td>
+          <td><div class="prob-bar"><span style="width:33%"></span></div><span class="prob-num">33%</span></td>
+          <td><div class="prob-bar"><span style="width:23%"></span></div><span class="prob-num">23%</span></td>
+          <td><div class="prob-bar"><span style="width:78%"></span></div><span class="prob-num">78%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">경기도</td>
+          <td><div class="prob-bar"><span style="width:31%"></span></div><span class="prob-num">31%</span></td>
+          <td><div class="prob-bar"><span style="width:22%"></span></div><span class="prob-num">22%</span></td>
+          <td><div class="prob-bar"><span style="width:75%"></span></div><span class="prob-num">75%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">부산광역시</td>
+          <td><div class="prob-bar"><span style="width:15%"></span></div><span class="prob-num">15%</span></td>
+          <td><div class="prob-bar"><span style="width:7%"></span></div><span class="prob-num">7%</span></td>
+          <td><div class="prob-bar"><span style="width:57%"></span></div><span class="prob-num">57%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">경상남도</td>
+          <td><div class="prob-bar"><span style="width:10%"></span></div><span class="prob-num">10%</span></td>
+          <td><div class="prob-bar"><span style="width:2%"></span></div><span class="prob-num">2%</span></td>
+          <td><div class="prob-bar"><span style="width:52%"></span></div><span class="prob-num">52%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">울산광역시</td>
+          <td><div class="prob-bar"><span style="width:9%"></span></div><span class="prob-num">9%</span></td>
+          <td><div class="prob-bar"><span style="width:4%"></span></div><span class="prob-num">4%</span></td>
+          <td><div class="prob-bar"><span style="width:41%"></span></div><span class="prob-num">41%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">대구광역시</td>
+          <td><div class="prob-bar"><span style="width:6%"></span></div><span class="prob-num">6%</span></td>
+          <td><div class="prob-bar"><span style="width:1%"></span></div><span class="prob-num">1%</span></td>
+          <td><div class="prob-bar"><span style="width:37%"></span></div><span class="prob-num">37%</span></td>
+        </tr>
+        <tr>
+          <td class="sido-name">경상북도</td>
+          <td><div class="prob-bar"><span style="width:1%"></span></div><span class="prob-num">1%</span></td>
+          <td><div class="prob-bar"><span style="width:0%"></span></div><span class="prob-num">0%</span></td>
+          <td><div class="prob-bar"><span style="width:17%"></span></div><span class="prob-num">17%</span></td>
+        </tr></tbody>
+      </table>
+    </section>
+
+
+    <section class="backtest">
+      <h2>모델 검증 (Leave-one-out)</h2>
+      <p class="backtest-note">대상 회차를 제외하고 학습 → 그 회차 예측 → 실제와 비교.
+      <strong>8회처럼 평년 환경엔 정확, 7회처럼 격변기엔 부정확.</strong></p>
+      <table class="backtest-table">
+        <thead><tr><th>대상</th><th>적중</th><th>정확도</th></tr></thead>
+        <tbody><tr><td>6회 (2014)</td><td>11/17</td><td class="acc-warn">64.7%</td></tr><tr><td>7회 (2018)</td><td>5/17</td><td class="acc-bad">29.4%</td></tr><tr><td>8회 (2022)</td><td>15/17</td><td class="acc-good">88.2%</td></tr></tbody>
+      </table>
+    </section>
+
+<section class="limits">
+  <h2>모델 한계</h2>
+  <ul><li>표본 6회차만 (1995~2022) — 통계적 표본 작음</li><li>정당 진영 매핑의 자의성 (예: 새정치민주연합 → 진보)</li><li>사전투표·당일투표 패턴 변화 미반영</li><li>대선·탄핵·코로나 등 외부 충격 미반영</li><li>후보 개별 효과 미반영</li><li>예측이 아닌 과거 패턴 기반 시나리오</li></ul>
+</section>
+
+<p style="text-align:center;color:#aaa;font-size:0.75rem;margin-top:36px;">제9회 전국동시지방선거 시도지사 시뮬레이션 · 시민언론 뉴탐사</p>
+
+</div>
+<script src="/sim/_gate.js" defer></script>
+</body>
+</html>

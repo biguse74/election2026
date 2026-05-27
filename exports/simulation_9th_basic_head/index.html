@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9회 지방선거 기초단체장 시뮬레이션 — 뉴탐사</title>
+<style>
+body { font-family: -apple-system, 'Pretendard', sans-serif; max-width: 1100px; margin: 0 auto; padding: 24px; color: #1a1a1a; line-height: 1.5; }
+h1 { font-size: 1.6rem; margin: 0 0 8px; }
+.legal { background: #fdecea; border-left: 4px solid #c41e3a; padding: 12px 16px; margin: 16px 0; font-size: 0.85rem; color: #b3261e; }
+.intro { background: #fff8e3; border-left: 4px solid #b8860b; padding: 14px 16px; margin-bottom: 24px; border-radius: 4px; font-size: 0.9rem; }
+.scenario { border: 1px solid #ddd; border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; background: #fff; }
+.scenario-title { font-size: 1.1rem; margin: 0 0 4px; }
+.scenario-desc { font-size: 0.84rem; color: #666; margin: 0 0 12px; }
+.scenario-stats { display: flex; gap: 10px; flex-wrap: wrap; }
+.stat-pill { flex: 1; min-width: 200px; padding: 10px 14px; border-radius: 6px; }
+.stat-pill.stat-d { background: #eef2fb; border-left: 4px solid #152484; }
+.stat-pill.stat-r { background: #fdecee; border-left: 4px solid #E61E2B; }
+.pill-label { display: block; font-size: 0.74rem; color: #555; font-weight: 700; }
+.stat-pill strong { display: inline-block; font-size: 1.5rem; font-weight: 800; margin: 2px 8px 2px 0; }
+.pill-sub { font-size: 0.74rem; color: #555; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 8px 0 20px; }
+th, td { padding: 5px 8px; border-bottom: 1px solid #eee; text-align: left; font-variant-numeric: tabular-nums; }
+th { font-size: 0.78rem; color: #666; }
+.limits { background: #f6f6f6; padding: 14px 20px; border-radius: 4px; margin-top: 28px; font-size: 0.85rem; }
+.limits h2 { font-size: 1rem; margin: 0 0 8px; }
+.limits ul { margin: 0; padding-left: 20px; color: #555; }
+</style></head><body>
+<h1>9회 전국동시지방선거 기초단체장 의석 시뮬레이션</h1>
+<p style="color:#666;font-size:0.85rem;margin:0 0 16px;">2026-05-27 기준 · 226개 시군구 × 1만 회 몬테카를로 · 시도지사 시뮬레이션과 동일 모델 · 뉴탐사</p>
+<div class="legal">⚠️ <strong>공직선거법 제108조</strong> — 6/3 18시 전 결과 공표·인용보도 금지.</div>
+<div class="intro"><strong>시도지사 시뮬레이션</strong>에 비해 시군구는 후보 개별 효과·현직 이점·지역 토호 영향이 훨씬 커서 모델 정확도가 떨어집니다. 환경별 의석 분포 예측에는 시도지사 결과를 더 신뢰하는 게 안전합니다.</div>
+
+    <section class="scenario">
+      <h2 class="scenario-title">혼합 환경</h2>
+      <p class="scenario-desc">과거 6회차 분위기를 모두 무작위로 추출.</p>
+      <div class="scenario-stats">
+        <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>108.62석</strong><span class="pill-sub">최빈 102 · 80% [83~166]</span></div>
+        <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>157.38석</strong><span class="pill-sub">최빈 164 · 80% [100~183]</span></div>
+      </div>
+    </section>
+    <section class="scenario">
+      <h2 class="scenario-title">보통 환경 (8회 직후)</h2>
+      <p class="scenario-desc">5·6·8회처럼 평년 분위기가 9회에도 이어진다 가정.</p>
+      <div class="scenario-stats">
+        <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>96.81석</strong><span class="pill-sub">최빈 98 · 80% [82~112]</span></div>
+        <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>169.19석</strong><span class="pill-sub">최빈 168 · 80% [154~184]</span></div>
+      </div>
+    </section>
+    <section class="scenario">
+      <h2 class="scenario-title">정권심판 환경 (7회 직후)</h2>
+      <p class="scenario-desc">7회 박근혜 탄핵 후 같은 진보 압승 분위기를 가정.</p>
+      <div class="scenario-stats">
+        <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>165.82석</strong><span class="pill-sub">최빈 160 · 80% [126~203]</span></div>
+        <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>100.18석</strong><span class="pill-sub">최빈 106 · 80% [63~140]</span></div>
+      </div>
+    </section>
+<section><h2>시군구별 민주당 승리 확률 — 상위 20</h2>
+<table><thead><tr><th>시도</th><th>시군구</th><th>혼합</th><th>보통</th><th>정권심판</th></tr></thead><tbody><tr><td>제주특별자치도</td><td>남제주군</td><td>100%</td><td>100%</td><td>100%</td></tr><tr><td>광주광역시</td><td>북구</td><td>100%</td><td>100%</td><td>100%</td></tr><tr><td>광주광역시</td><td>서구(광주)</td><td>100%</td><td>100%</td><td>100%</td></tr><tr><td>광주광역시</td><td>동구(광주)</td><td>100%</td><td>100%</td><td>100%</td></tr><tr><td>전라남도</td><td>나주시</td><td>100%</td><td>100%</td><td>100%</td></tr><tr><td>광주광역시</td><td>남구</td><td>100%</td><td>99%</td><td>100%</td></tr><tr><td>전라남도</td><td>영광군</td><td>100%</td><td>99%</td><td>100%</td></tr><tr><td>전북특별자치도</td><td>김제시</td><td>99%</td><td>99%</td><td>100%</td></tr><tr><td>제주특별자치도</td><td>서귀포시</td><td>99%</td><td>99%</td><td>100%</td></tr><tr><td>전북특별자치도</td><td>진안군</td><td>99%</td><td>99%</td><td>100%</td></tr><tr><td>광주광역시</td><td>남구(광주)</td><td>99%</td><td>99%</td><td>100%</td></tr><tr><td>전북특별자치도</td><td>부안군</td><td>99%</td><td>99%</td><td>100%</td></tr><tr><td>광주광역시</td><td>광산구</td><td>99%</td><td>99%</td><td>100%</td></tr><tr><td>전북특별자치도</td><td>전주시</td><td>99%</td><td>99%</td><td>100%</td></tr><tr><td>전라남도</td><td>곡성군</td><td>99%</td><td>99%</td><td>100%</td></tr><tr><td>전라남도</td><td>완도군</td><td>99%</td><td>99%</td><td>100%</td></tr><tr><td>광주광역시</td><td>북구(광주)</td><td>99%</td><td>98%</td><td>100%</td></tr><tr><td>광주광역시</td><td>동구</td><td>98%</td><td>98%</td><td>100%</td></tr><tr><td>전라남도</td><td>보성군</td><td>98%</td><td>98%</td><td>100%</td></tr><tr><td>전라남도</td><td>장성군</td><td>98%</td><td>98%</td><td>100%</td></tr></tbody></table></section>
+<section><h2>시군구별 민주당 승리 확률 — 하위 20</h2>
+<table><thead><tr><th>시도</th><th>시군구</th><th>혼합</th><th>보통</th><th>정권심판</th></tr></thead><tbody><tr><td>경상북도</td><td>영덕군</td><td>2%</td><td>1%</td><td>10%</td></tr><tr><td>경상북도</td><td>영주시</td><td>2%</td><td>0%</td><td>14%</td></tr><tr><td>경상북도</td><td>경주시</td><td>2%</td><td>0%</td><td>12%</td></tr><tr><td>경상남도</td><td>거창군</td><td>2%</td><td>0%</td><td>12%</td></tr><tr><td>대구광역시</td><td>북구</td><td>2%</td><td>0%</td><td>9%</td></tr><tr><td>경상북도</td><td>포항시</td><td>1%</td><td>0%</td><td>12%</td></tr><tr><td>경상북도</td><td>영천시</td><td>1%</td><td>0%</td><td>10%</td></tr><tr><td>대구광역시</td><td>수성구</td><td>1%</td><td>0%</td><td>9%</td></tr><tr><td>부산광역시</td><td>북구(부산)</td><td>1%</td><td>0%</td><td>9%</td></tr><tr><td>경상북도</td><td>봉화군</td><td>1%</td><td>0%</td><td>10%</td></tr><tr><td>경상북도</td><td>경산시</td><td>1%</td><td>0%</td><td>10%</td></tr><tr><td>대구광역시</td><td>중구</td><td>1%</td><td>0%</td><td>10%</td></tr><tr><td>대구광역시</td><td>남구</td><td>1%</td><td>0%</td><td>7%</td></tr><tr><td>대구광역시</td><td>달성군</td><td>1%</td><td>0%</td><td>8%</td></tr><tr><td>경상북도</td><td>예천군</td><td>1%</td><td>0%</td><td>7%</td></tr><tr><td>경상북도</td><td>청도군</td><td>1%</td><td>0%</td><td>7%</td></tr><tr><td>경상남도</td><td>마산시</td><td>1%</td><td>0%</td><td>6%</td></tr><tr><td>대구광역시</td><td>북구(대구)</td><td>0%</td><td>0%</td><td>4%</td></tr><tr><td>부산광역시</td><td>서구(부산)</td><td>0%</td><td>0%</td><td>0%</td></tr><tr><td>부산광역시</td><td>동구(부산)</td><td>0%</td><td>0%</td><td>0%</td></tr></tbody></table></section>
+<section><h2>모델 검증 (Leave-one-out)</h2>
+<table style="max-width:380px"><thead><tr><th>대상</th><th>적중</th><th>정확도</th></tr></thead><tbody><tr><td>7회 (2018)</td><td>114/226</td><td>50.4%</td></tr><tr><td>8회 (2022)</td><td>177/219</td><td>80.8%</td></tr></tbody></table></section>
+<section class="limits"><h2>모델 한계</h2><ul><li>표본 6회차만 (1995~2022) — 시군구당 평균 4~6회</li><li>선거구 통합·분리 변동 (5회→6회 226→222 등) 매칭 안 되는 행 무시</li><li>정당 진영 매핑의 자의성 (예: 새정치민주연합 → 진보)</li><li>현직 이점·후보 효과·지역 토호 영향 미반영</li><li>사전투표·당일투표 패턴 변화 미반영</li><li>공직선거법 108조 — 6/3 18시 투표마감 전 공표 금지</li></ul></section>
+</body></html>

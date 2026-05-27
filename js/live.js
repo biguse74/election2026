@@ -821,6 +821,20 @@
           <span class="live-phase-body">${escapeHtml(phaseInfo.body)}</span>
         </div>`;
 
+    // 6/3 18:00 KST 이후 시뮬 페이지 링크 노출 (공직선거법 108조 게이트)
+    const SIM_RELEASE = Date.parse('2026-06-03T18:00:00+09:00');
+    const simReleased = Date.now() >= SIM_RELEASE
+      || (current.polled_at && new Date(current.polled_at).getTime() >= SIM_RELEASE);
+    const simLinkBox = simReleased ? `
+        <a class="live-sim-link" href="/sim/" target="_blank" rel="noopener">
+          <span class="live-sim-link-icon">🎲</span>
+          <span class="live-sim-link-body">
+            <strong>시뮬레이션 vs 실제 비교</strong>
+            <span>과거 6회차 기반 몬테카를로 1만 회 — 시도지사 17·기초단체장 226</span>
+          </span>
+          <span class="live-sim-link-arrow">→</span>
+        </a>` : '';
+
     // 출구조사 면책 박스 (출구조사 데이터가 로드되어 있을 때만)
     let exitNotice = '';
     const ep = liveState.exitPoll;
@@ -858,6 +872,7 @@
         ${demoBanner}
         ${phaseBanner}
         ${exitNotice}
+        ${simLinkBox}
         <div class="live-hero">
           <h1 class="live-title">실시간 개표</h1>
           <div class="live-hero-meta">
