@@ -71,8 +71,25 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
 
 
     <section class="scenario scenario-primary">
-      <h2 class="scenario-title">정권 출범 1년차 환경 — 9회 추정 환경 <span class="scenario-primary-badge">현재 환경 추정</span></h2>
-      <p class="scenario-desc">윤석열 탄핵 후 이재명 정부 출범 1년차. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 7회(2018) 지선과 가장 유사한 환경 가정. 현재 정치 상황에 가장 가까운 시나리오.</p>
+      <h2 class="scenario-title">현재 추세 반영 — 메인 시나리오 <span class="scenario-primary-badge">현재 환경 추정</span></h2>
+      <p class="scenario-desc">5월 27일 기준 공개된 시도별 여론조사 베이지안 추정치를 시뮬레이션 prior로 사용. 데이터 없는 시도는 정권 출범 1년차 historical 가정으로 보완.</p>
+      <div class="scenario-stats">
+        <div class="stat-pill stat-d">
+          <span class="pill-label">민주</span>
+          <strong class="pill-value">12.82석</strong>
+          <span class="pill-sub">최빈 13 · 80% [11~15]</span>
+        </div>
+        <div class="stat-pill stat-r">
+          <span class="pill-label">국힘</span>
+          <strong class="pill-value">4.18석</strong>
+          <span class="pill-sub">최빈 4 · 80% [2~6]</span>
+        </div>
+      </div>
+      <div class="charts"><div class="bar-chart"><div class="bar-chart-title">민주당 의석 분포</div><div class="bar-row"><span class="bar-label">8석</span><span class="bar-track"><span class="bar-fill" style="width:0.5%;background:#152484"></span></span><span class="bar-value">0.1%</span></div><div class="bar-row"><span class="bar-label">9석</span><span class="bar-track"><span class="bar-fill" style="width:3.8%;background:#152484"></span></span><span class="bar-value">1.1%</span></div><div class="bar-row"><span class="bar-label">10석</span><span class="bar-track"><span class="bar-fill" style="width:17.0%;background:#152484"></span></span><span class="bar-value">4.7%</span></div><div class="bar-row"><span class="bar-label">11석</span><span class="bar-track"><span class="bar-fill" style="width:44.6%;background:#152484"></span></span><span class="bar-value">12.2%</span></div><div class="bar-row"><span class="bar-label">12석</span><span class="bar-track"><span class="bar-fill" style="width:77.8%;background:#152484"></span></span><span class="bar-value">21.4%</span></div><div class="bar-row"><span class="bar-label">13석</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#152484"></span></span><span class="bar-value">27.5%</span></div><div class="bar-row"><span class="bar-label">14석</span><span class="bar-track"><span class="bar-fill" style="width:77.4%;background:#152484"></span></span><span class="bar-value">21.3%</span></div><div class="bar-row"><span class="bar-label">15석</span><span class="bar-track"><span class="bar-fill" style="width:35.0%;background:#152484"></span></span><span class="bar-value">9.6%</span></div><div class="bar-row"><span class="bar-label">16석</span><span class="bar-track"><span class="bar-fill" style="width:7.2%;background:#152484"></span></span><span class="bar-value">2.0%</span></div><div class="bar-row"><span class="bar-label">17석</span><span class="bar-track"><span class="bar-fill" style="width:0.6%;background:#152484"></span></span><span class="bar-value">0.2%</span></div></div><div class="bar-chart"><div class="bar-chart-title">국민의힘 의석 분포</div><div class="bar-row"><span class="bar-label">0석</span><span class="bar-track"><span class="bar-fill" style="width:0.6%;background:#E61E2B"></span></span><span class="bar-value">0.2%</span></div><div class="bar-row"><span class="bar-label">1석</span><span class="bar-track"><span class="bar-fill" style="width:7.2%;background:#E61E2B"></span></span><span class="bar-value">2.0%</span></div><div class="bar-row"><span class="bar-label">2석</span><span class="bar-track"><span class="bar-fill" style="width:35.0%;background:#E61E2B"></span></span><span class="bar-value">9.6%</span></div><div class="bar-row"><span class="bar-label">3석</span><span class="bar-track"><span class="bar-fill" style="width:77.4%;background:#E61E2B"></span></span><span class="bar-value">21.3%</span></div><div class="bar-row"><span class="bar-label">4석</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#E61E2B"></span></span><span class="bar-value">27.5%</span></div><div class="bar-row"><span class="bar-label">5석</span><span class="bar-track"><span class="bar-fill" style="width:77.8%;background:#E61E2B"></span></span><span class="bar-value">21.4%</span></div><div class="bar-row"><span class="bar-label">6석</span><span class="bar-track"><span class="bar-fill" style="width:44.6%;background:#E61E2B"></span></span><span class="bar-value">12.2%</span></div><div class="bar-row"><span class="bar-label">7석</span><span class="bar-track"><span class="bar-fill" style="width:17.0%;background:#E61E2B"></span></span><span class="bar-value">4.7%</span></div><div class="bar-row"><span class="bar-label">8석</span><span class="bar-track"><span class="bar-fill" style="width:3.8%;background:#E61E2B"></span></span><span class="bar-value">1.1%</span></div><div class="bar-row"><span class="bar-label">9석</span><span class="bar-track"><span class="bar-fill" style="width:0.5%;background:#E61E2B"></span></span><span class="bar-value">0.1%</span></div></div></div>
+    </section>
+    <section class="scenario">
+      <h2 class="scenario-title">정권 출범 1년차 환경 (역사 패턴만) </h2>
+      <p class="scenario-desc">여론조사 미반영. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 7회(2018) 지선과 유사한 환경 가정.</p>
       <div class="scenario-stats">
         <div class="stat-pill stat-d">
           <span class="pill-label">민주</span>
@@ -106,7 +123,7 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
     </section>
     <section class="scenario">
       <h2 class="scenario-title">정권 안정기 환경 (대안 가설) </h2>
-      <p class="scenario-desc">5·6·8회처럼 정권 중반 평년 분위기가 9회에도 이어졌다고 가정. 현재 환경과는 거리 있는 대안 가설.</p>
+      <p class="scenario-desc">5·6·8회처럼 정권 중반 평년 분위기가 9회에도 이어졌다고 가정.</p>
       <div class="scenario-stats">
         <div class="stat-pill stat-d">
           <span class="pill-label">민주</span>
@@ -126,110 +143,8 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
     <section class="sido-marginal">
       <h2>시도별 민주당 승리 확률</h2>
       <table>
-        <thead><tr><th>시도</th><th>혼합</th><th>보통</th><th>정권심판</th></tr></thead>
-        <tbody>
-        <tr>
-          <td class="sido-name">전라남도</td>
-          <td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td>
-          <td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td>
-          <td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">광주광역시</td>
-          <td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td>
-          <td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td>
-          <td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">전북특별자치도</td>
-          <td><div class="prob-bar"><span style="width:98%"></span></div><span class="prob-num">98%</span></td>
-          <td><div class="prob-bar"><span style="width:98%"></span></div><span class="prob-num">98%</span></td>
-          <td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">세종특별자치시</td>
-          <td><div class="prob-bar"><span style="width:64%"></span></div><span class="prob-num">64%</span></td>
-          <td><div class="prob-bar"><span style="width:57%"></span></div><span class="prob-num">57%</span></td>
-          <td><div class="prob-bar"><span style="width:95%"></span></div><span class="prob-num">95%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">제주특별자치도</td>
-          <td><div class="prob-bar"><span style="width:54%"></span></div><span class="prob-num">54%</span></td>
-          <td><div class="prob-bar"><span style="width:47%"></span></div><span class="prob-num">47%</span></td>
-          <td><div class="prob-bar"><span style="width:88%"></span></div><span class="prob-num">88%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">충청남도</td>
-          <td><div class="prob-bar"><span style="width:46%"></span></div><span class="prob-num">46%</span></td>
-          <td><div class="prob-bar"><span style="width:38%"></span></div><span class="prob-num">38%</span></td>
-          <td><div class="prob-bar"><span style="width:88%"></span></div><span class="prob-num">88%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">서울특별시</td>
-          <td><div class="prob-bar"><span style="width:44%"></span></div><span class="prob-num">44%</span></td>
-          <td><div class="prob-bar"><span style="width:33%"></span></div><span class="prob-num">33%</span></td>
-          <td><div class="prob-bar"><span style="width:88%"></span></div><span class="prob-num">88%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">대전광역시</td>
-          <td><div class="prob-bar"><span style="width:39%"></span></div><span class="prob-num">39%</span></td>
-          <td><div class="prob-bar"><span style="width:29%"></span></div><span class="prob-num">29%</span></td>
-          <td><div class="prob-bar"><span style="width:87%"></span></div><span class="prob-num">87%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">인천광역시</td>
-          <td><div class="prob-bar"><span style="width:38%"></span></div><span class="prob-num">38%</span></td>
-          <td><div class="prob-bar"><span style="width:27%"></span></div><span class="prob-num">27%</span></td>
-          <td><div class="prob-bar"><span style="width:86%"></span></div><span class="prob-num">86%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">강원특별자치도</td>
-          <td><div class="prob-bar"><span style="width:36%"></span></div><span class="prob-num">36%</span></td>
-          <td><div class="prob-bar"><span style="width:24%"></span></div><span class="prob-num">24%</span></td>
-          <td><div class="prob-bar"><span style="width:81%"></span></div><span class="prob-num">81%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">충청북도</td>
-          <td><div class="prob-bar"><span style="width:33%"></span></div><span class="prob-num">33%</span></td>
-          <td><div class="prob-bar"><span style="width:23%"></span></div><span class="prob-num">23%</span></td>
-          <td><div class="prob-bar"><span style="width:78%"></span></div><span class="prob-num">78%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">경기도</td>
-          <td><div class="prob-bar"><span style="width:31%"></span></div><span class="prob-num">31%</span></td>
-          <td><div class="prob-bar"><span style="width:22%"></span></div><span class="prob-num">22%</span></td>
-          <td><div class="prob-bar"><span style="width:75%"></span></div><span class="prob-num">75%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">부산광역시</td>
-          <td><div class="prob-bar"><span style="width:15%"></span></div><span class="prob-num">15%</span></td>
-          <td><div class="prob-bar"><span style="width:7%"></span></div><span class="prob-num">7%</span></td>
-          <td><div class="prob-bar"><span style="width:57%"></span></div><span class="prob-num">57%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">경상남도</td>
-          <td><div class="prob-bar"><span style="width:10%"></span></div><span class="prob-num">10%</span></td>
-          <td><div class="prob-bar"><span style="width:2%"></span></div><span class="prob-num">2%</span></td>
-          <td><div class="prob-bar"><span style="width:52%"></span></div><span class="prob-num">52%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">울산광역시</td>
-          <td><div class="prob-bar"><span style="width:9%"></span></div><span class="prob-num">9%</span></td>
-          <td><div class="prob-bar"><span style="width:4%"></span></div><span class="prob-num">4%</span></td>
-          <td><div class="prob-bar"><span style="width:41%"></span></div><span class="prob-num">41%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">대구광역시</td>
-          <td><div class="prob-bar"><span style="width:6%"></span></div><span class="prob-num">6%</span></td>
-          <td><div class="prob-bar"><span style="width:1%"></span></div><span class="prob-num">1%</span></td>
-          <td><div class="prob-bar"><span style="width:37%"></span></div><span class="prob-num">37%</span></td>
-        </tr>
-        <tr>
-          <td class="sido-name">경상북도</td>
-          <td><div class="prob-bar"><span style="width:1%"></span></div><span class="prob-num">1%</span></td>
-          <td><div class="prob-bar"><span style="width:0%"></span></div><span class="prob-num">0%</span></td>
-          <td><div class="prob-bar"><span style="width:17%"></span></div><span class="prob-num">17%</span></td>
-        </tr></tbody>
+        <thead><tr><th>시도</th><th>현재 추세 반영</th><th>정권 출범 1년차 환경</th><th>혼합 환경</th><th>정권 안정기 환경</th></tr></thead>
+        <tbody><tr><td class="sido-name">광주광역시</td><td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td><td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td><td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td><td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td></tr><tr><td class="sido-name">전라남도</td><td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td><td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td><td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td><td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td></tr><tr><td class="sido-name">제주특별자치도</td><td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td><td><div class="prob-bar"><span style="width:88%"></span></div><span class="prob-num">88%</span></td><td><div class="prob-bar"><span style="width:54%"></span></div><span class="prob-num">54%</span></td><td><div class="prob-bar"><span style="width:47%"></span></div><span class="prob-num">47%</span></td></tr><tr><td class="sido-name">전북특별자치도</td><td><div class="prob-bar"><span style="width:99%"></span></div><span class="prob-num">99%</span></td><td><div class="prob-bar"><span style="width:100%"></span></div><span class="prob-num">100%</span></td><td><div class="prob-bar"><span style="width:98%"></span></div><span class="prob-num">98%</span></td><td><div class="prob-bar"><span style="width:98%"></span></div><span class="prob-num">98%</span></td></tr><tr><td class="sido-name">경기도</td><td><div class="prob-bar"><span style="width:98%"></span></div><span class="prob-num">98%</span></td><td><div class="prob-bar"><span style="width:75%"></span></div><span class="prob-num">75%</span></td><td><div class="prob-bar"><span style="width:31%"></span></div><span class="prob-num">31%</span></td><td><div class="prob-bar"><span style="width:22%"></span></div><span class="prob-num">22%</span></td></tr><tr><td class="sido-name">세종특별자치시</td><td><div class="prob-bar"><span style="width:96%"></span></div><span class="prob-num">96%</span></td><td><div class="prob-bar"><span style="width:95%"></span></div><span class="prob-num">95%</span></td><td><div class="prob-bar"><span style="width:64%"></span></div><span class="prob-num">64%</span></td><td><div class="prob-bar"><span style="width:57%"></span></div><span class="prob-num">57%</span></td></tr><tr><td class="sido-name">충청북도</td><td><div class="prob-bar"><span style="width:84%"></span></div><span class="prob-num">84%</span></td><td><div class="prob-bar"><span style="width:78%"></span></div><span class="prob-num">78%</span></td><td><div class="prob-bar"><span style="width:33%"></span></div><span class="prob-num">33%</span></td><td><div class="prob-bar"><span style="width:23%"></span></div><span class="prob-num">23%</span></td></tr><tr><td class="sido-name">인천광역시</td><td><div class="prob-bar"><span style="width:83%"></span></div><span class="prob-num">83%</span></td><td><div class="prob-bar"><span style="width:86%"></span></div><span class="prob-num">86%</span></td><td><div class="prob-bar"><span style="width:38%"></span></div><span class="prob-num">38%</span></td><td><div class="prob-bar"><span style="width:27%"></span></div><span class="prob-num">27%</span></td></tr><tr><td class="sido-name">대전광역시</td><td><div class="prob-bar"><span style="width:83%"></span></div><span class="prob-num">83%</span></td><td><div class="prob-bar"><span style="width:87%"></span></div><span class="prob-num">87%</span></td><td><div class="prob-bar"><span style="width:39%"></span></div><span class="prob-num">39%</span></td><td><div class="prob-bar"><span style="width:29%"></span></div><span class="prob-num">29%</span></td></tr><tr><td class="sido-name">충청남도</td><td><div class="prob-bar"><span style="width:80%"></span></div><span class="prob-num">80%</span></td><td><div class="prob-bar"><span style="width:88%"></span></div><span class="prob-num">88%</span></td><td><div class="prob-bar"><span style="width:46%"></span></div><span class="prob-num">46%</span></td><td><div class="prob-bar"><span style="width:38%"></span></div><span class="prob-num">38%</span></td></tr><tr><td class="sido-name">부산광역시</td><td><div class="prob-bar"><span style="width:71%"></span></div><span class="prob-num">71%</span></td><td><div class="prob-bar"><span style="width:57%"></span></div><span class="prob-num">57%</span></td><td><div class="prob-bar"><span style="width:15%"></span></div><span class="prob-num">15%</span></td><td><div class="prob-bar"><span style="width:7%"></span></div><span class="prob-num">7%</span></td></tr><tr><td class="sido-name">울산광역시</td><td><div class="prob-bar"><span style="width:68%"></span></div><span class="prob-num">68%</span></td><td><div class="prob-bar"><span style="width:41%"></span></div><span class="prob-num">41%</span></td><td><div class="prob-bar"><span style="width:9%"></span></div><span class="prob-num">9%</span></td><td><div class="prob-bar"><span style="width:4%"></span></div><span class="prob-num">4%</span></td></tr><tr><td class="sido-name">강원특별자치도</td><td><div class="prob-bar"><span style="width:67%"></span></div><span class="prob-num">67%</span></td><td><div class="prob-bar"><span style="width:81%"></span></div><span class="prob-num">81%</span></td><td><div class="prob-bar"><span style="width:36%"></span></div><span class="prob-num">36%</span></td><td><div class="prob-bar"><span style="width:24%"></span></div><span class="prob-num">24%</span></td></tr><tr><td class="sido-name">서울특별시</td><td><div class="prob-bar"><span style="width:59%"></span></div><span class="prob-num">59%</span></td><td><div class="prob-bar"><span style="width:88%"></span></div><span class="prob-num">88%</span></td><td><div class="prob-bar"><span style="width:44%"></span></div><span class="prob-num">44%</span></td><td><div class="prob-bar"><span style="width:33%"></span></div><span class="prob-num">33%</span></td></tr><tr><td class="sido-name">경상남도</td><td><div class="prob-bar"><span style="width:49%"></span></div><span class="prob-num">49%</span></td><td><div class="prob-bar"><span style="width:52%"></span></div><span class="prob-num">52%</span></td><td><div class="prob-bar"><span style="width:10%"></span></div><span class="prob-num">10%</span></td><td><div class="prob-bar"><span style="width:2%"></span></div><span class="prob-num">2%</span></td></tr><tr><td class="sido-name">대구광역시</td><td><div class="prob-bar"><span style="width:38%"></span></div><span class="prob-num">38%</span></td><td><div class="prob-bar"><span style="width:37%"></span></div><span class="prob-num">37%</span></td><td><div class="prob-bar"><span style="width:6%"></span></div><span class="prob-num">6%</span></td><td><div class="prob-bar"><span style="width:1%"></span></div><span class="prob-num">1%</span></td></tr><tr><td class="sido-name">경상북도</td><td><div class="prob-bar"><span style="width:8%"></span></div><span class="prob-num">8%</span></td><td><div class="prob-bar"><span style="width:17%"></span></div><span class="prob-num">17%</span></td><td><div class="prob-bar"><span style="width:1%"></span></div><span class="prob-num">1%</span></td><td><div class="prob-bar"><span style="width:0%"></span></div><span class="prob-num">0%</span></td></tr></tbody>
       </table>
     </section>
 

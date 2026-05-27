@@ -1,0 +1,124 @@
+{
+  "generated_at": "2026-05-27",
+  "source": "poll-mbc.co.kr region_data/approve_data/*.js (베이지안 상태공간 모형)",
+  "note": "각 시도 가장 최근(다자) 추정치에서 더불어민주당 - 국민의힘 mean 차이",
+  "sido_prior": {
+    "서울특별시": {
+      "date": "2026-05-26",
+      "dem_candidate": "정원오",
+      "con_candidate": "오세훈",
+      "dem_share": 46.6,
+      "con_share": 43.6,
+      "margin": 3.0,
+      "margin_sd": 1.73
+    },
+    "부산광역시": {
+      "date": "2026-05-25",
+      "dem_candidate": "전재수",
+      "con_candidate": "박형준",
+      "dem_share": 47.6,
+      "con_share": 39.4,
+      "margin": 8.2,
+      "margin_sd": 1.41
+    },
+    "대구광역시": {
+      "date": "2026-05-26",
+      "dem_candidate": "김부겸",
+      "con_candidate": "추경호",
+      "dem_share": 43.4,
+      "con_share": 48,
+      "margin": -4.6,
+      "margin_sd": 1.54
+    },
+    "인천광역시": {
+      "date": "2026-05-24",
+      "dem_candidate": "박찬대",
+      "con_candidate": "유정복",
+      "dem_share": 51.8,
+      "con_share": 38.3,
+      "margin": 13.5,
+      "margin_sd": 1.24
+    },
+    "대전광역시": {
+      "date": "2026-05-25",
+      "dem_candidate": "허태정",
+      "con_candidate": "이장우",
+      "dem_share": 47.4,
+      "con_share": 34,
+      "margin": 13.4,
+      "margin_sd": 1.56
+    },
+    "울산광역시": {
+      "date": "2026-05-23",
+      "dem_candidate": "김상욱",
+      "con_candidate": "김두겸",
+      "dem_share": 33.7,
+      "con_share": 27.3,
+      "margin": 6.4,
+      "margin_sd": 1.36
+    },
+    "세종특별자치시": {
+      "date": "2026-05-25",
+      "dem_candidate": "조상호",
+      "con_candidate": "최민호",
+      "dem_share": 52.6,
+      "con_share": 27.4,
+      "margin": 25.2,
+      "margin_sd": 1.68
+    },
+    "경기도": {
+      "date": "2026-05-15",
+      "dem_candidate": "추미애",
+      "con_candidate": "양향자",
+      "dem_share": 54.3,
+      "con_share": 25.4,
+      "margin": 28.9,
+      "margin_sd": 1.36
+    },
+    "강원특별자치도": {
+      "date": "2026-05-23",
+      "dem_candidate": "우상호",
+      "con_candidate": "김진태",
+      "dem_share": 49.8,
+      "con_share": 43.4,
+      "margin": 6.4,
+      "margin_sd": 1.63
+    },
+    "충청남도": {
+      "date": "2026-05-25",
+      "dem_candidate": "박수현",
+      "con_candidate": "김태흠",
+      "dem_share": 47.4,
+      "con_share": 35.4,
+      "margin": 12.0,
+      "margin_sd": 1.68
+    },
+    "전북특별자치도": {
+      "date": "2026-05-26",
+      "dem_candidate": "이원택",
+      "con_candidate": "양정무",
+      "dem_share": 39.1,
+      "con_share": 2.8,
+      "margin": 36.3,
+      "margin_sd": 1.24
+    },
+    "경상남도": {
+      "date": "2026-05-25",
+      "dem_candidate": "김경수",
+      "con_candidate": "박완수",
+      "dem_share": 45.2,
+      "con_share": 45.2,
+      "margin": 0.0,
+      "margin_sd": 1.5
+    },
+    "제주특별자치도": {
+      "date": "2026-05-25",
+      "dem_candidate": "위성곤",
+      "con_candidate": "문성유",
+      "dem_share": 57.5,
+      "con_share": 20.3,
+      "margin": 37.2,
+      "margin_sd": 1.67
+    }
+  }
+}

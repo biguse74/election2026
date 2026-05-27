@@ -145,6 +145,37 @@ def simulate_once(params: dict, year_effect_sampler, rng: random.Random) -> dict
     return out
 
 
+def load_mbc_prior() -> dict[str, dict]:
+    """data/mbc_prior.json에서 시도별 margin prior 로드.  없으면 빈 dict."""
+    p = ROOT / "data" / "mbc_prior.json"
+    if not p.exists():
+        return {}
+    d = json.loads(p.read_text(encoding="utf-8"))
+    return d.get("sido_prior", {})
+
+
+def simulate_mbc_once(params: dict, mbc_prior: dict, rng: random.Random) -> dict[str, int]:
+    """MBC 추세 반영 시뮬레이션. mbc_prior 있는 시도는 그 값 ± SD, 없는 시도는 shakeup(7회) 기반."""
+    # 7회 fallback용 year_effect (정권 출범 1년차)
+    ye_fallback = params["year_effect"].get(7, 30.0)
+    out = {}
+    for s in params["sidos"]:
+        if s in mbc_prior:
+            m = mbc_prior[s]
+            base = m["margin"]
+            sd = (m["margin_sd"] ** 2 + params["residual_sd"] ** 2) ** 0.5
+            margin = rng.gauss(base, sd)
+        else:
+            # 데이터 없는 시도 — historical 7회 기반 (shakeup 식)
+            rm = params["region_mean"].get(s, 0)
+            rs = params["region_sd"].get(s, 1)
+            lean = rng.gauss(rm, max(rs, 1e-6))
+            noise = rng.gauss(0, max(params["residual_sd"], 1e-6))
+            margin = ye_fallback + lean + noise
+        out[s] = "D" if margin > 0 else "R"
+    return out
+
+
 def make_year_effect_sampler(params: dict, mode: str):
     """시나리오별 year_effect sampling 전략.
        baseline: 6회 전체에서 복원 추출
@@ -169,9 +200,13 @@ def make_year_effect_sampler(params: dict, mode: str):
     raise ValueError(mode)
 
 
-def run_simulation(params: dict, n: int, seed: int, mode: str = "baseline") -> dict:
+def run_simulation(params: dict, n: int, seed: int, mode: str = "baseline", mbc_prior: dict = None) -> dict:
     rng = random.Random(seed)
-    sampler = make_year_effect_sampler(params, mode)
+    if mode == "mbc":
+        mbc_prior = mbc_prior or {}
+        sampler = None
+    else:
+        sampler = make_year_effect_sampler(params, mode)
 
     # 결과 누적
     sido_dem_wins = Counter()       # sido -> 민주 승리 count
@@ -180,7 +215,10 @@ def run_simulation(params: dict, n: int, seed: int, mode: str = "baseline") -> d
     raw: list[dict[str, str]] = []   # 1만 회 시도별 winner
 
     for i in range(n):
-        winners = simulate_once(params, sampler, rng)
+        if mode == "mbc":
+            winners = simulate_mbc_once(params, mbc_prior, rng)
+        else:
+            winners = simulate_once(params, sampler, rng)
         d_seats = sum(1 for v in winners.values() if v == "D")
         r_seats = sum(1 for v in winners.values() if v == "R")
         seat_dist_dem[d_seats] += 1
@@ -261,9 +299,9 @@ def backtest(margin: dict, target_round: int) -> dict:
     }
 
 
-def run_scenario(params, n, seed, mode):
+def run_scenario(params, n, seed, mode, mbc_prior=None):
     """한 시나리오 결과 집계 — sim + summary 통계."""
-    sim = run_simulation(params, n, seed, mode)
+    sim = run_simulation(params, n, seed, mode, mbc_prior=mbc_prior)
     dem_seats_total = sum(s * c for s, c in sim["seat_dist_dem"].items())
     con_seats_total = sum(s * c for s, c in sim["seat_dist_con"].items())
     dem_mean = dem_seats_total / sim["n"]
@@ -292,11 +330,17 @@ def run_scenario(params, n, seed, mode):
 
 
 SCENARIO_META = {
-    "shakeup": {
-        "title": "정권 출범 1년차 환경 — 9회 추정 환경",
-        "desc": "윤석열 탄핵 후 이재명 정부 출범 1년차. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 "
-                "7회(2018) 지선과 가장 유사한 환경 가정. 현재 정치 상황에 가장 가까운 시나리오.",
+    "mbc": {
+        "title": "현재 추세 반영 — 메인 시나리오",
+        "desc": "5월 27일 기준 공개된 시도별 여론조사 베이지안 추정치를 시뮬레이션 prior로 "
+                "사용. 데이터 없는 시도는 정권 출범 1년차 historical 가정으로 보완.",
         "primary": True,
+    },
+    "shakeup": {
+        "title": "정권 출범 1년차 환경 (역사 패턴만)",
+        "desc": "여론조사 미반영. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 7회(2018) 지선과 "
+                "유사한 환경 가정.",
+        "primary": False,
     },
     "baseline": {
         "title": "혼합 환경 (참고)",
@@ -306,8 +350,7 @@ SCENARIO_META = {
     },
     "normal": {
         "title": "정권 안정기 환경 (대안 가설)",
-        "desc": "5·6·8회처럼 정권 중반 평년 분위기가 9회에도 이어졌다고 가정. 현재 환경과는 "
-                "거리 있는 대안 가설.",
+        "desc": "5·6·8회처럼 정권 중반 평년 분위기가 9회에도 이어졌다고 가정.",
         "primary": False,
     },
 }
@@ -325,11 +368,14 @@ def main():
     print(f"  residual SD: {params['residual_sd']}%p")
     print()
 
-    # 세 시나리오 모두 실행 — primary(현재 환경) 시나리오를 맨 앞에
+    # 네 시나리오 — MBC 메인 + 역사 기반 3개
+    mbc_prior = load_mbc_prior()
+    print(f"=== MBC prior 로드: {len(mbc_prior)}개 시도 ===\n")
+
     scenarios = {}
-    for mode in ["shakeup", "baseline", "normal"]:
+    for mode in ["mbc", "shakeup", "baseline", "normal"]:
         print(f"=== 시나리오: {mode} ===")
-        sc = run_scenario(params, N_SIM, SEED, mode)
+        sc = run_scenario(params, N_SIM, SEED, mode, mbc_prior=mbc_prior)
         scenarios[mode] = sc
         print(f"  민주 평균 {sc['dem_mean']}석, 최빈 {sc['dem_mode']}석, 80% CI {sc['dem_80_ci']}")
         print(f"  국힘 평균 {sc['con_mean']}석, 최빈 {sc['con_mode']}석, 80% CI {sc['con_80_ci']}")
@@ -490,26 +536,27 @@ def _scenario_block_html(mode: str, sc: dict) -> str:
 
 
 def _sido_marginal_html(scenarios: dict) -> str:
-    """시도별 민주 승리 확률 — 3개 시나리오 나란히 막대."""
-    sidos = list(scenarios["baseline"]["sido_dem_prob"].keys())
-    sidos.sort(key=lambda s: -scenarios["baseline"]["sido_dem_prob"][s])
+    """시도별 민주 승리 확률 — 시나리오별 나란히 막대."""
+    primary_key = "mbc" if "mbc" in scenarios else "shakeup"
+    sidos = list(scenarios[primary_key]["sido_dem_prob"].keys())
+    sidos.sort(key=lambda s: -scenarios[primary_key]["sido_dem_prob"][s])
+    cols = [(m, SCENARIO_META[m]["title"].split(" —")[0].split(" (")[0]) for m in ["mbc", "shakeup", "baseline", "normal"] if m in scenarios]
+    head_cols = "".join(f"<th>{label}</th>" for _, label in cols)
     rows = []
     for s in sidos:
-        p_b = scenarios["baseline"]["sido_dem_prob"][s]
-        p_n = scenarios["normal"]["sido_dem_prob"][s]
-        p_s = scenarios["shakeup"]["sido_dem_prob"][s]
-        rows.append(f"""
-        <tr>
-          <td class="sido-name">{s}</td>
-          <td><div class="prob-bar"><span style="width:{p_b*100:.0f}%"></span></div><span class="prob-num">{p_b*100:.0f}%</span></td>
-          <td><div class="prob-bar"><span style="width:{p_n*100:.0f}%"></span></div><span class="prob-num">{p_n*100:.0f}%</span></td>
-          <td><div class="prob-bar"><span style="width:{p_s*100:.0f}%"></span></div><span class="prob-num">{p_s*100:.0f}%</span></td>
-        </tr>""")
+        cells = []
+        for mode, _ in cols:
+            p = scenarios[mode]["sido_dem_prob"].get(s, 0)
+            cells.append(
+                f'<td><div class="prob-bar"><span style="width:{p*100:.0f}%"></span></div>'
+                f'<span class="prob-num">{p*100:.0f}%</span></td>'
+            )
+        rows.append(f'<tr><td class="sido-name">{s}</td>{"".join(cells)}</tr>')
     return f"""
     <section class="sido-marginal">
       <h2>시도별 민주당 승리 확률</h2>
       <table>
-        <thead><tr><th>시도</th><th>혼합</th><th>보통</th><th>정권심판</th></tr></thead>
+        <thead><tr><th>시도</th>{head_cols}</tr></thead>
         <tbody>{"".join(rows)}</tbody>
       </table>
     </section>"""
@@ -539,7 +586,8 @@ def _backtest_html(backtests: list, year_of: dict) -> str:
 
 def write_html(summary: dict, scenarios: dict, backtests: list, params: dict) -> None:
     year_of = {3:2002, 4:2006, 5:2010, 6:2014, 7:2018, 8:2022}
-    scenario_blocks = "".join(_scenario_block_html(m, scenarios[m]) for m in ["shakeup", "baseline", "normal"])
+    scenario_modes_order = [m for m in ["mbc", "shakeup", "baseline", "normal"] if m in scenarios]
+    scenario_blocks = "".join(_scenario_block_html(m, scenarios[m]) for m in scenario_modes_order)
     sido_block = _sido_marginal_html(scenarios)
     bt_block = _backtest_html(backtests, year_of)
     limit_items = "".join(f"<li>{x}</li>" for x in summary["limitations"])

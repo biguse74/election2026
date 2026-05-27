@@ -239,8 +239,7 @@ def backtest(margin, target_round):
 SCENARIO_META = {
     "shakeup": {
         "title": "정권 출범 1년차 환경 — 9회 추정 환경",
-        "desc": "윤석열 탄핵 후 이재명 정부 출범 1년차. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 "
-                "7회(2018)와 가장 유사한 환경 가정. 현재 정치 상황에 가장 가까운 시나리오.",
+        "desc": "이재명 정부 출범 1년차. 7회(2018) 지선과 유사한 환경 가정.",
         "primary": True,
     },
     "baseline": {
