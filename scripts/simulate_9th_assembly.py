@@ -571,8 +571,8 @@ table.races th {{ font-size: 0.74rem; color: #555; }}
 <p class="sub">2026-05-27 기준 · 5/27까지 보도된 공개 여론조사 참고 + 1만 회 시뮬레이션 · 시민언론 뉴탐사</p>
 
 <div class="summary-pills">
-  <div class="pill d"><span class="lbl">민주당</span> <strong class="val">{r['dem_mean']}석</strong><p class="sub">최빈 {r['dem_mode']}석 · 80% CI [{r['dem_80_ci'][0]}~{r['dem_80_ci'][1]}]</p></div>
-  <div class="pill r"><span class="lbl">국민의힘</span> <strong class="val">{r['con_mean']}석</strong><p class="sub">최빈 {r['con_mode']}석 · 80% CI [{r['con_80_ci'][0]}~{r['con_80_ci'][1]}]</p></div>
+  <div class="pill d"><span class="lbl">민주당</span> <strong class="val">{r['dem_mode']}석</strong><p class="sub">예상 범위 {r['dem_80_ci'][0]}~{r['dem_80_ci'][1]}석</p></div>
+  <div class="pill r"><span class="lbl">국힘·무소속 등</span> <strong class="val">{r['con_mode']}석</strong><p class="sub">예상 범위 {r['con_80_ci'][0]}~{r['con_80_ci'][1]}석</p></div>
 </div>
 
 <div class="charts">{dem_chart}{con_chart}</div>

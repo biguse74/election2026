@@ -152,25 +152,49 @@ def _load_summary(name: str) -> dict:
 
 
 def _highlight(res: dict, unit: str = "곳") -> str:
-    """summary.json의 result/scenarios에서 메인 결과 한 줄. 양당 균형 색상."""
-    def fmt(d, c, unit):
-        return (f'<span style="color:#152484"><strong>민주당 {d}</strong></span>'
-                f'<span style="color:#888"> · </span>'
-                f'<span style="color:#E61E2B"><strong>국힘 {c}</strong></span>'
-                f'<span style="color:#666;font-size:0.85em"> {unit}</span>')
+    """summary.json에서 최빈값 + 80% 범위. 양당 균형 색상."""
+    def fmt(d_mode, d_lo, d_hi, c_mode, c_lo, c_hi, unit, dlabel, clabel):
+        return (
+            f'<div style="display:flex;gap:14px;align-items:baseline;flex-wrap:wrap">'
+            f'<div><span style="color:#152484;font-weight:700;font-size:0.78em">{dlabel}</span><br>'
+            f'<strong style="color:#152484">{d_mode}{unit}</strong>'
+            f'<span style="color:#666;font-size:0.78em"> ({d_lo}~{d_hi})</span></div>'
+            f'<div style="color:#888">vs</div>'
+            f'<div><span style="color:#E61E2B;font-weight:700;font-size:0.78em">{clabel}</span><br>'
+            f'<strong style="color:#E61E2B">{c_mode}{unit}</strong>'
+            f'<span style="color:#666;font-size:0.78em"> ({c_lo}~{c_hi})</span></div>'
+            f'</div>'
+        )
 
     if not res:
         return "—"
     sc = res.get("scenarios") or {}
+    src = None
     if "mbc" in sc:
-        s = sc["mbc"]
-        return fmt(s.get("dem_mean", "?"), s.get("con_mean", "?"), unit)
-    if "shakeup" in sc:
-        s = sc["shakeup"]
-        return fmt(s.get("dem_mean", "?"), s.get("con_mean", "?"), unit)
+        src = sc["mbc"]
+    elif "shakeup" in sc:
+        src = sc["shakeup"]
+    if src:
+        return fmt(
+            src.get("dem_mode", "?"),
+            src.get("dem_80_ci", ["?", "?"])[0],
+            src.get("dem_80_ci", ["?", "?"])[1],
+            src.get("con_mode", "?"),
+            src.get("con_80_ci", ["?", "?"])[0],
+            src.get("con_80_ci", ["?", "?"])[1],
+            unit, "민주당", "국힘·무소속 등",
+        )
     r = res.get("result") or {}
     if r:
-        return fmt(r.get("dem_mean", "?"), r.get("con_mean", "?"), unit)
+        return fmt(
+            r.get("dem_mode", "?"),
+            r.get("dem_80_ci", ["?", "?"])[0],
+            r.get("dem_80_ci", ["?", "?"])[1],
+            r.get("con_mode", "?"),
+            r.get("con_80_ci", ["?", "?"])[0],
+            r.get("con_80_ci", ["?", "?"])[1],
+            unit, "민주당", "국힘·무소속 등",
+        )
     return "—"
 
 

@@ -105,37 +105,42 @@ def latest_estimate(arr: list) -> dict | None:
 
 
 def margin_for_sido(entry: dict, name_party: dict[str, str]) -> dict | None:
-    """가장 최근 추정에서 (민주 mean - 국힘 mean) 계산. uncertainty 합산."""
+    """가장 최근 추정에서 (민주당 후보 mean - 비민주당 1위 mean) 계산.
+
+    비민주당 1위는 국민의힘일 수도, 무소속·기타 정당일 수도 있다 (예: 전북 김관영).
+    """
     if not entry:
         return None
-    dem_mean = dem_unc = con_mean = con_unc = None
-    dem_name = con_name = None
+    # 후보별 (이름, 정당, mean, sd 추정) 모음
+    items = []
     for c in entry.get("approve", []):
         nm = c.get("name", "")
         if nm in ("없음", "기타", ""):
             continue
-        party = name_party.get(nm)
         mean = c.get("mean")
-        unc = (c.get("upper", 0) - c.get("lower", 0)) / 4  # 95% CI → 1σ 근사
-        if party in PROGRESSIVE:
-            dem_mean = mean
-            dem_unc = unc
-            dem_name = nm
-        elif party in CONSERVATIVE:
-            con_mean = mean
-            con_unc = unc
-            con_name = nm
-    if dem_mean is None or con_mean is None:
+        if mean is None:
+            continue
+        unc = (c.get("upper", 0) - c.get("lower", 0)) / 4
+        party = name_party.get(nm, "")
+        items.append({"name": nm, "party": party, "mean": mean, "unc": unc})
+    if not items:
         return None
+    dems = [x for x in items if x["party"] in PROGRESSIVE]
+    non_dems = [x for x in items if x["party"] not in PROGRESSIVE]
+    if not dems or not non_dems:
+        return None
+    dem = max(dems, key=lambda x: x["mean"])
+    con = max(non_dems, key=lambda x: x["mean"])
     return {
         "date": entry.get("date"),
-        "dem_candidate": dem_name,
-        "con_candidate": con_name,
-        "dem_share": round(dem_mean, 2),
-        "con_share": round(con_mean, 2),
-        "margin": round(dem_mean - con_mean, 2),
-        # 두 후보 SD 합성 (독립 가정)
-        "margin_sd": round((dem_unc ** 2 + con_unc ** 2) ** 0.5, 2),
+        "dem_candidate": dem["name"],
+        "dem_party": dem["party"],
+        "con_candidate": con["name"],
+        "con_party": con["party"] or "무소속",
+        "dem_share": round(dem["mean"], 2),
+        "con_share": round(con["mean"], 2),
+        "margin": round(dem["mean"] - con["mean"], 2),
+        "margin_sd": round((dem["unc"] ** 2 + con["unc"] ** 2) ** 0.5, 2),
     }
 
 
@@ -166,11 +171,10 @@ def main():
     print(f"저장: {OUT.relative_to(ROOT)}  ({len(sido_prior)}개 시도)")
     print()
     for ko, p in sorted(sido_prior.items(), key=lambda x: -x[1]["margin"]):
-        sign = "+" if p["margin"] >= 0 else ""
-        winner = "D" if p["margin"] > 0 else "R"
-        print(f"  {ko:14s}  {p['dem_candidate']:>5s}({p['dem_share']:5.1f}%) vs "
-              f"{p['con_candidate']:>5s}({p['con_share']:5.1f}%)  "
-              f"margin {sign}{p['margin']:+6.1f}%p ± {p['margin_sd']:4.1f}  [{winner}]")
+        winner = "민주당" if p["margin"] > 0 else (p["con_party"] or "비민주당")
+        print(f"  {ko:14s}  민주당:{p['dem_candidate']}({p['dem_share']:5.1f}%) vs "
+              f"{p['con_party']}:{p['con_candidate']}({p['con_share']:5.1f}%)  "
+              f"격차 {p['margin']:+6.1f}%p  → {winner} 우세")
 
 
 if __name__ == "__main__":

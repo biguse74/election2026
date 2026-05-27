@@ -347,8 +347,8 @@ def _scenario_block(mode, sc):
       <h2 class="scenario-title">{meta['title']} {badge}</h2>
       <p class="scenario-desc">{meta['desc']}</p>
       <div class="scenario-stats">
-        <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>{sc['dem_mean']}곳</strong><span class="pill-sub">최빈 {sc['dem_mode']} · 80% [{sc['dem_80_ci'][0]}~{sc['dem_80_ci'][1]}]</span></div>
-        <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>{sc['con_mean']}곳</strong><span class="pill-sub">최빈 {sc['con_mode']} · 80% [{sc['con_80_ci'][0]}~{sc['con_80_ci'][1]}]</span></div>
+        <div class="stat-pill stat-d"><span class="pill-label">민주당</span><strong>{sc['dem_mode']}곳</strong><span class="pill-sub">예상 범위 {sc['dem_80_ci'][0]}~{sc['dem_80_ci'][1]}곳</span></div>
+        <div class="stat-pill stat-r"><span class="pill-label">국힘·무소속 등</span><strong>{sc['con_mode']}곳</strong><span class="pill-sub">예상 범위 {sc['con_80_ci'][0]}~{sc['con_80_ci'][1]}곳</span></div>
       </div>
     </section>"""
 
