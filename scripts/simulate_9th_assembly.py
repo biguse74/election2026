@@ -33,6 +33,25 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 MBC = ROOT / "tmp" / "mbc"
 OUT_DIR = ROOT / "exports" / "simulation_9th_assembly"
+CANDIDATES_DIR = ROOT / "data" / "candidates" / "20260603"
+
+# 14개 재보궐 선거구 — repoll consti와 매칭 시 우리 사이트 candidates snapshot 키 매핑
+REPOLL_TO_CANDS = {
+    "부산광역시북구갑":           ("부산광역시",       "북구갑"),
+    "대구광역시달성군":           ("대구광역시",       "달성군"),
+    "인천광역시연수구갑":         ("인천광역시",       "연수구갑"),
+    "인천광역시계양구을":         ("인천광역시",       "계양구을"),
+    "광주광역시광산구을":         ("광주광역시",       "광산구을"),
+    "울산광역시남구갑":           ("울산광역시",       "남구갑"),
+    "경기도평택시을":             ("경기도",          "평택시을"),
+    "경기도안산시갑":             ("경기도",          "안산시갑"),
+    "경기도하남시갑":             ("경기도",          "하남시갑"),
+    "충청남도공주시부여군청양군": ("충청남도",        "공주시부여군청양군"),
+    "충청남도아산시을":           ("충청남도",        "아산시을"),
+    "전라북도군산시김제시부안군갑": ("전북특별자치도", "군산시김제시부안군갑"),
+    "전라북도군산시김제시부안군을": ("전북특별자치도", "군산시김제시부안군을"),
+    "제주특별자치도서귀포시":     ("제주특별자치도",  "서귀포시"),
+}
 
 N_SIM = 10_000
 SEED = 42
@@ -82,6 +101,31 @@ def parse_boxplot() -> list[dict]:
         return json.loads(_clean_js_to_json(raw))
 
 
+def load_9th_candidates() -> dict[str, list[dict]]:
+    """우리 사이트 candidates snapshot에서 sgTypecode=2 후보 추출.
+    반환: {consti(repoll 키): [{name, party}, ...], ...}
+    9회 출마자 정확 매칭 — fallback에서 22대 후보 대신 9회 후보 이름 사용.
+    """
+    import glob
+    snaps = sorted(glob.glob(str(CANDIDATES_DIR / "snapshot_*.json")))
+    if not snaps:
+        return {}
+    d = json.load(open(snaps[-1], encoding="utf-8"))
+    cands_by_sd_sgg: dict[tuple, list] = {}
+    for c in d.get("candidates", []):
+        if str(c.get("sgTypecode")) != "2":
+            continue
+        st = c.get("status") or ""
+        if st and st not in ("등록", "확정"):
+            continue
+        key = (c.get("sdName"), c.get("sggName"))
+        cands_by_sd_sgg.setdefault(key, []).append({
+            "name": c.get("name") or c.get("hbjnm"),
+            "party": c.get("jdName") or "",
+        })
+    return {consti: cands_by_sd_sgg.get(sd_sgg, []) for consti, sd_sgg in REPOLL_TO_CANDS.items()}
+
+
 def parse_repoll() -> list[dict]:
     text = (MBC / "assembly_repoll.js").read_text(encoding="utf-8")
     m = re.search(r"=\s*(\[.*\])\s*;?\s*$", text.strip(), re.DOTALL)
@@ -108,7 +152,7 @@ def canon(name: str) -> str:
     return s
 
 
-def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict]) -> list[dict]:
+def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict], cands_9th: dict = None) -> list[dict]:
     """14개 선거구 각각에서 prior 추출.
     1) boxplot에 graph_data 있으면 마지막 시점 mean·SD 사용
     2) graph_data 없거나 boxplot에 항목 없으면 repoll의 22대 당선 정당 기반 fallback
@@ -235,34 +279,43 @@ def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict]) -> list[dict
                 continue
 
         if not dem or not con:
-            # Fallback: repoll의 22대 당선 정당 기반
+            # Fallback: 22대 결과 기반 + 9회 실제 후보(candidates snapshot)로 표시
             used_fallback = True
             elected = rep.get("elected_party") or rep.get("party")
-            # 22대 당선 정당 → margin 가정
             if elected in PROGRESSIVE:
-                fb_margin = 18.0   # D 우세 (다소 보수적)
-                fb_sd = 4.0        # MBC SD 자리 — 큰 잡음
+                fb_margin = 18.0
+                fb_sd = 4.0
             elif elected in CONSERVATIVE:
-                fb_margin = -18.0  # R 우세
+                fb_margin = -18.0
                 fb_sd = 4.0
             else:
                 fb_margin = 0.0
                 fb_sd = 6.0
-            # 후보 정보가 있으면 채우고, 없으면 22대 인물 채움
-            dem_name = (rep.get("elected_name") if elected in PROGRESSIVE
-                        else rep.get("name") if rep.get("party") in PROGRESSIVE
-                        else "—")
-            con_name = (rep.get("elected_name") if elected in CONSERVATIVE
-                        else rep.get("name") if rep.get("party") in CONSERVATIVE
-                        else "—")
-            # 후보 명단에서 보강
-            for c in candis:
-                if c.get("party") in PROGRESSIVE and not dem:
+            # 9회 후보 명단에서 진영별 후보 찾기
+            ninth = (cands_9th or {}).get(consti, [])
+            dem_name = "—"; con_name = "—"; dem_party = "더불어민주당"; con_party = "국민의힘"
+            # 9회 민주당 진영 후보
+            for c in ninth:
+                if camp_of(c.get("party",""), c.get("name","")) == "P":
                     dem_name = c.get("name") or dem_name
-                if c.get("party") in CONSERVATIVE and not con:
+                    dem_party = c.get("party") or dem_party
+                    break
+            # 9회 비민주당 진영 후보
+            for c in ninth:
+                if camp_of(c.get("party",""), c.get("name","")) == "C":
                     con_name = c.get("name") or con_name
-            dem = {"name": dem_name, "party": "더불어민주당", "mean": None, "sd": None}
-            con = {"name": con_name, "party": "국민의힘", "mean": None, "sd": None}
+                    con_party = c.get("party") or con_party
+                    break
+            # 비민주당 진영 후보가 없으면 무소속 등 비민주당 1명 채택
+            if con_name == "—":
+                for c in ninth:
+                    p = c.get("party") or ""
+                    if p not in PROGRESSIVE:
+                        con_name = c.get("name") or con_name
+                        con_party = p or "무소속"
+                        break
+            dem = {"name": dem_name, "party": dem_party, "mean": None, "sd": None}
+            con = {"name": con_name, "party": con_party, "mean": None, "sd": None}
             out.append({
                 "consti": consti,
                 "region1": region1,
@@ -339,7 +392,8 @@ def main():
     if not repoll:
         raise SystemExit("repoll.js 파싱 실패 — tmp/mbc/assembly_repoll.js 확인")
 
-    priors = extract_priors(arr, repoll)
+    cands_9th = load_9th_candidates()
+    priors = extract_priors(arr, repoll, cands_9th)
     print(f"=== 14개 재보궐 선거구 prior (총 {len(priors)}개) ===")
     for p in sorted(priors, key=lambda x: -x["margin"]):
         sign = "+" if p["margin"] >= 0 else ""
@@ -385,11 +439,9 @@ def main():
             "race_dem_prob": {k: round(v / n, 4) for k, v in sim["race_dem_wins"].items()},
         },
         "limitations": [
-            "14개 선거구 각각 표본 작음 — 특히 자료 부족 분류 선거구는 여론조사 누적 적음",
+            "14개 선거구 각각 표본 적음 — 일부 선거구는 여론조사 자료 부족",
             "현직 이점·후보 효과·정당 변동 미반영",
-            "여론조사 신뢰구간 외 모델 잡음 SD 6%p 가정 — 보수적 추정",
-            "참고한 여론조사가 갱신되면 결과도 갱신해야 함",
-            "여론조사 인용보도 아닌 모델 내부 변수로만 사용",
+            "5/27 이후 여론 변화 미반영 — 데이터 갱신 시 결과도 갱신",
         ],
     }
     (OUT_DIR / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -435,7 +487,7 @@ def write_html(summary, priors, sim):
           <td class="sgg">{p['region2']}{fb_mark}</td>
           <td>{p['dem']['name']}{dem_party_label}<br><span class="party-d">{dem_mean}</span>{other_cands_html(p['dem'])}</td>
           <td>{p['con']['name']}{con_party_label}<br><span class="party-r">{con_mean}</span>{other_cands_html(p['con'])}</td>
-          <td class="margin">{p['margin']:+.1f}%p ±{p['margin_sd']}</td>
+          <td class="margin">{p['margin']:+.1f}%p</td>
           <td><div class="prob-cell"><span class="prob-bar"><span style="width:{prob_d*100:.0f}%;background:{bar_color}"></span></span><span class="prob-num">{prob_d*100:.0f}%</span></div></td>
           <td class="state">{p['state_label'] or '—'}</td>
         </tr>""")
@@ -457,13 +509,7 @@ def write_html(summary, priors, sim):
 
     r = summary["result"]
 
-    DISCLAIMER = """<div style="max-width:880px;margin:0 auto 20px;padding:14px 18px;background:#fdecea;border-left:4px solid #c41e3a;border-radius:4px;font-size:0.86rem;line-height:1.6">
-  <strong style="color:#b3261e;display:block;margin-bottom:4px;font-size:0.92rem">⚠️ 자료의 성격 안내</strong>
-  · 본 자료는 <strong>여론조사·예측조사가 아닙니다</strong>. 2026-05-27까지 언론에 보도된 공개 여론조사 추정치를 prior로 한 시뮬레이션.<br>
-  · 특정 후보·정당의 당락을 <strong>단정하지 않습니다</strong>.<br>
-  · 보도된 여론조사 신뢰구간을 prior로, 추가 잡음 SD 6%p를 부여한 보수적 추정.<br>
-  · 14개 선거구 각각 표본이 작아 신뢰구간이 넓음. 인용·재가공 시 한계 함께 표기 부탁.
-</div>"""
+    DISCLAIMER = ""  # build_sim_site.py가 상단에 공통 안내문을 자동 삽입
 
     limits = "".join(f"<li>{x}</li>" for x in summary["limitations"])
 

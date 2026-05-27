@@ -296,12 +296,9 @@ def main():
         "scenarios": {m: {**SCENARIO_META[m], **sc} for m, sc in scenarios.items()},
         "backtests": backtests,
         "limitations": [
-            "표본 6회차만 (1995~2022) — 시군구당 평균 4~6회",
-            "선거구 통합·분리 변동 (5회→6회 226→222 등) 매칭 안 되는 행 무시",
-            "정당 진영 매핑의 자의성 (예: 새정치민주연합 → 진보)",
+            "과거 6회차(1995~2022) 시군구별 데이터 — 표본 적음",
             "현직 이점·후보 효과·지역 토호 영향 미반영",
-            "사전투표·당일투표 패턴 변화 미반영",
-            "시군구 226곳 단위 공개 여론조사는 자료가 충분치 않아 prior로 사용 안 됨 (시도지사·재보궐은 반영)",
+            "시군구 단위 공개 여론조사 자료 부족 — 시도지사·재보궐은 여론조사 반영",
         ],
     }
     (OUT_DIR / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
