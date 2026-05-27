@@ -123,8 +123,12 @@ def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict]) -> list[dict
         dem = con = None
         used_fallback = False
 
+        # 모델: 민주 후보 vs 비민주 1위 후보 (무소속·다른 진영 보수 후보 포함)
+        # 부산 북갑의 한동훈(무소속) 1위 같은 케이스를 정확히 잡기 위함.
         if gdata:
             last = gdata[-1]
+            dem_cands = []
+            non_dem_cands = []
             for c in candis:
                 party = c.get("party")
                 name = c.get("name")
@@ -136,30 +140,43 @@ def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict]) -> list[dict
                     continue
                 unc = (up - lo) / 4 if (lo is not None and up is not None) else 1.5
                 entry = {"name": name, "party": party, "mean": round(mean, 2), "sd": round(unc, 2)}
-                if party in PROGRESSIVE and dem is None:
-                    dem = entry
-                elif party in CONSERVATIVE and con is None:
-                    con = entry
+                if party in PROGRESSIVE:
+                    dem_cands.append(entry)
+                else:
+                    non_dem_cands.append(entry)
+            # 민주 후보 1위 = dem
+            if dem_cands:
+                dem = max(dem_cands, key=lambda x: x["mean"])
+            # 비민주 후보 1위 = con (국힘일 수도, 무소속·다른 보수일 수도)
+            if non_dem_cands:
+                con = max(non_dem_cands, key=lambda x: x["mean"])
 
-        # graph_data 없거나 부족하면 bar_data의 raw 여론조사 사용 (단순 평균)
+        # graph_data 없거나 부족하면 bar_data의 raw 여론조사 사용
+        # 비민주 후보 중 1위(평균값 기준)를 con으로
         if (not dem or not con) and race.get("bar_data"):
             bar = race.get("bar_data") or []
             cand_party = {c["name"]: c["party"] for c in candis}
-            dem_vals, con_vals = [], []
-            dem_names, con_names = set(), set()
+            # 후보명별 mean 누적
+            per_cand_means = {}
             for bd in bar:
                 for sv in (bd.get("survey_data") or []):
                     for name, vals in sv.items():
-                        party = cand_party.get(name)
-                        if party in PROGRESSIVE:
-                            dem_vals.append(vals.get("mean"))
-                            dem_names.add(name)
-                        elif party in CONSERVATIVE:
-                            con_vals.append(vals.get("mean"))
-                            con_names.add(name)
-            dem_vals = [v for v in dem_vals if v is not None]
-            con_vals = [v for v in con_vals if v is not None]
-            if dem_vals and con_vals:
+                        m = vals.get("mean")
+                        if m is None:
+                            continue
+                        per_cand_means.setdefault(name, []).append(m)
+            # 후보별 평균
+            cand_avg = {n: sum(v)/len(v) for n, v in per_cand_means.items() if v}
+            # 민주 후보 1위
+            dem_picks = {n: m for n, m in cand_avg.items() if cand_party.get(n) in PROGRESSIVE}
+            non_dem_picks = {n: m for n, m in cand_avg.items() if cand_party.get(n) and cand_party.get(n) not in PROGRESSIVE}
+            if dem_picks and non_dem_picks:
+                dem_name = max(dem_picks, key=dem_picks.get)
+                con_name = max(non_dem_picks, key=non_dem_picks.get)
+                dem_party = cand_party[dem_name]
+                con_party = cand_party[con_name]
+                dem_vals = per_cand_means[dem_name]
+                con_vals = per_cand_means[con_name]
                 dem_mean = sum(dem_vals) / len(dem_vals)
                 con_mean = sum(con_vals) / len(con_vals)
                 # 조사 수 적을 때 SD 크게 (적은 표본은 불확실)
@@ -169,9 +186,9 @@ def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict]) -> list[dict
                 # SD 하한
                 dem_sd = max(dem_sd, base_sd)
                 con_sd = max(con_sd, base_sd)
-                dem = {"name": ", ".join(sorted(dem_names)) or "—", "party": "더불어민주당",
+                dem = {"name": dem_name, "party": dem_party,
                        "mean": round(dem_mean, 2), "sd": round(dem_sd, 2)}
-                con = {"name": ", ".join(sorted(con_names)) or "—", "party": "국민의힘",
+                con = {"name": con_name, "party": con_party,
                        "mean": round(con_mean, 2), "sd": round(con_sd, 2)}
                 # bar_data 사용 표시 (fallback과 구분)
                 margin = dem["mean"] - con["mean"]
@@ -373,12 +390,15 @@ def write_html(summary, priors, sim):
         dem_mean = f"{p['dem']['mean']}%" if p['dem']['mean'] is not None else "—"
         con_mean = f"{p['con']['mean']}%" if p['con']['mean'] is not None else "—"
         fb_mark = ' <span style="font-size:0.7rem;color:#999">(fb)</span>' if p.get("fallback") else ""
+        # 비민주 후보의 정당 표시 (한동훈·조국 등 무소속·기타 정당 명시)
+        con_party = p['con'].get('party') or ''
+        con_party_label = f' <span style="font-size:0.72rem;color:#888">{con_party}</span>' if con_party and con_party != '국민의힘' else ''
         race_rows.append(f"""
         <tr>
           <td>{p['region1']}</td>
           <td class="sgg">{p['region2']}{fb_mark}</td>
           <td>{p['dem']['name']}<br><span class="party-d">{dem_mean}</span></td>
-          <td>{p['con']['name']}<br><span class="party-r">{con_mean}</span></td>
+          <td>{p['con']['name']}{con_party_label}<br><span class="party-r">{con_mean}</span></td>
           <td class="margin">{p['margin']:+.1f}%p ±{p['margin_sd']}</td>
           <td><div class="prob-cell"><span class="prob-bar"><span style="width:{prob_d*100:.0f}%;background:{bar_color}"></span></span><span class="prob-num">{prob_d*100:.0f}%</span></div></td>
           <td class="state">{p['state_label'] or '—'}</td>
@@ -464,8 +484,9 @@ table.races th {{ font-size: 0.74rem; color: #555; }}
 
 <section>
   <h2 style="font-size:1.1rem">14개 선거구별 민주 우세도</h2>
+  <p style="color:#666;font-size:0.84rem;margin:0 0 8px">민주 후보 vs <strong>비민주 1위 후보</strong> 매치업. 부산 북갑 한동훈(무소속)·평택을 조국(조국혁신당) 등 다른 진영 후보가 1위인 경우 그 후보로 자동 매칭.</p>
   <table class="races">
-    <thead><tr><th>시도</th><th>선거구</th><th>민주 후보 · 추정 지지율</th><th>국힘 후보 · 추정 지지율</th><th>격차 (민주-국힘)</th><th>민주 승리 확률</th><th>MBC 분류</th></tr></thead>
+    <thead><tr><th>시도</th><th>선거구</th><th>민주 후보</th><th>비민주 1위 후보</th><th>격차</th><th>민주 승리 확률</th><th>MBC 분류</th></tr></thead>
     <tbody>{rows_html}</tbody>
   </table>
 </section>
