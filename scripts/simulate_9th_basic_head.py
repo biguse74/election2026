@@ -237,9 +237,22 @@ def backtest(margin, target_round):
 
 
 SCENARIO_META = {
-    "baseline": {"title": "혼합 환경", "desc": "과거 6회차 분위기를 모두 무작위로 추출."},
-    "normal":   {"title": "보통 환경 (8회 직후)", "desc": "5·6·8회처럼 평년 분위기가 9회에도 이어진다 가정."},
-    "shakeup":  {"title": "정권심판 환경 (7회 직후)", "desc": "7회 박근혜 탄핵 후 같은 진보 압승 분위기를 가정."},
+    "shakeup": {
+        "title": "정권 출범 1년차 환경 — 9회 추정 환경",
+        "desc": "윤석열 탄핵 후 이재명 정부 출범 1년차. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 "
+                "7회(2018)와 가장 유사한 환경 가정. 현재 정치 상황에 가장 가까운 시나리오.",
+        "primary": True,
+    },
+    "baseline": {
+        "title": "혼합 환경 (참고)",
+        "desc": "6회차 분위기를 모두 무작위 추출. 외부 환경 무관 분포.",
+        "primary": False,
+    },
+    "normal": {
+        "title": "정권 안정기 환경 (대안 가설)",
+        "desc": "5·6·8회처럼 정권 중반 평년 분위기가 9회에도 이어졌다고 가정.",
+        "primary": False,
+    },
 }
 
 
@@ -257,7 +270,7 @@ def main():
     print()
 
     scenarios = {}
-    for mode in ["baseline", "normal", "shakeup"]:
+    for mode in ["shakeup", "baseline", "normal"]:
         print(f"=== 시나리오: {mode} ===")
         sc = run_scenario(params, N_SIM, SEED, mode)
         scenarios[mode] = sc
@@ -330,9 +343,12 @@ def main():
 
 def _scenario_block(mode, sc):
     meta = SCENARIO_META[mode]
+    is_primary = meta.get("primary", False)
+    badge = '<span class="scenario-primary-badge">현재 환경 추정</span>' if is_primary else ''
+    cls = "scenario scenario-primary" if is_primary else "scenario"
     return f"""
-    <section class="scenario">
-      <h2 class="scenario-title">{meta['title']}</h2>
+    <section class="{cls}">
+      <h2 class="scenario-title">{meta['title']} {badge}</h2>
       <p class="scenario-desc">{meta['desc']}</p>
       <div class="scenario-stats">
         <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>{sc['dem_mean']}석</strong><span class="pill-sub">최빈 {sc['dem_mode']} · 80% [{sc['dem_80_ci'][0]}~{sc['dem_80_ci'][1]}]</span></div>
@@ -342,7 +358,7 @@ def _scenario_block(mode, sc):
 
 
 def write_html(summary, scenarios, backtests, params, year_of):
-    blocks = "".join(_scenario_block(m, scenarios[m]) for m in ["baseline", "normal", "shakeup"])
+    blocks = "".join(_scenario_block(m, scenarios[m]) for m in ["shakeup", "baseline", "normal"])
     # 시군구 표 — 상위 15 + 하위 15
     sigungu_sorted = sorted(params["regions"], key=lambda s: -scenarios["baseline"]["sido_dem_prob"][f"{s[0]}/{s[1]}"])
     def rows(rng):
@@ -369,6 +385,8 @@ h1 {{ font-size: 1.6rem; margin: 0 0 8px; }}
 .legal {{ background: #fdecea; border-left: 4px solid #c41e3a; padding: 12px 16px; margin: 16px 0; font-size: 0.85rem; color: #b3261e; }}
 .intro {{ background: #fff8e3; border-left: 4px solid #b8860b; padding: 14px 16px; margin-bottom: 24px; border-radius: 4px; font-size: 0.9rem; }}
 .scenario {{ border: 1px solid #ddd; border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; background: #fff; }}
+.scenario-primary {{ border: 2px solid #152484; box-shadow: 0 2px 12px rgba(21,36,132,0.08); }}
+.scenario-primary-badge {{ display: inline-block; background: #152484; color: #fff; font-size: 0.7rem; padding: 3px 9px; border-radius: 999px; vertical-align: middle; margin-left: 6px; font-weight: 700; }}
 .scenario-title {{ font-size: 1.1rem; margin: 0 0 4px; }}
 .scenario-desc {{ font-size: 0.84rem; color: #666; margin: 0 0 12px; }}
 .scenario-stats {{ display: flex; gap: 10px; flex-wrap: wrap; }}

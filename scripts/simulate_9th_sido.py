@@ -292,17 +292,23 @@ def run_scenario(params, n, seed, mode):
 
 
 SCENARIO_META = {
+    "shakeup": {
+        "title": "정권 출범 1년차 환경 — 9회 추정 환경",
+        "desc": "윤석열 탄핵 후 이재명 정부 출범 1년차. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 "
+                "7회(2018) 지선과 가장 유사한 환경 가정. 현재 정치 상황에 가장 가까운 시나리오.",
+        "primary": True,
+    },
     "baseline": {
-        "title": "혼합 환경",
-        "desc": "6회차(3~8회) 분위기를 모두 무작위로 추출. 시대 효과 불확실성을 그대로 반영.",
+        "title": "혼합 환경 (참고)",
+        "desc": "6회차 분위기를 모두 무작위 추출. 외부 환경 무관 분포 — 정치 환경 가정을 빼고 "
+                "과거 6회 평균만 본 결과.",
+        "primary": False,
     },
     "normal": {
-        "title": "보통 환경 (8회 직후 가정)",
-        "desc": "5·6·8회처럼 평년 분위기가 9회에도 이어진다 가정. 격변기(7회) 제외.",
-    },
-    "shakeup": {
-        "title": "정권심판 환경 (7회 직후 가정)",
-        "desc": "7회(박근혜 탄핵 후) 같은 진보 압승 분위기를 9회에도 가정. 외부 충격 가정.",
+        "title": "정권 안정기 환경 (대안 가설)",
+        "desc": "5·6·8회처럼 정권 중반 평년 분위기가 9회에도 이어졌다고 가정. 현재 환경과는 "
+                "거리 있는 대안 가설.",
+        "primary": False,
     },
 }
 
@@ -319,9 +325,9 @@ def main():
     print(f"  residual SD: {params['residual_sd']}%p")
     print()
 
-    # 세 시나리오 모두 실행
+    # 세 시나리오 모두 실행 — primary(현재 환경) 시나리오를 맨 앞에
     scenarios = {}
-    for mode in ["baseline", "normal", "shakeup"]:
+    for mode in ["shakeup", "baseline", "normal"]:
         print(f"=== 시나리오: {mode} ===")
         sc = run_scenario(params, N_SIM, SEED, mode)
         scenarios[mode] = sc
@@ -460,9 +466,12 @@ def _scenario_block_html(mode: str, sc: dict) -> str:
     max_c = max(sc["seat_dist_con"].values()) if sc["seat_dist_con"] else 1
     dem_chart = _bar_chart_html(sc["seat_dist_dem"], "민주당 의석 분포", "#152484", max_d)
     con_chart = _bar_chart_html(sc["seat_dist_con"], "국민의힘 의석 분포", "#E61E2B", max_c)
+    is_primary = meta.get("primary", False)
+    badge = '<span class="scenario-primary-badge">현재 환경 추정</span>' if is_primary else ''
+    cls = "scenario scenario-primary" if is_primary else "scenario"
     return f"""
-    <section class="scenario">
-      <h2 class="scenario-title">{meta['title']}</h2>
+    <section class="{cls}">
+      <h2 class="scenario-title">{meta['title']} {badge}</h2>
       <p class="scenario-desc">{meta['desc']}</p>
       <div class="scenario-stats">
         <div class="stat-pill stat-d">
@@ -530,7 +539,7 @@ def _backtest_html(backtests: list, year_of: dict) -> str:
 
 def write_html(summary: dict, scenarios: dict, backtests: list, params: dict) -> None:
     year_of = {3:2002, 4:2006, 5:2010, 6:2014, 7:2018, 8:2022}
-    scenario_blocks = "".join(_scenario_block_html(m, scenarios[m]) for m in ["baseline", "normal", "shakeup"])
+    scenario_blocks = "".join(_scenario_block_html(m, scenarios[m]) for m in ["shakeup", "baseline", "normal"])
     sido_block = _sido_marginal_html(scenarios)
     bt_block = _backtest_html(backtests, year_of)
     limit_items = "".join(f"<li>{x}</li>" for x in summary["limitations"])
@@ -547,6 +556,8 @@ h1 {{ font-size: 1.6rem; margin: 0 0 8px; }}
 .intro {{ background: #fff8e3; border-left: 4px solid #b8860b; padding: 14px 16px; margin-bottom: 24px; border-radius: 4px; }}
 .intro strong {{ color: #8b6500; }}
 .scenario {{ border: 1px solid #ddd; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; background: #fff; }}
+.scenario-primary {{ border: 2px solid #152484; box-shadow: 0 2px 12px rgba(21,36,132,0.08); }}
+.scenario-primary-badge {{ display: inline-block; background: #152484; color: #fff; font-size: 0.72rem; padding: 3px 10px; border-radius: 999px; vertical-align: middle; margin-left: 6px; font-weight: 700; }}
 .scenario-title {{ font-size: 1.2rem; margin: 0 0 4px; }}
 .scenario-desc {{ font-size: 0.85rem; color: #666; margin: 0 0 14px; }}
 .scenario-stats {{ display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }}

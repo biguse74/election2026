@@ -7,6 +7,8 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
 .legal { background: #fdecea; border-left: 4px solid #c41e3a; padding: 12px 16px; margin: 16px 0; font-size: 0.85rem; color: #b3261e; }
 .intro { background: #fff8e3; border-left: 4px solid #b8860b; padding: 14px 16px; margin-bottom: 24px; border-radius: 4px; font-size: 0.9rem; }
 .scenario { border: 1px solid #ddd; border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; background: #fff; }
+.scenario-primary { border: 2px solid #152484; box-shadow: 0 2px 12px rgba(21,36,132,0.08); }
+.scenario-primary-badge { display: inline-block; background: #152484; color: #fff; font-size: 0.7rem; padding: 3px 9px; border-radius: 999px; vertical-align: middle; margin-left: 6px; font-weight: 700; }
 .scenario-title { font-size: 1.1rem; margin: 0 0 4px; }
 .scenario-desc { font-size: 0.84rem; color: #666; margin: 0 0 12px; }
 .scenario-stats { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -28,28 +30,28 @@ th { font-size: 0.78rem; color: #666; }
 <div class="legal">⚠️ <strong>공직선거법 제108조</strong> — 6/3 18시 전 결과 공표·인용보도 금지.</div>
 <div class="intro"><strong>시도지사 시뮬레이션</strong>에 비해 시군구는 후보 개별 효과·현직 이점·지역 토호 영향이 훨씬 커서 모델 정확도가 떨어집니다. 환경별 의석 분포 예측에는 시도지사 결과를 더 신뢰하는 게 안전합니다.</div>
 
+    <section class="scenario scenario-primary">
+      <h2 class="scenario-title">정권 출범 1년차 환경 — 9회 추정 환경 <span class="scenario-primary-badge">현재 환경 추정</span></h2>
+      <p class="scenario-desc">윤석열 탄핵 후 이재명 정부 출범 1년차. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 7회(2018)와 가장 유사한 환경 가정. 현재 정치 상황에 가장 가까운 시나리오.</p>
+      <div class="scenario-stats">
+        <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>165.82석</strong><span class="pill-sub">최빈 160 · 80% [126~203]</span></div>
+        <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>100.18석</strong><span class="pill-sub">최빈 106 · 80% [63~140]</span></div>
+      </div>
+    </section>
     <section class="scenario">
-      <h2 class="scenario-title">혼합 환경</h2>
-      <p class="scenario-desc">과거 6회차 분위기를 모두 무작위로 추출.</p>
+      <h2 class="scenario-title">혼합 환경 (참고) </h2>
+      <p class="scenario-desc">6회차 분위기를 모두 무작위 추출. 외부 환경 무관 분포.</p>
       <div class="scenario-stats">
         <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>108.62석</strong><span class="pill-sub">최빈 102 · 80% [83~166]</span></div>
         <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>157.38석</strong><span class="pill-sub">최빈 164 · 80% [100~183]</span></div>
       </div>
     </section>
     <section class="scenario">
-      <h2 class="scenario-title">보통 환경 (8회 직후)</h2>
-      <p class="scenario-desc">5·6·8회처럼 평년 분위기가 9회에도 이어진다 가정.</p>
+      <h2 class="scenario-title">정권 안정기 환경 (대안 가설) </h2>
+      <p class="scenario-desc">5·6·8회처럼 정권 중반 평년 분위기가 9회에도 이어졌다고 가정.</p>
       <div class="scenario-stats">
         <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>96.81석</strong><span class="pill-sub">최빈 98 · 80% [82~112]</span></div>
         <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>169.19석</strong><span class="pill-sub">최빈 168 · 80% [154~184]</span></div>
-      </div>
-    </section>
-    <section class="scenario">
-      <h2 class="scenario-title">정권심판 환경 (7회 직후)</h2>
-      <p class="scenario-desc">7회 박근혜 탄핵 후 같은 진보 압승 분위기를 가정.</p>
-      <div class="scenario-stats">
-        <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>165.82석</strong><span class="pill-sub">최빈 160 · 80% [126~203]</span></div>
-        <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>100.18석</strong><span class="pill-sub">최빈 106 · 80% [63~140]</span></div>
       </div>
     </section>
 <section><h2>시군구별 민주당 승리 확률 — 상위 20</h2>
