@@ -358,19 +358,53 @@ def _scenario_block(mode, sc):
 
 def write_html(summary, scenarios, backtests, params, year_of):
     blocks = "".join(_scenario_block(m, scenarios[m]) for m in ["shakeup", "baseline", "normal"])
-    # 시군구 표 — 상위 15 + 하위 15
-    sigungu_sorted = sorted(params["regions"], key=lambda s: -scenarios["baseline"]["sido_dem_prob"][f"{s[0]}/{s[1]}"])
-    def rows(rng):
-        out = []
-        for s in rng:
-            key = f"{s[0]}/{s[1]}"
-            pb = scenarios["baseline"]["sido_dem_prob"][key]
-            pn = scenarios["normal"]["sido_dem_prob"][key]
-            ps = scenarios["shakeup"]["sido_dem_prob"][key]
-            out.append(f'<tr><td>{s[0]}</td><td>{s[1]}</td><td>{pb*100:.0f}%</td><td>{pn*100:.0f}%</td><td>{ps*100:.0f}%</td></tr>')
-        return "".join(out)
-    top_rows = rows(sigungu_sorted[:20])
-    bot_rows = rows(sigungu_sorted[-20:])
+
+    # 시군구 전체 — 시도별 그룹 + 그 안에서 현재 환경(shakeup) 기준 정렬
+    primary = "shakeup"
+    by_sido_groups: dict[str, list] = {}
+    for s in params["regions"]:
+        by_sido_groups.setdefault(s[0], []).append(s)
+    # 시도 정렬 (가나다 or 행정안전부 표준 순)
+    SIDO_ORDER = [
+        "서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시",
+        "대전광역시", "울산광역시", "세종특별자치시", "경기도",
+        "강원특별자치도", "충청북도", "충청남도", "전북특별자치도",
+        "전라남도", "경상북도", "경상남도", "제주특별자치도",
+        # 옛 이름 fallback
+        "강원도", "전라북도", "제주도",
+    ]
+    sido_keys = sorted(by_sido_groups.keys(), key=lambda x: SIDO_ORDER.index(x) if x in SIDO_ORDER else 999)
+
+    def row_html(s):
+        key = f"{s[0]}/{s[1]}"
+        ps = scenarios[primary]["sido_dem_prob"].get(key, 0)
+        pb = scenarios["baseline"]["sido_dem_prob"].get(key, 0)
+        pn = scenarios["normal"]["sido_dem_prob"].get(key, 0)
+        # 막대 + 색 (민주 우세→파랑, 국힘 우세→빨강)
+        primary_pct = ps * 100
+        bar_color = "#152484" if primary_pct >= 50 else "#E61E2B"
+        bar_w = primary_pct if primary_pct >= 50 else (100 - primary_pct)
+        return (f'<tr><td class="sgg">{s[1]}</td>'
+                f'<td><div class="prob-cell"><span class="prob-bar"><span style="width:{primary_pct:.0f}%;background:#152484"></span></span>'
+                f'<span class="prob-num">{primary_pct:.0f}%</span></div></td>'
+                f'<td>{pb*100:.0f}%</td><td>{pn*100:.0f}%</td></tr>')
+
+    sido_sections = []
+    for sido in sido_keys:
+        regs = by_sido_groups[sido]
+        regs.sort(key=lambda s: -scenarios[primary]["sido_dem_prob"].get(f"{s[0]}/{s[1]}", 0))
+        # 시도 통계 (그 시도 안에서 메인 시나리오 민주 확률 평균 + 시군구 수)
+        avg_prob = sum(scenarios[primary]["sido_dem_prob"].get(f"{s[0]}/{s[1]}", 0) for s in regs) / len(regs)
+        rows_html = "".join(row_html(s) for s in regs)
+        sido_sections.append(f"""
+        <section class="sido-group">
+          <h3>{sido} <span class="sido-meta">{len(regs)}개 시군구 · 평균 민주 확률 {avg_prob*100:.0f}%</span></h3>
+          <table class="sgg-table">
+            <thead><tr><th>시군구</th><th>현재 환경 추정 (메인)</th><th>혼합</th><th>안정기</th></tr></thead>
+            <tbody>{rows_html}</tbody>
+          </table>
+        </section>""")
+    sido_sections_html = "".join(sido_sections)
 
     bt_rows = "".join(f'<tr><td>{bt["target_round"]}회 ({year_of[bt["target_round"]]})</td><td>{bt["hits"]}/{bt["total"]}</td><td>{bt["accuracy_pct"]}%</td></tr>' for bt in backtests)
     limits = "".join(f"<li>{x}</li>" for x in summary["limitations"])
@@ -401,16 +435,29 @@ th {{ font-size: 0.78rem; color: #666; }}
 .limits {{ background: #f6f6f6; padding: 14px 20px; border-radius: 4px; margin-top: 28px; font-size: 0.85rem; }}
 .limits h2 {{ font-size: 1rem; margin: 0 0 8px; }}
 .limits ul {{ margin: 0; padding-left: 20px; color: #555; }}
+
+/* 시도 그룹 표 — 226개 시군구 풀 노출 */
+.sido-group {{ margin: 18px 0 8px; padding: 12px 14px; border: 1px solid #e4e4e4; border-radius: 6px; background: #fafafa; }}
+.sido-group h3 {{ font-size: 1rem; margin: 0 0 6px; color: #1a1a1a; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }}
+.sido-group .sido-meta {{ font-size: 0.78rem; font-weight: 400; color: #666; }}
+.sgg-table {{ font-size: 0.8rem; margin: 4px 0 0; }}
+.sgg-table th {{ font-size: 0.74rem; font-weight: 600; color: #666; }}
+.sgg-table td.sgg {{ font-weight: 600; width: 32%; }}
+.prob-cell {{ display: flex; align-items: center; gap: 8px; }}
+.prob-bar {{ display: inline-block; flex: 1; min-width: 80px; max-width: 160px; height: 8px; background: #f0f0f0; border-radius: 2px; overflow: hidden; }}
+.prob-bar > span {{ display: block; height: 100%; transition: width 0.2s; }}
+.prob-num {{ font-variant-numeric: tabular-nums; font-weight: 700; color: #1a1a1a; min-width: 38px; text-align: right; }}
 </style></head><body>
 <h1>9회 전국동시지방선거 기초단체장 의석 시뮬레이션</h1>
 <p style="color:#666;font-size:0.85rem;margin:0 0 16px;">2026-05-27 기준 · 226개 시군구 × 1만 회 몬테카를로 · 시도지사 시뮬레이션과 동일 모델 · 뉴탐사</p>
 <div class="legal">⚠️ <strong>공직선거법 제108조</strong> — 6/3 18시 전 결과 공표·인용보도 금지.</div>
 <div class="intro"><strong>시도지사 시뮬레이션</strong>에 비해 시군구는 후보 개별 효과·현직 이점·지역 토호 영향이 훨씬 커서 모델 정확도가 떨어집니다. 환경별 의석 분포 예측에는 시도지사 결과를 더 신뢰하는 게 안전합니다.</div>
 {blocks}
-<section><h2>시군구별 민주당 승리 확률 — 상위 20</h2>
-<table><thead><tr><th>시도</th><th>시군구</th><th>혼합</th><th>보통</th><th>정권심판</th></tr></thead><tbody>{top_rows}</tbody></table></section>
-<section><h2>시군구별 민주당 승리 확률 — 하위 20</h2>
-<table><thead><tr><th>시도</th><th>시군구</th><th>혼합</th><th>보통</th><th>정권심판</th></tr></thead><tbody>{bot_rows}</tbody></table></section>
+<section>
+  <h2>시군구 전체 — 17개 시도별 민주당 승리 확률</h2>
+  <p style="color:#666;font-size:0.85rem;margin:0 0 12px">현재 환경 추정(메인)·혼합·안정기 시나리오를 시군구별로 모두 표시. 시도 안에서 메인 확률 높은 순. 메인 막대는 민주 확률만 표시(높을수록 파랑 더 길게).</p>
+  {sido_sections_html}
+</section>
 <section><h2>모델 검증 (Leave-one-out)</h2>
 <table style="max-width:380px"><thead><tr><th>대상</th><th>적중</th><th>정확도</th></tr></thead><tbody>{bt_rows}</tbody></table></section>
 <section class="limits"><h2>모델 한계</h2><ul>{limits}</ul></section>
