@@ -1,0 +1,369 @@
+{
+  "generated_at": "2026-05-27",
+  "source": "poll-mbc.co.kr region_data/assembly/boxplot_data.js",
+  "model": "MBC 베이지안 추정치 prior + Normal noise (residual SD 6%p)",
+  "n_simulations": 10000,
+  "races": [
+    {
+      "consti": "부산광역시북구갑",
+      "region1": "부산",
+      "region2": "북갑",
+      "state_label": "경합",
+      "last_date": "2026-05-25",
+      "dem": {
+        "name": "하정우",
+        "party": "더불어민주당",
+        "mean": 36.1,
+        "sd": 0.85
+      },
+      "con": {
+        "name": "박민식",
+        "party": "국민의힘",
+        "mean": 23,
+        "sd": 0.75
+      },
+      "margin": 13.1,
+      "margin_sd": 1.13,
+      "fallback": false
+    },
+    {
+      "consti": "대구광역시달성군",
+      "region1": "대구",
+      "region2": "달성",
+      "state_label": " (자료 부족 — 22대 당선 기반 추정)",
+      "last_date": null,
+      "dem": {
+        "name": "박형룡",
+        "party": "더불어민주당",
+        "mean": null,
+        "sd": null
+      },
+      "con": {
+        "name": "이진숙",
+        "party": "국민의힘",
+        "mean": null,
+        "sd": null
+      },
+      "margin": -18.0,
+      "margin_sd": 4.0,
+      "fallback": true
+    },
+    {
+      "consti": "인천광역시연수구갑",
+      "region1": "인천",
+      "region2": "연수갑",
+      "state_label": "더불어민주당 우세",
+      "last_date": "2026-05-20",
+      "dem": {
+        "name": "송영길",
+        "party": "더불어민주당",
+        "mean": 52.6,
+        "sd": 1.2
+      },
+      "con": {
+        "name": "박종진",
+        "party": "국민의힘",
+        "mean": 30.1,
+        "sd": 0.98
+      },
+      "margin": 22.5,
+      "margin_sd": 1.55,
+      "fallback": false
+    },
+    {
+      "consti": "인천광역시계양구을",
+      "region1": "인천",
+      "region2": "계양을",
+      "state_label": " (자료 부족 — 22대 당선 기반 추정)",
+      "last_date": null,
+      "dem": {
+        "name": "김남준",
+        "party": "더불어민주당",
+        "mean": null,
+        "sd": null
+      },
+      "con": {
+        "name": "심왕섭",
+        "party": "국민의힘",
+        "mean": null,
+        "sd": null
+      },
+      "margin": 18.0,
+      "margin_sd": 4.0,
+      "fallback": true
+    },
+    {
+      "consti": "광주광역시광산구을",
+      "region1": "광주",
+      "region2": "광산을",
+      "state_label": " (자료 부족 — 22대 당선 기반 추정)",
+      "last_date": null,
+      "dem": {
+        "name": "임문영",
+        "party": "더불어민주당",
+        "mean": null,
+        "sd": null
+      },
+      "con": {
+        "name": "안태욱",
+        "party": "국민의힘",
+        "mean": null,
+        "sd": null
+      },
+      "margin": 18.0,
+      "margin_sd": 4.0,
+      "fallback": true
+    },
+    {
+      "consti": "울산광역시남구갑",
+      "region1": "울산",
+      "region2": "남갑",
+      "state_label": "경합",
+      "last_date": "2026-05-25",
+      "dem": {
+        "name": "전태진",
+        "party": "더불어민주당",
+        "mean": 40.3,
+        "sd": 1.0
+      },
+      "con": {
+        "name": "김태규",
+        "party": "국민의힘",
+        "mean": 42.5,
+        "sd": 0.88
+      },
+      "margin": -2.2,
+      "margin_sd": 1.33,
+      "fallback": false
+    },
+    {
+      "consti": "경기도평택시을",
+      "region1": "경기",
+      "region2": "평택을",
+      "state_label": "더불어민주당 우세",
+      "last_date": "2026-05-22",
+      "dem": {
+        "name": "김용남",
+        "party": "더불어민주당",
+        "mean": 28.6,
+        "sd": 0.77
+      },
+      "con": {
+        "name": "유의동",
+        "party": "국민의힘",
+        "mean": 21.2,
+        "sd": 0.7
+      },
+      "margin": 7.4,
+      "margin_sd": 1.04,
+      "fallback": false
+    },
+    {
+      "consti": "경기도안산시갑",
+      "region1": "경기",
+      "region2": "안산갑",
+      "state_label": " (자료 부족 — 22대 당선 기반 추정)",
+      "last_date": null,
+      "dem": {
+        "name": "김남국",
+        "party": "더불어민주당",
+        "mean": null,
+        "sd": null
+      },
+      "con": {
+        "name": "김석훈",
+        "party": "국민의힘",
+        "mean": null,
+        "sd": null
+      },
+      "margin": 18.0,
+      "margin_sd": 4.0,
+      "fallback": true
+    },
+    {
+      "consti": "경기도하남시갑",
+      "region1": "경기",
+      "region2": "하남갑",
+      "state_label": "더불어민주당 우세",
+      "last_date": "2026-05-23",
+      "dem": {
+        "name": "이광재",
+        "party": "더불어민주당",
+        "mean": 50.5,
+        "sd": 1.1
+      },
+      "con": {
+        "name": "이용",
+        "party": "국민의힘",
+        "mean": 36.3,
+        "sd": 1.05
+      },
+      "margin": 14.2,
+      "margin_sd": 1.52,
+      "fallback": false
+    },
+    {
+      "consti": "충청남도공주시부여군청양군",
+      "region1": "충남",
+      "region2": "공주부여청양",
+      "state_label": "경합",
+      "last_date": "2026-05-26",
+      "dem": {
+        "name": "김영빈",
+        "party": "더불어민주당",
+        "mean": 45.9,
+        "sd": 1.35
+      },
+      "con": {
+        "name": "윤용근",
+        "party": "국민의힘",
+        "mean": 43.5,
+        "sd": 1.22
+      },
+      "margin": 2.4,
+      "margin_sd": 1.82,
+      "fallback": false
+    },
+    {
+      "consti": "충청남도아산시을",
+      "region1": "충남",
+      "region2": "아산을",
+      "state_label": "더불어민주당 우세",
+      "last_date": "2026-05-26",
+      "dem": {
+        "name": "전은수",
+        "party": "더불어민주당",
+        "mean": 73.6,
+        "sd": 1.92
+      },
+      "con": {
+        "name": "김민경",
+        "party": "국민의힘",
+        "mean": 26.4,
+        "sd": 1.0
+      },
+      "margin": 47.2,
+      "margin_sd": 2.16,
+      "fallback": false
+    },
+    {
+      "consti": "전라북도군산시김제시부안군갑",
+      "region1": "전북",
+      "region2": "군산김제부안갑",
+      "state_label": "더불어민주당 우세 (자료 부족 — 22대 당선 기반 추정)",
+      "last_date": null,
+      "dem": {
+        "name": "신영대",
+        "party": "더불어민주당",
+        "mean": null,
+        "sd": null
+      },
+      "con": {
+        "name": "—",
+        "party": "국민의힘",
+        "mean": null,
+        "sd": null
+      },
+      "margin": 18.0,
+      "margin_sd": 4.0,
+      "fallback": true
+    },
+    {
+      "consti": "전라북도군산시김제시부안군을",
+      "region1": "전북",
+      "region2": "군산김제부안을",
+      "state_label": "더불어민주당 우세 (자료 부족 — 22대 당선 기반 추정)",
+      "last_date": null,
+      "dem": {
+        "name": "이원택",
+        "party": "더불어민주당",
+        "mean": null,
+        "sd": null
+      },
+      "con": {
+        "name": "—",
+        "party": "국민의힘",
+        "mean": null,
+        "sd": null
+      },
+      "margin": 18.0,
+      "margin_sd": 4.0,
+      "fallback": true
+    },
+    {
+      "consti": "제주특별자치도서귀포시",
+      "region1": "제주",
+      "region2": "서귀포",
+      "state_label": "더불어민주당 우세",
+      "last_date": "2026-05-25",
+      "dem": {
+        "name": "김성범",
+        "party": "더불어민주당",
+        "mean": 52.4,
+        "sd": 1.22
+      },
+      "con": {
+        "name": "고기철",
+        "party": "국민의힘",
+        "mean": 31.9,
+        "sd": 1.0
+      },
+      "margin": 20.5,
+      "margin_sd": 1.58,
+      "fallback": false
+    }
+  ],
+  "result": {
+    "dem_mean": 11.84,
+    "dem_mode": 12,
+    "dem_80_ci": [
+      11,
+      13
+    ],
+    "con_mean": 2.16,
+    "con_mode": 2,
+    "con_80_ci": [
+      1,
+      3
+    ],
+    "seat_dist_dem": {
+      "12": 4906,
+      "10": 385,
+      "13": 1919,
+      "11": 2762,
+      "9": 17,
+      "14": 11
+    },
+    "seat_dist_con": {
+      "2": 4906,
+      "4": 385,
+      "1": 1919,
+      "3": 2762,
+      "5": 17,
+      "0": 11
+    },
+    "race_dem_prob": {
+      "부산광역시북구갑": 0.9842,
+      "인천광역시연수구갑": 0.9999,
+      "인천광역시계양구을": 0.9956,
+      "광주광역시광산구을": 0.9939,
+      "경기도평택시을": 0.8841,
+      "경기도안산시갑": 0.9937,
+      "경기도하남시갑": 0.9901,
+      "충청남도공주시부여군청양군": 0.6391,
+      "충청남도아산시을": 1.0,
+      "전라북도군산시김제시부안군갑": 0.9945,
+      "전라북도군산시김제시부안군을": 0.9938,
+      "제주특별자치도서귀포시": 0.9997,
+      "울산광역시남구갑": 0.3611,
+      "대구광역시달성군": 0.0061
+    }
+  },
+  "limitations": [
+    "14개 선거구 각각 표본 작음 — 특히 'null' 분류 선거구는 여론조사 누적 적음",
+    "현직 이점·후보 효과·정당 변동 미반영",
+    "MBC SD 외 모델 잡음 SD 6%p 가정 — 보수적 추정",
+    "MBC 데이터가 갱신되면 결과도 갱신해야 함",
+    "여론조사 인용보도 아닌 모델 내부 변수로만 사용"
+  ]
+}

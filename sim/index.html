@@ -6,7 +6,8 @@
 body { font-family: -apple-system, 'Pretendard', sans-serif; max-width: 900px; margin: 0 auto; padding: 28px 24px; color: #1a1a1a; line-height: 1.55; }
 h1 { font-size: 1.6rem; margin: 0 0 8px; }
 .sub { color: #666; font-size: 0.9rem; margin: 0 0 24px; }
-.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 900px) { .cards { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
 .card { display: block; padding: 20px 22px; border: 1px solid #ddd; border-radius: 10px; text-decoration: none; color: inherit; background: #fff; transition: all 0.15s; }
 .card:hover { border-color: #1a1a1a; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-1px); }
@@ -38,13 +39,18 @@ h1 { font-size: 1.6rem; margin: 0 0 8px; }
 <div class="cards">
   <a class="card" href="/sim/sido/">
     <div class="card-title">시도지사 17석</div>
-    <p class="card-sub">광역단체장 17개 시도. 데이터 깨끗·해석 명확.</p>
-    <div class="card-meta">베이스 모델 정확도 · 8회 백테스트 88%</div>
+    <p class="card-sub">광역단체장 17개 시도. MBC 여론조사 + 역사 패턴.</p>
+    <div class="card-meta">8회 백테스트 88%</div>
   </a>
   <a class="card" href="/sim/basic-head/">
     <div class="card-title">기초단체장 226석</div>
-    <p class="card-sub">시군구 기초단체장. 후보 효과 큼 → 시도지사보다 모델 신뢰 ↓.</p>
-    <div class="card-meta">베이스 모델 정확도 · 8회 백테스트 81%</div>
+    <p class="card-sub">시군구 기초단체장. 17개 시도별 모든 시군구.</p>
+    <div class="card-meta">8회 백테스트 81%</div>
+  </a>
+  <a class="card" href="/sim/assembly/">
+    <div class="card-title">국회의원 재·보궐 14석</div>
+    <p class="card-sub">6/3 동시 재보궐 14개 선거구. MBC 베이지안 추정치 + 22대 fallback.</p>
+    <div class="card-meta">MBC 자료 기반 · 정량 검증 안 됨</div>
   </a>
 </div>
 
