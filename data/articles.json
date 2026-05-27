@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-05-27T00:37:48+09:00",
+  "updated_at": "2026-05-27T13:02:19+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 331,
+  "count": 332,
   "articles": [
+    {
+      "date": "2026-05-27",
+      "title": "오세훈 부인 송현옥 교수 갑질, 4년 만에 법정 증언으로 확인",
+      "url": "https://newtamsa.org/news/MbcmGg",
+      "category": "단독보도",
+      "tags": [
+        "오세훈",
+        "송현옥",
+        "세종대",
+        "방실칩입",
+        "계약서",
+        "강의실",
+        "배우",
+        "공연",
+        "물결"
+      ],
+      "author": "강진구, 김시몬"
+    },
     {
       "date": "2026-05-26",
       "title": "법원, 심덕섭 고창군수 가처분 신청 대부분 기각... 선거운동 방해 의도 부정",
