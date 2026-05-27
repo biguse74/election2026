@@ -377,7 +377,6 @@ def write_html(summary, scenarios, backtests, params, year_of):
         ps = scenarios[primary]["sido_dem_prob"].get(key, 0)
         pb = scenarios["baseline"]["sido_dem_prob"].get(key, 0)
         pn = scenarios["normal"]["sido_dem_prob"].get(key, 0)
-        # 양당 stacked 막대: 왼쪽 민주(파랑) + 오른쪽 국힘(빨강)
         d_pct = ps * 100
         r_pct = 100 - d_pct
         return (
@@ -388,8 +387,8 @@ def write_html(summary, scenarios, backtests, params, year_of):
             f'</div></td>'
             f'<td class="num-d">{d_pct:.0f}%</td>'
             f'<td class="num-r">{r_pct:.0f}%</td>'
-            f'<td class="num-sub">{pb*100:.0f}% / {(1-pb)*100:.0f}%</td>'
-            f'<td class="num-sub">{pn*100:.0f}% / {(1-pn)*100:.0f}%</td>'
+            f'<td class="num-sub hide-mobile">{pb*100:.0f}% / {(1-pb)*100:.0f}%</td>'
+            f'<td class="num-sub hide-mobile">{pn*100:.0f}% / {(1-pn)*100:.0f}%</td>'
             f'</tr>'
         )
 
@@ -406,11 +405,11 @@ def write_html(summary, scenarios, backtests, params, year_of):
           <table class="sgg-table">
             <thead><tr>
               <th>시군구</th>
-              <th>현재 환경 추정 (메인) — 양당 막대</th>
+              <th>막대</th>
               <th>민주당</th>
-              <th>국힘 등</th>
-              <th>혼합 (민주/국힘)</th>
-              <th>안정기 (민주/국힘)</th>
+              <th>그외</th>
+              <th class="hide-mobile">혼합</th>
+              <th class="hide-mobile">안정기</th>
             </tr></thead>
             <tbody>{rows_html}</tbody>
           </table>
@@ -463,6 +462,23 @@ th {{ font-size: 0.78rem; color: #666; }}
 .num-d {{ color: #152484; font-weight: 700; font-variant-numeric: tabular-nums; }}
 .num-r {{ color: #E61E2B; font-weight: 700; font-variant-numeric: tabular-nums; }}
 .num-sub {{ color: #888; font-size: 0.74rem; font-variant-numeric: tabular-nums; }}
+
+@media (max-width: 720px) {{
+  body {{ padding: 14px 12px; }}
+  h1 {{ font-size: 1.25rem; }}
+  .scenario {{ padding: 12px 14px; }}
+  .scenario-title {{ font-size: 1rem; }}
+  .stat-pill {{ padding: 8px 10px; min-width: 150px; }}
+  .stat-pill strong {{ font-size: 1.25rem; }}
+  .sido-group {{ padding: 10px 10px; }}
+  .sido-group h3 {{ font-size: 0.92rem; }}
+  .sgg-table {{ font-size: 0.74rem; }}
+  .sgg-table th, .sgg-table td {{ padding: 4px 4px; }}
+  .sgg-table td.sgg {{ font-size: 0.78rem; }}
+  .stacked-bar {{ min-width: 70px; max-width: 100px; height: 10px; }}
+  .num-sub {{ font-size: 0.68rem; }}
+  .hide-mobile {{ display: none; }}
+}}
 </style></head><body>
 <h1>9회 전국동시지방선거 기초단체장 당선 시뮬레이션</h1>
 <p style="color:#666;font-size:0.85rem;margin:0 0 16px;">2026-05-27 기준 · 226개 시군구 × 1만 회 몬테카를로 · 시도지사 시뮬레이션과 동일 모델 · 뉴탐사</p>

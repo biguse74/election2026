@@ -62,6 +62,9 @@ ALIASES = {
     "강원도": "강원특별자치도",
     "전라북도": "전북특별자치도",
     "제주도": "제주특별자치도",
+    # 9회는 시도지사 선거만 광주·전남을 통합 — historical도 같이 통합 처리
+    "광주광역시": "전남광주통합특별시",
+    "전라남도": "전남광주통합특별시",
 }
 
 
@@ -70,8 +73,9 @@ def normalize_sido(name: str) -> str:
 
 
 def load_history() -> dict:
-    """history_counting_results.json에서 시도지사 6회 양당 margin 매트릭스 추출.
+    """history_counting_results.json에서 시도지사 양당 margin 매트릭스 추출.
     반환: {sido: {round: margin_pp, ...}, ...}, year_of_round
+    광주광역시·전라남도는 9회 통합특별시 기준으로 회차별 평균 처리.
     """
     d = json.load((ROOT / "data" / "history_counting_results.json").open(encoding="utf-8"))
     sido_margin: dict[str, dict[int, float]] = defaultdict(dict)
@@ -82,12 +86,17 @@ def load_history() -> dict:
         chief = next((r for r in elec["results"] if r["sgTypecode"] == "3"), None)
         if not chief:
             continue
+        # 시도별 margin 모음 (광주·전남이 같은 통합특별시로 합쳐지면 평균)
+        round_buckets: dict[str, list[float]] = defaultdict(list)
         for dist in chief["districts"]:
             sido = normalize_sido(dist["sdName"])
             cands = dist.get("candidates") or []
             dem = sum(c.get("vote_share", 0) or 0 for c in cands if c.get("party") in PROGRESSIVE)
             con = sum(c.get("vote_share", 0) or 0 for c in cands if c.get("party") in CONSERVATIVE)
-            sido_margin[sido][rd] = round(dem - con, 3)
+            round_buckets[sido].append(round(dem - con, 3))
+        # 한 회차 안에서 같은 시도(통합특별시 등)에 두 값이면 평균
+        for sido, vals in round_buckets.items():
+            sido_margin[sido][rd] = round(sum(vals) / len(vals), 3)
     return dict(sido_margin), year_of
 
 
@@ -434,6 +443,7 @@ def main():
         "region_mean": params["region_mean"],
         "region_sd": params["region_sd"],
         "residual_sd": params["residual_sd"],
+        "mbc_prior": mbc_prior,
         "scenarios": {
             mode: {**SCENARIO_META[mode], **sc}
             for mode, sc in scenarios.items()
@@ -531,39 +541,46 @@ def _scenario_block_html(mode: str, sc: dict) -> str:
     </section>"""
 
 
-def _sido_marginal_html(scenarios: dict) -> str:
-    """시도별 양당 승리 확률 — 메인 시나리오는 양당 stacked 막대, 나머지는 D/R % 동시 표시."""
+def _sido_marginal_html(scenarios: dict, mbc_prior: dict = None) -> str:
+    """시도별 양당 승리 확률 — 메인 시나리오 stacked 막대.
+    비민주당 1위가 국힘이면 빨강, 무소속이면 회색.
+    """
+    mbc_prior = mbc_prior or {}
     primary_key = "mbc" if "mbc" in scenarios else "shakeup"
     sidos = list(scenarios[primary_key]["sido_dem_prob"].keys())
     sidos.sort(key=lambda s: -scenarios[primary_key]["sido_dem_prob"][s])
     other_modes = [m for m in ["shakeup", "baseline", "normal"] if m in scenarios and m != primary_key]
     other_titles = [SCENARIO_META[m]["title"].split(" —")[0].split(" (")[0] for m in other_modes]
-    head_other = "".join(f"<th>{t}<br><small>민주/국힘</small></th>" for t in other_titles)
+    head_other = "".join(f'<th class="hide-mobile">{t}<br><small>민주/그외</small></th>' for t in other_titles)
     rows = []
     for s in sidos:
         d = scenarios[primary_key]["sido_dem_prob"].get(s, 0) * 100
         r = 100 - d
+        # 비민주당 1위 정당 — mbc_prior에서 가져옴, 무소속이면 회색
+        con_party = (mbc_prior.get(s) or {}).get("con_party") or "국민의힘"
+        con_label = con_party if con_party in ("국민의힘",) else con_party
+        right_color = "#E61E2B" if con_party == "국민의힘" else "#888"
         bar = (f'<div class="stacked-bar">'
                f'<span class="stacked-d" style="width:{d:.0f}%" title="민주당 {d:.0f}%"></span>'
-               f'<span class="stacked-r" style="width:{r:.0f}%" title="국민의힘 {r:.0f}%"></span>'
+               f'<span style="background:{right_color};width:{r:.0f}%;height:100%;display:block" title="{con_label} {r:.0f}%"></span>'
                f'</div>')
         other_cells = "".join(
-            (lambda p: f'<td class="num-sub">{p*100:.0f}% / {(1-p)*100:.0f}%</td>')(scenarios[m]["sido_dem_prob"].get(s, 0))
+            (lambda p: f'<td class="num-sub hide-mobile">{p*100:.0f}% / {(1-p)*100:.0f}%</td>')(scenarios[m]["sido_dem_prob"].get(s, 0))
             for m in other_modes
         )
         rows.append(
             f'<tr><td class="sido-name">{s}</td>'
             f'<td>{bar}</td>'
             f'<td class="num-d">{d:.0f}%</td>'
-            f'<td class="num-r">{r:.0f}%</td>'
+            f'<td style="color:{right_color};font-weight:700;font-variant-numeric:tabular-nums">{r:.0f}%</td>'
             f'{other_cells}</tr>'
         )
     return f"""
     <section class="sido-marginal">
       <h2>시도별 양당 승리 확률</h2>
-      <p style="color:#666;font-size:0.85rem;margin:0 0 8px">메인 시나리오는 막대로 — 파랑(민주당) · 빨강(국민의힘). 다른 시나리오는 작은 글자로 같이 비교.</p>
+      <p style="color:#666;font-size:0.85rem;margin:0 0 8px">막대: <span style="color:#152484;font-weight:700">파랑=민주당</span> · <span style="color:#E61E2B;font-weight:700">빨강=국민의힘</span> · <span style="color:#888;font-weight:700">회색=무소속 1위</span>.</p>
       <table>
-        <thead><tr><th>시도</th><th>메인 막대</th><th>민주당</th><th>국힘</th>{head_other}</tr></thead>
+        <thead><tr><th>시도</th><th>막대</th><th>민주당</th><th>그외</th>{head_other}</tr></thead>
         <tbody>{"".join(rows)}</tbody>
       </table>
     </section>"""
@@ -595,7 +612,7 @@ def write_html(summary: dict, scenarios: dict, backtests: list, params: dict) ->
     year_of = {3:2002, 4:2006, 5:2010, 6:2014, 7:2018, 8:2022}
     scenario_modes_order = [m for m in ["mbc", "shakeup", "baseline", "normal"] if m in scenarios]
     scenario_blocks = "".join(_scenario_block_html(m, scenarios[m]) for m in scenario_modes_order)
-    sido_block = _sido_marginal_html(scenarios)
+    sido_block = _sido_marginal_html(scenarios, summary.get("mbc_prior") or {})
     bt_block = _backtest_html(backtests, year_of)
     limit_items = "".join(f"<li>{x}</li>" for x in summary["limitations"])
 
@@ -623,7 +640,24 @@ h1 {{ font-size: 1.6rem; margin: 0 0 8px; }}
 .pill-value {{ display: block; font-size: 1.6rem; font-weight: 800; margin: 2px 0; }}
 .pill-sub {{ font-size: 0.74rem; color: #555; }}
 .charts {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }}
-@media (max-width: 720px) {{ .charts {{ grid-template-columns: 1fr; }} }}
+@media (max-width: 720px) {{
+  .charts {{ grid-template-columns: 1fr; }}
+  body {{ padding: 14px 12px; }}
+  h1 {{ font-size: 1.25rem; }}
+  .scenario {{ padding: 12px 14px; }}
+  .scenario-title {{ font-size: 1rem; }}
+  .scenario-desc {{ font-size: 0.78rem; }}
+  .stat-pill {{ padding: 8px 10px; min-width: 160px; }}
+  .pill-value {{ font-size: 1.3rem; }}
+  .pill-sub {{ font-size: 0.7rem; }}
+  .hide-mobile {{ display: none; }}
+  .sido-marginal table {{ font-size: 0.78rem; }}
+  .sido-marginal th, .sido-marginal td {{ padding: 5px 4px; }}
+  .sido-name {{ width: auto; }}
+  .stacked-bar {{ min-width: 80px; }}
+  .bar-chart {{ font-size: 0.7rem; }}
+  .backtest table {{ font-size: 0.8rem; }}
+}}
 .bar-chart-title {{ font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: #444; }}
 .bar-row {{ display: grid; grid-template-columns: 38px 1fr 50px; align-items: center; gap: 8px; margin-bottom: 3px; font-size: 0.78rem; font-variant-numeric: tabular-nums; }}
 .bar-label {{ color: #888; }}

@@ -541,7 +541,18 @@ h1 {{ font-size: 1.55rem; margin: 0 0 8px; }}
 .pill .val {{ display: inline-block; font-size: 1.7rem; font-weight: 800; margin: 2px 8px 2px 0; }}
 .pill .sub {{ font-size: 0.74rem; color: #555; margin: 0; display: inline; }}
 .charts {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }}
-@media (max-width: 720px) {{ .charts {{ grid-template-columns: 1fr; }} }}
+@media (max-width: 720px) {{
+  .charts {{ grid-template-columns: 1fr; }}
+  body {{ padding: 14px 12px; }}
+  h1 {{ font-size: 1.2rem; }}
+  .pill {{ padding: 10px 12px; min-width: 150px; }}
+  .pill .val {{ font-size: 1.35rem; }}
+  table.races {{ font-size: 0.72rem; }}
+  table.races th, table.races td {{ padding: 5px 4px; }}
+  .stacked-bar {{ min-width: 70px; max-width: 100px; height: 10px; }}
+  .state {{ font-size: 0.68rem; }}
+  table.races th:last-child, table.races td:last-child {{ display: none; }}
+}}
 .dist-block {{ border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px 14px; background: #fff; }}
 .dist-title {{ font-weight: 700; font-size: 0.92rem; margin-bottom: 8px; }}
 .bar-row {{ display: grid; grid-template-columns: 38px 1fr 50px; align-items: center; gap: 8px; margin-bottom: 3px; font-size: 0.78rem; font-variant-numeric: tabular-nums; }}
