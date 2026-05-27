@@ -28,12 +28,13 @@ table.races th { font-size: 0.74rem; color: #555; }
 .sgg { font-weight: 700; }
 .party-d { color: #152484; font-weight: 700; font-variant-numeric: tabular-nums; }
 .party-r { color: #E61E2B; font-weight: 700; font-variant-numeric: tabular-nums; }
+.right-r { color: #E61E2B; font-weight: 700; font-variant-numeric: tabular-nums; }
+.right-i { color: #888; font-weight: 700; font-variant-numeric: tabular-nums; }
 .margin { font-variant-numeric: tabular-nums; font-weight: 600; }
 .state { font-size: 0.78rem; color: #777; }
-.prob-cell { display: flex; align-items: center; gap: 6px; }
-.prob-bar { display: inline-block; flex: 1; min-width: 60px; max-width: 120px; height: 8px; background: #f0f0f0; border-radius: 2px; overflow: hidden; }
-.prob-bar > span { display: block; height: 100%; }
-.prob-num { font-variant-numeric: tabular-nums; font-weight: 700; min-width: 36px; text-align: right; font-size: 0.84rem; }
+.stacked-bar { display: flex; height: 12px; border-radius: 3px; overflow: hidden; background: #f0f0f0; min-width: 100px; max-width: 160px; }
+.stacked-d { background: #152484; height: 100%; }
+.num-d { color: #152484; font-weight: 700; }
 .limits { background: #f6f6f6; padding: 14px 20px; border-radius: 4px; margin-top: 28px; font-size: 0.85rem; }
 .limits h2 { font-size: 1rem; margin: 0 0 8px; }
 .limits ul { margin: 0; padding-left: 20px; color: #555; }
@@ -97,7 +98,7 @@ table.races th { font-size: 0.74rem; color: #555; }
 
 
 <h1>9회 동시 국회의원 재·보궐 14개 선거구 시뮬레이션</h1>
-<p class="sub">2026-05-27 기준 · 보도된 공개 여론조사 prior + 1만 회 몬테카를로 · 시민언론 뉴탐사</p>
+<p class="sub">2026-05-27 기준 · 5/27까지 보도된 공개 여론조사 참고 + 1만 회 시뮬레이션 · 시민언론 뉴탐사</p>
 
 <div class="summary-pills">
   <div class="pill d"><span class="lbl">민주당</span> <strong class="val">11.23석</strong><p class="sub">최빈 11석 · 80% CI [10~12]</p></div>
@@ -116,126 +117,238 @@ table.races th { font-size: 0.74rem; color: #555; }
           <td>충남</td>
           <td class="sgg">아산을</td>
           <td>전은수<br><span class="party-d">73.6%</span></td>
-          <td>김민경<br><span class="party-r">26.4%</span></td>
+          <td>김민경<br><span class="right-r">26.4%</span></td>
           <td class="margin">+47.2%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:100%;background:#152484"></span></span><span class="prob-num">100%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:100%" title="민주당 진영 100%"></span>
+              <span style="background:#E61E2B;width:0%;height:100%;display:block" title="국민의힘 0%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">100%</span> · <span style="color:#E61E2B;font-weight:700">0%</span>
+            </div>
+          </td>
           <td class="state">더불어민주당 우세</td>
         </tr>
         <tr>
           <td>광주</td>
           <td class="sgg">광산을</td>
           <td>임문영<br><span class="party-d">51.0%</span></td>
-          <td>안태욱<br><span class="party-r">6.0%</span></td>
+          <td>안태욱<br><span class="right-r">6.0%</span></td>
           <td class="margin">+45.0%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:100%;background:#152484"></span></span><span class="prob-num">100%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:100%" title="민주당 진영 100%"></span>
+              <span style="background:#E61E2B;width:0%;height:100%;display:block" title="국민의힘 0%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">100%</span> · <span style="color:#E61E2B;font-weight:700">0%</span>
+            </div>
+          </td>
           <td class="state"> (raw 여론조사 1회 평균)</td>
         </tr>
         <tr>
           <td>인천</td>
           <td class="sgg">계양을</td>
           <td>김남준<br><span class="party-d">58.7%</span></td>
-          <td>심왕섭<br><span class="party-r">19.4%</span></td>
+          <td>심왕섭<br><span class="right-r">19.4%</span></td>
           <td class="margin">+39.3%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:100%;background:#152484"></span></span><span class="prob-num">100%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:100%" title="민주당 진영 100%"></span>
+              <span style="background:#E61E2B;width:0%;height:100%;display:block" title="국민의힘 0%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">100%</span> · <span style="color:#E61E2B;font-weight:700">0%</span>
+            </div>
+          </td>
           <td class="state"> (raw 여론조사 1회 평균)</td>
         </tr>
         <tr>
           <td>경기</td>
           <td class="sgg">안산갑</td>
           <td>김남국<br><span class="party-d">47.1%</span></td>
-          <td>김석훈<br><span class="party-r">23.1%</span></td>
+          <td>김석훈<br><span class="right-r">23.1%</span></td>
           <td class="margin">+24.0%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:100%;background:#152484"></span></span><span class="prob-num">100%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:100%" title="민주당 진영 100%"></span>
+              <span style="background:#E61E2B;width:0%;height:100%;display:block" title="국민의힘 0%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">100%</span> · <span style="color:#E61E2B;font-weight:700">0%</span>
+            </div>
+          </td>
           <td class="state"> (raw 여론조사 1회 평균)</td>
         </tr>
         <tr>
           <td>인천</td>
           <td class="sgg">연수갑</td>
           <td>송영길<br><span class="party-d">52.6%</span></td>
-          <td>박종진<br><span class="party-r">30.1%</span></td>
+          <td>박종진<br><span class="right-r">30.1%</span></td>
           <td class="margin">+22.5%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:100%;background:#152484"></span></span><span class="prob-num">100%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:100%" title="민주당 진영 100%"></span>
+              <span style="background:#E61E2B;width:0%;height:100%;display:block" title="국민의힘 0%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">100%</span> · <span style="color:#E61E2B;font-weight:700">0%</span>
+            </div>
+          </td>
           <td class="state">더불어민주당 우세</td>
         </tr>
         <tr>
           <td>제주</td>
           <td class="sgg">서귀포</td>
           <td>김성범<br><span class="party-d">52.4%</span></td>
-          <td>고기철<br><span class="party-r">31.9%</span></td>
+          <td>고기철<br><span class="right-r">31.9%</span></td>
           <td class="margin">+20.5%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:100%;background:#152484"></span></span><span class="prob-num">100%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:100%" title="민주당 진영 100%"></span>
+              <span style="background:#E61E2B;width:0%;height:100%;display:block" title="국민의힘 0%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">100%</span> · <span style="color:#E61E2B;font-weight:700">0%</span>
+            </div>
+          </td>
           <td class="state">더불어민주당 우세</td>
         </tr>
         <tr>
           <td>전북</td>
-          <td class="sgg">군산김제부안갑 <span style="font-size:0.7rem;color:#999">(fb)</span></td>
+          <td class="sgg">군산김제부안갑 <span style="font-size:0.7rem;color:#999">(자료 부족, 22대 결과 기반)</span></td>
           <td>김의겸<br><span class="party-d">—</span></td>
-          <td>오지성<br><span class="party-r">—</span></td>
+          <td>오지성<br><span class="right-r">—</span></td>
           <td class="margin">+18.0%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:99%;background:#152484"></span></span><span class="prob-num">99%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:99%" title="민주당 진영 99%"></span>
+              <span style="background:#E61E2B;width:1%;height:100%;display:block" title="국민의힘 1%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">99%</span> · <span style="color:#E61E2B;font-weight:700">1%</span>
+            </div>
+          </td>
           <td class="state">더불어민주당 우세 (자료 부족 — 22대 당선 기반 추정)</td>
         </tr>
         <tr>
           <td>전북</td>
-          <td class="sgg">군산김제부안을 <span style="font-size:0.7rem;color:#999">(fb)</span></td>
+          <td class="sgg">군산김제부안을 <span style="font-size:0.7rem;color:#999">(자료 부족, 22대 결과 기반)</span></td>
           <td>박지원<br><span class="party-d">—</span></td>
-          <td>김종회 <span style="font-size:0.72rem;color:#888">무소속</span><br><span class="party-r">—</span></td>
+          <td>김종회 <span style="font-size:0.72rem;color:#888">무소속</span><br><span class="right-i">—</span></td>
           <td class="margin">+18.0%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:99%;background:#152484"></span></span><span class="prob-num">99%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:99%" title="민주당 진영 99%"></span>
+              <span style="background:#888;width:1%;height:100%;display:block" title="무소속 1%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">99%</span> · <span style="color:#888;font-weight:700">1%</span>
+            </div>
+          </td>
           <td class="state">더불어민주당 우세 (자료 부족 — 22대 당선 기반 추정)</td>
         </tr>
         <tr>
           <td>경기</td>
           <td class="sgg">하남갑</td>
           <td>이광재<br><span class="party-d">50.5%</span></td>
-          <td>이용<br><span class="party-r">36.3%</span></td>
+          <td>이용<br><span class="right-r">36.3%</span></td>
           <td class="margin">+14.2%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:99%;background:#152484"></span></span><span class="prob-num">99%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:99%" title="민주당 진영 99%"></span>
+              <span style="background:#E61E2B;width:1%;height:100%;display:block" title="국민의힘 1%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">99%</span> · <span style="color:#E61E2B;font-weight:700">1%</span>
+            </div>
+          </td>
           <td class="state">더불어민주당 우세</td>
         </tr>
         <tr>
           <td>경기</td>
           <td class="sgg">평택을</td>
           <td>김용남<br><span class="party-d">28.6%</span><br><span style="color:#888;font-size:0.72rem">조국(조국혁신당) 25.2%</span> · <span style="color:#888;font-size:0.72rem">김재연(진보당) 4.1%</span></td>
-          <td>유의동<br><span class="party-r">21.2%</span><br><span style="color:#888;font-size:0.72rem">황교안(자유와혁신) 9.1%</span></td>
+          <td>유의동<br><span class="right-r">21.2%</span><br><span style="color:#888;font-size:0.72rem">황교안(자유와혁신) 9.1%</span></td>
           <td class="margin">+7.4%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:88%;background:#152484"></span></span><span class="prob-num">88%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:88%" title="민주당 진영 88%"></span>
+              <span style="background:#E61E2B;width:12%;height:100%;display:block" title="국민의힘 12%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">88%</span> · <span style="color:#E61E2B;font-weight:700">12%</span>
+            </div>
+          </td>
           <td class="state">더불어민주당 우세</td>
         </tr>
         <tr>
           <td>충남</td>
           <td class="sgg">공주부여청양</td>
           <td>김영빈<br><span class="party-d">45.9%</span></td>
-          <td>윤용근<br><span class="party-r">43.5%</span></td>
+          <td>윤용근<br><span class="right-r">43.5%</span></td>
           <td class="margin">+2.4%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:64%;background:#152484"></span></span><span class="prob-num">64%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:64%" title="민주당 진영 64%"></span>
+              <span style="background:#E61E2B;width:36%;height:100%;display:block" title="국민의힘 36%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">64%</span> · <span style="color:#E61E2B;font-weight:700">36%</span>
+            </div>
+          </td>
           <td class="state">경합</td>
         </tr>
         <tr>
           <td>울산</td>
           <td class="sgg">남갑</td>
           <td>전태진<br><span class="party-d">40.3%</span></td>
-          <td>김태규<br><span class="party-r">42.5%</span></td>
+          <td>김태규<br><span class="right-r">42.5%</span></td>
           <td class="margin">-2.2%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:36%;background:#E61E2B"></span></span><span class="prob-num">36%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:36%" title="민주당 진영 36%"></span>
+              <span style="background:#E61E2B;width:64%;height:100%;display:block" title="국민의힘 64%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">36%</span> · <span style="color:#E61E2B;font-weight:700">64%</span>
+            </div>
+          </td>
           <td class="state">경합</td>
         </tr>
         <tr>
           <td>부산</td>
           <td class="sgg">북갑</td>
           <td>하정우<br><span class="party-d">36.1%</span></td>
-          <td>한동훈 <span style="font-size:0.72rem;color:#888">무소속</span><br><span class="party-r">39.3%</span><br><span style="color:#888;font-size:0.72rem">박민식(국민의힘) 23%</span></td>
+          <td>한동훈 <span style="font-size:0.72rem;color:#888">무소속</span><br><span class="right-i">39.3%</span><br><span style="color:#888;font-size:0.72rem">박민식(국민의힘) 23%</span></td>
           <td class="margin">-3.2%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:30%;background:#E61E2B"></span></span><span class="prob-num">30%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:30%" title="민주당 진영 30%"></span>
+              <span style="background:#888;width:70%;height:100%;display:block" title="무소속 70%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">30%</span> · <span style="color:#888;font-weight:700">70%</span>
+            </div>
+          </td>
           <td class="state">경합</td>
         </tr>
         <tr>
           <td>대구</td>
           <td class="sgg">달성</td>
           <td>박형룡<br><span class="party-d">37.3%</span></td>
-          <td>이진숙<br><span class="party-r">48.9%</span></td>
+          <td>이진숙<br><span class="right-r">48.9%</span></td>
           <td class="margin">-11.6%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:8%;background:#E61E2B"></span></span><span class="prob-num">8%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:8%" title="민주당 진영 8%"></span>
+              <span style="background:#E61E2B;width:92%;height:100%;display:block" title="국민의힘 92%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">8%</span> · <span style="color:#E61E2B;font-weight:700">92%</span>
+            </div>
+          </td>
           <td class="state"> (raw 여론조사 1회 평균)</td>
         </tr></tbody>
   </table>

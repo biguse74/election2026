@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-9회 시도지사 의석 분포 몬테카를로 시뮬레이션.
+9회 시도지사 당선 분포 몬테카를로 시뮬레이션.
 
 모델 (계층 분해):
     margin_{i,t} = year_effect_t + region_lean_i + noise_{i,t}
@@ -24,9 +24,9 @@
 
 출력:
   exports/simulation_9th_sido/
-    summary.json          — 의석 분포·기댓값·신뢰구간·백테스트
+    summary.json          — 당선 분포·기댓값·신뢰구간·백테스트
     sido_marginal.csv     — 시도별 민주 승리 확률
-    seat_distribution.csv — 의석 수별 확률 (민주·국힘)
+    seat_distribution.csv — 당선 수별 확률 (민주·국힘)
     raw_simulations.csv   — 1만 회 결과 (시도별 winner camp)
 
 선거법 주의:
@@ -210,7 +210,7 @@ def run_simulation(params: dict, n: int, seed: int, mode: str = "baseline", mbc_
 
     # 결과 누적
     sido_dem_wins = Counter()       # sido -> 민주 승리 count
-    seat_dist_dem = Counter()        # 민주 의석 수 -> count
+    seat_dist_dem = Counter()        # 민주 당선 수 -> count
     seat_dist_con = Counter()
     raw: list[dict[str, str]] = []   # 1만 회 시도별 winner
 
@@ -238,7 +238,7 @@ def run_simulation(params: dict, n: int, seed: int, mode: str = "baseline", mbc_
 
 
 def credibility_interval(counter: dict[int, int], n: int, lo: float, hi: float) -> tuple[int, int]:
-    """누적 분포에서 lo~hi percentile 의석 수."""
+    """누적 분포에서 lo~hi percentile 당선 수."""
     items = sorted(counter.items())
     cum = 0
     lo_seat = hi_seat = items[0][0]
@@ -332,8 +332,8 @@ def run_scenario(params, n, seed, mode, mbc_prior=None):
 SCENARIO_META = {
     "mbc": {
         "title": "현재 추세 반영 — 메인 시나리오",
-        "desc": "5월 27일 기준 공개된 시도별 여론조사 베이지안 추정치를 시뮬레이션 prior로 "
-                "사용. 데이터 없는 시도는 정권 출범 1년차 historical 가정으로 보완.",
+        "desc": "5월 27일까지 보도된 시도별 공개 여론조사를 참고 자료로 사용. "
+                "여론조사 자료가 없는 시도는 정권 출범 1년차 과거 패턴으로 보완.",
         "primary": True,
     },
     "shakeup": {
@@ -377,14 +377,14 @@ def main():
         print(f"=== 시나리오: {mode} ===")
         sc = run_scenario(params, N_SIM, SEED, mode, mbc_prior=mbc_prior)
         scenarios[mode] = sc
-        print(f"  민주 평균 {sc['dem_mean']}석, 최빈 {sc['dem_mode']}석, 80% CI {sc['dem_80_ci']}")
-        print(f"  국힘 평균 {sc['con_mean']}석, 최빈 {sc['con_mode']}석, 80% CI {sc['con_80_ci']}")
+        print(f"  민주 평균 {sc['dem_mean']}곳, 최빈 {sc['dem_mode']}곳, 80% CI {sc['dem_80_ci']}")
+        print(f"  국힘 평균 {sc['con_mean']}곳, 최빈 {sc['con_mode']}곳, 80% CI {sc['con_80_ci']}")
         print()
 
     # baseline을 기본 결과로 사용 (요약 출력에)
     sim = run_simulation(params, N_SIM, SEED, "baseline")
 
-    # 의석 분포 요약
+    # 당선 분포 요약
     dem_seats = [s * c for s, c in sim["seat_dist_dem"].items()]
     dem_mean = sum(dem_seats) / sim["n"]
     con_seats = [s * c for s, c in sim["seat_dist_con"].items()]
@@ -397,8 +397,8 @@ def main():
     dem_ci95 = credibility_interval(sim["seat_dist_dem"], sim["n"], 0.025, 0.975)
 
     print("=== 시뮬레이션 결과 (10,000회) ===")
-    print(f"  민주 의석: 평균 {dem_mean:.2f}, 최빈 {dem_mode}석, 80% 구간 [{dem_ci80[0]}, {dem_ci80[1]}], 95% [{dem_ci95[0]}, {dem_ci95[1]}]")
-    print(f"  국힘 의석: 평균 {con_mean:.2f}, 최빈 {con_mode}석, 80% 구간 [{con_ci80[0]}, {con_ci80[1]}]")
+    print(f"  민주 당선: 평균 {dem_mean:.2f}, 최빈 {dem_mode}곳, 80% 구간 [{dem_ci80[0]}, {dem_ci80[1]}], 95% [{dem_ci95[0]}, {dem_ci95[1]}]")
+    print(f"  국힘 당선: 평균 {con_mean:.2f}, 최빈 {con_mode}곳, 80% 구간 [{con_ci80[0]}, {con_ci80[1]}]")
     print()
 
     # 백테스트 — 8회·7회·6회 각각
@@ -462,7 +462,7 @@ def main():
         w.writeheader()
         w.writerows(sido_marg)
 
-    # 의석 분포 CSV
+    # 당선 분포 CSV
     with (OUT_DIR / "seat_distribution.csv").open("w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
         w.writerow(["seats", "dem_count", "dem_pct", "con_count", "con_pct"])
@@ -488,14 +488,14 @@ def main():
 # ============ HTML 시각화 ============
 
 def _bar_chart_html(dist: dict, label: str, color: str, max_count: int) -> str:
-    """의석 수별 확률 가로 막대 차트."""
+    """당선 수별 확률 가로 막대 차트."""
     rows = []
     for seat in sorted(dist.keys()):
         c = dist[seat]
         pct = c / sum(dist.values()) * 100
         w = c / max_count * 100
         rows.append(
-            f'<div class="bar-row"><span class="bar-label">{seat}석</span>'
+            f'<div class="bar-row"><span class="bar-label">{seat}곳</span>'
             f'<span class="bar-track"><span class="bar-fill" style="width:{w:.1f}%;background:{color}"></span></span>'
             f'<span class="bar-value">{pct:.1f}%</span></div>'
         )
@@ -506,8 +506,8 @@ def _scenario_block_html(mode: str, sc: dict) -> str:
     meta = SCENARIO_META[mode]
     max_d = max(sc["seat_dist_dem"].values()) if sc["seat_dist_dem"] else 1
     max_c = max(sc["seat_dist_con"].values()) if sc["seat_dist_con"] else 1
-    dem_chart = _bar_chart_html(sc["seat_dist_dem"], "민주당 의석 분포", "#152484", max_d)
-    con_chart = _bar_chart_html(sc["seat_dist_con"], "국민의힘 의석 분포", "#E61E2B", max_c)
+    dem_chart = _bar_chart_html(sc["seat_dist_dem"], "민주당 당선 분포", "#152484", max_d)
+    con_chart = _bar_chart_html(sc["seat_dist_con"], "국민의힘 당선 분포", "#E61E2B", max_c)
     is_primary = meta.get("primary", False)
     badge = '<span class="scenario-primary-badge">현재 환경 추정</span>' if is_primary else ''
     cls = "scenario scenario-primary" if is_primary else "scenario"
@@ -518,12 +518,12 @@ def _scenario_block_html(mode: str, sc: dict) -> str:
       <div class="scenario-stats">
         <div class="stat-pill stat-d">
           <span class="pill-label">민주</span>
-          <strong class="pill-value">{sc['dem_mean']}석</strong>
+          <strong class="pill-value">{sc['dem_mean']}곳</strong>
           <span class="pill-sub">최빈 {sc['dem_mode']} · 80% [{sc['dem_80_ci'][0]}~{sc['dem_80_ci'][1]}]</span>
         </div>
         <div class="stat-pill stat-r">
           <span class="pill-label">국힘</span>
-          <strong class="pill-value">{sc['con_mean']}석</strong>
+          <strong class="pill-value">{sc['con_mean']}곳</strong>
           <span class="pill-sub">최빈 {sc['con_mode']} · 80% [{sc['con_80_ci'][0]}~{sc['con_80_ci'][1]}]</span>
         </div>
       </div>
@@ -532,27 +532,38 @@ def _scenario_block_html(mode: str, sc: dict) -> str:
 
 
 def _sido_marginal_html(scenarios: dict) -> str:
-    """시도별 민주 승리 확률 — 시나리오별 나란히 막대."""
+    """시도별 양당 승리 확률 — 메인 시나리오는 양당 stacked 막대, 나머지는 D/R % 동시 표시."""
     primary_key = "mbc" if "mbc" in scenarios else "shakeup"
     sidos = list(scenarios[primary_key]["sido_dem_prob"].keys())
     sidos.sort(key=lambda s: -scenarios[primary_key]["sido_dem_prob"][s])
-    cols = [(m, SCENARIO_META[m]["title"].split(" —")[0].split(" (")[0]) for m in ["mbc", "shakeup", "baseline", "normal"] if m in scenarios]
-    head_cols = "".join(f"<th>{label}</th>" for _, label in cols)
+    other_modes = [m for m in ["shakeup", "baseline", "normal"] if m in scenarios and m != primary_key]
+    other_titles = [SCENARIO_META[m]["title"].split(" —")[0].split(" (")[0] for m in other_modes]
+    head_other = "".join(f"<th>{t}<br><small>민주/국힘</small></th>" for t in other_titles)
     rows = []
     for s in sidos:
-        cells = []
-        for mode, _ in cols:
-            p = scenarios[mode]["sido_dem_prob"].get(s, 0)
-            cells.append(
-                f'<td><div class="prob-bar"><span style="width:{p*100:.0f}%"></span></div>'
-                f'<span class="prob-num">{p*100:.0f}%</span></td>'
-            )
-        rows.append(f'<tr><td class="sido-name">{s}</td>{"".join(cells)}</tr>')
+        d = scenarios[primary_key]["sido_dem_prob"].get(s, 0) * 100
+        r = 100 - d
+        bar = (f'<div class="stacked-bar">'
+               f'<span class="stacked-d" style="width:{d:.0f}%" title="민주당 {d:.0f}%"></span>'
+               f'<span class="stacked-r" style="width:{r:.0f}%" title="국민의힘 {r:.0f}%"></span>'
+               f'</div>')
+        other_cells = "".join(
+            (lambda p: f'<td class="num-sub">{p*100:.0f}% / {(1-p)*100:.0f}%</td>')(scenarios[m]["sido_dem_prob"].get(s, 0))
+            for m in other_modes
+        )
+        rows.append(
+            f'<tr><td class="sido-name">{s}</td>'
+            f'<td>{bar}</td>'
+            f'<td class="num-d">{d:.0f}%</td>'
+            f'<td class="num-r">{r:.0f}%</td>'
+            f'{other_cells}</tr>'
+        )
     return f"""
     <section class="sido-marginal">
-      <h2>시도별 민주당 승리 확률</h2>
+      <h2>시도별 양당 승리 확률</h2>
+      <p style="color:#666;font-size:0.85rem;margin:0 0 8px">메인 시나리오는 막대로 — 파랑(민주당) · 빨강(국민의힘). 다른 시나리오는 작은 글자로 같이 비교.</p>
       <table>
-        <thead><tr><th>시도</th>{head_cols}</tr></thead>
+        <thead><tr><th>시도</th><th>메인 막대</th><th>민주당</th><th>국힘</th>{head_other}</tr></thead>
         <tbody>{"".join(rows)}</tbody>
       </table>
     </section>"""
@@ -621,12 +632,15 @@ h1 {{ font-size: 1.6rem; margin: 0 0 8px; }}
 .bar-value {{ font-weight: 600; color: #1a1a1a; text-align: right; }}
 .sido-marginal {{ margin: 28px 0; }}
 .sido-marginal table {{ width: 100%; border-collapse: collapse; font-size: 0.85rem; }}
-.sido-marginal th, .sido-marginal td {{ padding: 6px 8px; border-bottom: 1px solid #eee; text-align: left; }}
+.sido-marginal th, .sido-marginal td {{ padding: 6px 8px; border-bottom: 1px solid #eee; text-align: left; vertical-align: middle; }}
 .sido-marginal th {{ font-size: 0.78rem; color: #666; }}
 .sido-name {{ font-weight: 700; width: 130px; }}
-.prob-bar {{ display: inline-block; width: 160px; background: #f0f0f0; height: 8px; border-radius: 2px; overflow: hidden; vertical-align: middle; }}
-.prob-bar span {{ display: block; height: 100%; background: #152484; }}
-.prob-num {{ display: inline-block; margin-left: 8px; font-variant-numeric: tabular-nums; font-size: 0.78rem; color: #555; }}
+.stacked-bar {{ display: flex; height: 12px; border-radius: 3px; overflow: hidden; background: #f0f0f0; min-width: 160px; max-width: 220px; }}
+.stacked-d {{ background: #152484; height: 100%; }}
+.stacked-r {{ background: #E61E2B; height: 100%; }}
+.num-d {{ color: #152484; font-weight: 700; font-variant-numeric: tabular-nums; }}
+.num-r {{ color: #E61E2B; font-weight: 700; font-variant-numeric: tabular-nums; }}
+.num-sub {{ color: #888; font-size: 0.78rem; font-variant-numeric: tabular-nums; }}
 .backtest table {{ width: 100%; border-collapse: collapse; max-width: 480px; }}
 .backtest th, .backtest td {{ padding: 6px 10px; border-bottom: 1px solid #eee; text-align: left; font-variant-numeric: tabular-nums; }}
 .acc-good {{ color: #126b3f; font-weight: 700; }}
@@ -639,7 +653,7 @@ h1 {{ font-size: 1.6rem; margin: 0 0 8px; }}
 </style>
 </head>
 <body>
-<h1>9회 전국동시지방선거 시도지사 의석 시뮬레이션</h1>
+<h1>9회 전국동시지방선거 시도지사 당선 시뮬레이션</h1>
 <p style="color:#666;font-size:0.85rem;margin:0 0 16px;">2026-05-27 기준 · 과거 6회차(3~8회) 개표결과 기반 몬테카를로 1만회 · 뉴탐사</p>
 
 <div class="legal">

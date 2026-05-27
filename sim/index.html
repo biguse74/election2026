@@ -24,7 +24,7 @@ h1 { font-size: 1.7rem; margin: 0 0 6px; letter-spacing: -0.01em; }
 .card-title { font-size: 1.2rem; font-weight: 800; margin: 0 0 4px; }
 .card-count { font-size: 0.8rem; color: #888; margin: 0 0 12px; }
 .card-result { font-size: 0.95rem; color: #1a1a1a; padding: 8px 0; border-top: 1px dashed #e8e8e8; border-bottom: 1px dashed #e8e8e8; margin: auto 0 12px; }
-.card-result strong { color: var(--dem); font-size: 1.4rem; font-weight: 900; }
+.card-result strong { font-size: 1.2rem; font-weight: 900; }
 .card-sub { color: #666; font-size: 0.82rem; margin: 0; line-height: 1.5; }
 .cta { display: flex; justify-content: space-between; gap: 12px; margin: 28px 0 12px; flex-wrap: wrap; }
 .cta-btn { background: var(--ink); color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 0.92rem; }
@@ -93,12 +93,12 @@ footer { text-align: center; color: #aaa; font-size: 0.78rem; margin-top: 48px; 
 
 
 <h1>9회 전국동시지방선거 의석 시뮬레이션</h1>
-<p class="lead">민주당 진영 vs 비민주당 진영 — 시도지사·기초단체장·재·보궐 257석 분포 예측 시나리오.</p>
+<p class="lead">시도지사 17곳 · 기초단체장 226곳 · 국회의원 재·보궐 14석 — 정당별 당선 분포 시나리오.</p>
 <p class="meta">2026-05-27 기준 · 과거 6회차 개표결과 + 2026-05-27까지 보도된 공개 여론조사 · 1만 회 몬테카를로 · 시민언론 뉴탐사</p>
 
 <div class="intro">
   <strong>읽는 법</strong> — 정치 환경에 따라 결과가 크게 달라지므로 시나리오를 분리해 보여줍니다.
-  메인 시나리오는 <strong>"이재명 정부 출범 1년차"</strong>(=7회 박근혜 탄핵 후 환경) 가정 + 보도된 여론조사를 prior로.
+  메인 시나리오는 <strong>"이재명 정부 출범 1년차"</strong>(=7회 박근혜 탄핵 후 환경) 가정 + 보도된 공개 여론조사를 참고 자료로.
   특정 후보·정당의 당락을 단정하지 않습니다. 한계는 각 페이지 하단에 명시.
 </div>
 
@@ -107,21 +107,21 @@ footer { text-align: center; color: #aaa; font-size: 0.78rem; margin-top: 48px; 
     <span class="card-tag">광역단체장</span>
     <div class="card-title">시도지사</div>
     <p class="card-count">17개 시도 · 1만 회 시뮬레이션</p>
-    <div class="card-result">민주당 <strong>12.82</strong>석 vs 비민주당 4.18석</div>
+    <div class="card-result"><span style="color:#152484"><strong>민주당 12.82</strong></span><span style="color:#888"> · </span><span style="color:#E61E2B"><strong>국힘 4.18</strong></span><span style="color:#666;font-size:0.85em"> 곳</span></div>
     <p class="card-sub">공개 여론조사 + 6회차 역사 패턴. 8회 백테스트 적중률 88%.</p>
   </a>
   <a class="card" href="/sim/basic-head/">
     <span class="card-tag">기초단체장</span>
     <div class="card-title">시군구청장</div>
     <p class="card-count">226곳 · 17개 시도별 모든 시군구</p>
-    <div class="card-result">민주당 <strong>165.82</strong>석 vs 비민주당 100.18석</div>
+    <div class="card-result"><span style="color:#152484"><strong>민주당 165.82</strong></span><span style="color:#888"> · </span><span style="color:#E61E2B"><strong>국힘 100.18</strong></span><span style="color:#666;font-size:0.85em"> 곳</span></div>
     <p class="card-sub">시군구 단위 여론조사 부족 — 역사 패턴만. 8회 백테스트 81%.</p>
   </a>
   <a class="card" href="/sim/assembly/">
     <span class="card-tag">국회의원 재·보궐</span>
     <div class="card-title">동시 재·보궐</div>
     <p class="card-count">14개 선거구 · 진영 1위 매치업</p>
-    <div class="card-result">민주당 <strong>11.23</strong>석 vs 비민주당 2.77석</div>
+    <div class="card-result"><span style="color:#152484"><strong>민주당 11.23</strong></span><span style="color:#888"> · </span><span style="color:#E61E2B"><strong>국힘 2.77</strong></span><span style="color:#666;font-size:0.85em"> 석</span></div>
     <p class="card-sub">보도된 여론조사 추정치 + 22대 결과 보완. 한동훈·조국 등 분류 포함.</p>
   </a>
 </div>

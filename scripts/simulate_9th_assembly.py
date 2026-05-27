@@ -473,22 +473,34 @@ def write_html(summary, priors, sim):
 
     for p in races_sorted:
         prob_d = sim["race_dem_wins"].get(p["consti"], 0) / n
-        bar_color = "#152484" if prob_d >= 0.5 else "#E61E2B"
+        d_pct = prob_d * 100
+        r_pct = 100 - d_pct
         dem_mean = f"{p['dem']['mean']}%" if p['dem']['mean'] is not None else "—"
         con_mean = f"{p['con']['mean']}%" if p['con']['mean'] is not None else "—"
-        fb_mark = ' <span style="font-size:0.7rem;color:#999">(fb)</span>' if p.get("fallback") else ""
+        fb_mark = ' <span style="font-size:0.7rem;color:#999">(자료 부족, 22대 결과 기반)</span>' if p.get("fallback") else ""
         dem_party = p['dem'].get('party') or ''
         con_party = p['con'].get('party') or ''
         dem_party_label = f' <span style="font-size:0.72rem;color:#888">{dem_party}</span>' if dem_party and dem_party != '더불어민주당' else ''
         con_party_label = f' <span style="font-size:0.72rem;color:#888">{con_party}</span>' if con_party and con_party != '국민의힘' else ''
+        # 비민주당 1위가 무소속이면 회색, 국힘이면 빨강
+        right_color = "#E61E2B" if con_party == '국민의힘' else "#888"
+        right_class = "right-r" if con_party == '국민의힘' else "right-i"
         race_rows.append(f"""
         <tr>
           <td>{p['region1']}</td>
           <td class="sgg">{p['region2']}{fb_mark}</td>
           <td>{p['dem']['name']}{dem_party_label}<br><span class="party-d">{dem_mean}</span>{other_cands_html(p['dem'])}</td>
-          <td>{p['con']['name']}{con_party_label}<br><span class="party-r">{con_mean}</span>{other_cands_html(p['con'])}</td>
+          <td>{p['con']['name']}{con_party_label}<br><span class="{right_class}">{con_mean}</span>{other_cands_html(p['con'])}</td>
           <td class="margin">{p['margin']:+.1f}%p</td>
-          <td><div class="prob-cell"><span class="prob-bar"><span style="width:{prob_d*100:.0f}%;background:{bar_color}"></span></span><span class="prob-num">{prob_d*100:.0f}%</span></div></td>
+          <td>
+            <div class="stacked-bar">
+              <span class="stacked-d" style="width:{d_pct:.0f}%" title="민주당 진영 {d_pct:.0f}%"></span>
+              <span style="background:{right_color};width:{r_pct:.0f}%;height:100%;display:block" title="{con_party or '비민주당'} {r_pct:.0f}%"></span>
+            </div>
+            <div style="font-size:0.74rem;margin-top:2px;font-variant-numeric:tabular-nums">
+              <span class="num-d">{d_pct:.0f}%</span> · <span style="color:{right_color};font-weight:700">{r_pct:.0f}%</span>
+            </div>
+          </td>
           <td class="state">{p['state_label'] or '—'}</td>
         </tr>""")
     rows_html = "".join(race_rows)
@@ -543,19 +555,20 @@ table.races th {{ font-size: 0.74rem; color: #555; }}
 .sgg {{ font-weight: 700; }}
 .party-d {{ color: #152484; font-weight: 700; font-variant-numeric: tabular-nums; }}
 .party-r {{ color: #E61E2B; font-weight: 700; font-variant-numeric: tabular-nums; }}
+.right-r {{ color: #E61E2B; font-weight: 700; font-variant-numeric: tabular-nums; }}
+.right-i {{ color: #888; font-weight: 700; font-variant-numeric: tabular-nums; }}
 .margin {{ font-variant-numeric: tabular-nums; font-weight: 600; }}
 .state {{ font-size: 0.78rem; color: #777; }}
-.prob-cell {{ display: flex; align-items: center; gap: 6px; }}
-.prob-bar {{ display: inline-block; flex: 1; min-width: 60px; max-width: 120px; height: 8px; background: #f0f0f0; border-radius: 2px; overflow: hidden; }}
-.prob-bar > span {{ display: block; height: 100%; }}
-.prob-num {{ font-variant-numeric: tabular-nums; font-weight: 700; min-width: 36px; text-align: right; font-size: 0.84rem; }}
+.stacked-bar {{ display: flex; height: 12px; border-radius: 3px; overflow: hidden; background: #f0f0f0; min-width: 100px; max-width: 160px; }}
+.stacked-d {{ background: #152484; height: 100%; }}
+.num-d {{ color: #152484; font-weight: 700; }}
 .limits {{ background: #f6f6f6; padding: 14px 20px; border-radius: 4px; margin-top: 28px; font-size: 0.85rem; }}
 .limits h2 {{ font-size: 1rem; margin: 0 0 8px; }}
 .limits ul {{ margin: 0; padding-left: 20px; color: #555; }}
 </style></head><body>
 {DISCLAIMER}
 <h1>9회 동시 국회의원 재·보궐 14개 선거구 시뮬레이션</h1>
-<p class="sub">2026-05-27 기준 · 보도된 공개 여론조사 prior + 1만 회 몬테카를로 · 시민언론 뉴탐사</p>
+<p class="sub">2026-05-27 기준 · 5/27까지 보도된 공개 여론조사 참고 + 1만 회 시뮬레이션 · 시민언론 뉴탐사</p>
 
 <div class="summary-pills">
   <div class="pill d"><span class="lbl">민주당</span> <strong class="val">{r['dem_mean']}석</strong><p class="sub">최빈 {r['dem_mode']}석 · 80% CI [{r['dem_80_ci'][0]}~{r['dem_80_ci'][1]}]</p></div>

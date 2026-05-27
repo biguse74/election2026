@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-9회 기초단체장 226개 의석 분포 몬테카를로 시뮬레이션.
+9회 기초단체장 226개 당선 분포 몬테카를로 시뮬레이션.
 
 모델은 시도지사 시뮬레이션과 동일 — year_effect + region_lean + noise.
 다만 region 단위가 (시도, 시군구) 페어이고 시군구 226개의 회차별 매트릭스를 사용한다.
@@ -273,8 +273,8 @@ def main():
         print(f"=== 시나리오: {mode} ===")
         sc = run_scenario(params, N_SIM, SEED, mode)
         scenarios[mode] = sc
-        print(f"  민주 평균 {sc['dem_mean']}석, 최빈 {sc['dem_mode']}, 80% CI {sc['dem_80_ci']}")
-        print(f"  국힘 평균 {sc['con_mean']}석, 최빈 {sc['con_mode']}, 80% CI {sc['con_80_ci']}")
+        print(f"  민주 평균 {sc['dem_mean']}곳, 최빈 {sc['dem_mode']}, 80% CI {sc['dem_80_ci']}")
+        print(f"  국힘 평균 {sc['con_mean']}곳, 최빈 {sc['con_mode']}, 80% CI {sc['con_80_ci']}")
         print()
 
     print("=== 백테스트 ===")
@@ -320,7 +320,7 @@ def main():
         w.writeheader()
         w.writerows(sigungu_rows)
 
-    # 의석 분포 CSV
+    # 당선 분포 CSV
     with (OUT_DIR / "seat_distribution.csv").open("w", encoding="utf-8-sig", newline="") as f:
         w = csv.writer(f)
         w.writerow(["scenario", "seats", "dem_count", "dem_pct", "con_count", "con_pct"])
@@ -347,8 +347,8 @@ def _scenario_block(mode, sc):
       <h2 class="scenario-title">{meta['title']} {badge}</h2>
       <p class="scenario-desc">{meta['desc']}</p>
       <div class="scenario-stats">
-        <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>{sc['dem_mean']}석</strong><span class="pill-sub">최빈 {sc['dem_mode']} · 80% [{sc['dem_80_ci'][0]}~{sc['dem_80_ci'][1]}]</span></div>
-        <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>{sc['con_mean']}석</strong><span class="pill-sub">최빈 {sc['con_mode']} · 80% [{sc['con_80_ci'][0]}~{sc['con_80_ci'][1]}]</span></div>
+        <div class="stat-pill stat-d"><span class="pill-label">민주</span><strong>{sc['dem_mean']}곳</strong><span class="pill-sub">최빈 {sc['dem_mode']} · 80% [{sc['dem_80_ci'][0]}~{sc['dem_80_ci'][1]}]</span></div>
+        <div class="stat-pill stat-r"><span class="pill-label">국힘</span><strong>{sc['con_mean']}곳</strong><span class="pill-sub">최빈 {sc['con_mode']} · 80% [{sc['con_80_ci'][0]}~{sc['con_80_ci'][1]}]</span></div>
       </div>
     </section>"""
 
@@ -377,14 +377,21 @@ def write_html(summary, scenarios, backtests, params, year_of):
         ps = scenarios[primary]["sido_dem_prob"].get(key, 0)
         pb = scenarios["baseline"]["sido_dem_prob"].get(key, 0)
         pn = scenarios["normal"]["sido_dem_prob"].get(key, 0)
-        # 막대 + 색 (민주 우세→파랑, 국힘 우세→빨강)
-        primary_pct = ps * 100
-        bar_color = "#152484" if primary_pct >= 50 else "#E61E2B"
-        bar_w = primary_pct if primary_pct >= 50 else (100 - primary_pct)
-        return (f'<tr><td class="sgg">{s[1]}</td>'
-                f'<td><div class="prob-cell"><span class="prob-bar"><span style="width:{primary_pct:.0f}%;background:#152484"></span></span>'
-                f'<span class="prob-num">{primary_pct:.0f}%</span></div></td>'
-                f'<td>{pb*100:.0f}%</td><td>{pn*100:.0f}%</td></tr>')
+        # 양당 stacked 막대: 왼쪽 민주(파랑) + 오른쪽 국힘(빨강)
+        d_pct = ps * 100
+        r_pct = 100 - d_pct
+        return (
+            f'<tr><td class="sgg">{s[1]}</td>'
+            f'<td><div class="stacked-bar">'
+            f'<span class="stacked-d" style="width:{d_pct:.0f}%" title="민주당 진영 {d_pct:.0f}%"></span>'
+            f'<span class="stacked-r" style="width:{r_pct:.0f}%" title="국민의힘 진영 {r_pct:.0f}%"></span>'
+            f'</div></td>'
+            f'<td class="num-d">{d_pct:.0f}%</td>'
+            f'<td class="num-r">{r_pct:.0f}%</td>'
+            f'<td class="num-sub">{pb*100:.0f}% / {(1-pb)*100:.0f}%</td>'
+            f'<td class="num-sub">{pn*100:.0f}% / {(1-pn)*100:.0f}%</td>'
+            f'</tr>'
+        )
 
     sido_sections = []
     for sido in sido_keys:
@@ -397,7 +404,14 @@ def write_html(summary, scenarios, backtests, params, year_of):
         <section class="sido-group">
           <h3>{sido} <span class="sido-meta">{len(regs)}개 시군구 · 평균 민주 확률 {avg_prob*100:.0f}%</span></h3>
           <table class="sgg-table">
-            <thead><tr><th>시군구</th><th>현재 환경 추정 (메인)</th><th>혼합</th><th>안정기</th></tr></thead>
+            <thead><tr>
+              <th>시군구</th>
+              <th>현재 환경 추정 (메인) — 양당 막대</th>
+              <th>민주당</th>
+              <th>국힘 등</th>
+              <th>혼합 (민주/국힘)</th>
+              <th>안정기 (민주/국힘)</th>
+            </tr></thead>
             <tbody>{rows_html}</tbody>
           </table>
         </section>""")
@@ -438,17 +452,22 @@ th {{ font-size: 0.78rem; color: #666; }}
 .sido-group h3 {{ font-size: 1rem; margin: 0 0 6px; color: #1a1a1a; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }}
 .sido-group .sido-meta {{ font-size: 0.78rem; font-weight: 400; color: #666; }}
 .sgg-table {{ font-size: 0.8rem; margin: 4px 0 0; }}
-.sgg-table th {{ font-size: 0.74rem; font-weight: 600; color: #666; }}
-.sgg-table td.sgg {{ font-weight: 600; width: 32%; }}
-.prob-cell {{ display: flex; align-items: center; gap: 8px; }}
-.prob-bar {{ display: inline-block; flex: 1; min-width: 80px; max-width: 160px; height: 8px; background: #f0f0f0; border-radius: 2px; overflow: hidden; }}
-.prob-bar > span {{ display: block; height: 100%; transition: width 0.2s; }}
-.prob-num {{ font-variant-numeric: tabular-nums; font-weight: 700; color: #1a1a1a; min-width: 38px; text-align: right; }}
+.sgg-table th {{ font-size: 0.74rem; font-weight: 600; color: #666; text-align: left; }}
+.sgg-table td.sgg {{ font-weight: 600; }}
+.stacked-bar {{
+  display: flex; height: 12px; border-radius: 3px; overflow: hidden;
+  background: #f0f0f0; min-width: 140px; max-width: 220px;
+}}
+.stacked-d {{ background: #152484; height: 100%; }}
+.stacked-r {{ background: #E61E2B; height: 100%; }}
+.num-d {{ color: #152484; font-weight: 700; font-variant-numeric: tabular-nums; }}
+.num-r {{ color: #E61E2B; font-weight: 700; font-variant-numeric: tabular-nums; }}
+.num-sub {{ color: #888; font-size: 0.74rem; font-variant-numeric: tabular-nums; }}
 </style></head><body>
-<h1>9회 전국동시지방선거 기초단체장 의석 시뮬레이션</h1>
+<h1>9회 전국동시지방선거 기초단체장 당선 시뮬레이션</h1>
 <p style="color:#666;font-size:0.85rem;margin:0 0 16px;">2026-05-27 기준 · 226개 시군구 × 1만 회 몬테카를로 · 시도지사 시뮬레이션과 동일 모델 · 뉴탐사</p>
 <div class="legal">⚠️ <strong>공직선거법 제108조</strong> — 6/3 18시 전 결과 공표·인용보도 금지.</div>
-<div class="intro"><strong>시도지사·재보궐과 달리 이 페이지는 여론조사를 prior로 반영하지 않습니다 — 과거 6회차 개표 패턴만 사용.</strong> 시군구는 후보 개별 효과·현직 이점·지역 토호 영향이 훨씬 커서 모델 정확도가 떨어지고, 시군구 226곳 단위의 공개 여론조사는 자료가 충분치 않습니다. 환경별 의석 분포 예측에는 시도지사·재보궐 결과를 더 신뢰하는 게 안전합니다.</div>
+<div class="intro"><strong>시도지사·재보궐과 달리 이 페이지는 여론조사 자료 없이 과거 6회차(1995~2022) 개표 패턴만으로 시뮬레이션했습니다.</strong> 시군구는 후보 개별 효과·현직 이점·지역 영향이 훨씬 커서 모델 정확도가 떨어집니다. 시도지사·재보궐 결과를 더 신뢰하는 게 안전합니다.</div>
 {blocks}
 <section>
   <h2>시군구 전체 — 17개 시도별 민주당 승리 확률</h2>

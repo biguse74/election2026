@@ -151,29 +151,33 @@ def _load_summary(name: str) -> dict:
     return {}
 
 
-def _highlight(res: dict, kind: str = "main") -> str:
-    """summary.json의 result/scenarios에서 메인 결과 한 줄."""
+def _highlight(res: dict, unit: str = "곳") -> str:
+    """summary.json의 result/scenarios에서 메인 결과 한 줄. 양당 균형 색상."""
+    def fmt(d, c, unit):
+        return (f'<span style="color:#152484"><strong>민주당 {d}</strong></span>'
+                f'<span style="color:#888"> · </span>'
+                f'<span style="color:#E61E2B"><strong>국힘 {c}</strong></span>'
+                f'<span style="color:#666;font-size:0.85em"> {unit}</span>')
+
     if not res:
         return "—"
-    # sido/basic-head: scenarios.mbc 또는 shakeup
     sc = res.get("scenarios") or {}
     if "mbc" in sc:
         s = sc["mbc"]
-        return f"민주당 <strong>{s.get('dem_mean','?')}</strong>석 vs 비민주당 {s.get('con_mean','?')}석"
+        return fmt(s.get("dem_mean", "?"), s.get("con_mean", "?"), unit)
     if "shakeup" in sc:
         s = sc["shakeup"]
-        return f"민주당 <strong>{s.get('dem_mean','?')}</strong>석 vs 비민주당 {s.get('con_mean','?')}석"
-    # assembly: result 평탄
+        return fmt(s.get("dem_mean", "?"), s.get("con_mean", "?"), unit)
     r = res.get("result") or {}
     if r:
-        return f"민주당 <strong>{r.get('dem_mean','?')}</strong>석 vs 비민주당 {r.get('con_mean','?')}석"
+        return fmt(r.get("dem_mean", "?"), r.get("con_mean", "?"), unit)
     return "—"
 
 
 def build_landing() -> str:
-    sido_s = _highlight(_load_summary("simulation_9th_sido"))
-    bh_s = _highlight(_load_summary("simulation_9th_basic_head"))
-    asm_s = _highlight(_load_summary("simulation_9th_assembly"))
+    sido_s = _highlight(_load_summary("simulation_9th_sido"), "곳")
+    bh_s = _highlight(_load_summary("simulation_9th_basic_head"), "곳")
+    asm_s = _highlight(_load_summary("simulation_9th_assembly"), "석")
 
     return """<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -201,7 +205,7 @@ h1 { font-size: 1.7rem; margin: 0 0 6px; letter-spacing: -0.01em; }
 .card-title { font-size: 1.2rem; font-weight: 800; margin: 0 0 4px; }
 .card-count { font-size: 0.8rem; color: #888; margin: 0 0 12px; }
 .card-result { font-size: 0.95rem; color: #1a1a1a; padding: 8px 0; border-top: 1px dashed #e8e8e8; border-bottom: 1px dashed #e8e8e8; margin: auto 0 12px; }
-.card-result strong { color: var(--dem); font-size: 1.4rem; font-weight: 900; }
+.card-result strong { font-size: 1.2rem; font-weight: 900; }
 .card-sub { color: #666; font-size: 0.82rem; margin: 0; line-height: 1.5; }
 .cta { display: flex; justify-content: space-between; gap: 12px; margin: 28px 0 12px; flex-wrap: wrap; }
 .cta-btn { background: var(--ink); color: #fff; text-decoration: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; font-size: 0.92rem; }
@@ -217,12 +221,12 @@ footer { text-align: center; color: #aaa; font-size: 0.78rem; margin-top: 48px; 
 """ + DISCLAIMER_HTML + """
 
 <h1>9회 전국동시지방선거 의석 시뮬레이션</h1>
-<p class="lead">민주당 진영 vs 비민주당 진영 — 시도지사·기초단체장·재·보궐 257석 분포 예측 시나리오.</p>
+<p class="lead">시도지사 17곳 · 기초단체장 226곳 · 국회의원 재·보궐 14석 — 정당별 당선 분포 시나리오.</p>
 <p class="meta">2026-05-27 기준 · 과거 6회차 개표결과 + 2026-05-27까지 보도된 공개 여론조사 · 1만 회 몬테카를로 · 시민언론 뉴탐사</p>
 
 <div class="intro">
   <strong>읽는 법</strong> — 정치 환경에 따라 결과가 크게 달라지므로 시나리오를 분리해 보여줍니다.
-  메인 시나리오는 <strong>"이재명 정부 출범 1년차"</strong>(=7회 박근혜 탄핵 후 환경) 가정 + 보도된 여론조사를 prior로.
+  메인 시나리오는 <strong>"이재명 정부 출범 1년차"</strong>(=7회 박근혜 탄핵 후 환경) 가정 + 보도된 공개 여론조사를 참고 자료로.
   특정 후보·정당의 당락을 단정하지 않습니다. 한계는 각 페이지 하단에 명시.
 </div>
 
