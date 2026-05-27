@@ -38,8 +38,26 @@ N_SIM = 10_000
 SEED = 42
 RESIDUAL_SD = 6.0  # 보수적: 6%p — MBC SD 외 추가 모델 잡음
 
-PROGRESSIVE = {"더불어민주당"}
-CONSERVATIVE = {"국민의힘"}
+# 정당 진영 매핑 (정당명 기준)
+PROGRESSIVE = {"더불어민주당", "조국혁신당", "진보당", "정의당", "기본소득당", "녹색당"}
+CONSERVATIVE = {"국민의힘", "자유와혁신", "자유통일당", "공화당", "대한국민당"}
+
+# 무소속 후보 중 진영 분류 (이름 기반 — 출마 정황상 명확한 경우)
+CONSERVATIVE_INDEPS = {"한동훈"}     # 보수계 무소속
+PROGRESSIVE_INDEPS = set()            # 진보계 무소속 (필요시 추가)
+
+
+def camp_of(party: str, name: str) -> str:
+    """'P'(progressive)/'C'(conservative)/'O'(other) 진영 분류."""
+    if party in PROGRESSIVE:
+        return "P"
+    if party in CONSERVATIVE:
+        return "C"
+    if name in CONSERVATIVE_INDEPS:
+        return "C"
+    if name in PROGRESSIVE_INDEPS:
+        return "P"
+    return "O"
 
 
 def _clean_js_to_json(raw: str) -> str:
@@ -123,12 +141,14 @@ def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict]) -> list[dict
         dem = con = None
         used_fallback = False
 
-        # 모델: 민주 후보 vs 비민주 1위 후보 (무소속·다른 진영 보수 후보 포함)
-        # 부산 북갑의 한동훈(무소속) 1위 같은 케이스를 정확히 잡기 위함.
+        # 모델: 진보 진영 1위 vs 보수 진영 1위 매치업
+        # 진보 = 민주당·조국혁신당·진보당·정의당 등
+        # 보수 = 국민의힘·자유와혁신·자유통일당 + 한동훈 같은 보수계 무소속
+        # 기타(개혁신당 중도, 무소속 비분류)는 con·dem 어느 쪽도 안 됨
         if gdata:
             last = gdata[-1]
-            dem_cands = []
-            non_dem_cands = []
+            prog_cands = []
+            cons_cands = []
             for c in candis:
                 party = c.get("party")
                 name = c.get("name")
@@ -140,19 +160,26 @@ def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict]) -> list[dict
                     continue
                 unc = (up - lo) / 4 if (lo is not None and up is not None) else 1.5
                 entry = {"name": name, "party": party, "mean": round(mean, 2), "sd": round(unc, 2)}
-                if party in PROGRESSIVE:
-                    dem_cands.append(entry)
-                else:
-                    non_dem_cands.append(entry)
-            # 민주 후보 1위 = dem
-            if dem_cands:
-                dem = max(dem_cands, key=lambda x: x["mean"])
-            # 비민주 후보 1위 = con (국힘일 수도, 무소속·다른 보수일 수도)
-            if non_dem_cands:
-                con = max(non_dem_cands, key=lambda x: x["mean"])
+                camp = camp_of(party, name)
+                if camp == "P":
+                    prog_cands.append(entry)
+                elif camp == "C":
+                    cons_cands.append(entry)
+            # 진영 1위 후보 매치업
+            if prog_cands:
+                dem = max(prog_cands, key=lambda x: x["mean"])
+                # 진보 진영 2위 이상 후보가 있으면 메타 표시용
+                others_p = [c for c in prog_cands if c is not dem]
+                if others_p:
+                    dem["others"] = others_p
+            if cons_cands:
+                con = max(cons_cands, key=lambda x: x["mean"])
+                others_c = [c for c in cons_cands if c is not con]
+                if others_c:
+                    con["others"] = others_c
 
         # graph_data 없거나 부족하면 bar_data의 raw 여론조사 사용
-        # 비민주 후보 중 1위(평균값 기준)를 con으로
+        # 진영 1위 매치업으로 통일
         if (not dem or not con) and race.get("bar_data"):
             bar = race.get("bar_data") or []
             cand_party = {c["name"]: c["party"] for c in candis}
@@ -165,14 +192,13 @@ def extract_priors(boxplot_arr: list[dict], repoll_arr: list[dict]) -> list[dict
                         if m is None:
                             continue
                         per_cand_means.setdefault(name, []).append(m)
-            # 후보별 평균
             cand_avg = {n: sum(v)/len(v) for n, v in per_cand_means.items() if v}
-            # 민주 후보 1위
-            dem_picks = {n: m for n, m in cand_avg.items() if cand_party.get(n) in PROGRESSIVE}
-            non_dem_picks = {n: m for n, m in cand_avg.items() if cand_party.get(n) and cand_party.get(n) not in PROGRESSIVE}
-            if dem_picks and non_dem_picks:
-                dem_name = max(dem_picks, key=dem_picks.get)
-                con_name = max(non_dem_picks, key=non_dem_picks.get)
+            # 진영별 후보
+            prog_picks = {n: m for n, m in cand_avg.items() if camp_of(cand_party.get(n, ""), n) == "P"}
+            cons_picks = {n: m for n, m in cand_avg.items() if camp_of(cand_party.get(n, ""), n) == "C"}
+            if prog_picks and cons_picks:
+                dem_name = max(prog_picks, key=prog_picks.get)
+                con_name = max(cons_picks, key=cons_picks.get)
                 dem_party = cand_party[dem_name]
                 con_party = cand_party[con_name]
                 dem_vals = per_cand_means[dem_name]
@@ -384,21 +410,31 @@ def write_html(summary, priors, sim):
     n = sim["n"]
     races_sorted = sorted(priors, key=lambda x: -x["margin"])
     race_rows = []
+    def other_cands_html(side):
+        """진영 내 1위 외 다른 후보들 — 작은 메타 텍스트."""
+        others = side.get("others") or []
+        if not others:
+            return ""
+        parts = [f'<span style="color:#888;font-size:0.72rem">{o["name"]}({o["party"]}) {o["mean"]}%</span>'
+                 for o in others]
+        return "<br>" + " · ".join(parts)
+
     for p in races_sorted:
         prob_d = sim["race_dem_wins"].get(p["consti"], 0) / n
         bar_color = "#152484" if prob_d >= 0.5 else "#E61E2B"
         dem_mean = f"{p['dem']['mean']}%" if p['dem']['mean'] is not None else "—"
         con_mean = f"{p['con']['mean']}%" if p['con']['mean'] is not None else "—"
         fb_mark = ' <span style="font-size:0.7rem;color:#999">(fb)</span>' if p.get("fallback") else ""
-        # 비민주 후보의 정당 표시 (한동훈·조국 등 무소속·기타 정당 명시)
+        dem_party = p['dem'].get('party') or ''
         con_party = p['con'].get('party') or ''
+        dem_party_label = f' <span style="font-size:0.72rem;color:#888">{dem_party}</span>' if dem_party and dem_party != '더불어민주당' else ''
         con_party_label = f' <span style="font-size:0.72rem;color:#888">{con_party}</span>' if con_party and con_party != '국민의힘' else ''
         race_rows.append(f"""
         <tr>
           <td>{p['region1']}</td>
           <td class="sgg">{p['region2']}{fb_mark}</td>
-          <td>{p['dem']['name']}<br><span class="party-d">{dem_mean}</span></td>
-          <td>{p['con']['name']}{con_party_label}<br><span class="party-r">{con_mean}</span></td>
+          <td>{p['dem']['name']}{dem_party_label}<br><span class="party-d">{dem_mean}</span>{other_cands_html(p['dem'])}</td>
+          <td>{p['con']['name']}{con_party_label}<br><span class="party-r">{con_mean}</span>{other_cands_html(p['con'])}</td>
           <td class="margin">{p['margin']:+.1f}%p ±{p['margin_sd']}</td>
           <td><div class="prob-cell"><span class="prob-bar"><span style="width:{prob_d*100:.0f}%;background:{bar_color}"></span></span><span class="prob-num">{prob_d*100:.0f}%</span></div></td>
           <td class="state">{p['state_label'] or '—'}</td>
@@ -484,9 +520,9 @@ table.races th {{ font-size: 0.74rem; color: #555; }}
 
 <section>
   <h2 style="font-size:1.1rem">14개 선거구별 민주 우세도</h2>
-  <p style="color:#666;font-size:0.84rem;margin:0 0 8px">민주 후보 vs <strong>비민주 1위 후보</strong> 매치업. 부산 북갑 한동훈(무소속)·평택을 조국(조국혁신당) 등 다른 진영 후보가 1위인 경우 그 후보로 자동 매칭.</p>
+  <p style="color:#666;font-size:0.84rem;margin:0 0 8px"><strong>진보 진영 1위 vs 보수 진영 1위</strong> 매치업.<br>진보 = 더불어민주당·조국혁신당·진보당·정의당. 보수 = 국민의힘·자유와혁신·자유통일당 + 한동훈(보수계 무소속). 작은 글자는 같은 진영의 2위 이상 후보.</p>
   <table class="races">
-    <thead><tr><th>시도</th><th>선거구</th><th>민주 후보</th><th>비민주 1위 후보</th><th>격차</th><th>민주 승리 확률</th><th>MBC 분류</th></tr></thead>
+    <thead><tr><th>시도</th><th>선거구</th><th>진보 1위 후보</th><th>보수 1위 후보</th><th>격차</th><th>민주 승리 확률</th><th>MBC 분류</th></tr></thead>
     <tbody>{rows_html}</tbody>
   </table>
 </section>
