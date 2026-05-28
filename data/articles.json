@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-05-28T12:51:05+09:00",
+  "updated_at": "2026-05-28T19:06:45+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 334,
+  "count": 335,
   "articles": [
+    {
+      "date": "2026-05-28",
+      "title": "1만 번 돌려본 6·3 지방선거… 광역 11곳, 국회 11석",
+      "url": "https://newtamsa.org/news/mSFOHq",
+      "category": "데이터",
+      "tags": [
+        "시뮬레이션",
+        "지방선거",
+        "광역",
+        "국회의원",
+        "재보궐",
+        "예측",
+        "민주당",
+        "국민의힘",
+        "무소속"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-05-28",
       "title": "김태규 권익위 부위원장 시절 베이스타즈 골프장 변호인 활동",
