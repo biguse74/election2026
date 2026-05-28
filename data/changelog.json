@@ -1,12 +1,12 @@
 {
   "source": "candidates",
-  "today_date": "20260528",
-  "previous_date": "20260527",
+  "today_date": "20260529",
+  "previous_date": "20260528",
   "summary": {
     "new": 0,
     "gone": 0,
     "party": 0,
-    "status": 12
+    "status": 15
   },
   "samples": {
     "new": [],
@@ -14,112 +14,139 @@
     "party": [],
     "status": [
       {
-        "name": "최광재",
-        "jdName": "무소속",
-        "sdName": "경상북도",
-        "sggName": "구미시아선거구",
-        "sgTypecode": "6",
+        "name": "방우성",
+        "jdName": "진보당",
+        "sdName": "경기도",
+        "sggName": "안산시제7선거구",
+        "sgTypecode": "5",
         "status_prev": "등록",
-        "status_now": "등록무효"
+        "status_now": "사퇴"
       },
       {
-        "name": "전희영",
+        "name": "유지곤",
+        "jdName": "조국혁신당",
+        "sdName": "대전광역시",
+        "sggName": "서구",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "임채오",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구제3선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "이창실",
+        "jdName": "공화당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "송병서",
+        "jdName": "무소속",
+        "sdName": "경기도",
+        "sggName": "연천군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "황성순",
         "jdName": "진보당",
-        "sdName": "경상남도",
-        "sggName": "경상남도",
+        "sdName": "울산광역시",
+        "sggName": "동구제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김한",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구제1선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김형근",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "동구제3선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "임민정",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "문경신",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "강화군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "이상옥",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "마포구제3선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "한겨레",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구제3선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "문희성",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "권기백",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "동구제1선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김종훈",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "울산광역시",
         "sgTypecode": "3",
         "status_prev": "등록",
         "status_now": "사퇴"
-      },
-      {
-        "name": "이성희",
-        "jdName": "진보당",
-        "sdName": "경상남도",
-        "sggName": "함안군",
-        "sgTypecode": "9",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김선주",
-        "jdName": "무소속",
-        "sdName": "서울특별시",
-        "sggName": "금천구나선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "윤진수",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "경기도",
-        "sgTypecode": "8",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "박연순",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "부천시",
-        "sgTypecode": "9",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김창주",
-        "jdName": "무소속",
-        "sdName": "전라남도",
-        "sggName": "여수시",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "이두원",
-        "jdName": "무소속",
-        "sdName": "충청남도",
-        "sggName": "홍성군",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김경숙",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "경기도",
-        "sgTypecode": "8",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "박봉열",
-        "jdName": "진보당",
-        "sdName": "경상남도",
-        "sggName": "김해시",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "정성규",
-        "jdName": "개혁신당",
-        "sdName": "경기도",
-        "sggName": "용인시라선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "송춘자",
-        "jdName": "한국독립당",
-        "sdName": "경기도",
-        "sggName": "경기도",
-        "sgTypecode": "8",
-        "status_prev": "등록",
-        "status_now": "등록무효"
       }
     ]
   },
@@ -129,114 +156,141 @@
     "party": [],
     "status": [
       {
-        "name": "최광재",
-        "jdName": "무소속",
-        "sdName": "경상북도",
-        "sggName": "구미시아선거구",
-        "sgTypecode": "6",
+        "name": "방우성",
+        "jdName": "진보당",
+        "sdName": "경기도",
+        "sggName": "안산시제7선거구",
+        "sgTypecode": "5",
         "status_prev": "등록",
-        "status_now": "등록무효"
+        "status_now": "사퇴"
       },
       {
-        "name": "전희영",
+        "name": "유지곤",
+        "jdName": "조국혁신당",
+        "sdName": "대전광역시",
+        "sggName": "서구",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "임채오",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구제3선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "이창실",
+        "jdName": "공화당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "송병서",
+        "jdName": "무소속",
+        "sdName": "경기도",
+        "sggName": "연천군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "황성순",
         "jdName": "진보당",
-        "sdName": "경상남도",
-        "sggName": "경상남도",
+        "sdName": "울산광역시",
+        "sggName": "동구제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김한",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구제1선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김형근",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "동구제3선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "임민정",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "문경신",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "강화군",
+        "sgTypecode": "4",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "이상옥",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "마포구제3선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "한겨레",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구제3선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "문희성",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구제2선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "권기백",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "동구제1선거구",
+        "sgTypecode": "5",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김종훈",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "울산광역시",
         "sgTypecode": "3",
         "status_prev": "등록",
         "status_now": "사퇴"
-      },
-      {
-        "name": "이성희",
-        "jdName": "진보당",
-        "sdName": "경상남도",
-        "sggName": "함안군",
-        "sgTypecode": "9",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김선주",
-        "jdName": "무소속",
-        "sdName": "서울특별시",
-        "sggName": "금천구나선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "윤진수",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "경기도",
-        "sgTypecode": "8",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "박연순",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "부천시",
-        "sgTypecode": "9",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "김창주",
-        "jdName": "무소속",
-        "sdName": "전라남도",
-        "sggName": "여수시",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "이두원",
-        "jdName": "무소속",
-        "sdName": "충청남도",
-        "sggName": "홍성군",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "김경숙",
-        "jdName": "더불어민주당",
-        "sdName": "경기도",
-        "sggName": "경기도",
-        "sgTypecode": "8",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "박봉열",
-        "jdName": "진보당",
-        "sdName": "경상남도",
-        "sggName": "김해시",
-        "sgTypecode": "4",
-        "status_prev": "등록",
-        "status_now": "사퇴"
-      },
-      {
-        "name": "정성규",
-        "jdName": "개혁신당",
-        "sdName": "경기도",
-        "sggName": "용인시라선거구",
-        "sgTypecode": "6",
-        "status_prev": "등록",
-        "status_now": "등록무효"
-      },
-      {
-        "name": "송춘자",
-        "jdName": "한국독립당",
-        "sdName": "경기도",
-        "sggName": "경기도",
-        "sgTypecode": "8",
-        "status_prev": "등록",
-        "status_now": "등록무효"
       }
     ]
   },
-  "generated_at": "2026-05-28T05:39:20+09:00"
+  "generated_at": "2026-05-29T05:47:27+09:00"
 }
