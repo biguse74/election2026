@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-05-28T00:50:29+09:00",
+  "updated_at": "2026-05-28T12:51:05+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 333,
+  "count": 334,
   "articles": [
+    {
+      "date": "2026-05-28",
+      "title": "김태규 권익위 부위원장 시절 베이스타즈 골프장 변호인 활동",
+      "url": "https://newtamsa.org/news/Y_VT8e",
+      "category": "단독보도",
+      "tags": [
+        "울산시",
+        "김두겸",
+        "울산남구",
+        "김태규",
+        "골프장",
+        "베이스타즈",
+        "변호인",
+        "소송대리",
+        "이해상충",
+        "특혜",
+        "영남경제신문",
+        "손주락"
+      ],
+      "author": "김은도, 김시몬, 강진구"
+    },
     {
       "date": "2026-05-27",
       "title": "[바로잡습니다] 해남 생태정원도시 법률자문 관련 박정남 변호사 보도에 대하여",
