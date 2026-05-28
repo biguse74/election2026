@@ -46,7 +46,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
-<link rel="stylesheet" href="css/main.css?v=202605280539">
+<link rel="stylesheet" href="css/main.css?v=202605290400">
 <link rel="stylesheet" href="css/live.css?v=202605272100">
 </head>
 <body>
@@ -57,6 +57,39 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener" class="util-link util-donate">💛 후원하기</a>
   </div>
 </div>
+<a id="ev-bar" href="/early-voting/" hidden style="display:none;text-decoration:none;background:linear-gradient(90deg,#c41e3a,#a31628);color:#fff;font-weight:700;">
+  <div style="max-width:1100px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:0.86rem;">
+    <span style="background:rgba(255,255,255,0.18);padding:2px 8px;border-radius:999px;font-size:0.72rem;letter-spacing:0.04em;">사전투표 진행 중</span>
+    <strong id="ev-bar-text">전국 누적 — · 8회 같은 시점 — </strong>
+    <span style="margin-left:auto;font-size:0.82rem;opacity:0.85;">전체 시도별 보기 →</span>
+  </div>
+</a>
+<script>
+(function () {
+  // 사전투표 기간(KST 5/29 06:00 ~ 5/30 18:00)에만 띠배너 표시 + latest.json 읽어 갱신
+  var bar = document.getElementById('ev-bar');
+  var txt = document.getElementById('ev-bar-text');
+  if (!bar || !txt) return;
+  var EV_START = new Date('2026-05-29T06:00:00+09:00').getTime();
+  var EV_END   = new Date('2026-05-30T18:30:00+09:00').getTime();
+  function inPeriod() { var n = Date.now(); return n >= EV_START && n <= EV_END; }
+  function show() { bar.hidden = false; bar.style.display = 'block'; }
+  function fmtPct(v) { return (v == null || isNaN(v)) ? '—' : Number(v).toFixed(2); }
+  function refresh() {
+    if (!inPeriod()) return;
+    show();
+    fetch('data/early_voting/20260603/latest.json?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (!d || !d.national) { txt.textContent = '전국 누적 집계 대기 중 · 8회 최종 20.62%'; return; }
+        var v = d.national.turnout;
+        txt.textContent = '전국 누적 ' + fmtPct(v) + '% · 8회 최종 20.62%';
+      })
+      .catch(function () { /* 무시 */ });
+  }
+  if (inPeriod()) { refresh(); setInterval(refresh, 5 * 60 * 1000); }
+})();
+</script>
 <div id="schedule-bar" class="schedule-bar" hidden>
   <div class="schedule-bar-inner">
     <span class="schedule-label" id="schedule-label">다음 일정</span>
@@ -116,6 +149,7 @@
       <a href="#tax-arrears/5y" class="site-nav-link" data-site-section="tax">체납</a>
       <a href="#disclosure/military" class="site-nav-link" data-site-section="military">병역</a>
       <a href="#history" class="site-nav-link" data-site-section="history">지난 선거</a>
+      <a href="/early-voting/" class="site-nav-link site-nav-link-live">사전투표율</a>
       <a href="/sim/" class="site-nav-link site-nav-link-sim">결과 예측 시뮬레이션</a>
       <a href="#schedule" class="site-nav-link" data-site-section="schedule">선거 일정</a>
     </div>
