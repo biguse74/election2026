@@ -260,6 +260,8 @@ def main() -> None:
         "sgId": TARGET_SG_ID,
         "fetched_at": started_at.isoformat(timespec="seconds"),
         "source": "info.nec.go.kr/VCAP01 (scrape)",
+        "day1_time_code": d1[2],   # 예: "08", 없으면 None
+        "day2_time_code": d2[2],
         "by_sido": sorted(by_sido, key=lambda s: s["sdName"]),
         "national": national,
     }

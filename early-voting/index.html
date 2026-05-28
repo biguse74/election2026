@@ -189,21 +189,22 @@
       <div class="hero-big" id="hero-9">—<span class="pct">%</span></div>
       <div class="hero-meta" id="hero-9-meta">로딩 중…</div>
     </div>
-    <div class="hero-card">
-      <div class="hero-label">8회 같은 시각 · 최종(20.62%) 대비</div>
+    <div class="hero-card hero-card-main">
+      <div class="hero-label">8회(2022) 같은 시각</div>
       <div class="hero-big" id="hero-8">—<span class="pct">%</span></div>
-      <div class="hero-meta" id="hero-8-meta">8회 최종(2022.5.28 18시) 20.62%</div>
+      <div class="hero-meta" id="hero-8-meta">8회 1·2일차 매 정시 누적 (위키·NEC)</div>
       <div id="hero-delta" class="hero-delta hero-delta-flat">—</div>
     </div>
   </section>
 
   <section class="block">
-    <h2>시간대별 누적 (전국)</h2>
-    <p class="block-sub">30분 간격으로 수집한 9회 전국 누적 사전투표율. 점선은 8회 양일 최종(20.62%).</p>
+    <h2>시간대별 누적 (전국 · 회차 비교)</h2>
+    <p class="block-sub">30분 간격으로 수집한 9회(빨강) vs 8회(2022, 회색 굵은 점선) vs 7회(2018, 옅은 회색 점선) — 같은 X축은 사전투표 양일 1·2일차 매 정시.</p>
     <div class="timeline-wrap">
       <div class="legend">
-        <span><span class="legend-dot legend-9"></span> 9회 (2026)</span>
-        <span><span class="legend-dot legend-8"></span> 8회 최종 (2022, 20.62%)</span>
+        <span><span class="legend-dot legend-9"></span> 9회 (2026) 실시간</span>
+        <span><span class="legend-dot" style="background:#5f6a78;"></span> 8회 (2022) 시간대별</span>
+        <span><span class="legend-dot" style="background:#9aa4b2;"></span> 7회 (2018) 시간대별</span>
       </div>
       <svg class="timeline" id="timeline" viewBox="0 0 1000 260" preserveAspectRatio="none"></svg>
     </div>
@@ -220,7 +221,7 @@
   <aside class="disclosure">
     <strong>자료 출처·갱신</strong><br>
     · 9회 사전투표율: 중앙선거관리위원회 OpenAPI <code>ErVotingSttusInfoInqireService</code>, KST 06:00~19:30 매 30분 자동 수집.<br>
-    · 8회 baseline: 위키백과 「제8회 전국동시지방선거」 사전투표율 표(원자료 선관위 통계).<br>
+    · 과거 baseline: 위키백과 「제8회/제7회 전국동시지방선거」 사전투표율 시간대별 표(원자료 중앙선거관리위원회 매 정시 공시).<br>
     · 사전투표 시작 전·중에는 시점별 데이터가 들쭉날쭉 보일 수 있습니다. 본투표(6/3) 결과·당락은 별개입니다.<br>
     · 오류 제보 <a href="mailto:news@newtamsa.org">news@newtamsa.org</a>
   </aside>
@@ -239,6 +240,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="early-voting.js?v=202605290815"></script>
+<script src="early-voting.js?v=202605290900"></script>
 </body>
 </html>

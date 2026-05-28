@@ -9,6 +9,7 @@ const PATHS = {
   timeseries: `../data/early_voting/${SG_ID}/timeseries.json`,
   latest:     `../data/early_voting/${SG_ID}/latest.json`,
   baseline8:  `../data/early_voting/baseline_8th.json`,
+  baseline7:  `../data/early_voting/baseline_7th.json`,
 };
 
 // 시도 표준 순서 (행정안전부) — 그리드 정렬용
@@ -64,7 +65,29 @@ function fmtKST(iso) {
   }
 }
 
-function renderHero(latest, baseline8) {
+// baseline의 hourly_national에서 (day, hour) 시점의 양일 누적값 조회.
+// day=1, hour=8 이면 day1[h=8].cum (1일차만)
+// day=2, hour=8 이면 day2[h=8].cum (양일 누적)
+function baselineAt(baseline, day, hour) {
+  if (!baseline || !baseline.hourly_national) return null;
+  const key = day === 2 ? 'day2' : 'day1';
+  const arr = baseline.hourly_national[key] || [];
+  const row = arr.find(r => r.hour === hour);
+  return row ? row.cum : null;
+}
+
+// 9회 latest의 진행 상태 → (day, hour) 도출.
+// day2_time_code 있으면 2일차 진행 중, 없으면 1일차 진행 중.
+function progressFromLatest(latest) {
+  if (!latest) return null;
+  const t2 = latest.day2_time_code;
+  const t1 = latest.day1_time_code;
+  if (t2) return { day: 2, hour: parseInt(t2, 10) };
+  if (t1) return { day: 1, hour: parseInt(t1, 10) };
+  return null;
+}
+
+function renderHero(latest, baseline8, baseline7) {
   const h9 = document.getElementById('hero-9');
   const h9m = document.getElementById('hero-9-meta');
   const h8 = document.getElementById('hero-8');
@@ -84,18 +107,36 @@ function renderHero(latest, baseline8) {
   }
 
   const v9 = latest.national.turnout;
+  const prog = progressFromLatest(latest);
   h9.innerHTML = `${fmtPct(v9)}<span class="pct">%</span>`;
-  h9m.textContent = `${fmtKST(latest.fetched_at)} 기준 · 양일 누적`;
+  h9m.textContent = prog
+    ? `${prog.day}일차 ${String(prog.hour).padStart(2,'0')}시 기준 · KST ${fmtKST(latest.fetched_at)} 갱신`
+    : `${fmtKST(latest.fetched_at)} 기준 · 양일 누적`;
 
-  const v8 = baseline8?.national_final ?? null;
-  h8.innerHTML = `${fmtPct(v8)}<span class="pct">%</span>`;
-  h8m.textContent = '8회 최종(2022.5.27~28 양일 합산)';
+  // 8회 같은 시각 비교 (가능하면)
+  const v8sameTime = prog ? baselineAt(baseline8, prog.day, prog.hour) : null;
+  const v7sameTime = prog ? baselineAt(baseline7, prog.day, prog.hour) : null;
 
-  if (v8 != null && v9 != null) {
-    const diff = v9 - v8;
+  if (v8sameTime != null) {
+    h8.innerHTML = `${fmtPct(v8sameTime)}<span class="pct">%</span>`;
+    h8m.innerHTML = `8회(2022) 같은 시각 (${prog.day}일차 ${String(prog.hour).padStart(2,'0')}시)`
+      + (v7sameTime != null ? `<br><span style="color:rgba(255,255,255,0.6);font-size:0.95em;">· 7회(2018) 같은 시각 ${fmtPct(v7sameTime)}%</span>` : '');
+
+    const diff = v9 - v8sameTime;
     const sign = diff > 0 ? '+' : (diff < 0 ? '' : '±');
-    hd.textContent = `8회 최종 대비 ${sign}${diff.toFixed(2)}%p`;
+    hd.textContent = `8회 같은 시각 대비 ${sign}${diff.toFixed(2)}%p`;
     hd.className = 'hero-delta ' + (diff > 0.05 ? 'hero-delta-up' : diff < -0.05 ? 'hero-delta-down' : 'hero-delta-flat');
+  } else {
+    // 8회 시간대별 데이터에 없는 시각(예: 06시·19시 등) — 최종 비교로 fallback
+    const v8final = baseline8?.national_final ?? null;
+    h8.innerHTML = `${fmtPct(v8final)}<span class="pct">%</span>`;
+    h8m.textContent = '8회 최종(2022.5.28 18시)';
+    if (v8final != null) {
+      const diff = v9 - v8final;
+      const sign = diff > 0 ? '+' : (diff < 0 ? '' : '±');
+      hd.textContent = `8회 최종 대비 ${sign}${diff.toFixed(2)}%p`;
+      hd.className = 'hero-delta ' + (diff > 0.05 ? 'hero-delta-up' : diff < -0.05 ? 'hero-delta-down' : 'hero-delta-flat');
+    }
   }
   ua.textContent = fmtKST(latest.fetched_at) + ' (KST)';
 }
@@ -135,7 +176,23 @@ function renderSidoList(latest, baseline8) {
   root.innerHTML = html;
 }
 
-function renderTimeline(ts, baseline8) {
+// 과거 회차의 hourly_national을 2026 좌표계로 매핑.
+// 1일차 N시 → 2026-05-29 N시, 2일차 N시 → 2026-05-30 N시.
+function baselineSeriesTo2026(baseline) {
+  if (!baseline?.hourly_national) return [];
+  const out = [];
+  for (const row of (baseline.hourly_national.day1 || [])) {
+    const t = new Date(`2026-05-29T${String(row.hour).padStart(2,'0')}:00:00+09:00`).getTime();
+    out.push([t, row.cum]);
+  }
+  for (const row of (baseline.hourly_national.day2 || [])) {
+    const t = new Date(`2026-05-30T${String(row.hour).padStart(2,'0')}:00:00+09:00`).getTime();
+    out.push([t, row.cum]);
+  }
+  return out.sort((a, b) => a[0] - b[0]);
+}
+
+function renderTimeline(ts, baseline8, baseline7) {
   const svg = document.getElementById('timeline');
   svg.innerHTML = '';
 
@@ -144,8 +201,8 @@ function renderTimeline(ts, baseline8) {
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
 
-  // Y 스케일 0 ~ 30 (사전투표율 일반 범위)
-  const yMax = 30;
+  // Y 스케일 0 ~ 25 (8회 최종 20.62% 여유 있게)
+  const yMax = 25;
   const yToPx = v => padT + (1 - v / yMax) * plotH;
 
   // X 스케일: 5/29 06:00 ~ 5/30 19:00 (37시간)
@@ -160,7 +217,7 @@ function renderTimeline(ts, baseline8) {
     gridGroup.push(`<line x1="${padL}" x2="${W - padR}" y1="${ypx}" y2="${ypx}" stroke="#eee" stroke-width="1"/>`);
     gridGroup.push(`<text x="${padL - 8}" y="${ypx + 4}" font-size="10" fill="#999" text-anchor="end">${y}%</text>`);
   }
-  // X축 라벨 (KST 시각 표시: 5/29 06·12·18 / 5/30 06·12·18)
+  // X축 라벨
   const xticks = [
     ['5/29 06', new Date('2026-05-29T06:00:00+09:00').getTime()],
     ['12',      new Date('2026-05-29T12:00:00+09:00').getTime()],
@@ -174,19 +231,28 @@ function renderTimeline(ts, baseline8) {
     gridGroup.push(`<line x1="${xpx}" x2="${xpx}" y1="${padT}" y2="${H - padB}" stroke="#eee" stroke-width="1"/>`);
     gridGroup.push(`<text x="${xpx}" y="${H - padB + 14}" font-size="10" fill="#999" text-anchor="middle">${label}</text>`);
   }
-
-  // 8회 최종(20.62%) 점선
-  const y8 = yToPx(baseline8?.national_final ?? 20.62);
-  gridGroup.push(`<line x1="${padL}" x2="${W - padR}" y1="${y8}" y2="${y8}" stroke="#bbb" stroke-width="1.5" stroke-dasharray="4 4"/>`);
-  gridGroup.push(`<text x="${W - padR - 6}" y="${y8 - 4}" font-size="10" fill="#888" text-anchor="end">8회 최종 20.62%</text>`);
-
-  // 점심 마감(18시) 세로선
+  // 1일차 마감(18시) 세로선
   for (const t of [new Date('2026-05-29T18:00:00+09:00').getTime(), new Date('2026-05-30T18:00:00+09:00').getTime()]) {
     const x = xToPx(t);
     gridGroup.push(`<line x1="${x}" x2="${x}" y1="${padT}" y2="${H - padB}" stroke="#ccc" stroke-width="1" stroke-dasharray="2 3"/>`);
   }
 
-  // 9회 시계열 라인
+  const lineGroup = [];
+
+  // 7회·8회 라인 (과거)
+  function drawBaselineLine(baseline, color, dash, label) {
+    const series = baselineSeriesTo2026(baseline);
+    if (series.length < 2) return;
+    const path = series.map((p, i) => (i === 0 ? 'M' : 'L') + xToPx(p[0]).toFixed(1) + ',' + yToPx(p[1]).toFixed(1)).join(' ');
+    lineGroup.push(`<path d="${path}" stroke="${color}" stroke-width="1.8" fill="none" stroke-dasharray="${dash}" stroke-linecap="round" stroke-linejoin="round"/>`);
+    // 마지막 점 라벨
+    const last = series[series.length - 1];
+    lineGroup.push(`<text x="${(xToPx(last[0]) + 4).toFixed(1)}" y="${(yToPx(last[1]) + 3).toFixed(1)}" font-size="9.5" fill="${color}">${label} ${last[1].toFixed(2)}%</text>`);
+  }
+  if (baseline7) drawBaselineLine(baseline7, '#9aa4b2', '2 3', '7회');
+  if (baseline8) drawBaselineLine(baseline8, '#5f6a78', '6 4', '8회');
+
+  // 9회 시계열 라인 (현재)
   const points = [];
   if (ts && ts.snapshots && ts.snapshots.length > 0) {
     for (const s of ts.snapshots) {
@@ -197,31 +263,31 @@ function renderTimeline(ts, baseline8) {
       points.push([xToPx(t), yToPx(v), v, s.at]);
     }
   }
-  const lineGroup = [];
   if (points.length >= 2) {
     const d = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
-    lineGroup.push(`<path d="${d}" stroke="#c41e3a" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`);
+    lineGroup.push(`<path d="${d}" stroke="#c41e3a" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`);
   }
   for (const p of points) {
     lineGroup.push(`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3" fill="#c41e3a"><title>${fmtKST(p[3])} · ${p[2].toFixed(2)}%</title></circle>`);
   }
   if (points.length === 0) {
-    lineGroup.push(`<text x="${W / 2}" y="${H / 2}" font-size="12" fill="#999" text-anchor="middle">사전투표 시작 후 데이터가 누적됩니다.</text>`);
+    lineGroup.push(`<text x="${W / 2}" y="${H / 2}" font-size="12" fill="#999" text-anchor="middle">9회 라인은 첫 수집 후 그려집니다.</text>`);
   }
 
   svg.innerHTML = gridGroup.join('') + lineGroup.join('');
 }
 
 async function main() {
-  const [latest, ts, baseline8] = await Promise.all([
+  const [latest, ts, baseline8, baseline7] = await Promise.all([
     loadJSON(PATHS.latest),
     loadJSON(PATHS.timeseries),
     loadJSON(PATHS.baseline8),
+    loadJSON(PATHS.baseline7),
   ]);
 
-  renderHero(latest, baseline8);
+  renderHero(latest, baseline8, baseline7);
   renderSidoList(latest, baseline8);
-  renderTimeline(ts, baseline8);
+  renderTimeline(ts, baseline8, baseline7);
 }
 
 main();

@@ -1,7 +1,9 @@
 {
   "sgId": "20260603",
-  "fetched_at": "2026-05-29T08:31:40+09:00",
+  "fetched_at": "2026-05-29T08:47:39+09:00",
   "source": "info.nec.go.kr/VCAP01 (scrape)",
+  "day1_time_code": "08",
+  "day2_time_code": null,
   "by_sido": [
     {
       "sdName": "강원특별자치도",
