@@ -1,0 +1,57 @@
+name: 사전투표율 스크래핑 (info.nec.go.kr)
+
+# 9회 지선 사전투표는 KST 5/29 06:00 ~ 5/30 18:00.
+# OpenAPI(ErVotingSttusInfoInqireService)는 실시간 미제공 → info.nec.go.kr
+# VCAP01 페이지의 POST endpoint를 직접 스크래핑한다. 인증 불필요.
+#
+# 매 30분 무조건 실행. NEC가 매 정시(09:00, 10:00…)에 새 시간대 통계를
+# 발표하므로 30분 간격이면 발표 직후 안에 1회는 잡힘.
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: scrape-early-voting
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 레포 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 의존성 설치
+        run: pip install requests
+
+      - name: 사전투표율 스크래핑
+        run: python scripts/scrape_early_voting.py
+
+      - name: 변경사항 커밋·푸시
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/early_voting/
+          if git diff --staged --quiet; then
+            echo "변경사항 없음 (NEC 발표 전·중복 시각) → 커밋 생략"
+            exit 0
+          fi
+          STAMP=$(TZ=Asia/Seoul date +%Y-%m-%d-%H%M)
+          git commit -m "data: 사전투표율 스크래핑 KST $STAMP"
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "push reject — pull --rebase 후 재시도 ($attempt/3)"
+            git pull --rebase origin main
+          done
+          echo "push 3회 실패"; exit 1
