@@ -57,7 +57,7 @@ def header_html(current: str = "") -> str:
 <header class="sim-header">
   <div class="sim-header-inner">
     <a href="https://election2026.newtamsa.org/" class="sim-brand">
-      <span class="sim-brand-title">뉴탐사 · 6·3 선거 2026</span>
+      <span class="sim-brand-title">뉴탐사 · 6·3 지방선거 2026</span>
       <span class="sim-brand-sub">결과 예측 시뮬레이션</span>
     </a>
     <nav class="sim-nav">{nav}</nav>

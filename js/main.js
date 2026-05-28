@@ -386,23 +386,46 @@ function calculateDDay() {
   applyElectionDayBrand(diffDays);
 }
 
-// 6/3 본투표 당일·6/4 개표 익일은 브랜드 타이틀을 '실시간/결과'로 전환.
-// 그 외엔 HTML의 정적값('6·3 선거 출마자 2026') 유지.
+// phase별 브랜드/부제 자동 변경.
+// 타이틀 본체는 "6·3 지방선거 2026" 고정, 부제만 phase에 맞게 바꾼다.
+// 단, 6/3 본투표 당일·6/4 결과 단계에서는 타이틀 자체에 "라이브/결과"를 덧붙임.
 function applyElectionDayBrand(diffDays) {
   const titleEl = document.querySelector('.brand .title');
   const subEl = document.querySelector('.brand .subtitle');
   let titleHtml = null, subText = null, docTitle = null;
-  if (diffDays === 0) {
-    titleHtml = '6·3 지방선거 실시간 <span class="title-year">2026</span>';
-    subText = '전국동시지방선거 · 투표·개표 실황';
-    docTitle = '6·3 지방선거 실시간 — 뉴탐사';
-  } else if (diffDays === -1) {
+
+  const TITLE_DEFAULT = '6·3 지방선거 <span class="title-year">2026</span>';
+  const now = Date.now();
+  const T_EV_END  = Date.parse('2026-05-30T18:00:00+09:00'); // 사전투표 마감
+  const T_COUNT   = Date.parse('2026-06-03T18:00:00+09:00'); // 개표 시작
+
+  if (diffDays <= -1) {
+    // 6/4 이후 — 결과 단계
     titleHtml = '6·3 지방선거 결과 <span class="title-year">2026</span>';
-    subText = '전국동시지방선거 · 개표 결과';
-    docTitle = '6·3 지방선거 결과 — 뉴탐사';
+    subText = '개표 결과 · 당선인 · 정당별 의석';
+    docTitle = '6·3 지방선거 결과 2026 — 뉴탐사';
+  } else if (diffDays === 0) {
+    // 6/3 본투표·개표 당일
+    titleHtml = '6·3 지방선거 라이브 <span class="title-year">2026</span>';
+    subText = (now < T_COUNT)
+      ? '오늘 본투표 · 18시 개표 시작 · 라이브'
+      : '개표 라이브 · 시도지사·기초단체장·재·보궐';
+    docTitle = '6·3 지방선거 라이브 2026 — 뉴탐사';
+  } else if (diffDays >= 4 && now < T_EV_END) {
+    // 5/29(D-5) ~ 5/30(D-4) 사전투표 기간 · 마감(5/30 18시) 전
+    titleHtml = TITLE_DEFAULT;
+    subText = '오늘·내일 사전투표 · 국회의원 재·보궐 · 실시간 갱신';
+    docTitle = '6·3 지방선거 2026 — 사전투표·재·보궐·라이브';
+  } else if (diffDays >= 1 && diffDays <= 4) {
+    // 5/30 18시 이후(사전투표 마감) ~ 6/2(D-1)
+    titleHtml = TITLE_DEFAULT;
+    subText = `본투표 D-${diffDays} · 국회의원 재·보궐 · 실시간 갱신`;
+    docTitle = '6·3 지방선거 2026 — 사전투표·재·보궐·라이브';
   } else {
+    // diffDays > 5: 새 타이틀·부제 HTML 정적값 그대로 둠
     return;
   }
+
   if (titleEl) titleEl.innerHTML = titleHtml;
   if (subEl) subEl.textContent = subText;
   if (docTitle) document.title = docTitle;
@@ -3190,7 +3213,7 @@ function renderTrendRegionFull(sd) {
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(sdLabel)} 공개정보 상세</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sdLabel)} 공개정보 상세 — 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sdLabel)} 공개정보 상세 — 6·3 지방선거 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         <span>공개정보 ${summary.rows.length.toLocaleString()}명</span>
@@ -3273,7 +3296,7 @@ function renderTrendLocalFull(sd, local) {
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(title)} 공개정보 상세</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(title)} 공개정보 상세 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(title)} 공개정보 상세 - 6·3 지방선거 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         <span>공개정보 ${summary.rows.length.toLocaleString()}명</span>
@@ -3432,7 +3455,7 @@ function renderDisclosureRegionFocusFull(focus, sd, local = '') {
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(title)}</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(title)} - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(title)} - 6·3 지방선거 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         <span>${escapeHtml(config.subject)}</span>
@@ -3486,7 +3509,7 @@ function renderTrendMilitaryRegionFull(sd) {
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(sdLabel)} 병역 미필 후보</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sdLabel)} 병역 미필 후보 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(sdLabel)} 병역 미필 후보 - 6·3 지방선거 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         <span>미필 ${militaryNotServedRows.length.toLocaleString()}명</span>
@@ -3541,7 +3564,7 @@ function renderTrendMilitaryLocalFull(sd, local) {
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(title)} 병역 미필 후보</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(title)} 병역 미필 후보 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(title)} 병역 미필 후보 - 6·3 지방선거 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         <span>미필 ${militaryNotServedRows.length.toLocaleString()}명</span>
@@ -3739,7 +3762,7 @@ function renderDisclosureFocusFull(kind = 'assets') {
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(config.title)}</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(config.title)} - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(config.title)} - 6·3 지방선거 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         ${config.stats.map(stat => `<span>${escapeHtml(stat)}</span>`).join('')}
@@ -4132,7 +4155,7 @@ function renderCriminalCategoryFull(category) {
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(categoryLabel || '범죄 유형')} 전과 후보</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(categoryLabel || '범죄 유형')} 전과 후보 - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(categoryLabel || '범죄 유형')} 전과 후보 - 6·3 지방선거 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         <span>${matches.length.toLocaleString()}명</span>
@@ -4276,7 +4299,7 @@ function renderTaxArrearsFull(mode = 'current') {
     <div class="detail-head">
       <div>
         <h1 class="detail-title">${escapeHtml(config.title)}</h1>
-        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(config.title)} - 6·3 선거 출마자 2026">🔗 이 페이지 공유</button>
+        <button type="button" class="page-share" data-share-page data-share-title="${escapeHtml(config.title)} - 6·3 지방선거 2026">🔗 이 페이지 공유</button>
       </div>
       <div class="detail-inline-stats">
         <span>${holderCount.toLocaleString()}명</span>
@@ -5671,7 +5694,7 @@ async function main() {
       if (shareCand) {
         e.preventDefault();
         const huboid = shareCand.dataset.shareCand;
-        const title = `${shareCand.dataset.shareTitle} — 6·3 선거 출마자 2026`;
+        const title = `${shareCand.dataset.shareTitle} — 6·3 지방선거 2026`;
         shareLink(title, candidateShareUrl(huboid));
         return;
       }
