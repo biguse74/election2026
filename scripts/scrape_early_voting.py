@@ -188,13 +188,18 @@ def load_timeseries() -> dict:
     return {"sgId": TARGET_SG_ID, "snapshots": []}
 
 
-def append_timeseries(ts: dict, at: datetime, by_sido: list[dict], national: dict) -> bool:
+def append_timeseries(
+    ts: dict, at: datetime, by_sido: list[dict], national: dict,
+    day1_time_code: str | None, day2_time_code: str | None,
+) -> bool:
     at_key = at.strftime("%Y-%m-%dT%H:%M")
     for s in ts.get("snapshots", []):
         if s.get("at", "").startswith(at_key):
             return False
     ts.setdefault("snapshots", []).append({
         "at": at.isoformat(timespec="seconds"),
+        "day1_time_code": day1_time_code,
+        "day2_time_code": day2_time_code,
         "by_sido": by_sido,
         "national": national,
     })
@@ -252,7 +257,7 @@ def main() -> None:
 
     # 2) timeseries
     ts = load_timeseries()
-    appended = append_timeseries(ts, started_at, by_sido, national)
+    appended = append_timeseries(ts, started_at, by_sido, national, d1[2], d2[2])
     TIMESERIES_PATH.write_text(json.dumps(ts, ensure_ascii=False, indent=2), encoding="utf-8")
 
     # 3) latest

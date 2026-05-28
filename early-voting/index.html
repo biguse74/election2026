@@ -121,6 +121,50 @@
   .sido-bar-label { font-size: 0.66rem; color: var(--muted); width: 24px; flex-shrink: 0; }
   .sido-bar-line { display: flex; align-items: center; gap: 6px; }
 
+  /* 시간대별 비교표 */
+  .hourly-table-wrap {
+    border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+    background: #fff;
+  }
+  .hourly-day-tabs {
+    display: flex; gap: 0; border-bottom: 1px solid var(--line);
+  }
+  .hourly-tab {
+    flex: 1; padding: 11px 14px; background: #fafafa; border: none; cursor: pointer;
+    font-family: inherit; font-size: 0.88rem; font-weight: 700; color: var(--muted);
+    border-right: 1px solid var(--line);
+  }
+  .hourly-tab:last-child { border-right: none; }
+  .hourly-tab.active { background: #fff; color: var(--ink); }
+  .hourly-tab-sub { display: block; font-size: 0.72rem; font-weight: 500; color: var(--muted); margin-top: 2px; }
+  .hourly-tab.active .hourly-tab-sub { color: var(--muted); }
+
+  table.hourly {
+    width: 100%; border-collapse: collapse; font-size: 0.88rem;
+  }
+  table.hourly th, table.hourly td {
+    padding: 9px 10px; text-align: right; border-bottom: 1px solid #f0f0f0;
+  }
+  table.hourly th:first-child, table.hourly td:first-child {
+    text-align: left; font-weight: 700;
+  }
+  table.hourly thead th {
+    background: #fafafa; font-weight: 700; color: var(--muted);
+    font-size: 0.78rem; letter-spacing: 0.02em;
+    border-bottom: 1px solid var(--line);
+  }
+  table.hourly tbody tr:last-child td { border-bottom: none; }
+  table.hourly tbody tr.row-9-current { background: #fef0f3; }
+  table.hourly tbody tr.row-9-current td:first-child { color: var(--accent); }
+  table.hourly tbody td.col-9 { font-weight: 800; color: var(--ink); }
+  table.hourly tbody td.col-pending { color: var(--muted); font-weight: 500; }
+  .delta-up   { color: var(--accent); font-weight: 700; }
+  .delta-down { color: var(--blue);   font-weight: 700; }
+  .delta-flat { color: var(--muted);  font-weight: 600; }
+  table.hourly tbody td.col-mark {
+    font-size: 0.74rem; color: var(--muted); font-weight: 500;
+  }
+
   /* 시간대별 라인 */
   .timeline-wrap {
     border: 1px solid var(--line); border-radius: 8px; padding: 20px;
@@ -198,6 +242,29 @@
   </section>
 
   <section class="block">
+    <h2>시간대별 누적 표 (전국)</h2>
+    <p class="block-sub">매 정시(07~18시) 누적 사전투표율. 9회 빨강·8회·7회 같은 시각 비교 · 8회 대비 ±%p.</p>
+    <div class="hourly-table-wrap">
+      <div class="hourly-day-tabs">
+        <button class="hourly-tab active" data-day="1">1일차 <span class="hourly-tab-sub">5/29 (금)</span></button>
+        <button class="hourly-tab" data-day="2">2일차 <span class="hourly-tab-sub">5/30 (토)</span></button>
+      </div>
+      <table class="hourly" id="hourly-table">
+        <thead>
+          <tr>
+            <th>시각</th>
+            <th>9회 (2026)</th>
+            <th>8회 (2022)</th>
+            <th>7회 (2018)</th>
+            <th>8회 대비</th>
+          </tr>
+        </thead>
+        <tbody id="hourly-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
     <h2>시간대별 누적 (전국 · 회차 비교)</h2>
     <p class="block-sub">30분 간격으로 수집한 9회(빨강) vs 8회(2022, 회색 굵은 점선) vs 7회(2018, 옅은 회색 점선) — 같은 X축은 사전투표 양일 1·2일차 매 정시.</p>
     <div class="timeline-wrap">
@@ -240,6 +307,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="early-voting.js?v=202605290900"></script>
+<script src="early-voting.js?v=202605290900b"></script>
 </body>
 </html>

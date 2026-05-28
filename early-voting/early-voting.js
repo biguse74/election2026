@@ -277,6 +277,96 @@ function renderTimeline(ts, baseline8, baseline7) {
   svg.innerHTML = gridGroup.join('') + lineGroup.join('');
 }
 
+// 9회 timeseries에서 각 일차×시각의 NEC 발표 누적값 추출.
+// 같은 시각이 여러 번 수집됐다면 가장 마지막(가장 큰 누적)을 채택.
+function build9hRoundIndex(ts) {
+  const idx = { 1: new Map(), 2: new Map() }; // day → Map(hour → turnout)
+  if (!ts?.snapshots) return idx;
+  for (const s of ts.snapshots) {
+    const v = s.national?.turnout;
+    if (v == null) continue;
+    // day1_time_code/day2_time_code가 있으면 그 시각에 매칭
+    // 단 day2_time_code가 있으면 day1은 이미 마감, day2 진행 중이므로
+    // day1은 1일차 18시(마감) 값으로 사용
+    const t1 = s.day1_time_code;
+    const t2 = s.day2_time_code;
+    if (t2) {
+      const h2 = parseInt(t2, 10);
+      // 9회 양일 누적(v)에서 1일차 마감값을 빼면 2일차 누적값이 되지만,
+      // NEC가 day2 누적률을 양일 합산 기준으로 발표하므로 그대로 사용 가능
+      // 단순화: 양일 합산 v를 day2.hour로 매핑
+      idx[2].set(h2, Math.max(idx[2].get(h2) ?? 0, v));
+    } else if (t1) {
+      const h1 = parseInt(t1, 10);
+      idx[1].set(h1, Math.max(idx[1].get(h1) ?? 0, v));
+    }
+  }
+  return idx;
+}
+
+function renderHourlyTable(ts, baseline8, baseline7) {
+  const tbody = document.getElementById('hourly-tbody');
+  if (!tbody) return;
+  const day = parseInt(document.querySelector('.hourly-tab.active')?.dataset?.day || '1', 10);
+
+  const idx9 = build9hRoundIndex(ts);
+  const arr8 = baseline8?.hourly_national?.[`day${day}`] || [];
+  const arr7 = baseline7?.hourly_national?.[`day${day}`] || [];
+
+  // 모든 시각 (07~18) 합집합
+  const hours = [];
+  for (let h = 7; h <= 18; h++) hours.push(h);
+
+  // 현재 가장 최신 9회 시각 찾기 (강조용)
+  let currentHour = null;
+  for (let h = 18; h >= 7; h--) {
+    if (idx9[day].has(h)) { currentHour = h; break; }
+  }
+
+  const rows = hours.map(h => {
+    const v9 = idx9[day].get(h);
+    const r8 = arr8.find(r => r.hour === h);
+    const r7 = arr7.find(r => r.hour === h);
+    const v8 = r8?.cum;
+    const v7 = r7?.cum;
+    const isMarked = (h === 18) ? '마감' : (h === 7 ? '개시' : '');
+    const mark = isMarked ? `<span class="col-mark"> · ${isMarked}</span>` : '';
+    const trClass = (h === currentHour) ? ' class="row-9-current"' : '';
+
+    const cell9 = v9 != null
+      ? `<td class="col-9">${fmtPct(v9)}%</td>`
+      : `<td class="col-pending">${h <= (currentHour ?? -1) ? '—' : '대기'}</td>`;
+
+    let deltaCell = '<td class="delta-flat">—</td>';
+    if (v9 != null && v8 != null) {
+      const d = v9 - v8;
+      const sign = d > 0 ? '+' : (d < 0 ? '' : '±');
+      const cls = d > 0.05 ? 'delta-up' : d < -0.05 ? 'delta-down' : 'delta-flat';
+      deltaCell = `<td class="${cls}">${sign}${d.toFixed(2)}%p</td>`;
+    }
+
+    return `<tr${trClass}>
+      <td>${String(h).padStart(2,'0')}시${mark}</td>
+      ${cell9}
+      <td>${v8 != null ? fmtPct(v8) + '%' : '—'}</td>
+      <td>${v7 != null ? fmtPct(v7) + '%' : '—'}</td>
+      ${deltaCell}
+    </tr>`;
+  }).join('');
+
+  tbody.innerHTML = rows;
+}
+
+function bindHourlyTabs(ts, baseline8, baseline7) {
+  document.querySelectorAll('.hourly-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.hourly-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderHourlyTable(ts, baseline8, baseline7);
+    });
+  });
+}
+
 async function main() {
   const [latest, ts, baseline8, baseline7] = await Promise.all([
     loadJSON(PATHS.latest),
@@ -287,6 +377,8 @@ async function main() {
 
   renderHero(latest, baseline8, baseline7);
   renderSidoList(latest, baseline8);
+  renderHourlyTable(ts, baseline8, baseline7);
+  bindHourlyTabs(ts, baseline8, baseline7);
   renderTimeline(ts, baseline8, baseline7);
 }
 
