@@ -106,7 +106,7 @@ def header_html(current: str = "") -> str:
 
 # 상단에는 매우 작은 한 줄만, 자세한 면책은 본문 하단.
 DISCLAIMER_TOP_HTML = """<div style="max-width:880px;margin:8px auto 16px;font-size:0.74rem;color:#888;text-align:right">
-  여론조사 아닌 시뮬레이션 결과 · 단정·예측 아님 · <a href="#sim-notice-full" style="color:#888;text-decoration:underline">자세한 한계 ↓</a>
+  여론조사 아닌 시뮬레이션 결과 · 단정 아님 · <a href="#sim-notice-full" style="color:#888;text-decoration:underline">자세한 한계 ↓</a>
 </div>
 """
 
