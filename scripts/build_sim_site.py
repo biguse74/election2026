@@ -117,6 +117,9 @@ DISCLAIMER_BOTTOM_HTML = """<aside id="sim-notice-full" style="max-width:880px;m
   · 외부 충격·후보 효과·정당 변동·사전투표 패턴 변화 미반영. 가정이 흔들리면 결과도 흔들림.<br>
   · 인용·재가공 시 위 한계를 함께 표기해 주십시오.
 </aside>
+<div style="max-width:880px;margin:8px auto 32px;text-align:center;font-size:0.78rem;color:#888">
+  오류·문의 제보: <a href="mailto:news@newtamsa.org" style="color:#666;text-decoration:underline">news@newtamsa.org</a>
+</div>
 """
 
 # 하위 호환: 기존 변수명 참조하는 코드(build_landing 등)가 있으면 새 변수 사용
