@@ -29,6 +29,18 @@ SIM_ROOT = ROOT / "sim"
 # 다만 만약을 위해 면책 박스로 분쟁 시 방어 근거 확보 + robots.txt로 검색엔진 차단 유지.
 
 
+# 메인 사이트와 동일한 인라인 SVG 파비콘 (뉴탐사 강조색 + 6·3)
+FAVICON_LINK = (
+    """<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,"""
+    """%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'"""
+    """%3E%3Crect width='64' height='64' fill='%23c41e3a'/"""
+    """%3E%3Ctext x='14' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'"""
+    """%3E6%3C/text%3E%3Ccircle cx='32' cy='30' r='3.5' fill='%23fff'/"""
+    """%3E%3Ctext x='38' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'"""
+    """%3E3%3C/text%3E%3C/svg%3E\">"""
+)
+
+
 def header_html(current: str = "") -> str:
     """sim/ 페이지 공통 상단 헤더. current= 'home'·'sido'·'basic-head'·'assembly' 활성 표시."""
     def link(href, key, label):
@@ -112,9 +124,13 @@ DISCLAIMER_HTML = DISCLAIMER_TOP_HTML
 
 
 def inject_header_and_disclaimer(html: str, current_key: str) -> str:
-    """본문 <body> 직후에 sim 헤더 + 상단 짧은 안내,
-    본문 하단에 자세한 면책.
-    """
+    """<head>에 파비콘, <body> 직후 sim 헤더 + 상단 안내, 본문 하단 면책."""
+    # 파비콘 — head 안에 (이미 있으면 skip)
+    if 'rel="icon"' not in html:
+        head_close = html.find("</head>")
+        if head_close != -1:
+            html = html[:head_close] + FAVICON_LINK + "\n" + html[head_close:]
+
     body_open = re.search(r"<body[^>]*>", html)
     body_close = html.rfind("</body>")
     if not body_open or body_close == -1:
@@ -219,6 +235,7 @@ def build_landing() -> str:
     return """<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
+""" + FAVICON_LINK + """
 <title>9회 지방선거 결과 예측 시뮬레이션 — 뉴탐사</title>
 <style>
 :root { --ink: #1a1a1a; --accent: #c41e3a; --dem: #152484; --rule: #e0e0e0; }
