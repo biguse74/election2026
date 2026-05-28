@@ -74,7 +74,7 @@ function renderHero(latest, baseline8) {
 
   if (!latest || !latest.national) {
     h9.innerHTML = '대기 중<span class="pct"></span>';
-    h9m.textContent = '사전투표 시작(KST 06:00) 후 첫 갱신부터 표시됩니다.';
+    h9m.textContent = '선관위는 보통 매 정시(09:00, 10:00…)에 누적 통계를 발표합니다. 첫 발표가 들어오는 대로 자동 갱신.';
     h8.innerHTML = `${fmtPct(baseline8?.national_final)}<span class="pct">%</span>`;
     h8m.textContent = '8회 최종(2022.5.28 18시)';
     hd.textContent = '시작 대기';
