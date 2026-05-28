@@ -197,7 +197,7 @@ gh run view <run-id> --log
 
 - [ ] 6/3 실시간 개표 데이터 (선관위 OpenAPI 미제공). A+D 조합으로:
       · **A. `info.nec.go.kr` 스크래퍼** — 본가 사이트 내부 fetch endpoint 파악(5/말),
-        Python 스크립트로 5~10분 간격 폴링, `data/tally/snapshot_*.json` 저장
+        Python 스크립트로 5~10분 간격 자동 수집, `data/tally/snapshot_*.json` 저장
       · **D. 출구조사 (저녁 7:30)** — 방송 3사 컨소시엄 결과를 수동 입력하는
         `data/exit_poll.json` 1회용 데이터. UI에 "출구조사 (가) 1위" 형태
       · **본가동 일정**: 5/말~6/2 정찰·PoC, 6/3 18:00부터 가동, 익일 KST 03시

@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """
 선관위 사전투표 현황 OpenAPI 호출 스크립트
-9회 전국동시지방선거(2026.6.3) 사전투표(5.29~5.30) 데이터를 폴링 시점별로 받아 저장.
+9회 전국동시지방선거(2026.6.3) 사전투표(5.29~5.30) 데이터를 수집 시점별로 받아 저장.
 
 저장 구조:
     data/early_voting/<sgId>/
-      ├── snapshots/snapshot_YYYYMMDD_HHMM.json   # 폴링 시점별 raw 스냅샷
+      ├── snapshots/snapshot_YYYYMMDD_HHMM.json   # 수집 시점별 raw 스냅샷
       ├── timeseries.json                         # 프론트용 시계열 (시도 누적)
       └── latest.json                             # 최신 1건 (띠배너용)
 
 특징:
     - sgTypecode 불필요 (사전투표는 선거 종류 무관 합산).
-    - erVotingDiv: 1=1일차(5/29), 2=2일차(5/30). 양일을 한 폴링에서 합산.
+    - erVotingDiv: 1=1일차(5/29), 2=2일차(5/30). 양일을 한 번에 합산.
     - 응답은 시도×시군구 단위 한 행씩 (전국 ~226개 시군구).
     - 사전투표 시작 전엔 빈 응답(ERROR-03 또는 totalCount=0) → 스냅샷 미저장.
-    - 폴링 시점별 파일로 시계열 보존. timeseries.json은 시도 단위로 집계해
+    - 수집 시점별 파일로 시계열 보존. timeseries.json은 시도 단위로 집계해
       프론트가 가볍게 읽도록 함.
 
 사용:

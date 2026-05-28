@@ -2,7 +2,7 @@
 """
 선관위 OpenAPI를 호출해 6/3 본투표 당일 투표율과 개표 누계를 모은다.
 
-한 번 실행 = 한 번 폴링. cron 또는 GitHub Actions가 5분 간격으로 호출한다고 가정.
+한 번 실행 = 한 번 수집. cron 또는 GitHub Actions가 5분 간격으로 호출한다고 가정.
 
 호출 두 종 (VoteXmntckInfoInqireService2):
   - getVoteSttusInfoInqire   ← 투표율 (시도별 + 전국 합계, 1회 호출)
@@ -14,7 +14,7 @@
 산출물:
   data/live_counting/raw/openapi_<YYYYMMDD_HHMMSS>.json    # 두 API 원응답 모두
   data/live_counting/current.json                           # 프론트가 읽는 가공본
-  data/live_counting/meta.json                              # 폴링 텔레메트리
+  data/live_counting/meta.json                              # 수집 텔레메트리
 
 사용:
   python scripts/fetch_live_counting.py
@@ -435,7 +435,7 @@ def update_timeseries(
     polled_at: datetime,
     turnout: dict | None,
 ) -> None:
-    """기존 timeseries.json을 읽어 새 폴링의 투표율 포인트를 append 후 저장.
+    """기존 timeseries.json을 읽어 새로 수집한 투표율 포인트를 append 후 저장.
 
     프론트 라인 차트가 읽는 파일. national + by_sido 양쪽 다 누적한다.
     같은 시각 중복 append를 막기 위해 polled_at이 동일하면 마지막 항목을 덮어쓴다.
@@ -485,7 +485,7 @@ def update_timeseries(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="선관위 투개표·투표율 OpenAPI 폴링 (1회 호출)")
+    parser = argparse.ArgumentParser(description="선관위 투개표·투표율 OpenAPI 1회 수집")
     parser.add_argument("--sg-id", default=DEFAULT_SG_ID, help="기본 20260603")
     parser.add_argument(
         "--sg-types",

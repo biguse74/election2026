@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  const POLL_INTERVAL_MS = 60_000;       // 클라이언트 폴링 주기
+  const POLL_INTERVAL_MS = 60_000;       // 클라이언트 자동 새로고침 주기
   const STALE_AFTER_MS = 5 * 60_000;     // 이 시간 이상 미갱신이면 stale 배지
 
   // 정당 색상. site/data/parties.json도 있지만 라이브 모듈은 의존성 최소화를 위해 자체 보유.
@@ -272,7 +272,7 @@
     }).filter(r => r.points.length >= 2);
   }
 
-  // phase + 폴링 시각을 보고 사용자에게 보여줄 상태 메시지 결정.
+  // phase + 마지막 수집 시각을 보고 사용자에게 보여줄 상태 메시지 결정.
   // fetch_live_counting.py의 phase: pre / live / official-pending / final
   // 우리는 시각 정보로 'live'를 'voting'(06~17:55)과 'counting'(18:00~)으로 더 쪼갠다.
   function describePhase(phase, polledAtIso) {
@@ -295,7 +295,7 @@
     if (phase === 'official-pending') {
       if (polled > tNextDay06) {
         return { tone: 'pending', title: '개표 진행 중 · 정식 결과 대기',
-          body: '선관위 OpenAPI 정식 갱신을 30분 간격으로 폴링하고 있습니다.' };
+          body: '선관위 OpenAPI 정식 결과를 30분 간격으로 자동 확인하고 있습니다.' };
       }
       return { tone: 'pending', title: '개표 데이터 수신 대기',
         body: '오후 6시 본투표 마감 직후 첫 개표 응답이 들어옵니다.' };

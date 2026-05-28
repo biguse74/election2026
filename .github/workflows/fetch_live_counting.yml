@@ -1,11 +1,11 @@
-name: 라이브 투개표 폴링
+name: 라이브 투개표 자동 수집
 
-# 공공데이터포털 일 호출 한도 1만/일. 한 폴링 = 투표율 1콜 + 개표 51콜 = 52콜.
+# 공공데이터포털 일 호출 한도 1만/일. 한 번 수집 = 투표율 1콜 + 개표 51콜 = 52콜.
 # 시간대별로 빈도를 달리해 6/3 + 6/4 보조까지 약 5,500콜로 완주 (마진 45%).
 #
 # 모드별 호출량:
-#   turnout-only  =  1콜/폴링 (개표는 ERROR-03)
-#   full          = 52콜/폴링
+#   turnout-only  =  1콜/회 (개표는 ERROR-03)
+#   full          = 52콜/회
 #   dry-run       =  0콜 (저장 생략)
 #
 # 시간대 분기 (KST):
@@ -62,7 +62,7 @@ on:
         required: false
         default: '20260603'
 
-# 폴링이 겹치지 않게 직렬화. 진행 중인 push가 있으면 다음 cron은 대기.
+# 수집이 겹치지 않게 직렬화. 진행 중인 push가 있으면 다음 cron은 대기.
 concurrency:
   group: fetch-live-counting
   cancel-in-progress: false
@@ -110,7 +110,7 @@ jobs:
           echo "실행 모드: $mode"
           echo "mode=$mode" >> "$GITHUB_OUTPUT"
 
-      - name: 폴링 실행
+      - name: 데이터 수집 실행
         if: steps.mode.outputs.mode != 'skip'
         env:
           NEC_API_KEY: ${{ secrets.NEC_API_KEY }}
@@ -139,7 +139,7 @@ jobs:
             echo "변경사항 없음 (커밋 생략)"
             exit 0
           fi
-          git commit -m "data: 라이브 폴링 $(TZ=Asia/Seoul date +%Y-%m-%d-%H%M)"
+          git commit -m "data: 라이브 수집 $(TZ=Asia/Seoul date +%Y-%m-%d-%H%M)"
           for attempt in 1 2 3; do
             if git push; then exit 0; fi
             echo "push reject — pull --rebase 후 재시도 ($attempt/3)"

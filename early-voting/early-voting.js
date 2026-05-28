@@ -74,7 +74,7 @@ function renderHero(latest, baseline8) {
 
   if (!latest || !latest.national) {
     h9.innerHTML = '대기 중<span class="pct"></span>';
-    h9m.textContent = '사전투표 시작(KST 06:00) 후 첫 폴링부터 표시됩니다.';
+    h9m.textContent = '사전투표 시작(KST 06:00) 후 첫 갱신부터 표시됩니다.';
     h8.innerHTML = `${fmtPct(baseline8?.national_final)}<span class="pct">%</span>`;
     h8m.textContent = '8회 최종(2022.5.28 18시)';
     hd.textContent = '시작 대기';
@@ -226,5 +226,5 @@ async function main() {
 
 main();
 
-// 5분마다 자동 새로고침 — 워크플로우 30분 폴링이라 약간 여유를 두고 다시 fetch.
+// 5분마다 자동 새로고침 — 워크플로우가 30분 간격으로 수집하므로 여유를 두고 다시 fetch.
 setInterval(main, 5 * 60 * 1000);
