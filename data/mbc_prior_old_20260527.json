@@ -103,72 +103,15 @@
       "margin_sd": 1.63
     },
     "충청남도": {
-      "date": "2026-05-27",
+      "date": "2026-05-25",
       "dem_candidate": "박수현",
       "dem_party": "더불어민주당",
       "con_candidate": "김태흠",
       "con_party": "국민의힘",
-      "dem_share": 43.88,
-      "con_share": 38.59,
-      "margin": 5.29,
-      "margin_sd": 7.26,
-      "source_polls": [
-        {
-          "date_start": "2026-04-26",
-          "date_end": "2026-04-28",
-          "client": "KBS대전총국",
-          "house": "한국리서치",
-          "method": "전화면접",
-          "n": 800,
-          "response_rate": "17.4%",
-          "error": "±3.5%p (95% CI)",
-          "margin": 21.0
-        },
-        {
-          "date_start": "2026-05-08",
-          "date_end": "2026-05-09",
-          "client": "굿모닝충청",
-          "house": "리얼미터",
-          "method": "ARS",
-          "n": 805,
-          "response_rate": "8.0%",
-          "error": "±3.5%p",
-          "margin": 12.8
-        },
-        {
-          "date_start": "2026-05-15",
-          "date_end": "2026-05-17",
-          "client": "대전MBC·충청투데이",
-          "house": "코리아리서치인터내셔널",
-          "method": "전화면접",
-          "n": 800,
-          "response_rate": "14.4%",
-          "error": "±3.5%p",
-          "margin": 8.0
-        },
-        {
-          "date_start": "2026-05-16",
-          "date_end": "2026-05-20",
-          "client": "KBS",
-          "house": "한국리서치",
-          "method": "전화면접",
-          "n": 800,
-          "response_rate": "20.8%",
-          "error": "±3.5%p",
-          "margin": 4.0
-        },
-        {
-          "date_start": "2026-05-18",
-          "date_end": "2026-05-19",
-          "client": "뉴스핌",
-          "house": "리얼미터",
-          "method": "ARS",
-          "n": 806,
-          "response_rate": "8.2%",
-          "error": "±3.5%p",
-          "margin": -0.4
-        }
-      ]
+      "dem_share": 47.4,
+      "con_share": 35.4,
+      "margin": 12.0,
+      "margin_sd": 1.68
     },
     "전북특별자치도": {
       "date": "2026-05-26",
@@ -203,6 +146,5 @@
       "margin": 37.2,
       "margin_sd": 1.67
     }
-  },
-  "chungnam_updated_at": "2026-05-27 (5개 조사 시간가중 평균)"
+  }
 }

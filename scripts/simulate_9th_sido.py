@@ -346,7 +346,7 @@ SCENARIO_META = {
         "primary": True,
     },
     "shakeup": {
-        "title": "정권 출범 1년차 환경 (역사 패턴만)",
+        "title": "정권 출범 1년차 환경 (과거 개표결과 패턴만)",
         "desc": "여론조사 미반영. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 7회(2018) 지선과 "
                 "유사한 환경 가정.",
         "primary": False,
@@ -377,7 +377,7 @@ def main():
     print(f"  residual SD: {params['residual_sd']}%p")
     print()
 
-    # 네 시나리오 — MBC 메인 + 역사 기반 3개
+    # 네 시나리오 — MBC 메인 + 과거 개표결과 기반 3개
     mbc_prior = load_mbc_prior()
     print(f"=== MBC prior 로드: {len(mbc_prior)}개 시도 ===\n")
 

@@ -260,14 +260,14 @@ footer { text-align: center; color: #aaa; font-size: 0.78rem; margin-top: 48px; 
     <div class="card-title">시도지사</div>
     <p class="card-count">17개 시도 · 1만 회 시뮬레이션</p>
     <div class="card-result">""" + sido_s + """</div>
-    <p class="card-sub">공개 여론조사 + 6회차 역사 패턴. 8회 백테스트 적중률 88%.</p>
+    <p class="card-sub">공개 여론조사 + 6회차 과거 개표결과 패턴. 8회 백테스트 적중률 88%.</p>
   </a>
   <a class="card" href="/sim/basic-head/">
     <span class="card-tag">기초단체장</span>
     <div class="card-title">시군구청장</div>
     <p class="card-count">226곳 · 17개 시도별 모든 시군구</p>
     <div class="card-result">""" + bh_s + """</div>
-    <p class="card-sub">시군구 단위 여론조사 부족 — 역사 패턴만. 8회 백테스트 81%.</p>
+    <p class="card-sub">시군구 단위 여론조사 부족 — 과거 개표결과 패턴만. 8회 백테스트 81%.</p>
   </a>
   <a class="card" href="/sim/assembly/">
     <span class="card-tag">국회의원 재·보궐</span>
