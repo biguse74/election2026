@@ -36,7 +36,7 @@ def header_html(current: str = "") -> str:
         cls = "sim-nav-link sim-nav-link-active" if current == key else "sim-nav-link"
         return f'<a class="{cls}" href="{href}"{active}>{label}</a>'
     nav = "".join([
-        link("/sim/", "home", "시뮬 홈"),
+        link("/sim/", "home", "시뮬레이션 홈"),
         link("/sim/sido/", "sido", "시도지사 17"),
         link("/sim/basic-head/", "basic-head", "기초단체장 226"),
         link("/sim/assembly/", "assembly", "재·보궐 14"),
