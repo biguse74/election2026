@@ -92,17 +92,28 @@ def header_html(current: str = "") -> str:
 """
 
 
-DISCLAIMER_HTML = """<div style="max-width:880px;margin:0 auto 20px;padding:12px 16px;background:#fdecea;border-left:4px solid #c41e3a;border-radius:4px;font-family:-apple-system,'Pretendard',sans-serif;font-size:0.86rem;color:#1a1a1a;line-height:1.6">
-  · 본 자료는 <strong>여론조사가 아닙니다.</strong> 과거 개표결과와 5월 27일까지 언론에 보도된 공개 여론조사를 입력으로 한 시뮬레이션 결과(시나리오별 분포)입니다.<br>
-  · 특정 후보·정당의 당락을 <strong>단정하지 않습니다.</strong> 메인 시나리오는 "이재명 정부 출범 1년차(7회 문재인 정부 출범 직후와 유사한 환경)" 가정.<br>
-  · 인용·재가공 시 위 한계를 함께 표기해 주십시오.
+# 상단에는 매우 작은 한 줄만, 자세한 면책은 본문 하단.
+DISCLAIMER_TOP_HTML = """<div style="max-width:880px;margin:8px auto 16px;font-size:0.74rem;color:#888;text-align:right">
+  여론조사 아닌 시뮬레이션 결과 · 단정·예측 아님 · <a href="#sim-notice-full" style="color:#888;text-decoration:underline">자세한 한계 ↓</a>
 </div>
 """
 
+DISCLAIMER_BOTTOM_HTML = """<aside id="sim-notice-full" style="max-width:880px;margin:40px auto 12px;padding:12px 16px;background:#f6f6f6;border-left:3px solid #ccc;border-radius:3px;font-family:-apple-system,'Pretendard',sans-serif;font-size:0.78rem;color:#666;line-height:1.6">
+  <strong style="color:#444">자료의 성격 · 한계</strong><br>
+  · 여론조사가 아니라 과거 개표결과와 5월 27일까지 보도된 공개 여론조사를 입력으로 한 시뮬레이션 결과(시나리오별 분포).<br>
+  · 후보·정당의 당락을 단정하지 않습니다. 메인 시나리오는 "이재명 정부 출범 1년차(7회 문재인 정부 출범 직후와 유사한 환경)" 가정.<br>
+  · 외부 충격·후보 효과·정당 변동·사전투표 패턴 변화 미반영. 가정이 흔들리면 결과도 흔들림.<br>
+  · 인용·재가공 시 위 한계를 함께 표기해 주십시오.
+</aside>
+"""
+
+# 하위 호환: 기존 변수명 참조하는 코드(build_landing 등)가 있으면 새 변수 사용
+DISCLAIMER_HTML = DISCLAIMER_TOP_HTML
+
 
 def inject_header_and_disclaimer(html: str, current_key: str) -> str:
-    """본문 <body> 직후에 sim 헤더 + 면책 박스 삽입.
-    또 기존 페이지의 max-width container를 sim-page로 감싸기.
+    """본문 <body> 직후에 sim 헤더 + 상단 짧은 안내,
+    본문 하단에 자세한 면책.
     """
     body_open = re.search(r"<body[^>]*>", html)
     body_close = html.rfind("</body>")
@@ -115,9 +126,11 @@ def inject_header_and_disclaimer(html: str, current_key: str) -> str:
         + "\n"
         + header_html(current_key)
         + '\n<main class="sim-page">\n'
-        + DISCLAIMER_HTML
+        + DISCLAIMER_TOP_HTML
         + "\n"
         + inner
+        + "\n"
+        + DISCLAIMER_BOTTOM_HTML
         + "\n</main>\n"
         + html[body_close:]
     )
@@ -248,11 +261,10 @@ footer { text-align: center; color: #aaa; font-size: 0.78rem; margin-top: 48px; 
 <p class="lead">시도지사 17곳 · 기초단체장 226곳 · 국회의원 재·보궐 14석 — 정당별 당선 분포 시나리오.</p>
 <p class="meta">2026-05-27 기준 · 과거 6회차 개표결과 + 2026-05-27까지 보도된 공개 여론조사 · 1만 회 몬테카를로 · 시민언론 뉴탐사</p>
 
-<div class="intro">
-  <strong>읽는 법</strong> — 정치 환경에 따라 결과가 크게 달라지므로 시나리오를 분리해 보여줍니다.
-  메인 시나리오는 <strong>"이재명 정부 출범 1년차"</strong>(=7회 박근혜 탄핵 후 환경) 가정 + 보도된 공개 여론조사를 참고 자료로.
-  특정 후보·정당의 당락을 단정하지 않습니다. 한계는 각 페이지 하단에 명시.
-</div>
+<p style="color:#666;font-size:0.85rem;margin:6px 0 18px">
+  정치 환경에 따라 결과가 크게 달라지므로 시나리오를 분리해 보여줍니다.
+  메인 시나리오는 <strong style="color:#444">"이재명 정부 출범 1년차"</strong>(=7회 박근혜 탄핵 후 환경) 가정 + 5/27까지 보도된 공개 여론조사 참고.
+</p>
 
 <div class="cards">
   <a class="card" href="/sim/sido/">
@@ -282,6 +294,8 @@ footer { text-align: center; color: #aaa; font-size: 0.78rem; margin-top: 48px; 
   <a class="cta-btn cta-btn-accent" href="https://election2026.newtamsa.org/#live">6/3 실시간 개표 화면 →</a>
   <a class="cta-btn" href="https://election2026.newtamsa.org/">메인 사이트 · 출마자 데이터</a>
 </div>
+
+""" + DISCLAIMER_BOTTOM_HTML + """
 
 <footer>
   시민언론 뉴탐사 · election2026.newtamsa.org<br>
