@@ -102,13 +102,9 @@ function renderHero(latest, baseline8) {
 
 function renderSidoList(latest, baseline8) {
   const root = document.getElementById('sido-list');
-  if (!latest || !latest.by_sido || latest.by_sido.length === 0) {
-    root.innerHTML = '<div class="state-empty">사전투표 시작 전입니다. KST 06:00 첫 폴링 후 시도별 막대가 채워집니다.<br>(8회 최종 회색 막대만 미리 표시할까요? 차후 옵션화)</div>';
-    return;
-  }
 
-  // 시도 인덱스 — 9회 데이터
-  const map9 = new Map(latest.by_sido.map(s => [s.sdName, s]));
+  // 시도 인덱스 — 9회 데이터 (없으면 빈 맵)
+  const map9 = new Map((latest?.by_sido || []).map(s => [s.sdName, s]));
   // 시도 인덱스 — 8회 baseline
   const map8 = new Map((baseline8?.by_sido || []).map(s => [s.sdName, s.final]));
 
@@ -120,11 +116,14 @@ function renderSidoList(latest, baseline8) {
     const w9 = v9 != null ? Math.min(100, (v9 / BAR_MAX_PCT) * 100) : 0;
     const w8 = v8 != null ? Math.min(100, (v8 / BAR_MAX_PCT) * 100) : 0;
     const short = SIDO_SHORT[sd] || sd;
+    const headValue = v9 != null
+      ? `${fmtPct(v9)}<span style="font-size:0.8em;color:var(--muted);font-weight:600;">%</span>`
+      : `<span style="color:var(--muted);font-weight:600;font-size:0.85em;">시작 대기</span>`;
     return `
       <div class="sido-row">
         <div class="sido-row-head">
           <span class="sido-name">${short}</span>
-          <span class="sido-pct">${v9 != null ? fmtPct(v9) + '%' : '—'}<span class="sido-pct-prev">${v8 != null ? '8회 ' + fmtPct(v8) + '%' : ''}</span></span>
+          <span class="sido-pct">${headValue}<span class="sido-pct-prev">${v8 != null ? '8회 ' + fmtPct(v8) + '%' : ''}</span></span>
         </div>
         <div class="sido-bars">
           <div class="sido-bar-line"><span class="sido-bar-label">9회</span><div class="sido-bar-wrap"><div class="sido-bar-9" style="width:${w9}%"></div></div></div>
