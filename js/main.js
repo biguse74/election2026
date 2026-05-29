@@ -2231,7 +2231,7 @@ const HEX_TILEMAP = [
   "..  ..  JB  JB  JB  GN  GN  GN  GB  BS  US  ..  ..",
   "..  ..  JB  JN  GN  GN  GN  GN  BS  BS  ..  ..  ..",
   "..  GJ  JN  JN  GN  GN  GN  BS  ..  ..  ..  ..  ..",
-  "..  JN  JN  JN  JN  GN  ..  ..  ..  ..  ..  ..  ..",
+  "..  JN  JN  JN  JN  ..  ..  ..  ..  ..  ..  ..  ..",
   "..  ..  JN  JN  JN  ..  ..  ..  ..  ..  ..  ..  ..",
   "..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..",
   "..  ..  JJ  JJ  ..  ..  ..  ..  ..  ..  ..  ..  ..",
@@ -2262,42 +2262,74 @@ const HEX_SHORT = {
   '경기도': '경기', '강원특별자치도': '강원', '충청북도': '충북', '충청남도': '충남',
   '전북특별자치도': '전북', '전라남도': '전남', '경상북도': '경북', '경상남도': '경남', '제주특별자치도': '제주',
 };
-function hexPointsAt(cx, cy, r) {
-  const pts = [];
+function hexVertsAt(cx, cy, r) {
+  const v = [];
   for (let i = 0; i < 6; i++) {
     const a = (Math.PI / 180) * (60 * i - 90); // pointy-top (위쪽 꼭짓점)
-    pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`);
+    v.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
   }
-  return pts.join(' ');
+  return v;
+}
+function hexPointsAt(cx, cy, r) {
+  return hexVertsAt(cx, cy, r).map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+}
+// hex 색을 비율만큼 어둡게 (-0.45 = 45% 어둡게) → 시도 외곽선 색
+function shadeColor(hex, f) {
+  let h = String(hex).replace('#', '');
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  if (h.length !== 6) return '#555';
+  const n = parseInt(h, 16);
+  const adj = v => Math.max(0, Math.min(255, Math.round(v * (1 + f))));
+  const r = adj((n >> 16) & 255), g = adj((n >> 8) & 255), b = adj(n & 255);
+  return `rgb(${r},${g},${b})`;
 }
 function historyHexCartogramSvg(sidoWinnerMap) {
   const R = 17, ox = 6, oy = 6;
   const W = Math.sqrt(3) * R, VS = 1.5 * R;
   const cellX = (c, r) => ox + (c + (r % 2) * 0.5) * W + W / 2;
   const cellY = (c, r) => oy + r * VS + R;
+  const ckey = (x, y) => `${Math.round(x)},${Math.round(y)}`;
   let maxX = 0, maxY = 0;
-  const groups = Object.entries(HEX_CELLS).map(([sd, cells]) => {
+  const fills = [], borders = [], labels = [];
+  for (const [sd, cells] of Object.entries(HEX_CELLS)) {
     const d = sidoWinnerMap.get(sd);
     const w = d?.winner;
     const color = w?.party ? historyPartyColor(w.party) : '#dcdcdc';
-    let sx = 0, sy = 0;
-    const polys = cells.map(([c, r]) => {
-      const x = cellX(c, r), y = cellY(c, r);
-      sx += x; sy += y;
-      if (x + W / 2 > maxX) maxX = x + W / 2;
-      if (y + R > maxY) maxY = y + R;
-      return `<polygon points="${hexPointsAt(x, y, R)}" fill="${color}" stroke="#fff" stroke-width="1.5"/>`;
-    }).join('');
-    const lx = sx / cells.length, ly = sy / cells.length;
-    const short = HEX_SHORT[sd] || sidoDisplayName(sd);
+    const edge = '#2b2b2b'; // 시도 경계 외곽선 (균일 진한색)
+    const centers = cells.map(([c, r]) => [cellX(c, r), cellY(c, r)]);
+    const own = new Set(centers.map(([x, y]) => ckey(x, y)));
     const title = w?.name
       ? `${sidoDisplayName(sd)} · ${w.party || '무소속'} ${w.name}${w.vote_share != null ? ` ${w.vote_share.toFixed(1)}%` : ''}`
       : `${sidoDisplayName(sd)} · 데이터 없음`;
-    const label = `<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" style="pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,0.28);stroke-width:2.5px;stroke-linejoin:round">${escapeHtml(short)}</text>`;
-    return `<g><title>${escapeHtml(title)}</title>${polys}${label}</g>`;
-  }).join('');
+    let sx = 0, sy = 0;
+    for (const [x, y] of centers) {
+      sx += x; sy += y;
+      if (x + W / 2 > maxX) maxX = x + W / 2;
+      if (y + R > maxY) maxY = y + R;
+      const verts = hexVertsAt(x, y, R);
+      // 내부 칸선 없이 솔리드 — 인접 동일 시도 칸끼리 이음새가 안 보이게 stroke=fill
+      fills.push(`<polygon points="${verts.map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ')}" fill="${color}" stroke="${color}" stroke-width="1"><title>${escapeHtml(title)}</title></polygon>`);
+      // 시도 경계 모서리만 외곽선으로 (이웃 칸이 같은 시도가 아니면 그 변을 그림)
+      for (let i = 0; i < 6; i++) {
+        const a = verts[i], b = verts[(i + 1) % 6];
+        const nx = a[0] + b[0] - x, ny = a[1] + b[1] - y; // 이웃 칸 중심 = 2*모서리중점 - 현재중심
+        if (!own.has(ckey(nx, ny))) {
+          borders.push(`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}" stroke="${edge}" stroke-width="1.6" stroke-linecap="round"/>`);
+        }
+      }
+    }
+    // 라벨은 무게중심에 가장 가까운 '자기 칸'에 — 경기처럼 가운데가 빈 도넛형에서 라벨이 옆 시도 위에 얹히는 걸 방지
+    const gx = sx / centers.length, gy = sy / centers.length;
+    let lx = centers[0][0], ly = centers[0][1], bestD = Infinity;
+    for (const [x, y] of centers) {
+      const dd = (x - gx) * (x - gx) + (y - gy) * (y - gy);
+      if (dd < bestD) { bestD = dd; lx = x; ly = y; }
+    }
+    const short = HEX_SHORT[sd] || sidoDisplayName(sd);
+    labels.push(`<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" style="pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,0.30);stroke-width:2.5px;stroke-linejoin:round">${escapeHtml(short)}</text>`);
+  }
   const vbW = Math.round(maxX + ox), vbH = Math.round(maxY + oy);
-  return `<svg class="history-hex-cartogram" viewBox="0 0 ${vbW} ${vbH}" role="img" aria-label="시도별 광역단체장 당선 정당 한국지도">${groups}</svg>`;
+  return `<svg class="history-hex-cartogram" viewBox="0 0 ${vbW} ${vbH}" role="img" aria-label="시도별 광역단체장 당선 정당 한국지도">${fills.join('')}${borders.join('')}${labels.join('')}</svg>`;
 }
 function historyHexPanelHtml(countingElections, round) {
   const sel = countingElections.find(e => Number(e.round) === Number(round)) || countingElections[countingElections.length - 1];
@@ -2314,7 +2346,7 @@ function historyHexPanelHtml(countingElections, round) {
     <div class="history-hex-rounds" role="group" aria-label="회차 선택">${buttons}</div>
     <div class="history-hex-map">${historyHexCartogramSvg(map)}</div>
     <div class="history-hex-summary">${wins}</div>
-    <p class="trend-meta">육각형 1개 = 시도 1곳. 색은 광역단체장 당선 정당 계열(빨강 국민의힘 계열·파랑 더불어민주당 계열·회색 무소속). 칸에 손을 올리면 당선자·득표율이 보입니다. 위치는 지리적 근사입니다.</p>`;
+    <p class="trend-meta">한국 지도 모양으로 시도를 작은 육각형 여러 개로 그렸습니다 — 같은 색 묶음이 한 시도입니다. 색은 광역단체장 당선 정당 계열(빨강 국민의힘 계열·파랑 더불어민주당 계열·회색 무소속). 칸에 손을 올리면 당선자·득표율이 보입니다. 배치는 지리적 근사입니다.</p>`;
 }
 function updateHistoryHexRound(round) {
   state.historyHexRound = Number(round);
