@@ -533,7 +533,6 @@ function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21)
   root.innerHTML = `
     <div class="fc-head">
       <span class="fc-label">최종 사전투표율 예측 <span class="fc-sub2">(양일 누적 · 회귀)</span></span>
-      <span class="fc-tag">통계 추정 · 단정·여론조사 아님</span>
     </div>
     <div class="fc-body">
       <div class="fc-main">
