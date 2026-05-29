@@ -269,19 +269,22 @@ function renderSidoList(latest, baseline8) {
   root.innerHTML = html;
 }
 
-// 과거 회차의 hourly_national을 2026 좌표계로 매핑.
-// 1일차 N시 → 2026-05-29 N시, 2일차 N시 → 2026-05-30 N시.
-function baselineSeriesTo2026(baseline) {
+// (day, hour) → X축 fraction [0,1]. 투표 가능 시간(06~18시)만 사용해 밤샘 구간을 접는다.
+//   day1 06~18 → [0, 0.5],  day2 06~18 → [0.5, 1.0]
+// 1일차 18시와 2일차 06시가 같은 X 지점(0.5)에서 만나 라인이 바로 이어진다.
+const TL_HOUR_START = 6, TL_HOUR_END = 18;
+function dayHourToFrac(day, hour) {
+  const h = Math.min(Math.max(hour, TL_HOUR_START), TL_HOUR_END);
+  const within = (h - TL_HOUR_START) / (TL_HOUR_END - TL_HOUR_START);
+  return (day === 2 ? 0.5 : 0) + within * 0.5;
+}
+
+// 과거 회차 hourly_national → frac 좌표 시리즈
+function baselineFracSeries(baseline) {
   if (!baseline?.hourly_national) return [];
   const out = [];
-  for (const row of (baseline.hourly_national.day1 || [])) {
-    const t = new Date(`2026-05-29T${String(row.hour).padStart(2,'0')}:00:00+09:00`).getTime();
-    out.push([t, row.cum]);
-  }
-  for (const row of (baseline.hourly_national.day2 || [])) {
-    const t = new Date(`2026-05-30T${String(row.hour).padStart(2,'0')}:00:00+09:00`).getTime();
-    out.push([t, row.cum]);
-  }
+  for (const row of (baseline.hourly_national.day1 || [])) out.push([dayHourToFrac(1, row.hour), row.cum]);
+  for (const row of (baseline.hourly_national.day2 || [])) out.push([dayHourToFrac(2, row.hour), row.cum]);
   return out.sort((a, b) => a[0] - b[0]);
 }
 
@@ -290,18 +293,15 @@ function renderTimeline(ts, baseline8, baseline7) {
   svg.innerHTML = '';
 
   const W = 1000, H = 260;
-  const padL = 50, padR = 20, padT = 18, padB = 30;
+  const padL = 50, padR = 20, padT = 18, padB = 36;
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
 
   // Y 스케일 0 ~ 25 (8회 최종 20.62% 여유 있게)
   const yMax = 25;
   const yToPx = v => padT + (1 - v / yMax) * plotH;
-
-  // X 스케일: 5/29 06:00 ~ 5/30 19:00 (37시간)
-  const X_START = new Date('2026-05-29T06:00:00+09:00').getTime();
-  const X_END   = new Date('2026-05-30T19:00:00+09:00').getTime();
-  const xToPx = t => padL + ((t - X_START) / (X_END - X_START)) * plotW;
+  // X 스케일: 투표 가능 시간만 (밤샘 구간 접음)
+  const xToPx = frac => padL + frac * plotW;
 
   // 격자 + Y축 라벨
   const gridGroup = [];
@@ -310,60 +310,51 @@ function renderTimeline(ts, baseline8, baseline7) {
     gridGroup.push(`<line x1="${padL}" x2="${W - padR}" y1="${ypx}" y2="${ypx}" stroke="#eee" stroke-width="1"/>`);
     gridGroup.push(`<text x="${padL - 8}" y="${ypx + 4}" font-size="10" fill="#999" text-anchor="end">${y}%</text>`);
   }
-  // X축 라벨
-  const xticks = [
-    ['5/29 06', new Date('2026-05-29T06:00:00+09:00').getTime()],
-    ['12',      new Date('2026-05-29T12:00:00+09:00').getTime()],
-    ['18',      new Date('2026-05-29T18:00:00+09:00').getTime()],
-    ['5/30 06', new Date('2026-05-30T06:00:00+09:00').getTime()],
-    ['12',      new Date('2026-05-30T12:00:00+09:00').getTime()],
-    ['18',      new Date('2026-05-30T18:00:00+09:00').getTime()],
-  ];
-  for (const [label, t] of xticks) {
-    const xpx = xToPx(t);
-    gridGroup.push(`<line x1="${xpx}" x2="${xpx}" y1="${padT}" y2="${H - padB}" stroke="#eee" stroke-width="1"/>`);
-    gridGroup.push(`<text x="${xpx}" y="${H - padB + 14}" font-size="10" fill="#999" text-anchor="middle">${label}</text>`);
+  // X 시각 눈금 (투표 시간만 — 06·09·12·15·18, 2일차 06은 경계와 겹쳐 생략)
+  const hourTicks = [[1, 6], [1, 9], [1, 12], [1, 15], [1, 18], [2, 9], [2, 12], [2, 15], [2, 18]];
+  for (const [day, hr] of hourTicks) {
+    const xpx = xToPx(dayHourToFrac(day, hr));
+    gridGroup.push(`<line x1="${xpx}" x2="${xpx}" y1="${padT}" y2="${H - padB}" stroke="#f2f2f2" stroke-width="1"/>`);
+    gridGroup.push(`<text x="${xpx}" y="${H - padB + 13}" font-size="9.5" fill="#aaa" text-anchor="middle">${String(hr).padStart(2,'0')}</text>`);
   }
-  // 1일차 마감(18시) 세로선
-  for (const t of [new Date('2026-05-29T18:00:00+09:00').getTime(), new Date('2026-05-30T18:00:00+09:00').getTime()]) {
-    const x = xToPx(t);
-    gridGroup.push(`<line x1="${x}" x2="${x}" y1="${padT}" y2="${H - padB}" stroke="#ccc" stroke-width="1" stroke-dasharray="2 3"/>`);
-  }
+  // 일자 라벨 (각 반쪽 중앙)
+  gridGroup.push(`<text x="${xToPx(0.25).toFixed(1)}" y="${H - padB + 27}" font-size="10.5" fill="#777" font-weight="700" text-anchor="middle">5/29 (금)</text>`);
+  gridGroup.push(`<text x="${xToPx(0.75).toFixed(1)}" y="${H - padB + 27}" font-size="10.5" fill="#777" font-weight="700" text-anchor="middle">5/30 (토)</text>`);
+  // 일자 경계선 (frac 0.5) — 1일차 마감=2일차 시작, 밤샘 구간을 접은 지점
+  const xMid = xToPx(0.5);
+  gridGroup.push(`<line x1="${xMid}" x2="${xMid}" y1="${padT}" y2="${H - padB}" stroke="#bbb" stroke-width="1.2" stroke-dasharray="3 3"/>`);
 
   const lineGroup = [];
 
-  // 7회·8회 라인 (과거)
-  function drawBaselineLine(baseline, color, dash, label) {
-    const series = baselineSeriesTo2026(baseline);
+  // 7회·8회 라인 (과거) — labelDy로 끝점 라벨 상/하 분리
+  function drawBaselineLine(baseline, color, dash, label, labelDy) {
+    const series = baselineFracSeries(baseline);
     if (series.length < 2) return;
     const path = series.map((p, i) => (i === 0 ? 'M' : 'L') + xToPx(p[0]).toFixed(1) + ',' + yToPx(p[1]).toFixed(1)).join(' ');
     lineGroup.push(`<path d="${path}" stroke="${color}" stroke-width="1.8" fill="none" stroke-dasharray="${dash}" stroke-linecap="round" stroke-linejoin="round"/>`);
-    // 마지막 점 라벨
     const last = series[series.length - 1];
-    lineGroup.push(`<text x="${(xToPx(last[0]) + 4).toFixed(1)}" y="${(yToPx(last[1]) + 3).toFixed(1)}" font-size="9.5" fill="${color}">${label} ${last[1].toFixed(2)}%</text>`);
+    lineGroup.push(`<text x="${(xToPx(last[0]) - 4).toFixed(1)}" y="${(yToPx(last[1]) + labelDy).toFixed(1)}" font-size="9.5" fill="${color}" text-anchor="end">${label} ${last[1].toFixed(2)}%</text>`);
   }
-  if (baseline7) drawBaselineLine(baseline7, '#9aa4b2', '2 3', '7회');
-  if (baseline8) drawBaselineLine(baseline8, '#5f6a78', '6 4', '8회');
+  if (baseline7) drawBaselineLine(baseline7, '#9aa4b2', '2 3', '7회', 14);
+  if (baseline8) drawBaselineLine(baseline8, '#5f6a78', '6 4', '8회', -6);
 
-  // 9회 시계열 라인 (현재)
-  const points = [];
-  if (ts && ts.snapshots && ts.snapshots.length > 0) {
-    for (const s of ts.snapshots) {
-      const t = new Date(s.at).getTime();
-      if (isNaN(t)) continue;
-      const v = s.national?.turnout;
-      if (v == null) continue;
-      points.push([xToPx(t), yToPx(v), v, s.at]);
+  // 9회 라인 — (day, hour) 정시 기준으로 baseline과 정렬
+  const idx9 = build9hRoundIndex(ts);
+  const pts9 = [];
+  for (const day of [1, 2]) {
+    for (const [hour, v] of [...idx9[day].entries()].sort((a, b) => a[0] - b[0])) {
+      pts9.push({ x: xToPx(dayHourToFrac(day, hour)), y: yToPx(v), v, day, hour });
     }
   }
-  if (points.length >= 2) {
-    const d = points.map((p, i) => (i === 0 ? 'M' : 'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  pts9.sort((a, b) => a.x - b.x);
+  if (pts9.length >= 2) {
+    const d = pts9.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
     lineGroup.push(`<path d="${d}" stroke="#c41e3a" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`);
   }
-  for (const p of points) {
-    lineGroup.push(`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3" fill="#c41e3a"><title>${fmtKST(p[3])} · ${p[2].toFixed(2)}%</title></circle>`);
+  for (const p of pts9) {
+    lineGroup.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3" fill="#c41e3a"><title>${p.day}일차 ${String(p.hour).padStart(2,'0')}시 · ${p.v.toFixed(2)}%</title></circle>`);
   }
-  if (points.length === 0) {
+  if (pts9.length === 0) {
     lineGroup.push(`<text x="${W / 2}" y="${H / 2}" font-size="12" fill="#999" text-anchor="middle">9회 라인은 첫 수집 후 그려집니다.</text>`);
   }
 
