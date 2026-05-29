@@ -109,7 +109,7 @@
         var diff = v - v8;
         parts.push('8회 같은시각 ' + sgn(diff) + diff.toFixed(2) + '%p');
       }
-      // 8회 같은시각보다 가장 빠르게 오르는 시도 1개 (최고속도)
+      // 8회 같은시각보다 가장 빠르게 오르는 시도 1개를 골라 — 투표율(%)로 표시
       if (d.by_sido && d.by_sido.length) {
         var best = null;
         for (var i = 0; i < d.by_sido.length; i++) {
@@ -117,9 +117,9 @@
           var b = sidoAt(prog.day, prog.hour, s.sdName);
           if (b == null || s.turnout == null) continue;
           var dd = s.turnout - b;
-          if (!best || dd > best.dd) best = { sd: s.sdName, dd: dd };
+          if (!best || dd > best.dd) best = { sd: s.sdName, dd: dd, turnout: s.turnout };
         }
-        if (best) parts.push((SHORT[best.sd] || best.sd) + ' ' + sgn(best.dd) + best.dd.toFixed(2) + '%p');
+        if (best) parts.push((SHORT[best.sd] || best.sd) + ' ' + fmtPct(best.turnout) + '%');
       }
     }
     return parts.join(' · ');
