@@ -456,10 +456,35 @@ function bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21) {
   });
 }
 
-// 최종 사전투표율(양일 누적) 예측.
-// 방법: 현재 (day,hour) 누적 × (과거 회차의 같은 시점 → 최종 배수).
-//   같은 시점이 진행될수록 배수는 1에 수렴 → 예측이 실측으로 자연 수렴.
-//   직전 동종 선거(8회 지선)를 중심값으로, 지선 2회(8·7회)로 범위, 대선·총선은 참고.
+// 단순선형회귀(OLS) — 과거 회차의 '같은 시점 사전투표율(x) → 최종(y)'을 직선으로 적합.
+// 반환: {a,b,yhat,R2,n,s,lo,hi} (lo/hi = 80% 예측구간). 표본<3이면 null.
+function olsForecast(points, x0) {
+  const n = points.length;
+  if (n < 3) return null;
+  const xs = points.map(p => p.x), ys = points.map(p => p.y);
+  const mx = xs.reduce((a, b) => a + b, 0) / n;
+  const my = ys.reduce((a, b) => a + b, 0) / n;
+  let Sxx = 0, Sxy = 0, Syy = 0;
+  for (let i = 0; i < n; i++) {
+    Sxx += (xs[i] - mx) ** 2; Sxy += (xs[i] - mx) * (ys[i] - my); Syy += (ys[i] - my) ** 2;
+  }
+  if (Sxx <= 0) return null;
+  const b = Sxy / Sxx, a = my - b * mx;
+  const yhat = a + b * x0;
+  let SSE = 0;
+  for (let i = 0; i < n; i++) { const e = ys[i] - (a + b * xs[i]); SSE += e * e; }
+  const df = n - 2;
+  const s = Math.sqrt(SSE / df);
+  const SEpred = s * Math.sqrt(1 + 1 / n + (x0 - mx) ** 2 / Sxx);
+  const R2 = Syy > 0 ? 1 - SSE / Syy : 1;
+  const T80 = { 1: 3.078, 2: 1.886, 3: 1.638, 4: 1.533, 5: 1.476, 6: 1.440 }; // 80% 양측, df별
+  const t = T80[df] || 1.44;
+  return { a, b, yhat, R2, n, s, lo: yhat - t * SEpred, hi: yhat + t * SEpred };
+}
+
+// 최종 사전투표율(양일 누적) 예측 — 선형회귀(OLS) + 80% 예측구간.
+//   과거 회차의 '같은 시점 사전투표율 → 최종'을 직선으로 적합해 현재값을 대입.
+//   같은 시점이 진행될수록 x가 최종에 가까워져 예측이 실측으로 수렴.
 function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21) {
   const root = document.getElementById('forecast');
   if (!root) return;
@@ -468,61 +493,56 @@ function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21)
   if (!prog || cur == null) { root.hidden = true; root.innerHTML = ''; return; }
 
   const refs = [
-    { key: '8회 지선', kind: 'jiseon', b: baseline8 },
-    { key: '7회 지선', kind: 'jiseon', b: baseline7 },
-    { key: '22대 총선', kind: 'ref', b: baselineGen22 },
-    { key: '21대 대선', kind: 'ref', b: basePres21 },
+    { key: '7회', kind: 'jiseon', b: baseline7 },
+    { key: '8회', kind: 'jiseon', b: baseline8 },
+    { key: '22대', kind: 'ref', b: baselineGen22 },
+    { key: '21대', kind: 'ref', b: basePres21 },
   ];
-  const ests = [];
+  const points = [];
   for (const r of refs) {
-    const same = baselineAt(r.b, prog.day, prog.hour);
-    const fin = r.b?.national_final;
-    if (same && fin && same > 0) ests.push({ ...r, pred: cur * (fin / same) });
+    const x = baselineAt(r.b, prog.day, prog.hour);
+    const y = r.b?.national_final;
+    if (x && y && x > 0) points.push({ ...r, x, y });
   }
-  if (!ests.length) { root.hidden = true; root.innerHTML = ''; return; }
-
-  const e8 = ests.find(e => e.key === '8회 지선');
-  const center = (e8 || ests[0]).pred;                 // 중심값: 직전 8회 패턴
-  const all = ests.map(e => e.pred);
-  const lo = Math.min(...all), hi = Math.max(...all);  // 회차별 범위
+  if (points.length < 2) { root.hidden = true; root.innerHTML = ''; return; }
 
   const dayLabel = prog.day === 2 ? '2일차 진행 중' : (prog.hour >= 18 ? '1일차 마감' : '1일차 진행 중');
-  const chips = ests.map(e =>
-    `<span class="fc-chip ${e.kind === 'jiseon' ? 'fc-chip-j' : ''}">${e.key} ${e.pred.toFixed(1)}%</span>`
-  ).join('');
+  const reg = olsForecast(points, cur);
 
-  // 8회와의 관계를 명시 — "8회 수준 수렴"이 아니라 "현재 페이스(8회 대비)를 반영"임을 분명히
-  const same8 = baselineAt(baseline8, prog.day, prog.hour);
-  const fin8 = baseline8?.national_final;
-  const pace = (same8 && same8 > 0) ? (cur / same8 - 1) * 100 : null;   // 8회 같은 시점 대비 %
-  const mult8 = (same8 && fin8 && same8 > 0) ? fin8 / same8 : null;
-  let explain;
-  if (same8 && fin8 && mult8) {
-    const faster = pace >= 0;
+  let center, lo, hi, explain;
+  if (reg) {
+    center = reg.yhat; lo = reg.lo; hi = reg.hi;
     explain =
-      `현재 <strong>${fmtPct(cur)}%</strong>(${dayLabel})는 8회 같은 시점 <strong>${fmtPct(same8)}%</strong>보다 ` +
-      `<strong>${faster ? '+' : ''}${pace.toFixed(0)}% ${faster ? '빠른' : '느린'} 페이스</strong>. ` +
-      `8회가 거기서 최종까지 늘어난 배수(×${mult8.toFixed(2)})를 적용 → <strong>${center.toFixed(1)}%</strong> ` +
-      `<span class="fc-vs">(8회 최종 ${fmtPct(fin8)}%보다 ${center > fin8 ? '높게' : '낮게'} 예측)</span>. ` +
-      `2일차가 진행될수록 실측으로 수렴합니다.`;
+      `과거 ${reg.n}개 선거의 '같은 시점 사전투표율 → 최종'을 <strong>선형회귀</strong>로 적합 ` +
+      `(최종 = ${reg.a.toFixed(1)} + ${reg.b.toFixed(2)}×현재, R²=${reg.R2.toFixed(2)}). ` +
+      `현재 <strong>${fmtPct(cur)}%</strong>(${dayLabel}) 대입 → <strong>${center.toFixed(1)}%</strong>. ` +
+      `8회 최종(${fmtPct(baseline8?.national_final)}%)보다 ${center > (baseline8?.national_final ?? 0) ? '높은' : '낮은'} 건 9회가 그만큼 ${center > (baseline8?.national_final ?? 0) ? '빠르기' : '느리기'} 때문. ` +
+      `표본 ${reg.n}회로 적어 구간이 넓습니다(±는 80% 예측구간).`;
   } else {
-    explain = `현재 <strong>${fmtPct(cur)}%</strong>(${dayLabel}) 기준 추정. 2일차가 진행될수록 실측으로 수렴합니다.`;
+    const ratios = points.map(p => cur * (p.y / p.x));
+    center = ratios.reduce((a, b) => a + b, 0) / ratios.length;
+    lo = Math.min(...ratios); hi = Math.max(...ratios);
+    explain = `현재 <strong>${fmtPct(cur)}%</strong>(${dayLabel}) · 과거 회차 비율 평균(표본 부족으로 회귀 대신).`;
   }
+
+  const chips = points.map(p =>
+    `<span class="fc-chip ${p.kind === 'jiseon' ? 'fc-chip-j' : ''}">${p.key} ${p.x.toFixed(1)}→${p.y.toFixed(1)}</span>`
+  ).join('');
 
   root.hidden = false;
   root.innerHTML = `
     <div class="fc-head">
-      <span class="fc-label">최종 사전투표율 예측 <span class="fc-sub2">(양일 누적)</span></span>
+      <span class="fc-label">최종 사전투표율 예측 <span class="fc-sub2">(양일 누적 · 회귀)</span></span>
       <span class="fc-tag">통계 추정 · 단정·여론조사 아님</span>
     </div>
     <div class="fc-body">
       <div class="fc-main">
         <span class="fc-big">${center.toFixed(1)}<span class="fc-pct">%</span></span>
-        <span class="fc-range">회차별 ${lo.toFixed(1)}~${hi.toFixed(1)}%</span>
+        <span class="fc-range">80% 예측구간 ${lo.toFixed(1)}~${hi.toFixed(1)}%</span>
       </div>
       <div class="fc-explain">${explain}</div>
     </div>
-    <div class="fc-chips">${chips}</div>`;
+    <div class="fc-chips"><span class="fc-chips-lbl">회귀 입력(현재→최종):</span>${chips}</div>`;
 }
 
 async function main() {
