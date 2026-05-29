@@ -491,6 +491,24 @@ function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21)
     `<span class="fc-chip ${e.kind === 'jiseon' ? 'fc-chip-j' : ''}">${e.key} ${e.pred.toFixed(1)}%</span>`
   ).join('');
 
+  // 8회와의 관계를 명시 — "8회 수준 수렴"이 아니라 "현재 페이스(8회 대비)를 반영"임을 분명히
+  const same8 = baselineAt(baseline8, prog.day, prog.hour);
+  const fin8 = baseline8?.national_final;
+  const pace = (same8 && same8 > 0) ? (cur / same8 - 1) * 100 : null;   // 8회 같은 시점 대비 %
+  const mult8 = (same8 && fin8 && same8 > 0) ? fin8 / same8 : null;
+  let explain;
+  if (same8 && fin8 && mult8) {
+    const faster = pace >= 0;
+    explain =
+      `현재 <strong>${fmtPct(cur)}%</strong>(${dayLabel})는 8회 같은 시점 <strong>${fmtPct(same8)}%</strong>보다 ` +
+      `<strong>${faster ? '+' : ''}${pace.toFixed(0)}% ${faster ? '빠른' : '느린'} 페이스</strong>. ` +
+      `8회가 거기서 최종까지 늘어난 배수(×${mult8.toFixed(2)})를 적용 → <strong>${center.toFixed(1)}%</strong> ` +
+      `<span class="fc-vs">(8회 최종 ${fmtPct(fin8)}%보다 ${center > fin8 ? '높게' : '낮게'} 예측)</span>. ` +
+      `2일차가 진행될수록 실측으로 수렴합니다.`;
+  } else {
+    explain = `현재 <strong>${fmtPct(cur)}%</strong>(${dayLabel}) 기준 추정. 2일차가 진행될수록 실측으로 수렴합니다.`;
+  }
+
   root.hidden = false;
   root.innerHTML = `
     <div class="fc-head">
@@ -502,10 +520,7 @@ function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21)
         <span class="fc-big">${center.toFixed(1)}<span class="fc-pct">%</span></span>
         <span class="fc-range">회차별 ${lo.toFixed(1)}~${hi.toFixed(1)}%</span>
       </div>
-      <div class="fc-explain">
-        현재 <strong>${fmtPct(cur)}%</strong> (${dayLabel}) · 직전 <strong>8회 지선</strong> 같은 시점 패턴 적용.
-        2일차가 진행될수록 예측이 실측으로 수렴합니다.
-      </div>
+      <div class="fc-explain">${explain}</div>
     </div>
     <div class="fc-chips">${chips}</div>`;
 }
