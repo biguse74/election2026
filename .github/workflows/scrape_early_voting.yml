@@ -4,12 +4,15 @@ name: 사전투표율 스크래핑 (info.nec.go.kr)
 # OpenAPI(ErVotingSttusInfoInqireService)는 실시간 미제공 → info.nec.go.kr
 # VCAP01 페이지의 POST endpoint를 직접 스크래핑한다. 인증 불필요.
 #
-# 매 30분 무조건 실행. NEC가 매 정시(09:00, 10:00…)에 새 시간대 통계를
-# 발표하므로 30분 간격이면 발표 직후 안에 1회는 잡힘.
-
+# NEC가 매 정시(09:00, 10:00…)에 새 시간대 통계를 발표.
+#
+# cron은 :00/:30 같은 정각을 피한다 — GitHub Actions 스케줄러는 정각·30분에
+# 예약이 폭주해 그 시각 작업이 자주 15~45분 지연되거나 통째로 누락된다.
+# off-peak 분(:x3)에 10분 간격으로 걸어 시간당 6회 시도 → 일부가 드롭돼도
+# 매 정시 발표분을 몇 분 안에 잡는다. 중복 시각은 스크립트가 dedupe·commit skip.
 on:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '3,13,23,33,43,53 * * * *'
   workflow_dispatch:
 
 concurrency:
