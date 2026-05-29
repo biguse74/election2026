@@ -119,7 +119,7 @@
           var dd = s.turnout - b;
           if (!best || dd > best.dd) best = { sd: s.sdName, dd: dd };
         }
-        if (best) parts.push('최고속도 ' + (SHORT[best.sd] || best.sd) + ' ' + sgn(best.dd) + best.dd.toFixed(2) + '%p');
+        if (best) parts.push((SHORT[best.sd] || best.sd) + ' ' + sgn(best.dd) + best.dd.toFixed(2) + '%p');
       }
     }
     return parts.join(' · ');
