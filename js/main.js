@@ -2216,46 +2216,30 @@ function historyLocalGroupsHtml(result) {
       </details>`;
   }).join('');
 }
-// ===== 헥사곤 타일그램 (시도별 광역단체장 당선 정당) =====
-// 한국 실루엣을 작은 육각형으로 채운다. 아스키 격자: 토큰 1개 = 육각형 1칸(코드=시도).
-// pointy-top, 홀수 row는 +0.5칸 가로 오프셋.
-const HEX_TILEMAP = [
-  "..  ..  ..  ..  ..  ..  ..  GW  GW  GW  ..  ..  ..",
-  "..  IC  ..  ..  GG  GG  GG  GW  GW  GW  GW  ..  ..",
-  "..  ..  ..  IC  GG  SE  SE  GG  GW  GW  GW  GW  ..",
-  "..  ..  IC  IC  GG  SE  GG  GG  GW  GW  GW  GW  ..",
-  "..  ..  CN  GG  GG  GG  CB  GB  GB  GB  GB  GB  ..",
-  "..  ..  CN  CN  SJ  CB  CB  GB  GB  GB  GB  GB  ..",
-  "..  ..  CN  DJ  DJ  CB  CB  GB  GB  GB  US  US  ..",
-  "..  ..  JB  JB  JB  GN  DG  DG  GB  GB  US  ..  ..",
-  "..  ..  JB  JB  JB  GN  GN  GN  GB  BS  US  ..  ..",
-  "..  ..  JB  JN  GN  GN  GN  GN  BS  BS  ..  ..  ..",
-  "..  GJ  JN  JN  GN  GN  GN  BS  ..  ..  ..  ..  ..",
-  "..  JN  JN  JN  JN  ..  ..  ..  ..  ..  ..  ..  ..",
-  "..  ..  JN  JN  JN  ..  ..  ..  ..  ..  ..  ..  ..",
-  "..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..",
-  "..  ..  JJ  JJ  ..  ..  ..  ..  ..  ..  ..  ..  ..",
-  "..  ..  ..  JJ  ..  ..  ..  ..  ..  ..  ..  ..  ..",
-];
-const HEX_CODE_SD = {
-  GW: '강원특별자치도', GG: '경기도', SE: '서울특별시', IC: '인천광역시', CN: '충청남도',
-  SJ: '세종특별자치시', DJ: '대전광역시', CB: '충청북도', GB: '경상북도', DG: '대구광역시',
-  US: '울산광역시', JB: '전북특별자치도', GN: '경상남도', BS: '부산광역시', GJ: '광주광역시',
-  JN: '전라남도', JJ: '제주특별자치도',
+// ===== 헥사곤 카토그램 (시도별 광역단체장 당선 정당) =====
+// 값-비례 카토그램: 칸수를 '땅 면적'이 아니라 '유권자수(2026 기준)'에 비례 배정.
+//   → 수도권(경기16·서울11·인천4=31칸, 약 50%)이 크게, 강원은 2칸으로 작게.
+//   지리적 배치는 근사(수도권 상단·영남 우하·호남 좌하·강원 우상·제주 분리).
+// 각 시도 = [[col,row], ...]. pointy-top, 홀수 row는 +0.5칸 가로 오프셋.
+const HEX_CELLS = {
+  '서울특별시':     [[4,2],[5,2],[6,2],[3,3],[4,3],[5,3],[6,3],[4,4],[5,4],[6,4],[5,5]],
+  '경기도':         [[3,1],[4,1],[5,1],[6,1],[7,1],[2,2],[7,2],[2,3],[7,3],[2,4],[3,4],[7,4],[3,5],[4,5],[6,5],[7,5]],
+  '인천광역시':     [[1,2],[1,3],[1,4],[2,5]],
+  '강원특별자치도': [[8,1],[8,2]],
+  '경상북도':       [[8,3],[8,4],[8,5]],
+  '충청남도':       [[2,6],[3,6]],
+  '세종특별자치시': [[4,6]],
+  '충청북도':       [[5,6],[6,6]],
+  '대전광역시':     [[3,7],[4,7]],
+  '대구광역시':     [[7,6],[8,6],[7,7]],
+  '울산광역시':     [[9,6]],
+  '경상남도':       [[5,7],[6,7],[5,8],[6,8]],
+  '부산광역시':     [[7,8],[8,8],[7,9],[8,9]],
+  '전북특별자치도': [[3,8],[4,8]],
+  '전라남도':       [[3,9],[4,9]],
+  '광주광역시':     [[2,9],[2,10]],
+  '제주특별자치도': [[3,12]],
 };
-// 시도 → [[col,row], ...] (모듈 로드 시 1회 파싱)
-const HEX_CELLS = (() => {
-  const out = {};
-  HEX_TILEMAP.forEach((line, r) => {
-    line.trim().split(/\s+/).forEach((tok, c) => {
-      if (tok === '..') return;
-      const sd = HEX_CODE_SD[tok];
-      if (!sd) return;
-      (out[sd] = out[sd] || []).push([c, r]);
-    });
-  });
-  return out;
-})();
 const HEX_SHORT = {
   '서울특별시': '서울', '부산광역시': '부산', '대구광역시': '대구', '인천광역시': '인천',
   '광주광역시': '광주', '대전광역시': '대전', '울산광역시': '울산', '세종특별자치시': '세종',
@@ -2346,7 +2330,7 @@ function historyHexPanelHtml(countingElections, round) {
     <div class="history-hex-rounds" role="group" aria-label="회차 선택">${buttons}</div>
     <div class="history-hex-map">${historyHexCartogramSvg(map)}</div>
     <div class="history-hex-summary">${wins}</div>
-    <p class="trend-meta">한국 지도 모양으로 시도를 작은 육각형 여러 개로 그렸습니다 — 같은 색 묶음이 한 시도입니다. 색은 광역단체장 당선 정당 계열(빨강 국민의힘 계열·파랑 더불어민주당 계열·회색 무소속). 칸에 손을 올리면 당선자·득표율이 보입니다. 배치는 지리적 근사입니다.</p>`;
+    <p class="trend-meta">땅 면적이 아니라 <strong>유권자수에 비례</strong>해 칸수를 배정한 카토그램입니다(수도권이 전체의 절반). 면적 지도가 키우는 농·산촌 과대표를 보정해 '표의 무게'로 봅니다. 같은 색 묶음이 한 시도, 색은 광역단체장 당선 정당 계열(빨강 국민의힘 계열·파랑 더불어민주당 계열·회색 무소속). 칸에 손을 올리면 당선자·득표율이 보입니다.</p>`;
 }
 function updateHistoryHexRound(round) {
   state.historyHexRound = Number(round);
@@ -2505,7 +2489,7 @@ function renderHistoryFull() {
     </section>
 
     <section class="trend-section">
-      <h3 class="trend-section-title">시도별 당선 정당 지도 <small>광역단체장 · 헥사곤</small></h3>
+      <h3 class="trend-section-title">시도별 당선 정당 지도 <small>광역단체장 · 인구비례 카토그램</small></h3>
       <div data-history-hex-panel>${hexPanel}</div>
     </section>
 
