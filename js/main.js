@@ -2216,6 +2216,87 @@ function historyLocalGroupsHtml(result) {
       </details>`;
   }).join('');
 }
+// ===== 헥사곤 카토그램 (시도별 광역단체장 당선 정당) =====
+// 17개 시도를 지리적 위치를 근사한 육각형 격자에 배치. x는 hex-width 단위(반칸 offset 포함), row는 세로 칸.
+const HISTORY_HEX_LAYOUT = {
+  '강원특별자치도': { x: 4,   row: 0 },
+  '인천광역시':     { x: 1.5, row: 1 },
+  '서울특별시':     { x: 2.5, row: 1 },
+  '경기도':         { x: 3.5, row: 1 },
+  '충청남도':       { x: 1,   row: 2 },
+  '세종특별자치시': { x: 2,   row: 2 },
+  '충청북도':       { x: 3,   row: 2 },
+  '경상북도':       { x: 4,   row: 2 },
+  '전북특별자치도': { x: 1.5, row: 3 },
+  '대전광역시':     { x: 2.5, row: 3 },
+  '대구광역시':     { x: 4.5, row: 3 },
+  '울산광역시':     { x: 5.5, row: 3 },
+  '광주광역시':     { x: 1,   row: 4 },
+  '전라남도':       { x: 2,   row: 4 },
+  '경상남도':       { x: 3,   row: 4 },
+  '부산광역시':     { x: 4,   row: 4 },
+  '제주특별자치도': { x: 1,   row: 6 },
+};
+const HEX_SHORT = {
+  '서울특별시': '서울', '부산광역시': '부산', '대구광역시': '대구', '인천광역시': '인천',
+  '광주광역시': '광주', '대전광역시': '대전', '울산광역시': '울산', '세종특별자치시': '세종',
+  '경기도': '경기', '강원특별자치도': '강원', '충청북도': '충북', '충청남도': '충남',
+  '전북특별자치도': '전북', '전라남도': '전남', '경상북도': '경북', '경상남도': '경남', '제주특별자치도': '제주',
+};
+function hexPointsAt(cx, cy, r) {
+  const pts = [];
+  for (let i = 0; i < 6; i++) {
+    const a = (Math.PI / 180) * (60 * i - 90); // pointy-top (위쪽 꼭짓점)
+    pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`);
+  }
+  return pts.join(' ');
+}
+function historyHexCartogramSvg(sidoWinnerMap) {
+  const R = 30, ox = 12, oy = 36;
+  const W = Math.sqrt(3) * R, rowStep = 1.5 * R;
+  const cells = Object.entries(HISTORY_HEX_LAYOUT).map(([sd, pos]) => {
+    const cx = ox + pos.x * W + W / 2;
+    const cy = oy + pos.row * rowStep;
+    const d = sidoWinnerMap.get(sd);
+    const w = d?.winner;
+    const color = w?.party ? historyPartyColor(w.party) : '#e3e3e3';
+    const short = HEX_SHORT[sd] || sidoDisplayName(sd);
+    const title = w?.name
+      ? `${sidoDisplayName(sd)} · ${w.party || '무소속'} ${w.name}${w.vote_share != null ? ` ${w.vote_share.toFixed(1)}%` : ''}`
+      : `${sidoDisplayName(sd)} · 데이터 없음`;
+    return `<g><polygon points="${hexPointsAt(cx, cy, R)}" fill="${color}" stroke="#fff" stroke-width="2"><title>${escapeHtml(title)}</title></polygon>`
+      + `<text x="${cx.toFixed(1)}" y="${(cy + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" style="pointer-events:none">${escapeHtml(short)}</text></g>`;
+  }).join('');
+  const vbW = Math.round(ox + 6 * W + R + 12);
+  const vbH = Math.round(oy + 6 * rowStep + R + 12);
+  return `<svg class="history-hex-cartogram" viewBox="0 0 ${vbW} ${vbH}" role="img" aria-label="시도별 광역단체장 당선 정당 헥사곤 지도">${cells}</svg>`;
+}
+function historyHexPanelHtml(countingElections, round) {
+  const sel = countingElections.find(e => Number(e.round) === Number(round)) || countingElections[countingElections.length - 1];
+  const map = new Map();
+  for (const d of sel.governor.districts || []) map.set(normalizeHistorySidoName(d.sdName), d);
+  const buttons = countingElections.map(e => {
+    const on = Number(e.round) === Number(sel.round);
+    return `<button type="button" class="${on ? 'active' : ''}" data-history-hex-round="${e.round}" aria-pressed="${on}">${e.round}회<small>${e.year}</small></button>`;
+  }).join('');
+  const wins = (sel.governor.party_wins || []).map(pw =>
+    `<span class="history-hex-chip"><span class="hist-party-dot" style="background:${historyPartyColor(pw.party)}"></span>${escapeHtml(pw.party)} ${pw.wins}</span>`
+  ).join('');
+  return `
+    <div class="history-hex-rounds" role="group" aria-label="회차 선택">${buttons}</div>
+    <div class="history-hex-map">${historyHexCartogramSvg(map)}</div>
+    <div class="history-hex-summary">${wins}</div>
+    <p class="trend-meta">육각형 1개 = 시도 1곳. 색은 광역단체장 당선 정당 계열(빨강 국민의힘 계열·파랑 더불어민주당 계열·회색 무소속). 칸에 손을 올리면 당선자·득표율이 보입니다. 위치는 지리적 근사입니다.</p>`;
+}
+function updateHistoryHexRound(round) {
+  state.historyHexRound = Number(round);
+  const countingElections = (state.historyCounting?.elections || [])
+    .map(e => ({ ...e, governor: historyGovernorResult(e) }))
+    .filter(e => e.governor?.districts?.length);
+  const panel = document.querySelector('[data-history-hex-panel]');
+  if (!panel || !countingElections.length) return;
+  panel.innerHTML = historyHexPanelHtml(countingElections, state.historyHexRound);
+}
 function findClosestPastElection(turnout) {
   const elections = state.history?.elections || [];
   if (!elections.length) return null;
@@ -2261,6 +2342,8 @@ function renderHistoryFull() {
     : '-';
   const battlefields = historyBattlefieldItems(latest, Infinity);
   const battlefieldPanel = historyBattlefieldPanelHtml(battlefields, state.historyBattleFilter);
+  if (state.historyHexRound == null) state.historyHexRound = Number(latest.round);
+  const hexPanel = historyHexPanelHtml(countingElections, state.historyHexRound);
 
   const resultByRoundAndSido = new Map();
   for (const e of countingElections) {
@@ -2359,6 +2442,11 @@ function renderHistoryFull() {
         </table>
       </div>
       <p class="trend-meta">투표율은 같은 선거 전체 투표율입니다. 당선 분포는 선거구 합계행 기준이며, 정당별 숫자는 당선 지역 수입니다.</p>
+    </section>
+
+    <section class="trend-section">
+      <h3 class="trend-section-title">시도별 당선 정당 지도 <small>광역단체장 · 헥사곤</small></h3>
+      <div data-history-hex-panel>${hexPanel}</div>
     </section>
 
     <section class="trend-section">
@@ -5781,6 +5869,12 @@ async function main() {
       if (battleFilter) {
         e.preventDefault();
         updateHistoryBattlefieldFilter(battleFilter.dataset.historyBattleFilter);
+        return;
+      }
+      const hexRound = e.target.closest('[data-history-hex-round]');
+      if (hexRound) {
+        e.preventDefault();
+        updateHistoryHexRound(hexRound.dataset.historyHexRound);
       }
     });
     document.addEventListener('submit', async e => {

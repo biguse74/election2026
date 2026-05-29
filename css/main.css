@@ -1136,6 +1136,60 @@ footer a:hover { text-decoration: underline; }
   color: var(--ink-sub);
   font-size: 0.78rem;
 }
+
+/* 헥사곤 카토그램 (시도별 당선 정당) */
+.history-hex-rounds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.85rem;
+}
+.history-hex-rounds button {
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 0.26rem 0.66rem;
+  font-size: 0.78rem;
+  font-family: inherit;
+  color: var(--ink-sub);
+  background: rgba(255,255,255,0.42);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.history-hex-rounds button small { font-size: 0.68rem; color: var(--ink-sub); }
+.history-hex-rounds button:hover,
+.history-hex-rounds button.active {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: var(--bg-card);
+}
+.history-hex-rounds button.active { font-weight: 800; }
+.history-hex-rounds button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.history-hex-map {
+  display: flex;
+  justify-content: center;
+}
+.history-hex-cartogram {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+}
+.history-hex-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.7rem;
+  justify-content: center;
+  margin: 0.5rem 0 0.2rem;
+}
+.history-hex-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--ink);
+  font-weight: 600;
+}
 .history-battle-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
