@@ -2222,9 +2222,9 @@ function historyLocalGroupsHtml(result) {
 //   지리적 배치는 근사(수도권 상단·영남 우하·호남 좌하·강원 우상·제주 분리).
 // 각 시도 = [[col,row], ...]. pointy-top, 홀수 row는 +0.5칸 가로 오프셋.
 const HEX_CELLS = {
-  '서울특별시':     [[4,2],[5,2],[6,2],[3,3],[4,3],[5,3],[6,3],[4,4],[5,4],[6,4],[5,5]],
-  '경기도':         [[3,1],[4,1],[5,1],[6,1],[7,1],[2,2],[7,2],[2,3],[7,3],[2,4],[3,4],[7,4],[3,5],[4,5],[6,5],[7,5]],
-  '인천광역시':     [[1,2],[1,3],[1,4],[2,5]],
+  '서울특별시':     [[4,0],[5,0],[4,1],[5,1],[6,1],[4,2],[5,2],[6,2],[4,3],[5,3],[6,3]],
+  '경기도':         [[3,1],[3,2],[3,3],[2,2],[2,3],[3,4],[4,4],[5,4],[6,4],[7,4],[7,1],[7,2],[7,3],[4,5],[5,5],[6,5],[7,5]],
+  '인천광역시':     [[1,2],[1,3],[1,4],[2,4]],
   '강원특별자치도': [[8,1],[8,2]],
   '경상북도':       [[8,3],[8,4],[8,5]],
   '충청남도':       [[2,6],[3,6]],
@@ -2302,13 +2302,15 @@ function historyHexCartogramSvg(sidoWinnerMap) {
         }
       }
     }
-    // 라벨은 무게중심에 가장 가까운 '자기 칸'에 — 경기처럼 가운데가 빈 도넛형에서 라벨이 옆 시도 위에 얹히는 걸 방지
+    // 라벨은 가능하면 무게중심(센터)에. 중심이 자기 영역 밖(도넛형 등)이면 가장 가까운 자기 칸으로.
     const gx = sx / centers.length, gy = sy / centers.length;
-    let lx = centers[0][0], ly = centers[0][1], bestD = Infinity;
+    let nx = centers[0][0], ny = centers[0][1], bestD = Infinity;
     for (const [x, y] of centers) {
       const dd = (x - gx) * (x - gx) + (y - gy) * (y - gy);
-      if (dd < bestD) { bestD = dd; lx = x; ly = y; }
+      if (dd < bestD) { bestD = dd; nx = x; ny = y; }
     }
+    const inside = bestD <= (0.62 * W) * (0.62 * W);
+    const lx = inside ? gx : nx, ly = inside ? gy : ny;
     const short = HEX_SHORT[sd] || sidoDisplayName(sd);
     labels.push(`<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" style="pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,0.30);stroke-width:2.5px;stroke-linejoin:round">${escapeHtml(short)}</text>`);
   }
