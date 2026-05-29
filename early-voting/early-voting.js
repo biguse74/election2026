@@ -143,6 +143,51 @@ function renderHero(latest, baseline8, baseline7) {
   ua.textContent = fmtKST(latest.fetched_at) + ' (KST)';
 }
 
+function renderSidoStats(latest, baseline8) {
+  const root = document.getElementById('sido-stats');
+  if (!root) return;
+  if (!latest?.by_sido || latest.by_sido.length === 0 || latest.national?.turnout == null) {
+    root.innerHTML = '';
+    return;
+  }
+
+  const m8 = new Map((baseline8?.by_sido || []).map(s => [s.sdName, s.final]));
+
+  // 9회 현재 최고/최저
+  const sorted = [...latest.by_sido].sort((a, b) => b.turnout - a.turnout);
+  const top = sorted[0];
+  const bottom = sorted[sorted.length - 1];
+
+  // 8회 대비 진척률 (= 9회 현재 / 8회 최종 × 100) — 평균보다 격차가 가장 큰 시도
+  const withRate = latest.by_sido
+    .map(s => {
+      const f8 = m8.get(s.sdName);
+      return f8 ? { sd: s.sdName, rate: s.turnout / f8 * 100, f8 } : null;
+    })
+    .filter(Boolean);
+  withRate.sort((a, b) => b.rate - a.rate);
+  const fastest = withRate[0];
+
+  const short = (sd) => SIDO_SHORT[sd] || sd;
+  root.innerHTML = `
+    <div class="sido-stat-card">
+      <span class="sido-stat-label">최고 투표율</span>
+      <div><span class="sido-stat-value">${short(top.sdName)}</span><span class="sido-stat-pct">${fmtPct(top.turnout)}%</span></div>
+      <span class="sido-stat-sub">9회 현재 1위</span>
+    </div>
+    <div class="sido-stat-card">
+      <span class="sido-stat-label">최저 투표율</span>
+      <div><span class="sido-stat-value">${short(bottom.sdName)}</span><span class="sido-stat-pct sido-stat-pct-low">${fmtPct(bottom.turnout)}%</span></div>
+      <span class="sido-stat-sub">9회 현재 17위</span>
+    </div>
+    ${fastest ? `<div class="sido-stat-card">
+      <span class="sido-stat-label">8회 대비 진척 1위</span>
+      <div><span class="sido-stat-value">${short(fastest.sd)}</span><span class="sido-stat-pct">${fastest.rate.toFixed(2)}%</span></div>
+      <span class="sido-stat-sub">9회 누적 / 8회 최종 — 가장 빠른 진행</span>
+    </div>` : ''}
+  `;
+}
+
 function renderSidoList(latest, baseline8) {
   const root = document.getElementById('sido-list');
 
@@ -332,8 +377,9 @@ function renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21) 
     const v7 = arr7.find(r => r.hour === h)?.cum;
     const vGen22 = arrGen22.find(r => r.hour === h)?.cum;
     const vPres21 = arrPres21.find(r => r.hour === h)?.cum;
-    const isMarked = (h === 18) ? '마감' : (h === 7 ? '개시' : '');
-    const mark = isMarked ? `<span class="col-mark"> · ${isMarked}</span>` : '';
+    // 18시는 사전투표 마감 시각 — '마감' 표기 유지. 06시 실제 시작이지만 NEC 발표는 07시부터라
+    // 07시에 '개시'라 쓰면 오해 소지 → 표기 제거.
+    const mark = (h === 18) ? `<span class="col-mark"> · 마감</span>` : '';
     const trClass = (h === currentHour) ? ' class="row-9-current"' : '';
 
     const cell9 = v9 != null
@@ -384,6 +430,7 @@ async function main() {
   ]);
 
   renderHero(latest, baseline8, baseline7);
+  renderSidoStats(latest, baseline8);
   renderSidoList(latest, baseline8);
   renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
   bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21);
