@@ -2273,6 +2273,10 @@ function historyHexCartogramSvg(sidoWinnerMap) {
   const cellX = (c, r) => ox + (c + (r % 2) * 0.5) * W + W / 2;
   const cellY = (c, r) => oy + r * VS + R;
   const ckey = (x, y) => `${Math.round(x)},${Math.round(y)}`;
+  // 모든 칸 중심 (라벨 위치 판정용) — 무게중심이 어느 시도 칸 위인지 확인
+  const allCenters = [];
+  for (const [sd, cells] of Object.entries(HEX_CELLS))
+    for (const [c, r] of cells) allCenters.push([cellX(c, r), cellY(c, r), sd]);
   let maxX = 0, maxY = 0;
   const fills = [], borders = [], labels = [];
   for (const [sd, cells] of Object.entries(HEX_CELLS)) {
@@ -2302,15 +2306,21 @@ function historyHexCartogramSvg(sidoWinnerMap) {
         }
       }
     }
-    // 라벨은 가능하면 무게중심(센터)에. 중심이 자기 영역 밖(도넛형 등)이면 가장 가까운 자기 칸으로.
+    // 라벨: 무게중심이 '자기 시도 칸' 위에 떨어지면 중심에, 아니면(C자 도넛 등) 가장 가까운 자기 칸에.
     const gx = sx / centers.length, gy = sy / centers.length;
-    let nx = centers[0][0], ny = centers[0][1], bestD = Infinity;
-    for (const [x, y] of centers) {
+    let nearSd = sd, nearAll = Infinity;
+    for (const [x, y, s] of allCenters) {
       const dd = (x - gx) * (x - gx) + (y - gy) * (y - gy);
-      if (dd < bestD) { bestD = dd; nx = x; ny = y; }
+      if (dd < nearAll) { nearAll = dd; nearSd = s; }
     }
-    const inside = bestD <= (0.62 * W) * (0.62 * W);
-    const lx = inside ? gx : nx, ly = inside ? gy : ny;
+    let lx = gx, ly = gy;
+    if (nearSd !== sd) {
+      let bestD = Infinity;
+      for (const [x, y] of centers) {
+        const dd = (x - gx) * (x - gx) + (y - gy) * (y - gy);
+        if (dd < bestD) { bestD = dd; lx = x; ly = y; }
+      }
+    }
     const short = HEX_SHORT[sd] || sidoDisplayName(sd);
     labels.push(`<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" style="pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,0.30);stroke-width:2.5px;stroke-linejoin:round">${escapeHtml(short)}</text>`);
   }
