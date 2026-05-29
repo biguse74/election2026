@@ -1,116 +1,116 @@
 {
   "sgId": "20260603",
-  "fetched_at": "2026-05-30T08:14:15+09:00",
+  "fetched_at": "2026-05-30T08:56:04+09:00",
   "source": "info.nec.go.kr/VCAP01 (scrape)",
   "day1_time_code": "18",
-  "day2_time_code": "08",
+  "day2_time_code": "07",
   "by_sido": [
     {
       "sdName": "강원특별자치도",
       "voters": 1329742,
-      "voted": 206771,
-      "turnout": 15.55
+      "voted": 198926,
+      "turnout": 14.96
     },
     {
       "sdName": "경기도",
       "voters": 11878997,
-      "voted": 1278240,
-      "turnout": 10.76
+      "voted": 1219518,
+      "turnout": 10.27
     },
     {
       "sdName": "경상남도",
       "voters": 2775745,
-      "voted": 373261,
-      "turnout": 13.45
+      "voted": 357339,
+      "turnout": 12.87
     },
     {
       "sdName": "경상북도",
       "voters": 2202861,
-      "voted": 281178,
-      "turnout": 12.76
+      "voted": 270458,
+      "turnout": 12.28
     },
     {
       "sdName": "광주광역시",
       "voters": 1189519,
-      "voted": 182859,
-      "turnout": 15.37
+      "voted": 175592,
+      "turnout": 14.76
     },
     {
       "sdName": "대구광역시",
       "voters": 2049683,
-      "voted": 200962,
-      "turnout": 9.8
+      "voted": 192456,
+      "turnout": 9.39
     },
     {
       "sdName": "대전광역시",
       "voters": 1250891,
-      "voted": 146642,
-      "turnout": 11.72
+      "voted": 140309,
+      "turnout": 11.22
     },
     {
       "sdName": "부산광역시",
       "voters": 2857335,
-      "voted": 329257,
-      "turnout": 11.52
+      "voted": 317085,
+      "turnout": 11.1
     },
     {
       "sdName": "서울특별시",
       "voters": 8319134,
-      "voted": 1016003,
-      "turnout": 12.21
+      "voted": 974014,
+      "turnout": 11.71
     },
     {
       "sdName": "세종특별자치시",
       "voters": 309134,
-      "voted": 41983,
-      "turnout": 13.58
+      "voted": 40210,
+      "turnout": 13.01
     },
     {
       "sdName": "울산광역시",
       "voters": 936171,
-      "voted": 111522,
-      "turnout": 11.91
+      "voted": 106998,
+      "turnout": 11.43
     },
     {
       "sdName": "인천광역시",
       "voters": 2663459,
-      "voted": 296932,
-      "turnout": 11.15
+      "voted": 283128,
+      "turnout": 10.63
     },
     {
       "sdName": "전라남도",
       "voters": 1558206,
-      "voted": 375905,
-      "turnout": 24.12
+      "voted": 361637,
+      "turnout": 23.21
     },
     {
       "sdName": "전북특별자치도",
       "voters": 1509854,
-      "voted": 316789,
-      "turnout": 20.98
+      "voted": 304743,
+      "turnout": 20.18
     },
     {
       "sdName": "제주특별자치도",
       "voters": 565350,
-      "voted": 73455,
-      "turnout": 12.99
+      "voted": 70725,
+      "turnout": 12.51
     },
     {
       "sdName": "충청남도",
       "voters": 1857239,
-      "voted": 231606,
-      "turnout": 12.47
+      "voted": 221925,
+      "turnout": 11.95
     },
     {
       "sdName": "충청북도",
       "voters": 1396588,
-      "voted": 181842,
-      "turnout": 13.02
+      "voted": 173907,
+      "turnout": 12.45
     }
   ],
   "national": {
     "voters": 44649908,
-    "voted": 5645207,
-    "turnout": 12.64
+    "voted": 5408970,
+    "turnout": 12.11
   }
 }
