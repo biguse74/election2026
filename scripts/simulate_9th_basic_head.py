@@ -491,7 +491,8 @@ th {{ font-size: 0.78rem; color: #666; }}
   <p style="color:#666;font-size:0.85rem;margin:0 0 12px">현재 환경 추정(메인)·혼합·안정기 시나리오를 시군구별로 모두 표시. 시도 안에서 메인 확률 높은 순. 메인 막대는 민주 확률만 표시(높을수록 파랑 더 길게).</p>
   {sido_sections_html}
 </section>
-<section><h2>모델 검증 (Leave-one-out)</h2>
+<section><h2>모델 검증 — 과거 선거로 되짚어보기</h2>
+<p style="color:#666;font-size:0.85rem;margin:0 0 12px">과거 한 회차를 빼고 나머지 선거로 모델을 만든 뒤, 빼놓은 그 회차의 실제 결과를 얼마나 맞히는지 대조했습니다. <strong>평년 분위기였던 8회는 잘 맞혔고, 격변기였던 7회는 절반 수준에 그쳤습니다.</strong></p>
 <table style="max-width:380px"><thead><tr><th>대상</th><th>적중</th><th>정확도</th></tr></thead><tbody>{bt_rows}</tbody></table></section>
 <section class="limits"><h2>모델 한계</h2><ul>{limits}</ul></section>
 </body></html>

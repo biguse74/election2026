@@ -598,9 +598,9 @@ def _backtest_html(backtests: list, year_of: dict) -> str:
         )
     return f"""
     <section class="backtest">
-      <h2>모델 검증 (Leave-one-out)</h2>
-      <p class="backtest-note">대상 회차를 제외하고 학습 → 그 회차 예측 → 실제와 비교.
-      <strong>8회처럼 평년 환경엔 정확, 7회처럼 격변기엔 부정확.</strong></p>
+      <h2>모델 검증 — 과거 선거로 되짚어보기</h2>
+      <p class="backtest-note">과거 한 회차를 빼고 나머지 선거로 모델을 만든 뒤, 빼놓은 그 회차의 실제 결과를 얼마나 맞히는지 대조했습니다.
+      <strong>평년 분위기였던 8회는 잘 맞혔고, 정권 교체 직후 격변기였던 7회는 많이 빗나갔습니다.</strong></p>
       <table class="backtest-table">
         <thead><tr><th>대상</th><th>적중</th><th>정확도</th></tr></thead>
         <tbody>{"".join(rows)}</tbody>
