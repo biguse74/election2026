@@ -61,7 +61,7 @@
   <div style="max-width:1100px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:0.86rem;">
     <span style="background:rgba(255,255,255,0.18);padding:2px 8px;border-radius:999px;font-size:0.72rem;letter-spacing:0.04em;">사전투표 진행 중</span>
     <strong id="ev-bar-text">선관위 첫 발표 대기 (시간당 갱신)</strong>
-    <span style="margin-left:auto;font-size:0.82rem;opacity:0.85;">전체 시도별 보기 →</span>
+    <span style="margin-left:auto;font-size:0.82rem;opacity:0.85;">시도별 →</span>
   </div>
 </a>
 <script>
@@ -102,12 +102,12 @@
   function compose(d) {
     var v = d.national.turnout;
     var prog = progOf(d);
-    var parts = ['전국 누적 ' + fmtPct(v) + '%'];
+    var parts = ['전국 ' + fmtPct(v) + '%'];
     if (prog) {
       var v8 = natAt(prog.day, prog.hour);
       if (v8 != null) {
         var diff = v - v8;
-        parts.push('8회 같은 시각 ' + fmtPct(v8) + '% (' + sgn(diff) + diff.toFixed(2) + '%p)');
+        parts.push('8회 같은시각 ' + sgn(diff) + diff.toFixed(2) + '%p');
       }
       if (d.by_sido && d.by_sido.length) {
         var best = null;
@@ -118,7 +118,7 @@
           var dd = s.turnout - b;
           if (!best || dd > best.dd) best = { sd: s.sdName, dd: dd };
         }
-        if (best) parts.push((SHORT[best.sd] || best.sd) + ' 8회 대비 ' + sgn(best.dd) + best.dd.toFixed(2) + '%p로 최고 가속');
+        if (best) parts.push('최고가속 ' + (SHORT[best.sd] || best.sd) + ' ' + sgn(best.dd) + best.dd.toFixed(2) + '%p');
       }
     }
     return parts.join(' · ');
