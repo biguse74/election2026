@@ -60,34 +60,88 @@
 <a id="ev-bar" href="/early-voting/" hidden style="display:none;text-decoration:none;background:linear-gradient(90deg,#c41e3a,#a31628);color:#fff;font-weight:700;">
   <div style="max-width:1100px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:0.86rem;">
     <span style="background:rgba(255,255,255,0.18);padding:2px 8px;border-radius:999px;font-size:0.72rem;letter-spacing:0.04em;">사전투표 진행 중</span>
-    <strong id="ev-bar-text">선관위 첫 발표 대기 (시간당 갱신) · 8회 최종 20.62%</strong>
+    <strong id="ev-bar-text">선관위 첫 발표 대기 (시간당 갱신)</strong>
     <span style="margin-left:auto;font-size:0.82rem;opacity:0.85;">전체 시도별 보기 →</span>
   </div>
 </a>
 <script>
 (function () {
-  // 사전투표 기간(KST 5/29 06:00 ~ 5/30 18:00)에만 띠배너 표시 + latest.json 읽어 갱신
+  // 사전투표 기간(KST 5/29 06:00 ~ 5/30 18:30)에만 띠배너 표시.
+  // latest.json(9회 실시간) + baseline_8th.json(8회 같은 시각)을 읽어
+  //   전국 누적 · 8회 같은 시각 대비 ±%p · 가장 치고 나가는 시도 1개를 표시.
   var bar = document.getElementById('ev-bar');
   var txt = document.getElementById('ev-bar-text');
   if (!bar || !txt) return;
   var EV_START = new Date('2026-05-29T06:00:00+09:00').getTime();
   var EV_END   = new Date('2026-05-30T18:30:00+09:00').getTime();
+  var WAIT = '선관위 첫 발표 대기 (시간당 갱신)';
+  var SHORT = {'서울특별시':'서울','부산광역시':'부산','대구광역시':'대구','인천광역시':'인천','광주광역시':'광주','대전광역시':'대전','울산광역시':'울산','세종특별자치시':'세종','경기도':'경기','강원특별자치도':'강원','충청북도':'충북','충청남도':'충남','전북특별자치도':'전북','전라남도':'전남','경상북도':'경북','경상남도':'경남','제주특별자치도':'제주'};
+  var baseline = null;
   function inPeriod() { var n = Date.now(); return n >= EV_START && n <= EV_END; }
   function show() { bar.hidden = false; bar.style.display = 'block'; }
   function fmtPct(v) { return (v == null || isNaN(v)) ? '—' : Number(v).toFixed(2); }
+  function sgn(x) { return x > 0 ? '+' : (x < 0 ? '' : '±'); }
+  function progOf(d) {
+    if (d.day2_time_code) return { day: 2, hour: parseInt(d.day2_time_code, 10) };
+    if (d.day1_time_code) return { day: 1, hour: parseInt(d.day1_time_code, 10) };
+    return null;
+  }
+  function natAt(day, hour) {
+    if (!baseline || !baseline.hourly_national) return null;
+    var arr = baseline.hourly_national['day' + day] || [];
+    for (var i = 0; i < arr.length; i++) if (arr[i].hour === hour) return arr[i].cum;
+    return null;
+  }
+  function sidoAt(day, hour, sd) {
+    if (!baseline || !baseline.by_sido_hourly) return null;
+    var m = baseline.by_sido_hourly['day' + day];
+    if (!m || !m[sd]) return null;
+    var v = m[sd][String(hour)];
+    return (v == null ? null : v);
+  }
+  function compose(d) {
+    var v = d.national.turnout;
+    var prog = progOf(d);
+    var parts = ['전국 누적 ' + fmtPct(v) + '%'];
+    if (prog) {
+      var v8 = natAt(prog.day, prog.hour);
+      if (v8 != null) {
+        var diff = v - v8;
+        parts.push('8회 같은 시각 ' + fmtPct(v8) + '% (' + sgn(diff) + diff.toFixed(2) + '%p)');
+      }
+      if (d.by_sido && d.by_sido.length) {
+        var best = null;
+        for (var i = 0; i < d.by_sido.length; i++) {
+          var s = d.by_sido[i];
+          var b = sidoAt(prog.day, prog.hour, s.sdName);
+          if (b == null) continue;
+          var dd = s.turnout - b;
+          if (!best || dd > best.dd) best = { sd: s.sdName, dd: dd };
+        }
+        if (best) parts.push((SHORT[best.sd] || best.sd) + ' 8회 대비 ' + sgn(best.dd) + best.dd.toFixed(2) + '%p로 최고 가속');
+      }
+    }
+    return parts.join(' · ');
+  }
   function refresh() {
     if (!inPeriod()) return;
     show();
     fetch('data/early_voting/20260603/latest.json?t=' + Date.now(), { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (d) {
-        if (!d || !d.national) { txt.textContent = '선관위 첫 발표 대기 (시간당 갱신) · 8회 최종 20.62%'; return; }
-        var v = d.national.turnout;
-        txt.textContent = '전국 누적 ' + fmtPct(v) + '% · 8회 최종 20.62%';
+        if (!d || !d.national) { txt.textContent = WAIT; return; }
+        txt.textContent = compose(d);
       })
       .catch(function () { /* 무시 */ });
   }
-  if (inPeriod()) { refresh(); setInterval(refresh, 5 * 60 * 1000); }
+  if (inPeriod()) {
+    // 8회 baseline 먼저 로드 후 첫 갱신 (이후 5분 간격)
+    fetch('data/early_voting/baseline_8th.json?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (b) { baseline = b; })
+      .catch(function () { /* 무시 */ })
+      .then(function () { refresh(); setInterval(refresh, 5 * 60 * 1000); });
+  }
 })();
 </script>
 <div id="schedule-bar" class="schedule-bar" hidden>
