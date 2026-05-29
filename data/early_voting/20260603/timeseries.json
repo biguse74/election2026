@@ -1596,7 +1596,121 @@
         "voted": 5180486,
         "turnout": 11.6
       }
+    },
+    {
+      "at": "2026-05-30T07:00:00+09:00",
+      "day1_time_code": null,
+      "day2_time_code": "07",
+      "by_sido": [
+        {
+          "sdName": "서울특별시",
+          "voters": 8319134,
+          "voted": 974014,
+          "turnout": 11.71
+        },
+        {
+          "sdName": "부산광역시",
+          "voters": 2857335,
+          "voted": 317085,
+          "turnout": 11.1
+        },
+        {
+          "sdName": "대구광역시",
+          "voters": 2049683,
+          "voted": 192456,
+          "turnout": 9.39
+        },
+        {
+          "sdName": "인천광역시",
+          "voters": 2663459,
+          "voted": 283128,
+          "turnout": 10.63
+        },
+        {
+          "sdName": "광주광역시",
+          "voters": 1189519,
+          "voted": 175592,
+          "turnout": 14.76
+        },
+        {
+          "sdName": "대전광역시",
+          "voters": 1250891,
+          "voted": 140309,
+          "turnout": 11.22
+        },
+        {
+          "sdName": "울산광역시",
+          "voters": 936171,
+          "voted": 106998,
+          "turnout": 11.43
+        },
+        {
+          "sdName": "세종특별자치시",
+          "voters": 309134,
+          "voted": 40210,
+          "turnout": 13.01
+        },
+        {
+          "sdName": "경기도",
+          "voters": 11878997,
+          "voted": 1219518,
+          "turnout": 10.27
+        },
+        {
+          "sdName": "강원특별자치도",
+          "voters": 1329742,
+          "voted": 198926,
+          "turnout": 14.96
+        },
+        {
+          "sdName": "충청북도",
+          "voters": 1396588,
+          "voted": 173907,
+          "turnout": 12.45
+        },
+        {
+          "sdName": "충청남도",
+          "voters": 1857239,
+          "voted": 221925,
+          "turnout": 11.95
+        },
+        {
+          "sdName": "전북특별자치도",
+          "voters": 1509854,
+          "voted": 304743,
+          "turnout": 20.18
+        },
+        {
+          "sdName": "전라남도",
+          "voters": 1558206,
+          "voted": 361637,
+          "turnout": 23.21
+        },
+        {
+          "sdName": "경상북도",
+          "voters": 2202861,
+          "voted": 270458,
+          "turnout": 12.28
+        },
+        {
+          "sdName": "경상남도",
+          "voters": 2775745,
+          "voted": 357339,
+          "turnout": 12.87
+        },
+        {
+          "sdName": "제주특별자치도",
+          "voters": 565350,
+          "voted": 70725,
+          "turnout": 12.51
+        }
+      ],
+      "national": {
+        "voters": 44649908,
+        "voted": 5408970,
+        "turnout": 12.11
+      }
     }
   ],
-  "updated_at": "2026-05-29T19:01:47+09:00"
+  "updated_at": "2026-05-30T07:43:58+09:00"
 }
