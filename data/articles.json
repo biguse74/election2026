@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-05-29T18:57:59+09:00",
+  "updated_at": "2026-05-30T00:40:39+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 335,
+  "count": 336,
   "articles": [
+    {
+      "date": "2026-05-29",
+      "title": "강진구 잡겠다던 이제일, 무안·신안 고발도 맡았다",
+      "url": "https://newtamsa.org/news/_I4QJk",
+      "category": "심층분석",
+      "tags": [
+        "이제일",
+        "김어준",
+        "김용민",
+        "정천수",
+        "무안군",
+        "김산",
+        "신안군",
+        "박우량",
+        "뉴탐사",
+        "잡들이"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-05-28",
       "title": "1만 번 돌려본 6·3 지방선거… 광역 11곳, 국회 11석",
