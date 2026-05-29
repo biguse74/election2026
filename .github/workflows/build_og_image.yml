@@ -1,13 +1,14 @@
-name: og:image PNG 빌드
+name: og:image PNG 빌드 (수동 폴백)
 
-# assets/og.svg → assets/og.png 변환. PNG는 카톡·페북 등 한국 SNS에서
-# SVG보다 호환성이 압도적으로 좋다. og.svg가 바뀔 때 자동, 수동 트리거도 가능.
+# assets/og.svg → assets/og.png 변환 (rsvg). 한국어 폰트는 fonts-noto-cjk.
+#
+# 운영 기본: og.png / og-sim.png / og-early-voting.png 는 로컬에서
+# scripts/build_og_images.py · build_og_early_voting.py (Pillow + Noto KR)로
+# 생성해 직접 커밋한다. 미리보기·폰트 충실도가 좋다.
+# 이 워크플로우는 그 PNG를 자동으로 덮어쓰지 않도록 push 트리거를 제거하고
+# 수동(workflow_dispatch) 폴백으로만 남긴다. (rsvg 렌더가 필요할 때만 실행)
 
 on:
-  push:
-    paths:
-      - 'assets/og.svg'
-      - '.github/workflows/build_og_image.yml'
   workflow_dispatch:
 
 jobs:
