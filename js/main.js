@@ -2216,27 +2216,46 @@ function historyLocalGroupsHtml(result) {
       </details>`;
   }).join('');
 }
-// ===== 헥사곤 카토그램 (시도별 광역단체장 당선 정당) =====
-// 17개 시도를 지리적 위치를 근사한 육각형 격자에 배치. x는 hex-width 단위(반칸 offset 포함), row는 세로 칸.
-const HISTORY_HEX_LAYOUT = {
-  '강원특별자치도': { x: 4,   row: 0 },
-  '인천광역시':     { x: 1.5, row: 1 },
-  '서울특별시':     { x: 2.5, row: 1 },
-  '경기도':         { x: 3.5, row: 1 },
-  '충청남도':       { x: 1,   row: 2 },
-  '세종특별자치시': { x: 2,   row: 2 },
-  '충청북도':       { x: 3,   row: 2 },
-  '경상북도':       { x: 4,   row: 2 },
-  '전북특별자치도': { x: 1.5, row: 3 },
-  '대전광역시':     { x: 2.5, row: 3 },
-  '대구광역시':     { x: 4.5, row: 3 },
-  '울산광역시':     { x: 5.5, row: 3 },
-  '광주광역시':     { x: 1,   row: 4 },
-  '전라남도':       { x: 2,   row: 4 },
-  '경상남도':       { x: 3,   row: 4 },
-  '부산광역시':     { x: 4,   row: 4 },
-  '제주특별자치도': { x: 1,   row: 6 },
+// ===== 헥사곤 타일그램 (시도별 광역단체장 당선 정당) =====
+// 한국 실루엣을 작은 육각형으로 채운다. 아스키 격자: 토큰 1개 = 육각형 1칸(코드=시도).
+// pointy-top, 홀수 row는 +0.5칸 가로 오프셋.
+const HEX_TILEMAP = [
+  "..  ..  ..  ..  ..  ..  ..  GW  GW  GW  ..  ..  ..",
+  "..  IC  ..  ..  GG  GG  GG  GW  GW  GW  GW  ..  ..",
+  "..  ..  ..  IC  GG  SE  SE  GG  GW  GW  GW  GW  ..",
+  "..  ..  IC  IC  GG  SE  GG  GG  GW  GW  GW  GW  ..",
+  "..  ..  CN  GG  GG  GG  CB  GB  GB  GB  GB  GB  ..",
+  "..  ..  CN  CN  SJ  CB  CB  GB  GB  GB  GB  GB  ..",
+  "..  ..  CN  DJ  DJ  CB  CB  GB  GB  GB  US  US  ..",
+  "..  ..  JB  JB  JB  GN  DG  DG  GB  GB  US  ..  ..",
+  "..  ..  JB  JB  JB  GN  GN  GN  GB  BS  US  ..  ..",
+  "..  ..  JB  JN  GN  GN  GN  GN  BS  BS  ..  ..  ..",
+  "..  GJ  JN  JN  GN  GN  GN  BS  ..  ..  ..  ..  ..",
+  "..  JN  JN  JN  JN  GN  ..  ..  ..  ..  ..  ..  ..",
+  "..  ..  JN  JN  JN  ..  ..  ..  ..  ..  ..  ..  ..",
+  "..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..",
+  "..  ..  JJ  JJ  ..  ..  ..  ..  ..  ..  ..  ..  ..",
+  "..  ..  ..  JJ  ..  ..  ..  ..  ..  ..  ..  ..  ..",
+];
+const HEX_CODE_SD = {
+  GW: '강원특별자치도', GG: '경기도', SE: '서울특별시', IC: '인천광역시', CN: '충청남도',
+  SJ: '세종특별자치시', DJ: '대전광역시', CB: '충청북도', GB: '경상북도', DG: '대구광역시',
+  US: '울산광역시', JB: '전북특별자치도', GN: '경상남도', BS: '부산광역시', GJ: '광주광역시',
+  JN: '전라남도', JJ: '제주특별자치도',
 };
+// 시도 → [[col,row], ...] (모듈 로드 시 1회 파싱)
+const HEX_CELLS = (() => {
+  const out = {};
+  HEX_TILEMAP.forEach((line, r) => {
+    line.trim().split(/\s+/).forEach((tok, c) => {
+      if (tok === '..') return;
+      const sd = HEX_CODE_SD[tok];
+      if (!sd) return;
+      (out[sd] = out[sd] || []).push([c, r]);
+    });
+  });
+  return out;
+})();
 const HEX_SHORT = {
   '서울특별시': '서울', '부산광역시': '부산', '대구광역시': '대구', '인천광역시': '인천',
   '광주광역시': '광주', '대전광역시': '대전', '울산광역시': '울산', '세종특별자치시': '세종',
@@ -2252,24 +2271,33 @@ function hexPointsAt(cx, cy, r) {
   return pts.join(' ');
 }
 function historyHexCartogramSvg(sidoWinnerMap) {
-  const R = 30, ox = 12, oy = 36;
-  const W = Math.sqrt(3) * R, rowStep = 1.5 * R;
-  const cells = Object.entries(HISTORY_HEX_LAYOUT).map(([sd, pos]) => {
-    const cx = ox + pos.x * W + W / 2;
-    const cy = oy + pos.row * rowStep;
+  const R = 17, ox = 6, oy = 6;
+  const W = Math.sqrt(3) * R, VS = 1.5 * R;
+  const cellX = (c, r) => ox + (c + (r % 2) * 0.5) * W + W / 2;
+  const cellY = (c, r) => oy + r * VS + R;
+  let maxX = 0, maxY = 0;
+  const groups = Object.entries(HEX_CELLS).map(([sd, cells]) => {
     const d = sidoWinnerMap.get(sd);
     const w = d?.winner;
-    const color = w?.party ? historyPartyColor(w.party) : '#e3e3e3';
+    const color = w?.party ? historyPartyColor(w.party) : '#dcdcdc';
+    let sx = 0, sy = 0;
+    const polys = cells.map(([c, r]) => {
+      const x = cellX(c, r), y = cellY(c, r);
+      sx += x; sy += y;
+      if (x + W / 2 > maxX) maxX = x + W / 2;
+      if (y + R > maxY) maxY = y + R;
+      return `<polygon points="${hexPointsAt(x, y, R)}" fill="${color}" stroke="#fff" stroke-width="1.5"/>`;
+    }).join('');
+    const lx = sx / cells.length, ly = sy / cells.length;
     const short = HEX_SHORT[sd] || sidoDisplayName(sd);
     const title = w?.name
       ? `${sidoDisplayName(sd)} · ${w.party || '무소속'} ${w.name}${w.vote_share != null ? ` ${w.vote_share.toFixed(1)}%` : ''}`
       : `${sidoDisplayName(sd)} · 데이터 없음`;
-    return `<g><polygon points="${hexPointsAt(cx, cy, R)}" fill="${color}" stroke="#fff" stroke-width="2"><title>${escapeHtml(title)}</title></polygon>`
-      + `<text x="${cx.toFixed(1)}" y="${(cy + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" style="pointer-events:none">${escapeHtml(short)}</text></g>`;
+    const label = `<text x="${lx.toFixed(1)}" y="${(ly + 4).toFixed(1)}" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" style="pointer-events:none;paint-order:stroke;stroke:rgba(0,0,0,0.28);stroke-width:2.5px;stroke-linejoin:round">${escapeHtml(short)}</text>`;
+    return `<g><title>${escapeHtml(title)}</title>${polys}${label}</g>`;
   }).join('');
-  const vbW = Math.round(ox + 6 * W + R + 12);
-  const vbH = Math.round(oy + 6 * rowStep + R + 12);
-  return `<svg class="history-hex-cartogram" viewBox="0 0 ${vbW} ${vbH}" role="img" aria-label="시도별 광역단체장 당선 정당 헥사곤 지도">${cells}</svg>`;
+  const vbW = Math.round(maxX + ox), vbH = Math.round(maxY + oy);
+  return `<svg class="history-hex-cartogram" viewBox="0 0 ${vbW} ${vbH}" role="img" aria-label="시도별 광역단체장 당선 정당 한국지도">${groups}</svg>`;
 }
 function historyHexPanelHtml(countingElections, round) {
   const sel = countingElections.find(e => Number(e.round) === Number(round)) || countingElections[countingElections.length - 1];
