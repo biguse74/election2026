@@ -243,24 +243,28 @@
 
   <section class="block">
     <h2>시간대별 누적 표 (전국)</h2>
-    <p class="block-sub">매 정시(07~18시) 누적 사전투표율. 9회 빨강·8회·7회 같은 시각 비교 · 8회 대비 ±%p.</p>
+    <p class="block-sub">매 정시(07~18시) 누적 사전투표율. 9회 빨강·과거 4회차 같은 시각 비교 · 8회 대비 ±%p. 21대 대선(2025)·22대 총선(2024)은 선거 종류가 달라 참고용.</p>
     <div class="hourly-table-wrap">
       <div class="hourly-day-tabs">
         <button class="hourly-tab active" data-day="1">1일차 <span class="hourly-tab-sub">5/29 (금)</span></button>
         <button class="hourly-tab" data-day="2">2일차 <span class="hourly-tab-sub">5/30 (토)</span></button>
       </div>
-      <table class="hourly" id="hourly-table">
-        <thead>
-          <tr>
-            <th>시각</th>
-            <th>9회 (2026)</th>
-            <th>8회 (2022)</th>
-            <th>7회 (2018)</th>
-            <th>8회 대비</th>
-          </tr>
-        </thead>
-        <tbody id="hourly-tbody"></tbody>
-      </table>
+      <div style="overflow-x:auto;">
+        <table class="hourly" id="hourly-table" style="min-width:680px;">
+          <thead>
+            <tr>
+              <th>시각</th>
+              <th>9회 지선 (2026)</th>
+              <th>8회 지선 (2022)</th>
+              <th>7회 지선 (2018)</th>
+              <th>21대 대선 (2025)</th>
+              <th>22대 총선 (2024)</th>
+              <th>8회 대비</th>
+            </tr>
+          </thead>
+          <tbody id="hourly-tbody"></tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -307,6 +311,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="early-voting.js?v=202605290900b"></script>
+<script src="early-voting.js?v=202605290945"></script>
 </body>
 </html>

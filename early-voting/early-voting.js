@@ -10,6 +10,8 @@ const PATHS = {
   latest:     `../data/early_voting/${SG_ID}/latest.json`,
   baseline8:  `../data/early_voting/baseline_8th.json`,
   baseline7:  `../data/early_voting/baseline_7th.json`,
+  baselineGen22:  `../data/early_voting/baseline_general22nd.json`,
+  basePres21:     `../data/early_voting/baseline_president21st.json`,
 };
 
 // 시도 표준 순서 (행정안전부) — 그리드 정렬용
@@ -304,20 +306,21 @@ function build9hRoundIndex(ts) {
   return idx;
 }
 
-function renderHourlyTable(ts, baseline8, baseline7) {
+function renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21) {
   const tbody = document.getElementById('hourly-tbody');
   if (!tbody) return;
   const day = parseInt(document.querySelector('.hourly-tab.active')?.dataset?.day || '1', 10);
 
   const idx9 = build9hRoundIndex(ts);
-  const arr8 = baseline8?.hourly_national?.[`day${day}`] || [];
-  const arr7 = baseline7?.hourly_national?.[`day${day}`] || [];
+  const pick = (b) => b?.hourly_national?.[`day${day}`] || [];
+  const arr8 = pick(baseline8);
+  const arr7 = pick(baseline7);
+  const arrGen22 = pick(baselineGen22);
+  const arrPres21 = pick(basePres21);
 
-  // 모든 시각 (07~18) 합집합
   const hours = [];
   for (let h = 7; h <= 18; h++) hours.push(h);
 
-  // 현재 가장 최신 9회 시각 찾기 (강조용)
   let currentHour = null;
   for (let h = 18; h >= 7; h--) {
     if (idx9[day].has(h)) { currentHour = h; break; }
@@ -325,10 +328,10 @@ function renderHourlyTable(ts, baseline8, baseline7) {
 
   const rows = hours.map(h => {
     const v9 = idx9[day].get(h);
-    const r8 = arr8.find(r => r.hour === h);
-    const r7 = arr7.find(r => r.hour === h);
-    const v8 = r8?.cum;
-    const v7 = r7?.cum;
+    const v8 = arr8.find(r => r.hour === h)?.cum;
+    const v7 = arr7.find(r => r.hour === h)?.cum;
+    const vGen22 = arrGen22.find(r => r.hour === h)?.cum;
+    const vPres21 = arrPres21.find(r => r.hour === h)?.cum;
     const isMarked = (h === 18) ? '마감' : (h === 7 ? '개시' : '');
     const mark = isMarked ? `<span class="col-mark"> · ${isMarked}</span>` : '';
     const trClass = (h === currentHour) ? ' class="row-9-current"' : '';
@@ -345,11 +348,14 @@ function renderHourlyTable(ts, baseline8, baseline7) {
       deltaCell = `<td class="${cls}">${sign}${d.toFixed(2)}%p</td>`;
     }
 
+    const cell = (v) => `<td>${v != null ? fmtPct(v) + '%' : '—'}</td>`;
     return `<tr${trClass}>
       <td>${String(h).padStart(2,'0')}시${mark}</td>
       ${cell9}
-      <td>${v8 != null ? fmtPct(v8) + '%' : '—'}</td>
-      <td>${v7 != null ? fmtPct(v7) + '%' : '—'}</td>
+      ${cell(v8)}
+      ${cell(v7)}
+      ${cell(vPres21)}
+      ${cell(vGen22)}
       ${deltaCell}
     </tr>`;
   }).join('');
@@ -357,28 +363,30 @@ function renderHourlyTable(ts, baseline8, baseline7) {
   tbody.innerHTML = rows;
 }
 
-function bindHourlyTabs(ts, baseline8, baseline7) {
+function bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21) {
   document.querySelectorAll('.hourly-tab').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.hourly-tab').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      renderHourlyTable(ts, baseline8, baseline7);
+      renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
     });
   });
 }
 
 async function main() {
-  const [latest, ts, baseline8, baseline7] = await Promise.all([
+  const [latest, ts, baseline8, baseline7, baselineGen22, basePres21] = await Promise.all([
     loadJSON(PATHS.latest),
     loadJSON(PATHS.timeseries),
     loadJSON(PATHS.baseline8),
     loadJSON(PATHS.baseline7),
+    loadJSON(PATHS.baselineGen22),
+    loadJSON(PATHS.basePres21),
   ]);
 
   renderHero(latest, baseline8, baseline7);
   renderSidoList(latest, baseline8);
-  renderHourlyTable(ts, baseline8, baseline7);
-  bindHourlyTabs(ts, baseline8, baseline7);
+  renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
+  bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21);
   renderTimeline(ts, baseline8, baseline7);
 }
 
