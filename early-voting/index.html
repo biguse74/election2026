@@ -68,6 +68,9 @@
     background: #fafafa;
   }
   .hero-card-main { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+  /* 8회 기준값 카드 — 9회(라이브) 진검정과 구분되는 차가운 슬레이트 톤.
+     사이트 전반에서 8회를 회색으로 쓰는 것과 일관. 위계: 9회 > 8회. */
+  .hero-card-ref { background: #2e333b; border-color: #2e333b; }
   .hero-label { font-size: 0.78rem; color: rgba(255,255,255,0.65); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
   .hero-card:not(.hero-card-main) .hero-label { color: var(--muted); }
   .hero-big {
@@ -262,7 +265,7 @@
       <div class="hero-big" id="hero-9">—<span class="pct">%</span></div>
       <div class="hero-meta" id="hero-9-meta">로딩 중…</div>
     </div>
-    <div class="hero-card hero-card-main">
+    <div class="hero-card hero-card-main hero-card-ref">
       <div class="hero-label">8회(2022) 같은 시각</div>
       <div class="hero-big" id="hero-8">—<span class="pct">%</span></div>
       <div class="hero-meta" id="hero-8-meta">8회 1·2일차 매 정시 누적 (위키·NEC)</div>
