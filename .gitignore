@@ -18,3 +18,6 @@ tmp/
 .DS_Store
 Thumbs.db
 .claude/
+
+# 작업 스케줄러 로컬 로그
+data/early_voting/_scheduler.log

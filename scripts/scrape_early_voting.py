@@ -277,9 +277,6 @@ def main() -> None:
         if append_timeseries(ts, at, by_m, nat_m, None, f"{h:02d}"):
             added += 1
 
-    ts["updated_at"] = started_at.isoformat(timespec="seconds")
-    TIMESERIES_PATH.write_text(json.dumps(ts, ensure_ascii=False, indent=2), encoding="utf-8")
-
     # 최신 상태 결정 (2일차가 있으면 양일 누적, 없으면 1일차 최신)
     if day2:
         hmax2 = max(day2)
@@ -295,22 +292,6 @@ def main() -> None:
         latest_nat, latest_by = day1[hmax1]
         latest_d1_code, latest_d2_code = f"{hmax1:02d}", None
 
-    # raw snapshot (최신 상태)
-    SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
-    stamp = started_at.strftime("%Y%m%d_%H%M")
-    snapshot_path = SNAPSHOT_DIR / f"snapshot_{stamp}.json"
-    snapshot = {
-        "sgId": TARGET_SG_ID,
-        "fetched_at": started_at.isoformat(timespec="seconds"),
-        "source": "info.nec.go.kr/VCAP01 (scrape)",
-        "day1_time_code": latest_d1_code,
-        "day2_time_code": latest_d2_code,
-        "national": latest_nat,
-        "by_sido": latest_by,
-    }
-    snapshot_path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    # latest
     latest = {
         "sgId": TARGET_SG_ID,
         "fetched_at": started_at.isoformat(timespec="seconds"),
@@ -320,15 +301,49 @@ def main() -> None:
         "by_sido": sorted(latest_by, key=lambda s: s["sdName"]),
         "national": latest_nat,
     }
-    LATEST_PATH.write_text(json.dumps(latest, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    # idempotent: 새 데이터(새 시각)나 수치 변동이 없으면 파일을 건드리지 않는다.
+    #   → 작업 스케줄러/cron이 자주 돌아도 노이즈 커밋이 생기지 않음(fetched_at만 바뀌는 쓰기 방지).
+    def _payload(d):  # 비교용 — 수집 시각(fetched_at)은 제외
+        return {k: d[k] for k in d if k != "fetched_at"}
+    prev_latest = None
+    if LATEST_PATH.exists():
+        try:
+            prev_latest = json.loads(LATEST_PATH.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            prev_latest = None
+    data_changed = (prev_latest is None) or (_payload(prev_latest) != _payload(latest))
+
+    if added > 0:
+        ts["updated_at"] = started_at.isoformat(timespec="seconds")
+        TIMESERIES_PATH.write_text(json.dumps(ts, ensure_ascii=False, indent=2), encoding="utf-8")
+        SNAPSHOT_DIR.mkdir(parents=True, exist_ok=True)
+        stamp = started_at.strftime("%Y%m%d_%H%M")
+        snapshot = {
+            "sgId": TARGET_SG_ID,
+            "fetched_at": started_at.isoformat(timespec="seconds"),
+            "source": "info.nec.go.kr/VCAP01 (scrape)",
+            "day1_time_code": latest_d1_code,
+            "day2_time_code": latest_d2_code,
+            "national": latest_nat,
+            "by_sido": latest_by,
+        }
+        (SNAPSHOT_DIR / f"snapshot_{stamp}.json").write_text(
+            json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    if data_changed:
+        LATEST_PATH.write_text(json.dumps(latest, ensure_ascii=False, indent=2), encoding="utf-8")
 
     cur_label = (f"2일차 {latest_d2_code}시" if day2 else f"1일차 {latest_d1_code}시")
     print()
     print(f"최신: {cur_label} · 전국 {latest_nat['turnout']}% ({latest_nat['voted']:,}/{latest_nat['voters']:,})")
     print("=" * 60)
-    print(f"  - timeseries 신규 추가: {added}건 (총 {len(ts['snapshots'])}건)")
-    print(f"  - snapshot: {snapshot_path.relative_to(ROOT_DIR)}")
-    print(f"  - latest: {LATEST_PATH.relative_to(ROOT_DIR)}")
+    if added > 0:
+        print(f"  - timeseries 신규 추가: {added}건 (총 {len(ts['snapshots'])}건) → 파일 갱신")
+    elif data_changed:
+        print("  - 새 시각 없음 · 수치만 변동 → latest.json만 갱신")
+    else:
+        print("  - 변동 없음 → 파일 미갱신 (커밋 noise 없음)")
     print("=" * 60)
 
 
