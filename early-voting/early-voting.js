@@ -456,6 +456,60 @@ function bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21) {
   });
 }
 
+// 최종 사전투표율(양일 누적) 예측.
+// 방법: 현재 (day,hour) 누적 × (과거 회차의 같은 시점 → 최종 배수).
+//   같은 시점이 진행될수록 배수는 1에 수렴 → 예측이 실측으로 자연 수렴.
+//   직전 동종 선거(8회 지선)를 중심값으로, 지선 2회(8·7회)로 범위, 대선·총선은 참고.
+function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21) {
+  const root = document.getElementById('forecast');
+  if (!root) return;
+  const prog = progressFromLatest(latest);
+  const cur = latest?.national?.turnout;
+  if (!prog || cur == null) { root.hidden = true; root.innerHTML = ''; return; }
+
+  const refs = [
+    { key: '8회 지선', kind: 'jiseon', b: baseline8 },
+    { key: '7회 지선', kind: 'jiseon', b: baseline7 },
+    { key: '22대 총선', kind: 'ref', b: baselineGen22 },
+    { key: '21대 대선', kind: 'ref', b: basePres21 },
+  ];
+  const ests = [];
+  for (const r of refs) {
+    const same = baselineAt(r.b, prog.day, prog.hour);
+    const fin = r.b?.national_final;
+    if (same && fin && same > 0) ests.push({ ...r, pred: cur * (fin / same) });
+  }
+  if (!ests.length) { root.hidden = true; root.innerHTML = ''; return; }
+
+  const e8 = ests.find(e => e.key === '8회 지선');
+  const center = (e8 || ests[0]).pred;                 // 중심값: 직전 8회 패턴
+  const all = ests.map(e => e.pred);
+  const lo = Math.min(...all), hi = Math.max(...all);  // 회차별 범위
+
+  const dayLabel = prog.day === 2 ? '2일차 진행 중' : (prog.hour >= 18 ? '1일차 마감' : '1일차 진행 중');
+  const chips = ests.map(e =>
+    `<span class="fc-chip ${e.kind === 'jiseon' ? 'fc-chip-j' : ''}">${e.key} ${e.pred.toFixed(1)}%</span>`
+  ).join('');
+
+  root.hidden = false;
+  root.innerHTML = `
+    <div class="fc-head">
+      <span class="fc-label">최종 사전투표율 예측 <span class="fc-sub2">(양일 누적)</span></span>
+      <span class="fc-tag">통계 추정 · 단정·여론조사 아님</span>
+    </div>
+    <div class="fc-body">
+      <div class="fc-main">
+        <span class="fc-big">${center.toFixed(1)}<span class="fc-pct">%</span></span>
+        <span class="fc-range">회차별 ${lo.toFixed(1)}~${hi.toFixed(1)}%</span>
+      </div>
+      <div class="fc-explain">
+        현재 <strong>${fmtPct(cur)}%</strong> (${dayLabel}) · 직전 <strong>8회 지선</strong> 같은 시점 패턴 적용.
+        2일차가 진행될수록 예측이 실측으로 수렴합니다.
+      </div>
+    </div>
+    <div class="fc-chips">${chips}</div>`;
+}
+
 async function main() {
   const [latest, ts, baseline8, baseline7, baselineGen22, basePres21] = await Promise.all([
     loadJSON(PATHS.latest),
@@ -467,6 +521,7 @@ async function main() {
   ]);
 
   renderHero(latest, baseline8, baseline7);
+  renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21);
   renderSidoStats(latest, baseline8);
   renderSidoList(latest, baseline8);
   renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);

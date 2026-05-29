@@ -109,6 +109,28 @@
     color: var(--muted); font-size: 0.86rem; margin: 0 0 14px;
   }
 
+  /* 최종 예측 박스 */
+  .forecast {
+    border: 1px solid var(--line); border-radius: 10px;
+    background: linear-gradient(180deg, #fff, #fafafa);
+    padding: 16px 18px; margin: 0 0 28px;
+    border-left: 4px solid var(--accent);
+  }
+  .fc-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .fc-label { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.02rem; }
+  .fc-sub2 { font-weight: 600; font-size: 0.82rem; color: var(--muted); }
+  .fc-tag { font-size: 0.7rem; font-weight: 700; color: var(--muted); background: #f0f0f0; padding: 3px 8px; border-radius: 999px; }
+  .fc-body { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .fc-main { display: flex; align-items: baseline; gap: 10px; }
+  .fc-big { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 2.6rem; line-height: 1; color: var(--accent); letter-spacing: -0.02em; }
+  .fc-pct { font-size: 0.42em; font-weight: 700; margin-left: 2px; }
+  .fc-range { font-size: 0.88rem; font-weight: 700; color: var(--muted); }
+  .fc-explain { font-size: 0.82rem; color: var(--muted); line-height: 1.5; flex: 1 1 240px; }
+  .fc-explain strong { color: var(--ink); }
+  .fc-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .fc-chip { font-size: 0.74rem; font-weight: 600; color: var(--muted); background: #f4f4f4; border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; }
+  .fc-chip-j { color: var(--ink); background: #fff; border-color: #d8d8d8; font-weight: 700; }
+
   /* 시도 통계 카드 */
   .sido-stats {
     display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -281,6 +303,8 @@
     </div>
   </section>
 
+  <section id="forecast" class="forecast" hidden></section>
+
   <section class="block">
     <h2>시간대별 누적 표 (전국)</h2>
     <p class="block-sub">매 정시(07~18시) 누적 사전투표율. 9회 빨강·과거 4회차 같은 시각 비교 · 8회 대비 ±%p. 21대 대선(2025)·22대 총선(2024)은 선거 종류가 달라 참고용.</p>
@@ -336,6 +360,8 @@
     · 8회 시도×시간대: 중앙선거관리위원회 선거통계시스템 사전투표현황 엑셀 (1·2일차 실측).
       day2는 양일 누적(1일차 final + 2일차 시간대) 기준.<br>
     · 7회·21대 대선·22대 총선 시간대별: 선관위 매 정시 공시 등 공개 자료 종합.<br>
+    · <strong>최종 예측</strong>: 현재 누적 × (과거 회차의 같은 시점→최종 배수)로 계산한 <strong>통계 추정치</strong>입니다.
+      직전 8회 지선을 중심값, 지선·대선·총선 4회차로 범위를 제시. 여론조사·당락 예측이 아니며 단정하지 않습니다.<br>
     · 사전투표 시작 전·중에는 시점별 데이터가 들쭉날쭉 보일 수 있습니다. 본투표(6/3) 결과·당락은 별개입니다.<br>
     · 오류 제보 <a href="mailto:news@newtamsa.org">news@newtamsa.org</a>
   </aside>
@@ -354,6 +380,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="early-voting.js?v=202605291130"></script>
+<script src="early-voting.js?v=202605291900"></script>
 </body>
 </html>
