@@ -163,6 +163,27 @@ const koSort = (a, b) => a.localeCompare(b, 'ko');
 // ============ Helpers ============
 const partyColor = name => state.parties[name] || (name === '무소속' ? '#888' : '#bbb');
 
+// 지난 선거 결과 표시용 — 옛 당명까지 계열로 묶어 색을 부여.
+//   · 국민의힘 계열(보수) = 빨강, 더불어민주당 계열(민주) = 파랑
+//   · 자민련 계열은 사용자 지침에 따라 국힘 계열로 분류
+//   · 무소속 = 회색, 그 외 군소정당은 parties.json 색 또는 중립 회색
+const HIST_CONSERVATIVE = new Set([
+  '국민의힘', '자유한국당', '새누리당', '한나라당', '미래통합당', '신한국당', '민주자유당',
+  '자민련', '자유민주연합', '자유선진당', '국민중심당', '국민중심연합', '친박연대', '친박연합',
+]);
+const HIST_LIBERAL = new Set([
+  '더불어민주당', '민주당', '새정치민주연합', '새천년민주당', '열린우리당',
+  '평화민주당', '민주평화당', '새정치국민회의', '국민회의', '통합민주당', '민주통합당',
+]);
+function historyPartyColor(party) {
+  const p = (party || '').trim();
+  if (!p || p === '기타') return '#bbb';
+  if (p === '무소속') return '#888';
+  if (HIST_CONSERVATIVE.has(p)) return state.parties['국민의힘'] || '#E61E2B';
+  if (HIST_LIBERAL.has(p)) return state.parties['더불어민주당'] || '#152484';
+  return state.parties[p] || '#bbb';
+}
+
 function dedupeByHuboid(list) {
   const seen = new Set();
   const out = [];
@@ -1957,8 +1978,9 @@ function normalizeHistorySidoName(sd) {
 function historyWinnerCell(district) {
   const winner = district?.winner;
   if (!winner?.name) return '<span class="hist-empty">-</span>';
+  const color = historyPartyColor(winner.party);
   return `
-    <span class="history-winner-party">${winner.party || '무소속'}</span>
+    <span class="history-winner-party" style="color:${color}"><span class="hist-party-dot" style="background:${color}"></span>${winner.party || '무소속'}</span>
     <strong>${winner.name}</strong>
     <small>${winner.vote_share != null ? winner.vote_share.toFixed(2) + '%' : '-'}</small>`;
 }
@@ -2176,8 +2198,9 @@ function historyLocalGroupsHtml(result) {
       const marginText = margin
         ? `${margin.second.name}와 ${margin.marginPct.toFixed(2)}%p 차`
         : '상대 후보 없음 또는 격차 미상';
+      const color = d.winner?.party ? historyPartyColor(d.winner.party) : 'transparent';
       return `
-        <li class="history-local-card">
+        <li class="history-local-card" style="box-shadow:inset 3px 0 0 ${color}">
           <span class="history-local-district">${escapeHtml(d.sggName || '-')}</span>
           <strong>${escapeHtml(historyWinnerLine(d))}</strong>
           <small>${escapeHtml(marginText)}</small>
@@ -2251,7 +2274,8 @@ function renderHistoryFull() {
   const regionRows = orderedSidos.map(sd => {
     const cells = countingElections.map(e => {
       const d = resultByRoundAndSido.get(Number(e.round))?.get(sd);
-      return `<td class="history-result-cell" data-label="제${e.round}회 ${e.year}">${historyWinnerCell(d)}</td>`;
+      const color = d?.winner?.party ? historyPartyColor(d.winner.party) : 'transparent';
+      return `<td class="history-result-cell" style="box-shadow:inset 3px 0 0 ${color}" data-label="제${e.round}회 ${e.year}">${historyWinnerCell(d)}</td>`;
     }).join('');
     return `<tr><th class="history-region-name">${sidoDisplayName(sd)}</th>${cells}</tr>`;
   }).join('');

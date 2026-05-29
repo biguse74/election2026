@@ -1290,6 +1290,15 @@ footer a:hover { text-decoration: underline; }
   display: block;
   color: var(--ink-sub);
   font-size: 0.72rem;
+  font-weight: 700;
+}
+.hist-party-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
 }
 .history-result-cell strong {
   display: block;
