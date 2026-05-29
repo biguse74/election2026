@@ -31,7 +31,22 @@ const SIDO_SHORT = {
   '제주특별자치도': '제주',
 };
 
-const BAR_MAX_PCT = 35; // 막대 100% width가 가리키는 사전투표율 상한 (8회 전남 31% 커버)
+// 막대 100% width 상한 — 현재 데이터에 맞춰 동적으로 계산 (renderSidoList에서 결정)
+// 시간대 비교라 이른 시각엔 1~5%, 마감 임박엔 25%+ 까지 변동
+
+// 8회 시도별 같은 시간대 추정.
+// NEC가 8회 시도×시간대 누적은 공개하지 않아, 시도별 가속 패턴이 전국 평균과
+// 비례한다고 가정해 추정한다:
+//   sido_8_at(day,hour) ≈ sido_8_final × (national_8_at(day,hour) / national_8_final)
+// 시도별로 새벽·낮·저녁 시간대 분포가 약간 다를 수 있으므로 라벨에 '추정' 명시.
+function estimate8SidoAt(baseline8, sidoFinalMap, sdName, day, hour) {
+  const f = sidoFinalMap.get(sdName);
+  if (f == null) return null;
+  const nAt = baselineAt(baseline8, day, hour);
+  const nFin = baseline8?.national_final;
+  if (nAt == null || !nFin) return null;
+  return f * (nAt / nFin);
+}
 
 async function loadJSON(path) {
   try {
@@ -152,38 +167,53 @@ function renderSidoStats(latest, baseline8) {
   }
 
   const m8 = new Map((baseline8?.by_sido || []).map(s => [s.sdName, s.final]));
+  const prog = progressFromLatest(latest);
 
   // 9회 현재 최고/최저
   const sorted = [...latest.by_sido].sort((a, b) => b.turnout - a.turnout);
   const top = sorted[0];
   const bottom = sorted[sorted.length - 1];
 
-  // 8회 대비 진척률 (= 9회 현재 / 8회 최종 × 100) — 평균보다 격차가 가장 큰 시도
-  const withRate = latest.by_sido
-    .map(s => {
-      const f8 = m8.get(s.sdName);
-      return f8 ? { sd: s.sdName, rate: s.turnout / f8 * 100, f8 } : null;
-    })
-    .filter(Boolean);
-  withRate.sort((a, b) => b.rate - a.rate);
-  const fastest = withRate[0];
+  // 8회 같은 시각 추정값 대비 Δ — 가속/감속이 가장 큰 시도
+  let bestUp = null, bestDown = null;
+  if (prog) {
+    const withDelta = latest.by_sido
+      .map(s => {
+        const e8 = estimate8SidoAt(baseline8, m8, s.sdName, prog.day, prog.hour);
+        if (e8 == null) return null;
+        return { sd: s.sdName, cur: s.turnout, est: e8, delta: s.turnout - e8 };
+      })
+      .filter(Boolean);
+    if (withDelta.length) {
+      withDelta.sort((a, b) => b.delta - a.delta);
+      bestUp = withDelta[0];
+      bestDown = withDelta[withDelta.length - 1];
+    }
+  }
 
   const short = (sd) => SIDO_SHORT[sd] || sd;
+  const sign = (d) => d > 0 ? '+' : (d < 0 ? '' : '±');
+
   root.innerHTML = `
     <div class="sido-stat-card">
-      <span class="sido-stat-label">최고 투표율</span>
+      <span class="sido-stat-label">현재 최고</span>
       <div><span class="sido-stat-value">${short(top.sdName)}</span><span class="sido-stat-pct">${fmtPct(top.turnout)}%</span></div>
       <span class="sido-stat-sub">9회 현재 1위</span>
     </div>
     <div class="sido-stat-card">
-      <span class="sido-stat-label">최저 투표율</span>
+      <span class="sido-stat-label">현재 최저</span>
       <div><span class="sido-stat-value">${short(bottom.sdName)}</span><span class="sido-stat-pct sido-stat-pct-low">${fmtPct(bottom.turnout)}%</span></div>
       <span class="sido-stat-sub">9회 현재 17위</span>
     </div>
-    ${fastest ? `<div class="sido-stat-card">
-      <span class="sido-stat-label">8회 대비 진척 1위</span>
-      <div><span class="sido-stat-value">${short(fastest.sd)}</span><span class="sido-stat-pct">${fastest.rate.toFixed(2)}%</span></div>
-      <span class="sido-stat-sub">9회 누적 / 8회 최종 — 가장 빠른 진행</span>
+    ${bestUp ? `<div class="sido-stat-card">
+      <span class="sido-stat-label">8회 대비 가속 1위</span>
+      <div><span class="sido-stat-value">${short(bestUp.sd)}</span><span class="sido-stat-pct">${sign(bestUp.delta)}${bestUp.delta.toFixed(2)}%p</span></div>
+      <span class="sido-stat-sub">현재 ${fmtPct(bestUp.cur)}% · 8회 같은 시각 추정 ${fmtPct(bestUp.est)}%</span>
+    </div>` : ''}
+    ${bestDown ? `<div class="sido-stat-card">
+      <span class="sido-stat-label">8회 대비 감속 1위</span>
+      <div><span class="sido-stat-value">${short(bestDown.sd)}</span><span class="sido-stat-pct sido-stat-pct-low">${sign(bestDown.delta)}${bestDown.delta.toFixed(2)}%p</span></div>
+      <span class="sido-stat-sub">현재 ${fmtPct(bestDown.cur)}% · 8회 같은 시각 추정 ${fmtPct(bestDown.est)}%</span>
     </div>` : ''}
   `;
 }
@@ -191,31 +221,53 @@ function renderSidoStats(latest, baseline8) {
 function renderSidoList(latest, baseline8) {
   const root = document.getElementById('sido-list');
 
-  // 시도 인덱스 — 9회 데이터 (없으면 빈 맵)
   const map9 = new Map((latest?.by_sido || []).map(s => [s.sdName, s]));
-  // 시도 인덱스 — 8회 baseline
-  const map8 = new Map((baseline8?.by_sido || []).map(s => [s.sdName, s.final]));
+  const map8final = new Map((baseline8?.by_sido || []).map(s => [s.sdName, s.final]));
+  const prog = progressFromLatest(latest);
 
-  const html = SIDO_ORDER.map(sd => {
+  // 각 시도의 (9회 현재, 8회 같은 시각 추정, Δ) 계산
+  const rows = SIDO_ORDER.map(sd => {
     const cur = map9.get(sd);
-    const prev = map8.get(sd);
     const v9 = cur ? cur.turnout : null;
-    const v8 = prev != null ? prev : null;
-    const w9 = v9 != null ? Math.min(100, (v9 / BAR_MAX_PCT) * 100) : 0;
-    const w8 = v8 != null ? Math.min(100, (v8 / BAR_MAX_PCT) * 100) : 0;
+    const v8est = prog ? estimate8SidoAt(baseline8, map8final, sd, prog.day, prog.hour) : null;
+    const delta = (v9 != null && v8est != null) ? v9 - v8est : null;
+    return { sd, v9, v8est, delta };
+  });
+
+  // 동적 막대 상한: 현재 시도 최고 누적치의 1.3배(최소 5%) — 시간대마다 자동 스케일
+  const maxObserved = Math.max(
+    ...rows.map(r => Math.max(r.v9 ?? 0, r.v8est ?? 0))
+  );
+  const BAR_MAX = Math.max(5, Math.ceil(maxObserved * 1.3));
+
+  // Δ 큰 순으로 정렬 — 8회 대비 가장 빠른 시도가 위로
+  rows.sort((a, b) => {
+    if (a.delta == null && b.delta == null) return 0;
+    if (a.delta == null) return 1;
+    if (b.delta == null) return -1;
+    return b.delta - a.delta;
+  });
+
+  const sign = (d) => d > 0 ? '+' : (d < 0 ? '' : '±');
+  const html = rows.map(({ sd, v9, v8est, delta }) => {
     const short = SIDO_SHORT[sd] || sd;
+    const w9 = v9 != null ? Math.min(100, (v9 / BAR_MAX) * 100) : 0;
+    const w8 = v8est != null ? Math.min(100, (v8est / BAR_MAX) * 100) : 0;
     const headValue = v9 != null
       ? `${fmtPct(v9)}<span style="font-size:0.8em;color:var(--muted);font-weight:600;">%</span>`
       : `<span style="color:var(--muted);font-weight:600;font-size:0.85em;">시작 대기</span>`;
+    const deltaBadge = delta != null
+      ? `<span class="sido-delta ${delta > 0.05 ? 'sido-delta-up' : delta < -0.05 ? 'sido-delta-down' : 'sido-delta-flat'}">${sign(delta)}${delta.toFixed(2)}%p</span>`
+      : '';
     return `
       <div class="sido-row">
         <div class="sido-row-head">
           <span class="sido-name">${short}</span>
-          <span class="sido-pct">${headValue}<span class="sido-pct-prev">${v8 != null ? '8회 ' + fmtPct(v8) + '%' : ''}</span></span>
+          <span class="sido-pct">${headValue}${deltaBadge}</span>
         </div>
         <div class="sido-bars">
           <div class="sido-bar-line"><span class="sido-bar-label">9회</span><div class="sido-bar-wrap"><div class="sido-bar-9" style="width:${w9}%"></div></div></div>
-          <div class="sido-bar-line"><span class="sido-bar-label">8회</span><div class="sido-bar-wrap"><div class="sido-bar-8" style="width:${w8}%"></div></div></div>
+          <div class="sido-bar-line"><span class="sido-bar-label">8회<sup>*</sup></span><div class="sido-bar-wrap"><div class="sido-bar-8" style="width:${w8}%"></div></div></div>
         </div>
       </div>
     `;
