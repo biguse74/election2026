@@ -92,13 +92,6 @@
     for (var i = 0; i < arr.length; i++) if (arr[i].hour === hour) return arr[i].cum;
     return null;
   }
-  function sidoAt(day, hour, sd) {
-    if (!baseline || !baseline.by_sido_hourly) return null;
-    var m = baseline.by_sido_hourly['day' + day];
-    if (!m || !m[sd]) return null;
-    var v = m[sd][String(hour)];
-    return (v == null ? null : v);
-  }
   function compose(d) {
     var v = d.national.turnout;
     var prog = progOf(d);
@@ -109,17 +102,16 @@
         var diff = v - v8;
         parts.push('8회 같은시각 ' + sgn(diff) + diff.toFixed(2) + '%p');
       }
-      if (d.by_sido && d.by_sido.length) {
-        var best = null;
-        for (var i = 0; i < d.by_sido.length; i++) {
-          var s = d.by_sido[i];
-          var b = sidoAt(prog.day, prog.hour, s.sdName);
-          if (b == null) continue;
-          var dd = s.turnout - b;
-          if (!best || dd > best.dd) best = { sd: s.sdName, dd: dd };
-        }
-        if (best) parts.push('최고가속 ' + (SHORT[best.sd] || best.sd) + ' ' + sgn(best.dd) + best.dd.toFixed(2) + '%p');
+    }
+    // 최고 투표율 시도 — 투표율 그대로 표시
+    if (d.by_sido && d.by_sido.length) {
+      var top = null;
+      for (var i = 0; i < d.by_sido.length; i++) {
+        var s = d.by_sido[i];
+        if (s.turnout == null) continue;
+        if (!top || s.turnout > top.turnout) top = s;
       }
+      if (top) parts.push('최고 ' + (SHORT[top.sdName] || top.sdName) + ' ' + fmtPct(top.turnout) + '%');
     }
     return parts.join(' · ');
   }
