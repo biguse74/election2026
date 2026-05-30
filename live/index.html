@@ -104,8 +104,20 @@
   .v-early { background: #f0f0f0; color: var(--muted); }
   .v-none  { background: #f7f7f7; color: var(--gray); }
 
+  /* 검색·필터 바 */
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 12px; }
+  .filter-bar select, .filter-bar input {
+    font-family: inherit; font-size: 0.86rem; padding: 8px 10px;
+    border: 1px solid var(--line); border-radius: 7px; background: #fff; color: var(--ink);
+  }
+  .filter-bar input { flex: 1 1 200px; min-width: 150px; }
+  .filter-bar select { cursor: pointer; }
+  .filter-count { font-size: 0.82rem; color: var(--muted); font-weight: 700; margin-left: auto; white-space: nowrap; }
+
   /* 기타 개표 표 */
   .other-wrap { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; }
+  table.other td.lead-cell { white-space: nowrap; }
+  table.other td.lead-cell .cand-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
   table.other { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
   table.other th, table.other td { padding: 9px 11px; text-align: left; border-bottom: 1px solid #f0f0f0; }
   table.other thead th { background: #fafafa; font-weight: 700; color: var(--muted); font-size: 0.78rem; border-bottom: 1px solid var(--line); }
@@ -168,9 +180,16 @@
   </section>
 
   <section class="block">
-    <h2>그 외 개표 현황</h2>
-    <p class="block-sub">교육감·기초단체장 등 수집된 그 외 선거구의 1·2위와 개표 진행률. (예측 비교는 시도지사 한정)</p>
-    <div id="other-races" class="other-wrap"></div>
+    <h2>개표 검색 — 전체 선거구</h2>
+    <p class="block-sub">선거 종류·시도·정당으로 좁히거나, 후보명·지역으로 검색해 원하는 선거구의 개표 실황을 봅니다. (시도지사·기초단체장·교육감 + 6/3엔 시도의원·기초의원까지)</p>
+    <div class="filter-bar">
+      <select id="f-type" aria-label="선거 종류"><option value="">선거 전체</option></select>
+      <select id="f-sido" aria-label="시도"><option value="">시도 전체</option></select>
+      <select id="f-party" aria-label="정당"><option value="">정당 전체</option></select>
+      <input id="f-q" type="search" placeholder="후보명·지역 검색 (예: 남원)" aria-label="후보명·지역 검색">
+      <span id="f-count" class="filter-count"></span>
+    </div>
+    <div id="search-results" class="other-wrap"></div>
   </section>
 
   <aside class="disclosure">

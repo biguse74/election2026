@@ -14,6 +14,19 @@ const DEM = '더불어민주당';
 const CON = '국민의힘';
 const REFRESH_MS = 60 * 1000;  // 1분마다 재로딩 (개표일에만 의미)
 
+const SIDO_ORDER = [
+  '서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시',
+  '대전광역시', '울산광역시', '세종특별자치시', '경기도', '강원특별자치도',
+  '충청북도', '충청남도', '전북특별자치도', '전라남도', '경상북도',
+  '경상남도', '제주특별자치도', '전남광주통합특별시',
+];
+const TYPE_ORDER = ['3', '4', '5', '6', '11'];
+
+let LATEST_RACES = [];
+let LATEST_PARTIES = {};
+let filtersBound = false;
+let filtersPopulated = false;
+
 async function loadJSON(path) {
   try {
     const res = await fetch(path + '?t=' + Date.now(), { cache: 'no-store' });
@@ -29,7 +42,7 @@ function partyColor(parties, name) { return (parties && parties[name]) || '#888'
 function fmtKST(iso) {
   if (!iso) return '—';
   try {
-    const d = new Date(iso); // iso already +09:00
+    const d = new Date(iso);
     const mm = `${d.getMonth() + 1}`.padStart(2, '0');
     const dd = `${d.getDate()}`.padStart(2, '0');
     const hh = `${d.getHours()}`.padStart(2, '0');
@@ -38,13 +51,17 @@ function fmtKST(iso) {
   } catch (e) { return iso; }
 }
 
+function racePlace(r) {
+  const tail = [r.sgg_name, r.wiw_name].filter(x => x && x !== '합계').join(' ');
+  return tail ? `${r.sd_name} ${tail}` : r.sd_name;
+}
+
 // ── Hero ──────────────────────────────────────────────────────────
 function renderHero(cur) {
   const nat = cur?.turnout?.national;
   const badge = document.getElementById('live-badge');
   if (cur?.phase === 'live') badge.hidden = false;
 
-  // 전국 투표율
   const t = document.getElementById('hero-turnout');
   const tm = document.getElementById('hero-turnout-meta');
   if (nat?.turnout_pct != null) {
@@ -52,7 +69,6 @@ function renderHero(cur) {
     tm.textContent = `투표자 ${intComma(nat.voters_so_far)} / 선거인 ${intComma(nat.eligible_voters)}`;
   }
 
-  // 개표 진행률 — races progress의 선거인 가중 평균
   const races = cur?.races || [];
   const p = document.getElementById('hero-progress');
   const pm = document.getElementById('hero-progress-meta');
@@ -67,7 +83,6 @@ function renderHero(cur) {
     pm.textContent = '18시 마감 후 개표 시작';
   }
 
-  // 사전투표 비중
   const e = document.getElementById('hero-early');
   if (nat?.early_share_of_total_pct != null) {
     e.innerHTML = `${fmt1(nat.early_share_of_total_pct)}<span class="pct">%</span>`;
@@ -79,13 +94,11 @@ function renderHero(cur) {
 }
 
 // ── 시도지사 예측 vs 실제 ──────────────────────────────────────────
-// race.candidates에서 민주/국힘 후보를 정당으로 식별, 실제격차(민주-국힘) 계산.
 function partyShare(race, party) {
   const c = (race.candidates || []).find(c => c.jd_name === party);
   return c ? { share: c.share_pct, name: c.name } : null;
 }
 
-// demProb = 뉴탐사 시뮬레이션의 '민주 당선확률(%)' 또는 null.
 function classifyRace(race, demProb) {
   const dem = partyShare(race, DEM);
   const con = partyShare(race, CON);
@@ -96,20 +109,17 @@ function classifyRace(race, demProb) {
   if (demProb == null) return { verdict: 'none', label: '예측 없음', actualMargin, demProb };
   if (actualMargin == null) return { verdict: 'none', label: '양자 비교 불가', actualMargin, demProb };
 
-  const predDem = demProb >= 50;        // 우리 예측이 우세로 본 진영
-  const actualDem = actualMargin > 0;   // 실제 우세 진영
+  const predDem = demProb >= 50;
+  const actualDem = actualMargin > 0;
   const confident = demProb >= 80 || demProb <= 20;
   const tossup = demProb > 35 && demProb < 65;
 
-  if (predDem !== actualDem) {
-    return { verdict: 'upset', label: '이변 — 예측과 반대', actualMargin, demProb, predDem };
-  }
-  if (tossup) return { verdict: 'band', label: '접전 예측 적중', actualMargin, demProb, predDem };
-  if (confident) return { verdict: 'hit', label: '예측 적중', actualMargin, demProb, predDem };
-  return { verdict: 'hit', label: '예측 부합', actualMargin, demProb, predDem };
+  if (predDem !== actualDem) return { verdict: 'upset', label: '이변 — 예측과 반대', actualMargin, demProb };
+  if (tossup) return { verdict: 'band', label: '접전 예측 적중', actualMargin, demProb };
+  if (confident) return { verdict: 'hit', label: '예측 적중', actualMargin, demProb };
+  return { verdict: 'hit', label: '예측 부합', actualMargin, demProb };
 }
 
-// 우리 예측을 '우세 진영 + 당선확률'로 표기. demProb는 민주 기준 %.
 function predText(demProb) {
   if (demProb == null) return '—';
   return demProb >= 50 ? `민주 ${Math.round(demProb)}%` : `국힘 ${Math.round(100 - demProb)}%`;
@@ -140,7 +150,6 @@ function renderChiefRaces(cur, predMap, parties) {
     root.innerHTML = `<div class="state-empty">시도지사 개표 데이터가 아직 없습니다. 18시 마감 후 표시됩니다.</div>`;
     return;
   }
-  // 격차 작은(접전) 순으로 — 접전 지역이 위로
   chiefs.sort((a, b) => (a.rank1_minus_rank2_pp ?? 99) - (b.rank1_minus_rank2_pp ?? 99));
 
   root.innerHTML = chiefs.map(race => {
@@ -174,36 +183,108 @@ function renderChiefRaces(cur, predMap, parties) {
   }).join('');
 }
 
-// ── 그 외 개표 ─────────────────────────────────────────────────────
-function renderOtherRaces(cur) {
-  const root = document.getElementById('other-races');
-  const others = (cur?.races || []).filter(r => String(r.sg_type_code) !== '3');
-  if (!others.length) { root.innerHTML = `<div class="state-empty">그 외 수집된 개표 데이터가 없습니다.</div>`; return; }
+// ── 전체 선거구 검색·필터 ──────────────────────────────────────────
+function populateFilters(races) {
+  if (filtersPopulated) return;
+  const typeSel = document.getElementById('f-type');
+  const sidoSel = document.getElementById('f-sido');
+  const partySel = document.getElementById('f-party');
 
-  const rows = others.map(r => {
+  const typeLabels = {};
+  for (const r of races) typeLabels[String(r.sg_type_code)] = r.sg_type_label;
+  Object.keys(typeLabels)
+    .sort((a, b) => TYPE_ORDER.indexOf(a) - TYPE_ORDER.indexOf(b))
+    .forEach(t => typeSel.add(new Option(typeLabels[t], t)));
+
+  [...new Set(races.map(r => r.sd_name).filter(Boolean))]
+    .sort((a, b) => SIDO_ORDER.indexOf(a) - SIDO_ORDER.indexOf(b))
+    .forEach(s => sidoSel.add(new Option(s, s)));
+
+  const partySet = new Set();
+  for (const r of races) for (const c of (r.candidates || [])) if (c.jd_name) partySet.add(c.jd_name);
+  [...partySet].sort((a, b) => a.localeCompare(b, 'ko')).forEach(p => partySel.add(new Option(p, p)));
+
+  filtersPopulated = true;
+}
+
+function currentFilters() {
+  return {
+    type: document.getElementById('f-type').value,
+    sido: document.getElementById('f-sido').value,
+    party: document.getElementById('f-party').value,
+    q: (document.getElementById('f-q').value || '').trim().toLowerCase(),
+  };
+}
+
+function raceMatches(r, f) {
+  if (f.type && String(r.sg_type_code) !== f.type) return false;
+  if (f.sido && r.sd_name !== f.sido) return false;
+  if (f.party && !(r.candidates || []).some(c => c.jd_name === f.party)) return false;
+  if (f.q) {
+    const hay = [r.sd_name, r.sgg_name, r.wiw_name, r.sg_type_label,
+      ...(r.candidates || []).map(c => c.name), ...(r.candidates || []).map(c => c.jd_name)]
+      .filter(Boolean).join(' ').toLowerCase();
+    if (!hay.includes(f.q)) return false;
+  }
+  return true;
+}
+
+const RESULT_CAP = 300;
+
+function renderSearch() {
+  const root = document.getElementById('search-results');
+  const countEl = document.getElementById('f-count');
+  if (!root) return;
+  const f = currentFilters();
+  const matched = LATEST_RACES.filter(r => raceMatches(r, f));
+  countEl.textContent = `${matched.length.toLocaleString('ko-KR')}개 선거구`;
+
+  if (!matched.length) {
+    root.innerHTML = `<div class="state-empty">조건에 맞는 선거구가 없습니다. 필터를 바꿔 보세요.</div>`;
+    return;
+  }
+  matched.sort((a, b) => (a.rank1_minus_rank2_pp ?? 999) - (b.rank1_minus_rank2_pp ?? 999));
+  const shown = matched.slice(0, RESULT_CAP);
+
+  const rows = shown.map(r => {
     const c1 = (r.candidates || [])[0];
     const c2 = (r.candidates || [])[1];
-    const place = [r.sgg_name, r.wiw_name].filter(x => x && x !== '합계').join(' ') || r.sd_name;
-    const lead = c1 ? `<span class="lead-chip">${c1.name} <span class="cand-party">${c1.jd_name || ''}</span> ${fmt1(c1.share_pct)}%</span>` : '—';
+    const dot = c1 ? `<span class="cand-dot" style="background:${partyColor(LATEST_PARTIES, c1.jd_name)}"></span>` : '';
+    const lead = c1 ? `${dot}<b>${c1.name}</b> <span class="cand-party">${c1.jd_name || ''}</span> ${fmt1(c1.share_pct)}%` : '—';
     const second = c2 ? `${c2.name} ${fmt1(c2.share_pct)}%` : '—';
     return `<tr>
       <td>${r.sg_type_label}</td>
-      <td>${r.sd_name} ${place === r.sd_name ? '' : place}</td>
-      <td>${lead}</td>
+      <td>${racePlace(r)}</td>
+      <td class="lead-cell">${lead}</td>
       <td>${second}</td>
       <td class="num">${fmt1(r.rank1_minus_rank2_pp)}pp</td>
       <td class="num">${fmt1(r.progress_pct)}%</td>
     </tr>`;
   }).join('');
 
+  const capNote = matched.length > RESULT_CAP
+    ? `<div class="state-empty" style="padding:14px 0">접전 순 상위 ${RESULT_CAP}개만 표시 중 — 필터로 좁혀 주세요.</div>` : '';
+
   root.innerHTML = `<table class="other">
     <thead><tr><th>선거</th><th>지역</th><th>1위</th><th>2위</th><th>격차</th><th>개표</th></tr></thead>
     <tbody>${rows}</tbody>
-  </table>`;
+  </table>${capNote}`;
+}
+
+function bindFilters() {
+  if (filtersBound) return;
+  ['f-type', 'f-sido', 'f-party'].forEach(id => {
+    document.getElementById(id).addEventListener('change', renderSearch);
+  });
+  let t = null;
+  document.getElementById('f-q').addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(renderSearch, 180);
+  });
+  filtersBound = true;
 }
 
 // 개표일 이전엔 보관용/테스트 데이터가 실제 결과처럼 보이지 않도록 대기 화면.
-// ?preview=1 이면 가드 우회(내부 확인용).
 function showWaiting(msg) {
   document.getElementById('live-badge').hidden = true;
   document.getElementById('hero-turnout').innerHTML = `대기<span class="pct"></span>`;
@@ -212,7 +293,7 @@ function showWaiting(msg) {
   document.getElementById('hero-progress-meta').textContent = '투표 마감(18시) 후 개표 시작';
   document.getElementById('hero-early').innerHTML = `—<span class="pct"></span>`;
   document.getElementById('chief-races').innerHTML = `<div class="state-empty">${msg}</div>`;
-  document.getElementById('other-races').innerHTML = '';
+  document.getElementById('search-results').innerHTML = '';
   document.getElementById('updated-at').textContent = '—';
 }
 
@@ -230,13 +311,18 @@ async function render() {
   if (!cur) {
     document.getElementById('chief-races').innerHTML =
       `<div class="state-empty">개표 데이터가 아직 없습니다. 6/3 18시 투표 마감 후 수집이 시작됩니다.</div>`;
-    document.getElementById('other-races').innerHTML = '';
+    document.getElementById('search-results').innerHTML = '';
     return;
   }
   const predMap = (prediction && prediction.sido_dem_win_prob) || {};
+  LATEST_RACES = cur.races || [];
+  LATEST_PARTIES = parties || {};
+
   renderHero(cur);
-  renderChiefRaces(cur, predMap, parties || {});
-  renderOtherRaces(cur);
+  renderChiefRaces(cur, predMap, LATEST_PARTIES);
+  populateFilters(LATEST_RACES);
+  bindFilters();
+  renderSearch();
 }
 
 render();

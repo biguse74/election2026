@@ -448,6 +448,150 @@
           "current_rank": 3
         }
       ]
+    },
+    {
+      "race_key": "5|전북특별자치도|남원시제1선거구",
+      "sg_type_code": "5",
+      "sg_type_label": "시도의원",
+      "sd_name": "전북특별자치도",
+      "sgg_name": null,
+      "wiw_name": "남원시제1선거구",
+      "eligible_voters": 62000,
+      "valid_votes": 29800,
+      "invalid_votes": 536,
+      "progress_pct": 48.93,
+      "rank1_minus_rank2_pp": 31.21,
+      "candidates": [
+        {
+          "name": "남원시도의원후보가",
+          "jd_name": "더불어민주당",
+          "votes": 18500,
+          "share_pct": 62.08,
+          "current_rank": 1
+        },
+        {
+          "name": "남원시도의원후보나",
+          "jd_name": "국민의힘",
+          "votes": 9200,
+          "share_pct": 30.87,
+          "current_rank": 2
+        },
+        {
+          "name": "남원시도의원후보다",
+          "jd_name": "진보당",
+          "votes": 2100,
+          "share_pct": 7.05,
+          "current_rank": 3
+        }
+      ]
+    },
+    {
+      "race_key": "6|전북특별자치도|남원시|남원시 라선거구",
+      "sg_type_code": "6",
+      "sg_type_label": "기초의원",
+      "sd_name": "전북특별자치도",
+      "sgg_name": "남원시",
+      "wiw_name": "남원시 라선거구",
+      "eligible_voters": 24000,
+      "valid_votes": 14100,
+      "invalid_votes": 253,
+      "progress_pct": 59.8,
+      "rank1_minus_rank2_pp": 9.93,
+      "candidates": [
+        {
+          "name": "남원기초후보가",
+          "jd_name": "더불어민주당",
+          "votes": 6200,
+          "share_pct": 43.97,
+          "current_rank": 1
+        },
+        {
+          "name": "남원기초후보나",
+          "jd_name": "무소속",
+          "votes": 4800,
+          "share_pct": 34.04,
+          "current_rank": 2
+        },
+        {
+          "name": "남원기초후보다",
+          "jd_name": "국민의힘",
+          "votes": 3100,
+          "share_pct": 21.99,
+          "current_rank": 3
+        }
+      ]
+    },
+    {
+      "race_key": "5|서울특별시|종로구제2선거구",
+      "sg_type_code": "5",
+      "sg_type_label": "시도의원",
+      "sd_name": "서울특별시",
+      "sgg_name": null,
+      "wiw_name": "종로구제2선거구",
+      "eligible_voters": 78000,
+      "valid_votes": 43800,
+      "invalid_votes": 788,
+      "progress_pct": 57.16,
+      "rank1_minus_rank2_pp": 1.15,
+      "candidates": [
+        {
+          "name": "종로시도의원후보가",
+          "jd_name": "국민의힘",
+          "votes": 21000,
+          "share_pct": 47.95,
+          "current_rank": 1
+        },
+        {
+          "name": "종로시도의원후보나",
+          "jd_name": "더불어민주당",
+          "votes": 20500,
+          "share_pct": 46.8,
+          "current_rank": 2
+        },
+        {
+          "name": "종로시도의원후보다",
+          "jd_name": "개혁신당",
+          "votes": 2300,
+          "share_pct": 5.25,
+          "current_rank": 3
+        }
+      ]
+    },
+    {
+      "race_key": "6|서울특별시|강남구|강남구 나선거구",
+      "sg_type_code": "6",
+      "sg_type_label": "기초의원",
+      "sd_name": "서울특별시",
+      "sgg_name": "강남구",
+      "wiw_name": "강남구 나선거구",
+      "eligible_voters": 41000,
+      "valid_votes": 25100,
+      "invalid_votes": 451,
+      "progress_pct": 62.32,
+      "rank1_minus_rank2_pp": 22.71,
+      "candidates": [
+        {
+          "name": "강남기초후보가",
+          "jd_name": "국민의힘",
+          "votes": 14800,
+          "share_pct": 58.96,
+          "current_rank": 1
+        },
+        {
+          "name": "강남기초후보나",
+          "jd_name": "더불어민주당",
+          "votes": 9100,
+          "share_pct": 36.25,
+          "current_rank": 2
+        },
+        {
+          "name": "강남기초후보다",
+          "jd_name": "조국혁신당",
+          "votes": 1200,
+          "share_pct": 4.78,
+          "current_rank": 3
+        }
+      ]
     }
   ]
 }
