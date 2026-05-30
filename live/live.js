@@ -595,7 +595,7 @@ async function render() {
   const predMap = (prediction && prediction.sido_dem_win_prob) || {};
   LATEST_RACES = cur.races || [];
   LATEST_PARTIES = parties || {};
-  LATEST_PREVWIN = prevWinner || {};
+  LATEST_PREVWIN = (prevWinner && prevWinner.winner_party) || {};
 
   renderHero(cur);
   renderWatchlist(watchlist);
