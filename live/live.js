@@ -199,8 +199,28 @@ function renderOtherRaces(cur) {
   </table>`;
 }
 
+// 개표일 이전엔 보관용/테스트 데이터가 실제 결과처럼 보이지 않도록 대기 화면.
+// ?preview=1 이면 가드 우회(내부 확인용).
+function showWaiting(msg) {
+  document.getElementById('live-badge').hidden = true;
+  document.getElementById('hero-turnout').innerHTML = `대기<span class="pct"></span>`;
+  document.getElementById('hero-turnout-meta').textContent = msg;
+  document.getElementById('hero-progress').innerHTML = `—<span class="pct"></span>`;
+  document.getElementById('hero-progress-meta').textContent = '투표 마감(18시) 후 개표 시작';
+  document.getElementById('hero-early').innerHTML = `—<span class="pct"></span>`;
+  document.getElementById('chief-races').innerHTML = `<div class="state-empty">${msg}</div>`;
+  document.getElementById('other-races').innerHTML = '';
+  document.getElementById('updated-at').textContent = '—';
+}
+
 // ── main ──────────────────────────────────────────────────────────
 async function render() {
+  const preview = location.search.includes('preview');
+  const VOTE_DAY = Date.parse('2026-06-03T00:00:00+09:00');
+  if (!preview && Date.now() < VOTE_DAY) {
+    showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
+    return;
+  }
   const [cur, prior, parties] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.prior), loadJSON(PATHS.parties),
   ]);
