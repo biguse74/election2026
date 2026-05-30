@@ -247,6 +247,18 @@
   .legend-8 { background: #bbb; }
   svg.timeline { width: 100%; height: 260px; display: block; }
 
+  /* 전남 시군별 */
+  .jn-list { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 24px; }
+  @media (max-width: 720px) { .jn-list { grid-template-columns: 1fr; } }
+  .jn-row { display: flex; align-items: center; gap: 9px; padding: 5px 0; border-bottom: 1px solid #f3f3f3; }
+  .jn-name { width: 52px; font-weight: 700; font-size: 0.86rem; flex-shrink: 0; }
+  .jn-bar-wrap { flex: 1 1 auto; height: 9px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
+  .jn-bar { height: 100%; background: #8aa0c8; border-radius: 5px; }
+  .jn-rate { width: 50px; text-align: right; font-weight: 800; font-size: 0.88rem; flex-shrink: 0; color: var(--ink); }
+  .jn-row.jn-top .jn-bar { background: var(--accent); }
+  .jn-row.jn-top .jn-rate { color: var(--accent); }
+  .jn-row.jn-city .jn-bar { background: #cfd6e2; }
+
   .meta-bar {
     display: flex; gap: 16px; flex-wrap: wrap;
     font-size: 0.82rem; color: var(--muted);
@@ -363,6 +375,13 @@
     <div id="sido-list" class="sido-list">
       <div class="state-loading">시도 데이터 로딩 중…</div>
     </div>
+  </section>
+
+  <section class="block" id="jeonnam-block" hidden>
+    <h2>전남 시군별 사전투표율 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(최종)</span></h2>
+    <p class="block-sub" id="jeonnam-head">—</p>
+    <div id="jeonnam-list" class="jn-list"></div>
+    <p class="block-sub" style="margin-top:12px">농촌 <strong>군</strong> 지역(신안 61.31%·진도 55.03%·함평 54.21%·강진 52.16%)이 <strong>시</strong> 지역(여수 29.65%·순천·광양 33.05%·목포 33.55%)보다 사전투표율이 크게 높은 게 특징 — 고령·조직 결집 성향. 빨강=최고(신안), 옅은 색=시 지역.</p>
   </section>
 
   <aside class="disclosure">

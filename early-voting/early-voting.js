@@ -12,6 +12,7 @@ const PATHS = {
   baseline7:  `../data/early_voting/baseline_7th.json`,
   baselineGen22:  `../data/early_voting/baseline_general22nd.json`,
   basePres21:     `../data/early_voting/baseline_president21st.json`,
+  sigungu:    `../data/early_voting/sigungu_20260603.json`,
 };
 
 // 시도 표준 순서 (행정안전부) — 그리드 정렬용
@@ -286,6 +287,31 @@ function baselineFracSeries(baseline) {
   for (const row of (baseline.hourly_national.day1 || [])) out.push([dayHourToFrac(1, row.hour), row.cum]);
   for (const row of (baseline.hourly_national.day2 || [])) out.push([dayHourToFrac(2, row.hour), row.cum]);
   return out.sort((a, b) => a[0] - b[0]);
+}
+
+// 전남 시군별 사전투표율 (최종) — 농촌 군이 시보다 높은 패턴이 핵심.
+function renderJeonnamSigungu(data) {
+  const block = document.getElementById('jeonnam-block');
+  const root = document.getElementById('jeonnam-list');
+  const head = document.getElementById('jeonnam-head');
+  if (!block || !root) return;
+  const jn = data && data.sido && data.sido['전라남도'];
+  if (!jn || !jn.sigungu || !jn.sigungu.length) { block.hidden = true; return; }
+  block.hidden = false;
+  if (head && jn.total) {
+    head.innerHTML = `전남 합계 <strong>${jn.total.rate}%</strong> · 선거인 ${(jn.total.voters/10000).toFixed(1)}만 · 사전투표자 ${(jn.total.voted/10000).toFixed(1)}만`;
+  }
+  const rows = jn.sigungu.slice().sort((a, b) => b.rate - a.rate);
+  const barMax = Math.ceil(Math.max.apply(null, rows.map(r => r.rate)) / 5) * 5;
+  root.innerHTML = rows.map((r, i) => {
+    const w = Math.min(100, r.rate / barMax * 100);
+    const cls = i === 0 ? ' jn-top' : (r.name.endsWith('시') ? ' jn-city' : '');
+    return `<div class="jn-row${cls}" title="선거인 ${r.voters.toLocaleString('ko-KR')} · 사전투표자 ${r.voted.toLocaleString('ko-KR')}">
+      <span class="jn-name">${r.name}</span>
+      <span class="jn-bar-wrap"><span class="jn-bar" style="width:${w.toFixed(1)}%"></span></span>
+      <span class="jn-rate">${r.rate.toFixed(2)}%</span>
+    </div>`;
+  }).join('');
 }
 
 function renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21) {
@@ -672,6 +698,7 @@ async function main() {
   renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
   bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21);
   renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21);
+  loadJSON(PATHS.sigungu).then(renderJeonnamSigungu);
 }
 
 main();
