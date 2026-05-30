@@ -219,8 +219,8 @@ function showWaiting(msg) {
 // ── main ──────────────────────────────────────────────────────────
 async function render() {
   const preview = location.search.includes('preview');
-  const VOTE_DAY = Date.parse('2026-06-03T00:00:00+09:00');
-  if (!preview && Date.now() < VOTE_DAY) {
+  const COUNT_START = Date.parse('2026-06-03T18:00:00+09:00');
+  if (!preview && Date.now() < COUNT_START) {
     showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
     return;
   }
