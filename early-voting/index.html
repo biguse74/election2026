@@ -256,7 +256,7 @@
   .rk-name { width: 124px; font-weight: 700; font-size: 0.84rem; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .rk-sido { color: var(--muted); font-weight: 600; font-size: 0.72rem; margin-left: 4px; }
   .rk-bar-wrap { flex: 1 1 auto; height: 11px; background: #f0f1f3; border-radius: 6px; overflow: hidden; min-width: 24px; }
-  .rk-bar { height: 100%; background: #8aa0c8; border-radius: 4px; }
+  .rk-bar { display: block; height: 100%; background: #8aa0c8; border-radius: 4px; }
   .rk-row.rk-1 .rk-bar { background: var(--accent); }
   .rk-row.rk-1 .rk-rate, .rk-row.rk-1 .rk-num { color: var(--accent); }
   .rk-rate { width: 50px; text-align: right; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; }
@@ -277,7 +277,7 @@
   .jn-row { display: flex; align-items: center; gap: 9px; padding: 5px 0; border-bottom: 1px solid #f3f3f3; }
   .jn-name { width: 102px; font-weight: 700; font-size: 0.78rem; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .jn-bar-wrap { flex: 1 1 auto; height: 12px; background: #f0f1f3; border-radius: 6px; overflow: hidden; }
-  .jn-bar { height: 100%; background: #8aa0c8; border-radius: 6px; }
+  .jn-bar { display: block; height: 100%; background: #8aa0c8; border-radius: 6px; }
   .jn-rate { width: 50px; text-align: right; font-weight: 800; font-size: 0.88rem; flex-shrink: 0; color: var(--ink); }
   .jn-row.jn-top .jn-bar { background: var(--accent); }
   .jn-row.jn-top .jn-rate { color: var(--accent); }
@@ -449,6 +449,6 @@
     if (el && Date.now() >= Date.parse('2026-06-03T18:00:00+09:00')) el.hidden = false;
   })();
 </script>
-<script src="early-voting.js?v=202605302330"></script>
+<script src="early-voting.js?v=202605302335"></script>
 </body>
 </html>
