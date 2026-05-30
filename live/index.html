@@ -122,6 +122,13 @@
   .wc-behind { background: #f0f0f0; color: var(--muted); }
   .wc-wait { background: #f7f7f7; color: var(--gray); }
 
+  /* 투표율-표심 산점도 */
+  .corr-wrap { border: 1px solid var(--line); border-radius: 8px; padding: 16px; background: #fff; }
+  svg#corr-svg { width: 100%; height: auto; display: block; }
+  .corr-note { font-size: 0.84rem; color: var(--muted); line-height: 1.6; margin-top: 10px; }
+  .corr-note b { color: var(--ink); }
+  .corr-warn { color: #b7791f; }
+
   /* 선거구 상세 펼침 */
   table.other tr.race-sum { cursor: pointer; }
   table.other tr.race-sum:hover { background: #fafafa; }
@@ -218,6 +225,15 @@
     <p class="block-sub">각 시도지사 개표 현황(실측)을 <b>뉴탐사 자체 시뮬레이션</b>(과거 개표결과 기반 10000회 몬테카를로)의 민주 당선확률과 같은 화면에서 비교. <b>예측 적중</b>=우세 예측 진영이 실제 우세, <b>접전 예측 적중</b>=박빙으로 본 곳이 실제 박빙, <b>이변</b>=예측과 1·2위 진영 뒤바뀜.</p>
     <div id="chief-races" class="race-grid">
       <div class="state-loading">개표 데이터 로딩 중…</div>
+    </div>
+  </section>
+
+  <section class="block" id="corr-block" hidden>
+    <h2>투표율과 표심</h2>
+    <p class="block-sub">시도별 <b>투표율</b>과 <b>시도지사 민주−국힘 격차</b>의 관계. 점=시도, 빨간 점선=추세선. 마감(18시) 후 표시.</p>
+    <div class="corr-wrap">
+      <svg id="corr-svg" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg>
+      <div id="corr-note" class="corr-note"></div>
     </div>
   </section>
 

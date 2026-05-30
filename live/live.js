@@ -24,6 +24,13 @@ const SIDO_ORDER = [
   '충청북도', '충청남도', '전북특별자치도', '전라남도', '경상북도',
   '경상남도', '제주특별자치도', '전남광주통합특별시',
 ];
+const SIDO_SHORT = {
+  '서울특별시': '서울', '부산광역시': '부산', '대구광역시': '대구', '인천광역시': '인천',
+  '광주광역시': '광주', '대전광역시': '대전', '울산광역시': '울산', '세종특별자치시': '세종',
+  '경기도': '경기', '강원특별자치도': '강원', '충청북도': '충북', '충청남도': '충남',
+  '전북특별자치도': '전북', '전라남도': '전남', '경상북도': '경북', '경상남도': '경남',
+  '제주특별자치도': '제주', '전남광주통합특별시': '전남광주',
+};
 const TYPE_ORDER = ['3', '4', '5', '6', '11'];
 
 let LATEST_RACES = [];
@@ -45,6 +52,18 @@ function fmt1(v) { return (v == null || isNaN(v)) ? '—' : Number(v).toFixed(1)
 function intComma(v) { return (v == null || isNaN(v)) ? '—' : Number(v).toLocaleString('ko-KR'); }
 function partyColor(parties, name) { return (parties && parties[name]) || '#888'; }
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+
+// 피어슨 상관 + 단순회귀
+function pearson(xs, ys) {
+  const n = xs.length;
+  if (n < 2) return null;
+  const mx = xs.reduce((a, b) => a + b, 0) / n;
+  const my = ys.reduce((a, b) => a + b, 0) / n;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (let i = 0; i < n; i++) { const dx = xs[i] - mx, dy = ys[i] - my; sxy += dx * dy; sxx += dx * dx; syy += dy * dy; }
+  if (sxx <= 0 || syy <= 0) return null;
+  return { r: sxy / Math.sqrt(sxx * syy), slope: sxy / sxx, intercept: my - (sxy / sxx) * mx, n };
+}
 
 function fmtKST(iso) {
   if (!iso) return '—';
@@ -122,14 +141,9 @@ function bindRaceExpand() {
     if (rk == null) return;
     const on = !expandedKeys.has(rk);
     if (on) expandedKeys.add(rk); else expandedKeys.delete(rk);
-    document.querySelectorAll('tr.rd-row').forEach(d => {
-      if (d.getAttribute('data-rk') === rk) d.hidden = !on;
-    });
+    document.querySelectorAll('tr.rd-row').forEach(d => { if (d.getAttribute('data-rk') === rk) d.hidden = !on; });
     document.querySelectorAll('tr.race-sum').forEach(s => {
-      if (s.getAttribute('data-rk') === rk) {
-        const ca = s.querySelector('.rd-caret');
-        if (ca) ca.textContent = on ? '▴' : '▾';
-      }
+      if (s.getAttribute('data-rk') === rk) { const ca = s.querySelector('.rd-caret'); if (ca) ca.textContent = on ? '▴' : '▾'; }
     });
   });
   expandBound = true;
@@ -170,6 +184,67 @@ function renderHero(cur) {
   }
 
   document.getElementById('updated-at').textContent = fmtKST(cur?.polled_at) + ' (KST)';
+}
+
+// ── 투표율과 표심 (상관 산점도) ────────────────────────────────────
+// 시도별 투표율(X) vs 시도지사 민주−국힘 격차(Y). 점=시도, 점선=추세, 피어슨 r.
+function renderTurnoutCorr(cur) {
+  const block = document.getElementById('corr-block');
+  const svg = document.getElementById('corr-svg');
+  const note = document.getElementById('corr-note');
+  if (!block || !svg || !note) return;
+
+  const tmap = {};
+  for (const s of (cur?.turnout?.by_sido || [])) tmap[s.sd_name] = s.turnout_pct;
+  const pts = [];
+  for (const r of (cur?.races || [])) {
+    if (String(r.sg_type_code) !== '3') continue;
+    const dem = partyShare(r, DEM), con = partyShare(r, CON);
+    const tn = tmap[r.sd_name];
+    if (dem && con && tn != null) pts.push({ sd: r.sd_name, x: tn, y: dem.share - con.share });
+  }
+  if (pts.length < 3) { block.hidden = true; return; }
+  block.hidden = false;
+
+  const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+  const stat = pearson(xs, ys);
+  const xlo = Math.floor(Math.min(...xs) - 2), xhi = Math.ceil(Math.max(...xs) + 2);
+  const ymax = Math.max(10, Math.ceil(Math.max(...ys.map(Math.abs)) / 5) * 5 + 5);
+  const W = 640, H = 340, padL = 52, padR = 16, padT = 16, padB = 42;
+  const px = x => padL + (x - xlo) / (xhi - xlo) * (W - padL - padR);
+  const py = y => padT + (1 - (y + ymax) / (2 * ymax)) * (H - padT - padB);
+  const clampY = y => Math.max(-ymax, Math.min(ymax, y));
+
+  const g = [];
+  g.push(`<line x1="${padL}" x2="${W - padR}" y1="${py(0).toFixed(1)}" y2="${py(0).toFixed(1)}" stroke="#bbb" stroke-width="1"/>`);
+  [ymax, ymax / 2, -ymax / 2, -ymax].forEach(yv => {
+    g.push(`<text x="${padL - 7}" y="${(py(yv) + 4).toFixed(1)}" font-size="10" fill="#999" text-anchor="end">${yv > 0 ? '민주+' + yv : '국힘+' + (-yv)}</text>`);
+  });
+  g.push(`<text x="${padL - 7}" y="${(py(0) + 4).toFixed(1)}" font-size="10" fill="#999" text-anchor="end">0</text>`);
+  const step = Math.max(2, Math.round((xhi - xlo) / 6));
+  for (let xv = xlo; xv <= xhi; xv += step) {
+    g.push(`<line x1="${px(xv).toFixed(1)}" x2="${px(xv).toFixed(1)}" y1="${padT}" y2="${H - padB}" stroke="#f2f2f2"/>`);
+    g.push(`<text x="${px(xv).toFixed(1)}" y="${H - padB + 15}" font-size="10" fill="#999" text-anchor="middle">${xv}%</text>`);
+  }
+  g.push(`<text x="${((padL + W - padR) / 2).toFixed(0)}" y="${H - 7}" font-size="10.5" fill="#777" text-anchor="middle">시도 투표율 →</text>`);
+
+  if (stat) {
+    const y1 = stat.slope * xlo + stat.intercept, y2 = stat.slope * xhi + stat.intercept;
+    g.push(`<line x1="${px(xlo).toFixed(1)}" y1="${py(clampY(y1)).toFixed(1)}" x2="${px(xhi).toFixed(1)}" y2="${py(clampY(y2)).toFixed(1)}" stroke="#c41e3a" stroke-width="1.6" stroke-dasharray="5 4"/>`);
+  }
+  for (const p of pts) {
+    const color = p.y >= 0 ? 'var(--dem)' : 'var(--con)';
+    g.push(`<circle cx="${px(p.x).toFixed(1)}" cy="${py(clampY(p.y)).toFixed(1)}" r="4.5" fill="${color}"><title>${p.sd} 투표율 ${fmt1(p.x)}% · ${marginText(p.y)}</title></circle>`);
+    g.push(`<text x="${px(p.x).toFixed(1)}" y="${(py(clampY(p.y)) - 8).toFixed(1)}" font-size="9.5" fill="#555" text-anchor="middle">${SIDO_SHORT[p.sd] || p.sd}</text>`);
+  }
+  svg.innerHTML = g.join('');
+
+  let interp;
+  if (!stat) interp = '상관 계산 불가';
+  else if (stat.r > 0.3) interp = `투표율이 높은 시도일수록 <b>민주 우세</b> 경향 (상관 r=${stat.r.toFixed(2)}, n=${stat.n})`;
+  else if (stat.r < -0.3) interp = `투표율이 높은 시도일수록 <b>국힘 우세</b> 경향 (상관 r=${stat.r.toFixed(2)}, n=${stat.n})`;
+  else interp = `투표율과 우세 정당 사이 <b>뚜렷한 상관 없음</b> (r=${stat.r.toFixed(2)}, n=${stat.n})`;
+  note.innerHTML = `${interp}.<br><span class="corr-warn">⚠️ 지역 고유 성향(호남↑민주·영남↑국힘)이 섞여 있어 '투표율→표심' 인과로 단정할 수 없습니다.</span> 같은 지역의 예측 대비 초과분 분석은 별도.`;
 }
 
 // ── 주목 후보 워치리스트 ────────────────────────────────────────────
@@ -469,6 +544,7 @@ function showWaiting(msg) {
   document.getElementById('hero-early').innerHTML = `—<span class="pct"></span>`;
   const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
   const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
+  const cb = document.getElementById('corr-block'); if (cb) cb.hidden = true;
   document.getElementById('chief-races').innerHTML = `<div class="state-empty">${msg}</div>`;
   document.getElementById('search-results').innerHTML = '';
   document.getElementById('updated-at').textContent = '—';
@@ -500,6 +576,7 @@ async function render() {
   renderWatchlist(watchlist);
   renderGroups(groups);
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
+  renderTurnoutCorr(cur);
   populateFilters(LATEST_RACES);
   bindFilters();
   bindRaceExpand();
