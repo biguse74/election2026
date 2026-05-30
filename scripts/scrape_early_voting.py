@@ -207,12 +207,21 @@ def append_timeseries(
     ts: dict, at: datetime, by_sido: list[dict], national: dict,
     day1_time_code: str | None, day2_time_code: str | None,
 ) -> bool:
-    # 1차 dedup: 같은 (day1,day2) 시각코드 조합이 이미 있으면 skip.
-    #   한 시각당 1엔트리만 유지 → 수집 시점(at)이 달라도 중복 누적 방지.
+    # 1차: 같은 (day1,day2) 시각코드가 이미 있으면 — 한 시각당 1엔트리.
+    #   단, NEC가 부분 응답(집계 중)을 줬다가 나중에 완전 응답을 줄 수 있으므로,
+    #   '새 값이 기존보다 크면 교체'한다(누적 투표율은 단조 증가). 작거나 같으면 유지.
     code_key = (day1_time_code, day2_time_code)
     if code_key != (None, None):
         for s in ts.get("snapshots", []):
             if (s.get("day1_time_code"), s.get("day2_time_code")) == code_key:
+                old = (s.get("national") or {}).get("turnout")
+                new = (national or {}).get("turnout")
+                if old is not None and new is not None and new > old + 1e-9:
+                    s["by_sido"] = by_sido
+                    s["national"] = national
+                    s["at"] = at.isoformat(timespec="seconds")
+                    ts["updated_at"] = at.isoformat(timespec="seconds")
+                    return True   # 부분→완전 보고로 갱신
                 return False
     # 2차 dedup: 같은 분(分)에 이미 적재된 게 있으면 skip (안전망).
     at_key = at.strftime("%Y-%m-%dT%H:%M")
@@ -280,18 +289,18 @@ def main() -> None:
     # 최신 상태는 '이번 수집'이 아니라 시계열의 최고 진행 시각 스냅샷에서 뽑는다.
     #   → NEC가 일시적으로 일부 시각만 반환해도 화면(latest)이 뒤로 후퇴하지 않음.
     #     timeseries는 append-only라 한 번 들어온 시각은 사라지지 않으므로 단조 증가 보장.
-    def _prog(snap):
+    #   누적 사전투표율은 단조 증가하므로 '전국 투표율이 가장 높은' 스냅샷 = 가장 완전·최신.
+    #   → 높은 시각이라도 부분 응답(낮은 값)이면 자동 무시되고 후퇴도 방지됨. (시각은 보조 tiebreak)
+    def _key(snap):
+        turnout = (snap.get("national") or {}).get("turnout") or 0
         t2 = snap.get("day2_time_code"); t1 = snap.get("day1_time_code")
-        if t2:
-            return (2, int(t2))
-        if t1:
-            return (1, int(t1))
-        return (0, 0)
+        prog = (2, int(t2)) if t2 else ((1, int(t1)) if t1 else (0, 0))
+        return (turnout, prog)
     snaps = ts.get("snapshots", [])
     if not snaps:
         print("\n스냅샷 없음 → 저장 생략.")
         return
-    best = max(snaps, key=_prog)
+    best = max(snaps, key=_key)
     latest_d2_code = best.get("day2_time_code")
     # 2일차 진행 중이면 1일차는 마감(18시)으로 표기
     latest_d1_code = "18" if latest_d2_code else best.get("day1_time_code")
