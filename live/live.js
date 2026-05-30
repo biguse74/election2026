@@ -321,9 +321,9 @@ const CON_STRONGHOLD = new Set(['대구광역시', '경상북도', '경상남도
 // 텃밭에서 상대 진영이 1위면 이변. 개표 초반(20% 미만)은 노이즈라 제외.
 function isUpset(r) {
   const leader = (r.candidates || [])[0];
-  if (!leader || (r.progress_pct || 0) < 20) return false;
-  if (DEM_STRONGHOLD.has(r.sd_name) && leader.jd_name === CON) return true;
-  if (CON_STRONGHOLD.has(r.sd_name) && leader.jd_name === DEM) return true;
+  if (!leader || !leader.jd_name || (r.progress_pct || 0) < 20) return false;
+  if (DEM_STRONGHOLD.has(r.sd_name) && leader.jd_name !== DEM) return true;
+  if (CON_STRONGHOLD.has(r.sd_name) && leader.jd_name !== CON) return true;
   return false;
 }
 

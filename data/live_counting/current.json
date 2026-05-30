@@ -844,6 +844,42 @@
           "current_rank": 3
         }
       ]
+    },
+    {
+      "race_key": "6|전라남도|목포시바선거구|목포시",
+      "sg_type_code": "6",
+      "sg_type_label": "기초의원",
+      "sd_name": "전라남도",
+      "sgg_name": "목포시바선거구",
+      "wiw_name": "목포시",
+      "eligible_voters": 22000,
+      "valid_votes": 14400,
+      "invalid_votes": 259,
+      "progress_pct": 66.63,
+      "rank1_minus_rank2_pp": 4.86,
+      "candidates": [
+        {
+          "name": "목포무소속후보",
+          "jd_name": "무소속",
+          "votes": 6800,
+          "share_pct": 47.22,
+          "current_rank": 1
+        },
+        {
+          "name": "목포민주후보",
+          "jd_name": "더불어민주당",
+          "votes": 6100,
+          "share_pct": 42.36,
+          "current_rank": 2
+        },
+        {
+          "name": "목포진보후보",
+          "jd_name": "진보당",
+          "votes": 1500,
+          "share_pct": 10.42,
+          "current_rank": 3
+        }
+      ]
     }
   ]
 }
