@@ -12,7 +12,9 @@ name: 사전투표율 스크래핑 (info.nec.go.kr)
 # 매 정시 발표분을 몇 분 안에 잡는다. 중복 시각은 스크립트가 dedupe·commit skip.
 on:
   schedule:
-    - cron: '3,13,23,33,43,53 * * * *'
+    # GitHub 스케줄러가 이 저장소 예약을 대부분 드롭 → 발화 기회를 늘린다.
+    # :00/:30 혼잡 시각을 피해 5분 간격(시간당 12회). 중복은 스크립트가 skip.
+    - cron: '4,9,14,19,24,29,34,39,44,49,54,59 * * * *'
   workflow_dispatch:
 
 concurrency:
