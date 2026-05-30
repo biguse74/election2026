@@ -2,12 +2,14 @@
 // 데이터 소스:
 //   data/live_counting/current.json    — 선관위 OpenAPI 가공본 (투표율 + races[])
 //   data/live_counting/watchlist.json  — 주목 후보 목록 (수동 편집)
+//   data/live_counting/groups.json     — 관심 지역 그룹 (수동 편집)
 //   data/prediction_sido.json          — 뉴탐사 자체 시뮬레이션 (시도별 민주 당선확률 %)
 //   data/parties.json                  — 정당 색상
 
 const PATHS = {
   current:     '../data/live_counting/current.json',
   watchlist:   '../data/live_counting/watchlist.json',
+  groups:      '../data/live_counting/groups.json',
   prediction:  '../data/prediction_sido.json',
   parties:     '../data/parties.json',
 };
@@ -58,6 +60,30 @@ function racePlace(r) {
   return tail ? `${r.sd_name} ${tail}` : r.sd_name;
 }
 
+// 표 한 행 (선거구 1·2위 요약) — 검색·그룹 공용
+function raceTableRow(r) {
+  const c1 = (r.candidates || [])[0];
+  const c2 = (r.candidates || [])[1];
+  const dot = c1 ? `<span class="cand-dot" style="background:${partyColor(LATEST_PARTIES, c1.jd_name)}"></span>` : '';
+  const lead = c1 ? `${dot}<b>${c1.name}</b> <span class="cand-party">${c1.jd_name || ''}</span> ${fmt1(c1.share_pct)}%` : '—';
+  const second = c2 ? `${c2.name} ${fmt1(c2.share_pct)}%` : '—';
+  return `<tr>
+    <td>${r.sg_type_label}</td>
+    <td>${racePlace(r)}</td>
+    <td class="lead-cell">${lead}</td>
+    <td>${second}</td>
+    <td class="num">${fmt1(r.rank1_minus_rank2_pp)}pp</td>
+    <td class="num">${fmt1(r.progress_pct)}%</td>
+  </tr>`;
+}
+
+function raceTable(rows) {
+  return `<div class="other-wrap"><table class="other">
+    <thead><tr><th>선거</th><th>지역</th><th>1위</th><th>2위</th><th>격차</th><th>개표</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>`;
+}
+
 // ── Hero ──────────────────────────────────────────────────────────
 function renderHero(cur) {
   const nat = cur?.turnout?.national;
@@ -96,7 +122,6 @@ function renderHero(cur) {
 }
 
 // ── 주목 후보 워치리스트 ────────────────────────────────────────────
-// watchlist의 각 후보를 races에서 (이름 + 시도/지역) 으로 찾아 개표 실황 카드로.
 function findWatch(races, w) {
   for (const r of races) {
     if (w.sido && r.sd_name !== w.sido) continue;
@@ -158,6 +183,53 @@ function renderWatchlist(watchlist) {
         <span class="watch-rank">${cand.current_rank}위 / ${(race.candidates || []).length}명</span>
       </div>
       <span class="watch-chip ${st.cls}">${st.label}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── 관심 지역 그룹 ──────────────────────────────────────────────────
+// groups.json의 각 그룹 matcher(type·sido·where)로 레이스를 묶어 표시.
+function matcherHit(r, m) {
+  if (m.type && String(r.sg_type_code) !== m.type) return false;
+  if (m.sido && r.sd_name !== m.sido) return false;
+  if (m.where) {
+    const place = [r.sd_name, r.sgg_name, r.wiw_name].filter(Boolean).join(' ');
+    if (!place.includes(m.where)) return false;
+  }
+  return true;
+}
+
+function renderGroups(groupsData) {
+  const block = document.getElementById('groups-block');
+  const root = document.getElementById('groups');
+  if (!root || !block) return;
+  const groups = (groupsData && groupsData.groups) || [];
+  if (!groups.length) { block.hidden = true; return; }
+  block.hidden = false;
+
+  root.innerHTML = groups.map(g => {
+    const seen = new Set();
+    const matched = [];
+    for (const r of LATEST_RACES) {
+      if ((g.matchers || []).some(m => matcherHit(r, m)) && !seen.has(r.race_key)) {
+        seen.add(r.race_key); matched.push(r);
+      }
+    }
+    matched.sort((a, b) =>
+      (TYPE_ORDER.indexOf(String(a.sg_type_code)) - TYPE_ORDER.indexOf(String(b.sg_type_code))) ||
+      ((a.rank1_minus_rank2_pp ?? 999) - (b.rank1_minus_rank2_pp ?? 999)));
+
+    const body = matched.length
+      ? raceTable(matched.slice(0, 100).map(raceTableRow).join(''))
+      : `<div class="state-empty" style="padding:18px 0">아직 매칭된 개표 데이터가 없습니다 (마감 후 표시).</div>`;
+
+    return `<div class="group-box">
+      <div class="group-head">
+        <span class="group-title">${g.title}</span>
+        <span class="group-desc">${g.desc || ''}</span>
+        <span class="group-count">${matched.length}곳</span>
+      </div>
+      ${body}
     </div>`;
   }).join('');
 }
@@ -315,29 +387,10 @@ function renderSearch() {
   matched.sort((a, b) => (a.rank1_minus_rank2_pp ?? 999) - (b.rank1_minus_rank2_pp ?? 999));
   const shown = matched.slice(0, RESULT_CAP);
 
-  const rows = shown.map(r => {
-    const c1 = (r.candidates || [])[0];
-    const c2 = (r.candidates || [])[1];
-    const dot = c1 ? `<span class="cand-dot" style="background:${partyColor(LATEST_PARTIES, c1.jd_name)}"></span>` : '';
-    const lead = c1 ? `${dot}<b>${c1.name}</b> <span class="cand-party">${c1.jd_name || ''}</span> ${fmt1(c1.share_pct)}%` : '—';
-    const second = c2 ? `${c2.name} ${fmt1(c2.share_pct)}%` : '—';
-    return `<tr>
-      <td>${r.sg_type_label}</td>
-      <td>${racePlace(r)}</td>
-      <td class="lead-cell">${lead}</td>
-      <td>${second}</td>
-      <td class="num">${fmt1(r.rank1_minus_rank2_pp)}pp</td>
-      <td class="num">${fmt1(r.progress_pct)}%</td>
-    </tr>`;
-  }).join('');
-
   const capNote = matched.length > RESULT_CAP
     ? `<div class="state-empty" style="padding:14px 0">접전 순 상위 ${RESULT_CAP}개만 표시 중 — 필터로 좁혀 주세요.</div>` : '';
 
-  root.innerHTML = `<table class="other">
-    <thead><tr><th>선거</th><th>지역</th><th>1위</th><th>2위</th><th>격차</th><th>개표</th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table>${capNote}`;
+  root.innerHTML = raceTable(shown.map(raceTableRow).join('')) + capNote;
 }
 
 function bindFilters() {
@@ -362,6 +415,7 @@ function showWaiting(msg) {
   document.getElementById('hero-progress-meta').textContent = '투표 마감(18시) 후 개표 시작';
   document.getElementById('hero-early').innerHTML = `—<span class="pct"></span>`;
   const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
+  const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
   document.getElementById('chief-races').innerHTML = `<div class="state-empty">${msg}</div>`;
   document.getElementById('search-results').innerHTML = '';
   document.getElementById('updated-at').textContent = '—';
@@ -375,8 +429,9 @@ async function render() {
     showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
     return;
   }
-  const [cur, watchlist, prediction, parties] = await Promise.all([
-    loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
+  const [cur, watchlist, groups, prediction, parties] = await Promise.all([
+    loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.groups),
+    loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
   ]);
   if (!cur) {
     document.getElementById('chief-races').innerHTML =
@@ -390,6 +445,7 @@ async function render() {
 
   renderHero(cur);
   renderWatchlist(watchlist);
+  renderGroups(groups);
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
   populateFilters(LATEST_RACES);
   bindFilters();
