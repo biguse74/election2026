@@ -351,9 +351,24 @@ function renderTimeline(ts, baseline8, baseline7) {
     const d = pts9.map((p, i) => (i === 0 ? 'M' : 'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
     lineGroup.push(`<path d="${d}" stroke="#c41e3a" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`);
   }
-  for (const p of pts9) {
+  pts9.forEach((p, i) => {
     lineGroup.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3" fill="#c41e3a"><title>${p.day}일차 ${String(p.hour).padStart(2,'0')}시 · ${p.v.toFixed(2)}%</title></circle>`);
-  }
+    // 값 라벨 — 차트만 보고도 투표율을 읽을 수 있게.
+    // 점이 매 정시(최대 23개)라 다 달면 빽빽 → X눈금과 같은 milestone(6·9·12·15·18시)만 표기.
+    // 마지막(현재) 점은 항상 '현재 ##.##%'로 크게 강조.
+    const isLast = i === pts9.length - 1;
+    const isMilestone = [6, 9, 12, 15, 18].includes(p.hour);
+    if (!isLast && !isMilestone) return;
+    const nearRight = p.x > W - padR - 40;
+    const anchor = isLast && nearRight ? 'end' : 'middle';
+    const tx = (isLast && nearRight ? p.x - 5 : p.x).toFixed(1);
+    const ty = (p.y - (isLast ? 9 : 7)).toFixed(1);
+    if (isLast) {
+      lineGroup.push(`<text x="${tx}" y="${ty}" font-size="11.5" font-weight="800" fill="#c41e3a" text-anchor="${anchor}">현재 ${p.v.toFixed(2)}%</text>`);
+    } else {
+      lineGroup.push(`<text x="${tx}" y="${ty}" font-size="9" font-weight="600" fill="#c41e3a" text-anchor="${anchor}" opacity="0.85">${p.v.toFixed(1)}</text>`);
+    }
+  });
   if (pts9.length === 0) {
     lineGroup.push(`<text x="${W / 2}" y="${H / 2}" font-size="12" fill="#999" text-anchor="middle">9회 라인은 첫 수집 후 그려집니다.</text>`);
   }
