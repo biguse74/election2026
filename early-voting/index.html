@@ -257,8 +257,6 @@
   .rk-sido { color: var(--muted); font-weight: 600; font-size: 0.72rem; margin-left: 4px; }
   .rk-bar-wrap { flex: 1 1 auto; height: 11px; background: #f0f1f3; border-radius: 6px; overflow: hidden; min-width: 24px; }
   .rk-bar { display: block; height: 100%; background: #8aa0c8; border-radius: 4px; }
-  .rk-row.rk-1 .rk-bar { background: var(--accent); }
-  .rk-row.rk-1 .rk-rate, .rk-row.rk-1 .rk-num { color: var(--accent); }
   .rk-rate { width: 50px; text-align: right; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; }
   .rks-list { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px; }
   @media (max-width: 520px) { .rks-list { grid-template-columns: 1fr; } }
@@ -266,6 +264,10 @@
   .rks-sido { width: 42px; font-weight: 700; font-size: 0.82rem; color: var(--muted); flex-shrink: 0; }
   .rks-name { flex: 1 1 auto; font-weight: 700; font-size: 0.84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .rks-rate { font-weight: 800; font-size: 0.84rem; color: var(--ink); flex-shrink: 0; }
+
+  .lg-sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: middle; margin: 0 3px 0 6px; }
+  .lg-hi { background: #c41e3a; }
+  .lg-lo { background: #9aa4b2; }
 
   /* 시군별 */
   .sg-group { margin: 0 0 22px; }
@@ -279,9 +281,6 @@
   .jn-bar-wrap { flex: 1 1 auto; height: 12px; background: #f0f1f3; border-radius: 6px; overflow: hidden; }
   .jn-bar { display: block; height: 100%; background: #8aa0c8; border-radius: 6px; }
   .jn-rate { width: 50px; text-align: right; font-weight: 800; font-size: 0.88rem; flex-shrink: 0; color: var(--ink); }
-  .jn-row.jn-top .jn-bar { background: var(--accent); }
-  .jn-row.jn-top .jn-rate { color: var(--accent); }
-  .jn-row.jn-city .jn-bar { background: #cfd6e2; }
 
   .meta-bar {
     display: flex; gap: 16px; flex-wrap: wrap;
@@ -403,7 +402,7 @@
 
   <section class="block" id="sg-rank-block" hidden>
     <h2>사전투표율 1위 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">전국·시도별</span></h2>
-    <p class="block-sub">전국 255개 시군구 중 사전투표율 최고 순위와, 시도별 최고 시군구. 농촌 군이 상위권을 휩쓴 게 한눈에 보입니다.</p>
+    <p class="block-sub">전국 255개 시군구 중 사전투표율 최고 순위와, 시도별 최고 시군구. 막대 색=전국 평균(약 24%) 대비:<span class="lg-sw lg-hi"></span>이상<span class="lg-sw lg-lo"></span>미만. 농촌 군이 상위권을 휩쓴 게 한눈에 보입니다.</p>
     <div class="rk-grid">
       <div><p class="rk-cap">전국 시군구 TOP 15</p><div id="sg-rank-nat"></div></div>
       <div><p class="rk-cap">시도별 최고 시군구</p><div id="sg-rank-sido" class="rks-list"></div></div>
@@ -412,7 +411,7 @@
 
   <section class="block" id="sigungu-block" hidden>
     <h2>시군별 사전투표율 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(최종)</span></h2>
-    <p class="block-sub">시도별 시군구 사전투표율. 농촌 <strong>군</strong> 지역이 <strong>시·구</strong>보다 크게 높은 게 공통 특징(고령·조직 결집). 빨강=시도 내 최고, 옅은 색=시·구 지역. 행에 마우스를 올리면 선거인·사전투표자 수.</p>
+    <p class="block-sub">막대 <strong>길이</strong>=사전투표율 · <strong>색</strong>=전국 평균(약 24%) 대비:<span class="lg-sw lg-hi"></span>이상<span class="lg-sw lg-lo"></span>미만. 농촌 <strong>군</strong>이 도시 <strong>시·구</strong>보다 크게 높은 게 공통 특징. 행에 마우스를 올리면 선거인·사전투표자 수.</p>
     <div id="sigungu-groups"></div>
   </section>
 
@@ -449,6 +448,6 @@
     if (el && Date.now() >= Date.parse('2026-06-03T18:00:00+09:00')) el.hidden = false;
   })();
 </script>
-<script src="early-voting.js?v=202605302335"></script>
+<script src="early-voting.js?v=202605302345"></script>
 </body>
 </html>

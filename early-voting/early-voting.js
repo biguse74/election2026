@@ -290,10 +290,10 @@ function baselineFracSeries(baseline) {
 }
 
 // 사전투표율 → 색 (낮음 파랑 ~ 높음 빨강). 막대 히트맵용.
+let NAT_AVG = 24;  // 전국 평균 사전투표율(데이터에서 계산). 막대 색 기준선.
+// 색 원칙: 전국 평균 이상 = 뉴탐사 레드, 미만 = 차분한 회색. (길이=사전투표율)
 function rateColor(rate) {
-  const t = Math.max(0, Math.min(1, (rate - 18) / (62 - 18)));
-  const hue = 240 + t * 120;            // 240 파랑 → 360 빨강 (보라·자홍 경유, 선명하게)
-  return `hsl(${(hue % 360).toFixed(0)}, 72%, 52%)`;
+  return rate >= NAT_AVG ? '#c41e3a' : '#9aa4b2';
 }
 
 // 사전투표율 1위 — 전국 시군구 TOP 15 + 시도별 최고.
@@ -746,7 +746,13 @@ async function main() {
   renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
   bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21);
   renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21);
-  loadJSON(PATHS.sigungu).then(d => { renderSigungu(d); renderSigunguRanking(d); });
+  loadJSON(PATHS.sigungu).then(d => {
+    const sd = (d && d.sido) || {};
+    let vd = 0, vt = 0;
+    for (const k in sd) { if (sd[k].total) { vd += sd[k].total.voted || 0; vt += sd[k].total.voters || 0; } }
+    if (vt) NAT_AVG = vd / vt * 100;
+    renderSigungu(d); renderSigunguRanking(d);
+  });
 }
 
 main();
