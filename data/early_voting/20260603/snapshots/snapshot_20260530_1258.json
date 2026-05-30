@@ -1,0 +1,116 @@
+{
+  "sgId": "20260603",
+  "fetched_at": "2026-05-30T12:58:07+09:00",
+  "source": "info.nec.go.kr/VCAP01 (scrape)",
+  "day1_time_code": "18",
+  "day2_time_code": "13",
+  "national": {
+    "voters": 44649908,
+    "voted": 7812780,
+    "turnout": 17.5
+  },
+  "by_sido": [
+    {
+      "sdName": "서울특별시",
+      "voters": 8319134,
+      "voted": 1431486,
+      "turnout": 17.21
+    },
+    {
+      "sdName": "부산광역시",
+      "voters": 2857335,
+      "voted": 453675,
+      "turnout": 15.88
+    },
+    {
+      "sdName": "대구광역시",
+      "voters": 2049683,
+      "voted": 282561,
+      "turnout": 13.79
+    },
+    {
+      "sdName": "인천광역시",
+      "voters": 2663459,
+      "voted": 421933,
+      "turnout": 15.84
+    },
+    {
+      "sdName": "광주광역시",
+      "voters": 1189519,
+      "voted": 248340,
+      "turnout": 20.88
+    },
+    {
+      "sdName": "대전광역시",
+      "voters": 1250891,
+      "voted": 206370,
+      "turnout": 16.5
+    },
+    {
+      "sdName": "울산광역시",
+      "voters": 936171,
+      "voted": 154515,
+      "turnout": 16.5
+    },
+    {
+      "sdName": "세종특별자치시",
+      "voters": 309134,
+      "voted": 61049,
+      "turnout": 19.75
+    },
+    {
+      "sdName": "경기도",
+      "voters": 11878997,
+      "voted": 1812889,
+      "turnout": 15.26
+    },
+    {
+      "sdName": "강원특별자치도",
+      "voters": 1329742,
+      "voted": 279250,
+      "turnout": 21.0
+    },
+    {
+      "sdName": "충청북도",
+      "voters": 1396588,
+      "voted": 249707,
+      "turnout": 17.88
+    },
+    {
+      "sdName": "충청남도",
+      "voters": 1857239,
+      "voted": 316947,
+      "turnout": 17.07
+    },
+    {
+      "sdName": "전북특별자치도",
+      "voters": 1509854,
+      "voted": 415751,
+      "turnout": 27.54
+    },
+    {
+      "sdName": "전라남도",
+      "voters": 1558206,
+      "voted": 484598,
+      "turnout": 31.1
+    },
+    {
+      "sdName": "경상북도",
+      "voters": 2202861,
+      "voted": 381349,
+      "turnout": 17.31
+    },
+    {
+      "sdName": "경상남도",
+      "voters": 2775745,
+      "voted": 513690,
+      "turnout": 18.51
+    },
+    {
+      "sdName": "제주특별자치도",
+      "voters": 565350,
+      "voted": 98670,
+      "turnout": 17.45
+    }
+  ]
+}
