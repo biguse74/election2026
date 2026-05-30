@@ -293,7 +293,7 @@ function renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21) {
   svg.innerHTML = '';
 
   const W = 1000, H = 260;
-  const padL = 50, padR = 20, padT = 18, padB = 36;
+  const padL = 50, padR = 86, padT = 18, padB = 36;
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
 
@@ -329,18 +329,19 @@ function renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21) {
   const lineGroup = [];
 
   // 7회·8회 라인 (과거) — labelDy로 끝점 라벨 상/하 분리
-  function drawBaselineLine(baseline, color, dash, label, labelDy) {
+  const endLabels = [];
+  function drawBaselineLine(baseline, color, dash, label) {
     const series = baselineFracSeries(baseline);
     if (series.length < 2) return;
     const path = series.map((p, i) => (i === 0 ? 'M' : 'L') + xToPx(p[0]).toFixed(1) + ',' + yToPx(p[1]).toFixed(1)).join(' ');
     lineGroup.push(`<path d="${path}" stroke="${color}" stroke-width="1.8" fill="none" stroke-dasharray="${dash}" stroke-linecap="round" stroke-linejoin="round"/>`);
     const last = series[series.length - 1];
-    lineGroup.push(`<text x="${(xToPx(last[0]) - 4).toFixed(1)}" y="${(yToPx(last[1]) + labelDy).toFixed(1)}" font-size="9.5" fill="${color}" text-anchor="end">${label} ${last[1].toFixed(2)}%</text>`);
+    endLabels.push({ y: yToPx(last[1]), text: `${label} ${last[1].toFixed(2)}%`, color, bold: false, size: 9.5 });
   }
-  if (baseline7) drawBaselineLine(baseline7, '#9aa4b2', '2 3', '7회', 14);
-  if (baseline8) drawBaselineLine(baseline8, '#5f6a78', '6 4', '8회', -6);
-  if (baselineGen22) drawBaselineLine(baselineGen22, '#e0921f', '5 4', '22대', -6);
-  if (basePres21) drawBaselineLine(basePres21, '#9183c7', '2 4', '21대', -6);
+  if (baseline7) drawBaselineLine(baseline7, '#9aa4b2', '2 3', '7회');
+  if (baseline8) drawBaselineLine(baseline8, '#5f6a78', '6 4', '8회');
+  if (baselineGen22) drawBaselineLine(baselineGen22, '#e0921f', '5 4', '22대');
+  if (basePres21) drawBaselineLine(basePres21, '#9183c7', '2 4', '21대');
 
   // 9회 라인 — (day, hour) 정시 기준으로 baseline과 정렬
   const idx9 = build9hRoundIndex(ts);
@@ -369,11 +370,25 @@ function renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21) {
     const ty = (p.y - (isLast ? 9 : 7)).toFixed(1);
     if (isLast) {
       lineGroup.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="6" fill="none" stroke="#c41e3a" stroke-width="1.6" opacity="0.55"/>`);
-      lineGroup.push(`<text x="${tx}" y="${ty}" font-size="11.5" font-weight="800" fill="#c41e3a" text-anchor="${anchor}">현재 ${p.v.toFixed(2)}%</text>`);
+      endLabels.push({ y: p.y, text: `현재 ${p.v.toFixed(2)}%`, color: '#c41e3a', bold: true, size: 11.5 });
     } else {
       lineGroup.push(`<text x="${tx}" y="${ty}" font-size="9" font-weight="600" fill="#c41e3a" text-anchor="${anchor}" opacity="0.85">${p.v.toFixed(1)}</text>`);
     }
   });
+
+  // 끝점 라벨 — 오른쪽 거터에 세로 충돌 회피로 배치 + 옅은 연결선
+  endLabels.sort((a, b) => a.y - b.y);
+  const _gx = W - padR + 6, _gap = 13, _endX = W - padR - 2;
+  for (let i = 0; i < endLabels.length; i++) {
+    let ly = endLabels[i].y;
+    if (i > 0) ly = Math.max(ly, endLabels[i - 1].place + _gap);
+    endLabels[i].place = Math.max(padT + 8, Math.min(H - padB - 2, ly));
+  }
+  for (const e of endLabels) {
+    lineGroup.push(`<line x1="${_endX.toFixed(1)}" y1="${e.y.toFixed(1)}" x2="${(_gx - 3).toFixed(1)}" y2="${e.place.toFixed(1)}" stroke="${e.color}" stroke-width="0.8" opacity="0.4"/>`);
+    lineGroup.push(`<text x="${_gx}" y="${(e.place + 3).toFixed(1)}" font-size="${e.size}" font-weight="${e.bold ? 800 : 600}" fill="${e.color}" text-anchor="start">${e.text}</text>`);
+  }
+
   if (pts9.length === 0) {
     lineGroup.push(`<text x="${W / 2}" y="${H / 2}" font-size="12" fill="#999" text-anchor="middle">9회 라인은 첫 수집 후 그려집니다.</text>`);
   }
