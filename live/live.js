@@ -30,6 +30,8 @@ let LATEST_RACES = [];
 let LATEST_PARTIES = {};
 let filtersBound = false;
 let filtersPopulated = false;
+let expandBound = false;
+const expandedKeys = new Set();  // 펼쳐진 선거구 race_key (갱신에도 유지)
 
 async function loadJSON(path) {
   try {
@@ -42,6 +44,7 @@ async function loadJSON(path) {
 function fmt1(v) { return (v == null || isNaN(v)) ? '—' : Number(v).toFixed(1); }
 function intComma(v) { return (v == null || isNaN(v)) ? '—' : Number(v).toLocaleString('ko-KR'); }
 function partyColor(parties, name) { return (parties && parties[name]) || '#888'; }
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
 
 function fmtKST(iso) {
   if (!iso) return '—';
@@ -60,21 +63,46 @@ function racePlace(r) {
   return tail ? `${r.sd_name} ${tail}` : r.sd_name;
 }
 
-// 표 한 행 (선거구 1·2위 요약) — 검색·그룹 공용
+// 선거구 전체 후보 상세 (펼침 영역)
+function candDetailHTML(r) {
+  const cands = r.candidates || [];
+  if (!cands.length) return '<div class="rd-empty">후보 데이터 없음</div>';
+  return cands.map(c => {
+    const color = partyColor(LATEST_PARTIES, c.jd_name);
+    const w = Math.max(0, Math.min(100, c.share_pct || 0));
+    return `<div class="rd-cand">
+      <span class="rd-rank">${c.current_rank}</span>
+      <span class="cand-dot" style="background:${color}"></span>
+      <span class="rd-name">${c.name || '—'}</span>
+      <span class="rd-party">${c.jd_name || ''}</span>
+      <span class="rd-bar-wrap"><span class="rd-bar" style="width:${w}%;background:${color}"></span></span>
+      <span class="rd-share">${fmt1(c.share_pct)}%</span>
+      <span class="rd-votes">${intComma(c.votes)}표</span>
+    </div>`;
+  }).join('');
+}
+
+// 표 한 행(요약, 클릭 시 펼침) + 상세 행 — 검색·그룹 공용
 function raceTableRow(r) {
+  const rk = r.race_key || '';
   const c1 = (r.candidates || [])[0];
   const c2 = (r.candidates || [])[1];
   const dot = c1 ? `<span class="cand-dot" style="background:${partyColor(LATEST_PARTIES, c1.jd_name)}"></span>` : '';
   const lead = c1 ? `${dot}<b>${c1.name}</b> <span class="cand-party">${c1.jd_name || ''}</span> ${fmt1(c1.share_pct)}%` : '—';
   const second = c2 ? `${c2.name} ${fmt1(c2.share_pct)}%` : '—';
-  return `<tr>
+  const open = expandedKeys.has(rk);
+  const summary = `<tr class="race-sum" data-rk="${esc(rk)}">
     <td>${r.sg_type_label}</td>
     <td>${racePlace(r)}</td>
     <td class="lead-cell">${lead}</td>
     <td>${second}</td>
     <td class="num">${fmt1(r.rank1_minus_rank2_pp)}pp</td>
-    <td class="num">${fmt1(r.progress_pct)}%</td>
+    <td class="num">${fmt1(r.progress_pct)}%<span class="rd-caret">${open ? '▴' : '▾'}</span></td>
   </tr>`;
+  const detail = `<tr class="rd-row" data-rk="${esc(rk)}"${open ? '' : ' hidden'}>
+    <td colspan="6"><div class="rd-box">${candDetailHTML(r)}</div></td>
+  </tr>`;
+  return summary + detail;
 }
 
 function raceTable(rows) {
@@ -82,6 +110,29 @@ function raceTable(rows) {
     <thead><tr><th>선거</th><th>지역</th><th>1위</th><th>2위</th><th>격차</th><th>개표</th></tr></thead>
     <tbody>${rows}</tbody>
   </table></div>`;
+}
+
+// 표 행 클릭 → 해당 선거구 상세 토글 (delegation, 1회 바인드)
+function bindRaceExpand() {
+  if (expandBound) return;
+  document.addEventListener('click', (ev) => {
+    const row = ev.target.closest('tr.race-sum');
+    if (!row) return;
+    const rk = row.getAttribute('data-rk');
+    if (rk == null) return;
+    const on = !expandedKeys.has(rk);
+    if (on) expandedKeys.add(rk); else expandedKeys.delete(rk);
+    document.querySelectorAll('tr.rd-row').forEach(d => {
+      if (d.getAttribute('data-rk') === rk) d.hidden = !on;
+    });
+    document.querySelectorAll('tr.race-sum').forEach(s => {
+      if (s.getAttribute('data-rk') === rk) {
+        const ca = s.querySelector('.rd-caret');
+        if (ca) ca.textContent = on ? '▴' : '▾';
+      }
+    });
+  });
+  expandBound = true;
 }
 
 // ── Hero ──────────────────────────────────────────────────────────
@@ -188,7 +239,6 @@ function renderWatchlist(watchlist) {
 }
 
 // ── 관심 지역 그룹 ──────────────────────────────────────────────────
-// groups.json의 각 그룹 matcher(type·sido·where)로 레이스를 묶어 표시.
 function matcherHit(r, m) {
   if (m.type && String(r.sg_type_code) !== m.type) return false;
   if (m.sido && r.sd_name !== m.sido) return false;
@@ -449,6 +499,7 @@ async function render() {
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
   populateFilters(LATEST_RACES);
   bindFilters();
+  bindRaceExpand();
   renderSearch();
 }
 

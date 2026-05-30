@@ -122,6 +122,23 @@
   .wc-behind { background: #f0f0f0; color: var(--muted); }
   .wc-wait { background: #f7f7f7; color: var(--gray); }
 
+  /* 선거구 상세 펼침 */
+  table.other tr.race-sum { cursor: pointer; }
+  table.other tr.race-sum:hover { background: #fafafa; }
+  .rd-caret { color: var(--muted); font-size: 0.8em; margin-left: 5px; }
+  table.other tr.rd-row > td { background: #fafafd; padding: 0; border-bottom: 1px solid #eee; }
+  .rd-box { padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .rd-cand { display: flex; align-items: center; gap: 8px; font-size: 0.84rem; }
+  .rd-rank { width: 16px; text-align: center; font-weight: 700; color: var(--muted); flex-shrink: 0; }
+  .rd-cand .cand-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .rd-name { font-weight: 700; flex-shrink: 0; }
+  .rd-party { color: var(--muted); font-size: 0.76rem; flex-shrink: 0; }
+  .rd-bar-wrap { flex: 1 1 auto; height: 9px; background: #ececec; border-radius: 5px; overflow: hidden; min-width: 30px; }
+  .rd-bar { height: 100%; border-radius: 5px; }
+  .rd-share { font-weight: 800; width: 50px; text-align: right; flex-shrink: 0; }
+  .rd-votes { color: var(--muted); font-size: 0.76rem; width: 74px; text-align: right; flex-shrink: 0; }
+  .rd-empty { color: var(--muted); font-size: 0.82rem; padding: 4px 0; }
+
   /* 관심 지역 그룹 */
   .group-box { margin: 0 0 18px; }
   .group-head { display: flex; align-items: baseline; gap: 10px; margin: 0 0 8px; flex-wrap: wrap; }
