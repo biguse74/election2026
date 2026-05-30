@@ -314,6 +314,19 @@ function renderWatchlist(watchlist) {
 }
 
 // ── 관심 지역 그룹 ──────────────────────────────────────────────────
+// 텃밭(전통 강세 지역) — '이변' 판정용. 호남=민주 / 영남=보수.
+const DEM_STRONGHOLD = new Set(['광주광역시', '전라남도', '전북특별자치도', '전남광주통합특별시']);
+const CON_STRONGHOLD = new Set(['대구광역시', '경상북도', '경상남도', '부산광역시', '울산광역시']);
+
+// 텃밭에서 상대 진영이 1위면 이변. 개표 초반(20% 미만)은 노이즈라 제외.
+function isUpset(r) {
+  const leader = (r.candidates || [])[0];
+  if (!leader || (r.progress_pct || 0) < 20) return false;
+  if (DEM_STRONGHOLD.has(r.sd_name) && leader.jd_name === CON) return true;
+  if (CON_STRONGHOLD.has(r.sd_name) && leader.jd_name === DEM) return true;
+  return false;
+}
+
 function matcherHit(r, m) {
   if (m.type && String(r.sg_type_code) !== m.type) return false;
   if (m.sido && r.sd_name !== m.sido) return false;
@@ -324,6 +337,7 @@ function matcherHit(r, m) {
   if (m.party && !(r.candidates || []).some(c => c.jd_name === m.party)) return false;
   if (m.name && !(r.candidates || []).some(c => c.name === m.name)) return false;
   if (m.closeRace != null && !(r.rank1_minus_rank2_pp != null && r.rank1_minus_rank2_pp <= m.closeRace)) return false;
+  if (m.upset && !isUpset(r)) return false;
   return true;
 }
 
