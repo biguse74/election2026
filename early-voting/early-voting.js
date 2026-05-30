@@ -289,6 +289,39 @@ function baselineFracSeries(baseline) {
   return out.sort((a, b) => a[0] - b[0]);
 }
 
+// 사전투표율 1위 — 전국 시군구 TOP 15 + 시도별 최고.
+function renderSigunguRanking(data) {
+  const block = document.getElementById('sg-rank-block');
+  if (!block) return;
+  const sido = (data && data.sido) || {};
+  const all = [];
+  for (const sd of Object.keys(sido)) for (const r of (sido[sd].sigungu || [])) all.push({ sido: sd, name: r.name, rate: r.rate });
+  if (!all.length) { block.hidden = true; return; }
+  block.hidden = false;
+  const topN = all.slice().sort((a, b) => b.rate - a.rate).slice(0, 15);
+  const maxRate = topN[0].rate;
+  document.getElementById('sg-rank-nat').innerHTML = topN.map((r, i) => {
+    const w = Math.min(100, r.rate / maxRate * 100);
+    return `<div class="rk-row${i === 0 ? ' rk-1' : ''}">
+      <span class="rk-num">${i + 1}</span>
+      <span class="rk-name">${r.name}<span class="rk-sido">${SIDO_SHORT[r.sido] || r.sido}</span></span>
+      <span class="rk-bar-wrap"><span class="rk-bar" style="width:${w.toFixed(1)}%"></span></span>
+      <span class="rk-rate">${r.rate.toFixed(2)}%</span>
+    </div>`;
+  }).join('');
+  const byS = Object.keys(sido).sort((a, b) => SIDO_ORDER.indexOf(a) - SIDO_ORDER.indexOf(b)).map(sd => {
+    const rows = sido[sd].sigungu || [];
+    if (!rows.length) return null;
+    const top = rows.reduce((m, r) => r.rate > m.rate ? r : m, rows[0]);
+    return { sido: sd, name: top.name, rate: top.rate };
+  }).filter(Boolean);
+  document.getElementById('sg-rank-sido').innerHTML = byS.map(r => `<div class="rks-row">
+    <span class="rks-sido">${SIDO_SHORT[r.sido] || r.sido}</span>
+    <span class="rks-name">${r.name}</span>
+    <span class="rks-rate">${r.rate.toFixed(2)}%</span>
+  </div>`).join('');
+}
+
 // 시군별 사전투표율 (최종) — 시도별로 묶어 표시. 농촌 군이 시·구보다 높은 패턴.
 function renderSigungu(data) {
   const block = document.getElementById('sigungu-block');
@@ -706,7 +739,7 @@ async function main() {
   renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
   bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21);
   renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21);
-  loadJSON(PATHS.sigungu).then(renderSigungu);
+  loadJSON(PATHS.sigungu).then(d => { renderSigungu(d); renderSigunguRanking(d); });
 }
 
 main();

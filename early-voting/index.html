@@ -247,6 +247,26 @@
   .legend-8 { background: #bbb; }
   svg.timeline { width: 100%; height: 260px; display: block; }
 
+  /* 사전투표율 1위 순위 */
+  .rk-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; }
+  @media (max-width: 760px) { .rk-grid { grid-template-columns: 1fr; } }
+  .rk-cap { font-size: 0.82rem; font-weight: 700; color: var(--ink); margin: 0 0 8px; }
+  .rk-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid #f3f3f3; }
+  .rk-num { width: 20px; text-align: center; font-weight: 800; color: var(--muted); font-size: 0.8rem; flex-shrink: 0; }
+  .rk-name { width: 124px; font-weight: 700; font-size: 0.84rem; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rk-sido { color: var(--muted); font-weight: 600; font-size: 0.72rem; margin-left: 4px; }
+  .rk-bar-wrap { flex: 1 1 auto; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; min-width: 24px; }
+  .rk-bar { height: 100%; background: #8aa0c8; border-radius: 4px; }
+  .rk-row.rk-1 .rk-bar { background: var(--accent); }
+  .rk-row.rk-1 .rk-rate, .rk-row.rk-1 .rk-num { color: var(--accent); }
+  .rk-rate { width: 50px; text-align: right; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; }
+  .rks-list { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 18px; }
+  @media (max-width: 520px) { .rks-list { grid-template-columns: 1fr; } }
+  .rks-row { display: flex; align-items: baseline; gap: 8px; padding: 4px 0; border-bottom: 1px solid #f3f3f3; }
+  .rks-sido { width: 42px; font-weight: 700; font-size: 0.82rem; color: var(--muted); flex-shrink: 0; }
+  .rks-name { flex: 1 1 auto; font-weight: 700; font-size: 0.84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rks-rate { font-weight: 800; font-size: 0.84rem; color: var(--ink); flex-shrink: 0; }
+
   /* 시군별 */
   .sg-group { margin: 0 0 22px; }
   .sg-head { display: flex; align-items: baseline; gap: 10px; margin: 0 0 8px; padding-bottom: 5px; border-bottom: 2px solid var(--ink); flex-wrap: wrap; }
@@ -378,6 +398,15 @@
     <div id="sido-stats" class="sido-stats"></div>
     <div id="sido-list" class="sido-list">
       <div class="state-loading">시도 데이터 로딩 중…</div>
+    </div>
+  </section>
+
+  <section class="block" id="sg-rank-block" hidden>
+    <h2>사전투표율 1위 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">전국·시도별</span></h2>
+    <p class="block-sub">전국 255개 시군구 중 사전투표율 최고 순위와, 시도별 최고 시군구. 농촌 군이 상위권을 휩쓴 게 한눈에 보입니다.</p>
+    <div class="rk-grid">
+      <div><p class="rk-cap">전국 시군구 TOP 15</p><div id="sg-rank-nat"></div></div>
+      <div><p class="rk-cap">시도별 최고 시군구</p><div id="sg-rank-sido" class="rks-list"></div></div>
     </div>
   </section>
 
