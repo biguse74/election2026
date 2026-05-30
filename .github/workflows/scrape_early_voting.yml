@@ -2,23 +2,26 @@ name: 사전투표율 스크래핑 (info.nec.go.kr)
 
 # 9회 지선 사전투표 KST 5/29 06:00 ~ 5/30 18:00. info.nec.go.kr VCAP01 직접 스크래핑.
 #
-# 핵심: GitHub 스케줄러가 이 저장소 예약을 대부분 드롭한다. 그래서 cron 한 번에
-# 의존하지 않고, "한 번 떠도 그 안에서 ~32분간 4분 간격 반복 수집(self-loop)"한다.
-# 30분마다 스타거드로 예약(:09, :39)하고, 새 run이 뜨면 이전 run을 취소(cancel-in-progress)
-# → 시간당 한두 번만 발화해도 사실상 연속 커버. PC·토큰·외부서비스 불필요.
+# 운영 구조 (2026-05-30 변경):
+#   GitHub 예약(schedule) cron이 이 저장소에서 거의/전혀 발화하지 않음.
+#   → 외부 cron(cron-job.org)이 workflow_dispatch를 5분마다 호출하는 것을 주(主) 트리거로.
+#   schedule은 백업으로만 남기되 정각·혼잡 시각을 피해 :07,:17,:27,:37,:47,:57.
+#
+#   한 dispatch = 단발 실행(스크랩 1회). 스크래퍼 자체가 07시~현재 전 시각을
+#   한 번에 자가치유 수집하므로 단발로도 누락분을 메운다. 외부 cron 5분 주기가 재시도 담당.
 on:
+  workflow_dispatch:        # 주 트리거 — 외부 cron이 5분마다 호출
   schedule:
-    - cron: '9,39 * * * *'   # 30분 간격, :00/:30 혼잡 회피
-  workflow_dispatch:
+    - cron: '7,17,27,37,47,57 * * * *'   # 백업, 정각/혼잡 회피 (10분 간격)
 
 concurrency:
-  group: scrape-early-voting
-  cancel-in-progress: true   # 새 run이 뜨면 진행중 루프를 교체
+  group: early-voting-scrape
+  cancel-in-progress: true
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 40       # self-loop 안전 상한
+    timeout-minutes: 8
     permissions:
       contents: write
 
@@ -35,25 +38,32 @@ jobs:
       - name: 의존성 설치
         run: pip install requests
 
-      # 한 run 안에서 ~32분간 4분 간격으로 반복 수집·커밋·푸시 (rebase-free).
-      # 매 시도마다 원격 hard 정렬 후 재수집 → 작업 스케줄러 등과 동시에 돌아도 충돌 없음.
-      - name: 수집 루프 (~32분, 4분 간격)
+      # 단발 실행: 스크랩 1회 → 새 데이터 있으면 1커밋 → push.
+      #   스크래퍼는 idempotent(새 데이터 없으면 파일 미작성) → 변경 없으면 커밋 생략.
+      #   push reject 시 pull --rebase로 재정렬(이 저장소 데이터는 append-only/단조).
+      #   rebase가 충돌하면 abort하고 종료 → 다음 dispatch(5분 내)가 새 체크아웃으로 재시도.
+      #   ※ git reset --hard / git clean / 데이터 삭제는 사용하지 않음.
+      - name: 수집·커밋·푸시 (단발)
         run: |
+          set -e
+          python scripts/scrape_early_voting.py
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for i in $(seq 1 8); do
-            for attempt in 1 2 3; do
-              git fetch origin main
-              git reset --hard origin/main
-              python scripts/scrape_early_voting.py
-              git add data/early_voting/
-              if git diff --staged --quiet; then
-                echo "[$i] 변경 없음 (발표 전·중복·원격 최신)"; break
-              fi
-              STAMP=$(TZ=Asia/Seoul date +%Y-%m-%d-%H%M)
-              git commit -m "data: 사전투표율 스크래핑 KST $STAMP"
-              if git push; then echo "[$i] push 성공"; break; fi
-              echo "[$i] push reject — 재정렬 후 재시도 ($attempt/3)"
-            done
-            if [ "$i" -lt 8 ]; then sleep 240; fi
+          git add data/early_voting/
+          if git diff --staged --quiet; then
+            echo "변경 없음 (발표 전·중복·원격 최신) → 커밋 생략"
+            exit 0
+          fi
+          STAMP=$(TZ=Asia/Seoul date +%Y-%m-%d-%H%M)
+          git commit -m "data: 사전투표율 스크래핑 KST $STAMP"
+          for attempt in 1 2 3; do
+            if git push; then
+              echo "push 성공 (시도 $attempt)"; exit 0
+            fi
+            echo "push reject — pull --rebase 후 재시도 ($attempt/3)"
+            if ! git pull --rebase origin main; then
+              git rebase --abort || true
+              echo "rebase 충돌 → 다음 dispatch에 위임"; exit 1
+            fi
           done
+          echo "push 3회 실패 → 다음 dispatch에 위임"; exit 1
