@@ -122,6 +122,13 @@
   .wc-behind { background: #f0f0f0; color: var(--muted); }
   .wc-wait { background: #f7f7f7; color: var(--gray); }
 
+  /* 관심 지역 그룹 */
+  .group-box { margin: 0 0 18px; }
+  .group-head { display: flex; align-items: baseline; gap: 10px; margin: 0 0 8px; flex-wrap: wrap; }
+  .group-title { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.02rem; }
+  .group-desc { font-size: 0.8rem; color: var(--muted); }
+  .group-count { font-size: 0.78rem; color: var(--muted); font-weight: 700; margin-left: auto; }
+
   /* 검색·필터 바 */
   .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 12px; }
   .filter-bar select, .filter-bar input {
@@ -201,6 +208,12 @@
     <h2>주목 후보 개표</h2>
     <p class="block-sub">지켜보는 후보의 개표 실황을 고정 표시합니다. 이름·지역으로 선관위 개표 데이터와 매칭하며, 마감(18시) 전에는 '대기'로 보입니다.</p>
     <div id="watchlist" class="watch-grid"></div>
+  </section>
+
+  <section class="block" id="groups-block" hidden>
+    <h2>관심 지역 그룹</h2>
+    <p class="block-sub">주제별로 묶은 지역의 개표를 한눈에. 마감(18시) 전에는 '대기'로 보입니다.</p>
+    <div id="groups"></div>
   </section>
 
   <section class="block">

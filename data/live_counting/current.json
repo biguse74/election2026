@@ -592,6 +592,186 @@
           "current_rank": 3
         }
       ]
+    },
+    {
+      "race_key": "3|전북특별자치도|전북특별자치도|합계",
+      "sg_type_code": "3",
+      "sg_type_label": "시도지사",
+      "sd_name": "전북특별자치도",
+      "sgg_name": "전북특별자치도",
+      "wiw_name": "합계",
+      "eligible_voters": 1450000,
+      "valid_votes": 895000,
+      "invalid_votes": 16109,
+      "progress_pct": 62.84,
+      "rank1_minus_rank2_pp": 4.47,
+      "candidates": [
+        {
+          "name": "전북후보가",
+          "jd_name": "더불어민주당",
+          "votes": 420000,
+          "share_pct": 46.93,
+          "current_rank": 1
+        },
+        {
+          "name": "전북후보나",
+          "jd_name": "무소속",
+          "votes": 380000,
+          "share_pct": 42.46,
+          "current_rank": 2
+        },
+        {
+          "name": "전북후보다",
+          "jd_name": "국민의힘",
+          "votes": 95000,
+          "share_pct": 10.61,
+          "current_rank": 3
+        }
+      ]
+    },
+    {
+      "race_key": "4|전라남도|무안군|합계",
+      "sg_type_code": "4",
+      "sg_type_label": "기초단체장",
+      "sd_name": "전라남도",
+      "sgg_name": "무안군",
+      "wiw_name": "합계",
+      "eligible_voters": 62000,
+      "valid_votes": 35800,
+      "invalid_votes": 644,
+      "progress_pct": 58.78,
+      "rank1_minus_rank2_pp": 14.81,
+      "candidates": [
+        {
+          "name": "무안후보가",
+          "jd_name": "더불어민주당",
+          "votes": 19500,
+          "share_pct": 54.47,
+          "current_rank": 1
+        },
+        {
+          "name": "무안후보나",
+          "jd_name": "무소속",
+          "votes": 14200,
+          "share_pct": 39.66,
+          "current_rank": 2
+        },
+        {
+          "name": "무안후보다",
+          "jd_name": "국민의힘",
+          "votes": 2100,
+          "share_pct": 5.87,
+          "current_rank": 3
+        }
+      ]
+    },
+    {
+      "race_key": "4|전라남도|영광군|합계",
+      "sg_type_code": "4",
+      "sg_type_label": "기초단체장",
+      "sd_name": "전라남도",
+      "sgg_name": "영광군",
+      "wiw_name": "합계",
+      "eligible_voters": 48000,
+      "valid_votes": 30100,
+      "invalid_votes": 541,
+      "progress_pct": 63.84,
+      "rank1_minus_rank2_pp": 25.25,
+      "candidates": [
+        {
+          "name": "영광후보가",
+          "jd_name": "더불어민주당",
+          "votes": 16800,
+          "share_pct": 55.81,
+          "current_rank": 1
+        },
+        {
+          "name": "영광후보나",
+          "jd_name": "진보당",
+          "votes": 9200,
+          "share_pct": 30.56,
+          "current_rank": 2
+        },
+        {
+          "name": "영광후보다",
+          "jd_name": "무소속",
+          "votes": 4100,
+          "share_pct": 13.62,
+          "current_rank": 3
+        }
+      ]
+    },
+    {
+      "race_key": "4|전북특별자치도|고창군|합계",
+      "sg_type_code": "4",
+      "sg_type_label": "기초단체장",
+      "sd_name": "전북특별자치도",
+      "sgg_name": "고창군",
+      "wiw_name": "합계",
+      "eligible_voters": 51000,
+      "valid_votes": 34000,
+      "invalid_votes": 612,
+      "progress_pct": 67.87,
+      "rank1_minus_rank2_pp": 13.82,
+      "candidates": [
+        {
+          "name": "고창후보가",
+          "jd_name": "더불어민주당",
+          "votes": 18200,
+          "share_pct": 53.53,
+          "current_rank": 1
+        },
+        {
+          "name": "고창후보나",
+          "jd_name": "무소속",
+          "votes": 13500,
+          "share_pct": 39.71,
+          "current_rank": 2
+        },
+        {
+          "name": "고창후보다",
+          "jd_name": "국민의힘",
+          "votes": 2300,
+          "share_pct": 6.76,
+          "current_rank": 3
+        }
+      ]
+    },
+    {
+      "race_key": "4|강원특별자치도|정선군|합계",
+      "sg_type_code": "4",
+      "sg_type_label": "기초단체장",
+      "sd_name": "강원특별자치도",
+      "sgg_name": "정선군",
+      "wiw_name": "합계",
+      "eligible_voters": 33000,
+      "valid_votes": 22100,
+      "invalid_votes": 397,
+      "progress_pct": 68.17,
+      "rank1_minus_rank2_pp": 3.16,
+      "candidates": [
+        {
+          "name": "정선후보가",
+          "jd_name": "국민의힘",
+          "votes": 9800,
+          "share_pct": 44.34,
+          "current_rank": 1
+        },
+        {
+          "name": "정선후보나",
+          "jd_name": "더불어민주당",
+          "votes": 9100,
+          "share_pct": 41.18,
+          "current_rank": 2
+        },
+        {
+          "name": "정선후보다",
+          "jd_name": "무소속",
+          "votes": 3200,
+          "share_pct": 14.48,
+          "current_rank": 3
+        }
+      ]
     }
   ]
 }
