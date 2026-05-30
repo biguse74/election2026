@@ -490,7 +490,7 @@ function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21)
   if (!root) return;
   const prog = progressFromLatest(latest);
   const cur = latest?.national?.turnout;
-  if (!prog || cur == null) { root.hidden = true; root.innerHTML = ''; return; }
+  if (!prog || cur == null) { root.hidden = true; root.innerHTML = ''; return null; }
 
   const refs = [
     { key: '7회', kind: 'jiseon', b: baseline7 },
@@ -504,7 +504,7 @@ function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21)
     const y = r.b?.national_final;
     if (x && y && x > 0) points.push({ ...r, x, y });
   }
-  if (points.length < 2) { root.hidden = true; root.innerHTML = ''; return; }
+  if (points.length < 2) { root.hidden = true; root.innerHTML = ''; return null; }
 
   const dayLabel = prog.day === 2 ? '2일차 진행 중' : (prog.hour >= 18 ? '1일차 마감' : '1일차 진행 중');
   const reg = olsForecast(points, cur);
@@ -542,6 +542,67 @@ function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21)
       <div class="fc-explain">${explain}</div>
     </div>
     <div class="fc-chips"><span class="fc-chips-lbl">회귀 입력(현재→최종):</span>${chips}</div>`;
+  return center;
+}
+
+// 역대 지방선거 사전투표 비중(= 최종사전 ÷ 최종 본투표율). 본투표율 예측의 핵심 가정.
+//   사전투표 도입(6회·2014) 이래 비중이 꾸준히 상승 → 같은 사전투표율이라도 최종은 낮아지는 추세.
+//   출처: 사전 = NEC 최종 사전투표율, 최종 = data/history_turnout.json(광역단체장 기준).
+const JISEON_SHARE_HISTORY = [
+  { key: '6회', year: 2014, pre: 11.49, fin: 56.8 },
+  { key: '7회', year: 2018, pre: 20.14, fin: 60.2 },
+  { key: '8회', year: 2022, pre: 20.62, fin: 50.9 },
+];
+
+// 최종 본투표율(6/3) 예측 — ①의 최종 사전투표율 예측치를 '사전 비중'으로 나눠 역산.
+//   preFinal: renderForecast가 반환한 9회 최종 사전투표율 예측(%). null이면 숨김.
+//   비중 시나리오 3종(8회 유지 / 추세 연장 / 추세 가속)으로 구간을 만든다.
+function renderTurnoutForecast(preFinal) {
+  const root = document.getElementById('turnout-forecast');
+  if (!root) return;
+  if (preFinal == null || isNaN(preFinal)) { root.hidden = true; root.innerHTML = ''; return; }
+
+  const share8 = JISEON_SHARE_HISTORY[2].pre / JISEON_SHARE_HISTORY[2].fin; // 8회 실측 비중 ≈ 0.405
+  // 시나리오: 비중이 클수록(사전이 당일표를 잠식) 최종은 낮아진다.
+  const SC = [
+    { lbl: '8회 비중 유지', share: share8 },        // 최종 ↑ (상단)
+    { lbl: '추세 연장',     share: 0.435 },          // 중심(헤드라인)
+    { lbl: '추세 가속',     share: 0.46 },           // 최종 ↓ (하단)
+  ];
+  const final = (sh) => preFinal / sh;
+  const center = final(SC[1].share);
+  const hi = final(SC[0].share);   // 비중 작음 → 최종 큼
+  const lo = final(SC[2].share);   // 비중 큼 → 최종 작음
+
+  const histChips = JISEON_SHARE_HISTORY.map(h =>
+    `<span class="fc-chip fc-chip-j">${h.key} 사전 ${h.pre}→최종 ${h.fin} <span style="color:var(--muted)">(비중 ${(h.pre / h.fin * 100).toFixed(0)}%)</span></span>`
+  ).join('');
+  const scChips = SC.map((s, i) =>
+    `<span class="fc-chip${i === 1 ? ' fc-chip-j' : ''}">${s.lbl} 비중 ${(s.share * 100).toFixed(1)}% → ${final(s.share).toFixed(1)}%</span>`
+  ).join('');
+
+  root.hidden = false;
+  root.innerHTML = `
+    <div class="fc-head">
+      <span class="fc-label">최종 본투표율 예측 <span class="fc-sub2">(6/3 · 사전비중 역산)</span></span>
+    </div>
+    <div class="fc-body">
+      <div class="fc-main">
+        <span class="fc-big">${center.toFixed(1)}<span class="fc-pct">%</span></span>
+        <span class="fc-range">시나리오 구간 ${lo.toFixed(1)}~${hi.toFixed(1)}%</span>
+      </div>
+      <div class="fc-explain">
+        예측 최종 사전투표율 <strong>${preFinal.toFixed(1)}%</strong>를 역대 지선 <strong>사전 비중</strong>(=사전÷최종)으로 나눈 값.
+        비중은 6→7→8회(20→34→41%) 계속 상승했고, 가정에 따라 결과가 크게 갈립니다(헤드라인=추세 연장 시나리오).
+      </div>
+    </div>
+    <div class="fc-chips"><span class="fc-chips-lbl">역대 지선(사전→최종):</span>${histChips}</div>
+    <div class="fc-chips"><span class="fc-chips-lbl">시나리오:</span>${scChips}</div>
+    <div class="fc-warn">
+      <strong>주의</strong> — 사전투표율↑이 곧 최종투표율↑은 아닙니다. 8회는 사전(20.62%)이 7회(20.14%)와 거의 같았는데도
+      최종은 50.9%로 7회(60.2%)보다 10%p 낮았습니다(사전이 당일표를 잠식). 9회가 8회보다 높으리란 근거는
+      사전투표율 자체가 아니라 <strong>정치적 관심도</strong>(탄핵·조기대선 직후, 사전이 8회보다 전 시간대 앞섬)입니다.
+    </div>`;
 }
 
 // 시간대별 표 기본 탭 — 현재 일차에 맞춰 1회만 설정(이후 자동 새로고침이 사용자 선택을 덮지 않게).
@@ -568,7 +629,8 @@ async function main() {
   ]);
 
   renderHero(latest, baseline8, baseline7);
-  renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21);
+  const preFinal = renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21);
+  renderTurnoutForecast(preFinal);
   renderSidoStats(latest, baseline8);
   renderSidoList(latest, baseline8);
   setDefaultHourlyDay(latest);

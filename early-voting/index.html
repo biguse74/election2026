@@ -116,6 +116,10 @@
     padding: 16px 18px; margin: 0 0 28px;
     border-left: 4px solid var(--accent);
   }
+  .forecast-turnout { border-left-color: var(--ink); margin-top: -16px; }
+  .forecast-turnout .fc-big { color: var(--ink); }
+  .fc-warn { font-size: 0.8rem; color: var(--ink); background: #fff8e6; border: 1px solid #f0d98a; border-radius: 7px; padding: 8px 11px; margin-top: 10px; line-height: 1.5; }
+  .fc-warn strong { color: var(--accent); }
   .fc-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
   .fc-label { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.02rem; }
   .fc-sub2 { font-weight: 600; font-size: 0.82rem; color: var(--muted); }
@@ -306,6 +310,8 @@
   </section>
 
   <section id="forecast" class="forecast" hidden></section>
+
+  <section id="turnout-forecast" class="forecast forecast-turnout" hidden></section>
 
   <section class="block">
     <h2>시간대별 누적 표 (전국)</h2>
