@@ -38,23 +38,23 @@ jobs:
       - name: 의존성 설치
         run: pip install requests
 
-      - name: 사전투표율 스크래핑
-        run: python scripts/scrape_early_voting.py
-
-      - name: 변경사항 커밋·푸시
+      # 수집·커밋·푸시를 한 스텝에서 'rebase-free'로 — 작업 스케줄러 등 다른 곳과
+      # 동시에 푸시해도 충돌하지 않게. 매 시도마다 원격에 hard 정렬 후 재수집·재커밋.
+      - name: 수집·커밋·푸시 (rebase-free)
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/early_voting/
-          if git diff --staged --quiet; then
-            echo "변경사항 없음 (NEC 발표 전·중복 시각) → 커밋 생략"
-            exit 0
-          fi
-          STAMP=$(TZ=Asia/Seoul date +%Y-%m-%d-%H%M)
-          git commit -m "data: 사전투표율 스크래핑 KST $STAMP"
           for attempt in 1 2 3; do
-            if git push; then exit 0; fi
-            echo "push reject — pull --rebase 후 재시도 ($attempt/3)"
-            git pull --rebase origin main
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/scrape_early_voting.py
+            git add data/early_voting/
+            if git diff --staged --quiet; then
+              echo "변경 없음 (발표 전·중복·원격 최신) → 커밋 생략"; exit 0
+            fi
+            STAMP=$(TZ=Asia/Seoul date +%Y-%m-%d-%H%M)
+            git commit -m "data: 사전투표율 스크래핑 KST $STAMP"
+            if git push; then echo "push 성공 (시도 $attempt)"; exit 0; fi
+            echo "push reject — 원격 재정렬 후 재시도 ($attempt/3)"
           done
           echo "push 3회 실패"; exit 1
