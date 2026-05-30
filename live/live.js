@@ -1,13 +1,13 @@
 // 실시간 개표 페이지 로직
 // 데이터 소스:
 //   data/live_counting/current.json  — 선관위 OpenAPI 가공본 (투표율 + races[])
-//   data/mbc_prior.json              — 선거 전 예측 (MBC 베이지안 모형, 시도지사 민주-국힘 격차±SD)
+//   data/prediction_sido.json        — 뉴탐사 자체 시뮬레이션 (시도별 민주 당선확률 %)
 //   data/parties.json                — 정당 색상
 
 const PATHS = {
-  current:  '../data/live_counting/current.json',
-  prior:    '../data/mbc_prior.json',
-  parties:  '../data/parties.json',
+  current:     '../data/live_counting/current.json',
+  prediction:  '../data/prediction_sido.json',
+  parties:     '../data/parties.json',
 };
 
 const DEM = '더불어민주당';
@@ -23,15 +23,13 @@ async function loadJSON(path) {
 }
 
 function fmt1(v) { return (v == null || isNaN(v)) ? '—' : Number(v).toFixed(1); }
-function fmt2(v) { return (v == null || isNaN(v)) ? '—' : Number(v).toFixed(2); }
 function intComma(v) { return (v == null || isNaN(v)) ? '—' : Number(v).toLocaleString('ko-KR'); }
 function partyColor(parties, name) { return (parties && parties[name]) || '#888'; }
 
 function fmtKST(iso) {
   if (!iso) return '—';
   try {
-    const d = new Date(iso);
-    const kst = new Date(d.getTime()); // iso already +09:00
+    const d = new Date(iso); // iso already +09:00
     const mm = `${d.getMonth() + 1}`.padStart(2, '0');
     const dd = `${d.getDate()}`.padStart(2, '0');
     const hh = `${d.getHours()}`.padStart(2, '0');
@@ -71,10 +69,10 @@ function renderHero(cur) {
 
   // 사전투표 비중
   const e = document.getElementById('hero-early');
-  const em = document.getElementById('hero-early-meta');
   if (nat?.early_share_of_total_pct != null) {
     e.innerHTML = `${fmt1(nat.early_share_of_total_pct)}<span class="pct">%</span>`;
-    em.textContent = `사전 ${intComma(nat.early_voters_so_far)} · 당일 ${intComma(nat.day_voters_so_far)}`;
+    document.getElementById('hero-early-meta').textContent =
+      `사전 ${intComma(nat.early_voters_so_far)} · 당일 ${intComma(nat.day_voters_so_far)}`;
   }
 
   document.getElementById('updated-at').textContent = fmtKST(cur?.polled_at) + ' (KST)';
@@ -87,29 +85,34 @@ function partyShare(race, party) {
   return c ? { share: c.share_pct, name: c.name } : null;
 }
 
-function classifyRace(race, prior) {
+// demProb = 뉴탐사 시뮬레이션의 '민주 당선확률(%)' 또는 null.
+function classifyRace(race, demProb) {
   const dem = partyShare(race, DEM);
   const con = partyShare(race, CON);
   const prog = race.progress_pct || 0;
-  // 실제 민주-국힘 격차 (둘 다 있을 때만)
   const actualMargin = (dem && con) ? (dem.share - con.share) : null;
 
-  if (prog < 5) return { verdict: 'early', label: '개표 초반', actualMargin, dem, con };
-  if (!prior) return { verdict: 'none', label: '예측 없음', actualMargin, dem, con };
-  if (actualMargin == null) return { verdict: 'none', label: '양자 비교 불가', actualMargin, dem, con };
+  if (prog < 5) return { verdict: 'early', label: '개표 초반', actualMargin, demProb };
+  if (demProb == null) return { verdict: 'none', label: '예측 없음', actualMargin, demProb };
+  if (actualMargin == null) return { verdict: 'none', label: '양자 비교 불가', actualMargin, demProb };
 
-  const predMargin = prior.margin;          // 민주 - 국힘 (양수=민주 우세)
-  const sd = prior.margin_sd || 2;
-  const z = (actualMargin - predMargin) / sd;
+  const predDem = demProb >= 50;        // 우리 예측이 우세로 본 진영
+  const actualDem = actualMargin > 0;   // 실제 우세 진영
+  const confident = demProb >= 80 || demProb <= 20;
+  const tossup = demProb > 35 && demProb < 65;
 
-  if (Math.sign(actualMargin) !== Math.sign(predMargin) && Math.abs(predMargin) > 0.3) {
-    return { verdict: 'upset', label: '이변', actualMargin, predMargin, sd, z, dem, con, prior };
+  if (predDem !== actualDem) {
+    return { verdict: 'upset', label: '이변 — 예측과 반대', actualMargin, demProb, predDem };
   }
-  if (Math.abs(z) <= 2) {
-    return { verdict: 'hit', label: '예측 부합', actualMargin, predMargin, sd, z, dem, con, prior };
-  }
-  const dir = z > 0 ? '민주 강세' : '민주 약세';
-  return { verdict: 'band', label: `예측이탈·${dir}`, actualMargin, predMargin, sd, z, dem, con, prior };
+  if (tossup) return { verdict: 'band', label: '접전 예측 적중', actualMargin, demProb, predDem };
+  if (confident) return { verdict: 'hit', label: '예측 적중', actualMargin, demProb, predDem };
+  return { verdict: 'hit', label: '예측 부합', actualMargin, demProb, predDem };
+}
+
+// 우리 예측을 '우세 진영 + 당선확률'로 표기. demProb는 민주 기준 %.
+function predText(demProb) {
+  if (demProb == null) return '—';
+  return demProb >= 50 ? `민주 ${Math.round(demProb)}%` : `국힘 ${Math.round(100 - demProb)}%`;
 }
 
 function candRowHTML(parties, c, isLead) {
@@ -130,26 +133,26 @@ function marginText(m) {
   return `${who} +${Math.abs(m).toFixed(1)}pp`;
 }
 
-function renderChiefRaces(cur, priorMap, parties) {
+function renderChiefRaces(cur, predMap, parties) {
   const root = document.getElementById('chief-races');
   const chiefs = (cur?.races || []).filter(r => String(r.sg_type_code) === '3');
   if (!chiefs.length) {
     root.innerHTML = `<div class="state-empty">시도지사 개표 데이터가 아직 없습니다. 18시 마감 후 표시됩니다.</div>`;
     return;
   }
-  // 격차 큰(접전) 순으로 — 접전 지역이 위로
+  // 격차 작은(접전) 순으로 — 접전 지역이 위로
   chiefs.sort((a, b) => (a.rank1_minus_rank2_pp ?? 99) - (b.rank1_minus_rank2_pp ?? 99));
 
   root.innerHTML = chiefs.map(race => {
-    const prior = priorMap[race.sd_name] || null;
-    const cls = classifyRace(race, prior);
+    const demProb = (predMap[race.sd_name] != null) ? predMap[race.sd_name] : null;
+    const cls = classifyRace(race, demProb);
     const cands = (race.candidates || []).slice(0, 2);
     const candHTML = cands.map((c, i) => candRowHTML(parties, c, i === 0)).join('');
 
     let compareHTML = '';
     if (cls.actualMargin != null) {
-      const predPart = (cls.predMargin != null)
-        ? `<span class="rc-item">예측 <b>${marginText(cls.predMargin)}</b> ±${fmt1(cls.sd)}</span>`
+      const predPart = (demProb != null)
+        ? `<span class="rc-item">뉴탐사 예측 <b>${predText(demProb)}</b> 당선확률</span>`
         : `<span class="rc-item">예측 <b>—</b></span>`;
       compareHTML = `
         <span class="rc-item">실제 <b>${marginText(cls.actualMargin)}</b></span>
@@ -221,8 +224,8 @@ async function render() {
     showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
     return;
   }
-  const [cur, prior, parties] = await Promise.all([
-    loadJSON(PATHS.current), loadJSON(PATHS.prior), loadJSON(PATHS.parties),
+  const [cur, prediction, parties] = await Promise.all([
+    loadJSON(PATHS.current), loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
   ]);
   if (!cur) {
     document.getElementById('chief-races').innerHTML =
@@ -230,9 +233,9 @@ async function render() {
     document.getElementById('other-races').innerHTML = '';
     return;
   }
-  const priorMap = (prior && prior.sido_prior) || {};
+  const predMap = (prediction && prediction.sido_dem_win_prob) || {};
   renderHero(cur);
-  renderChiefRaces(cur, priorMap, parties || {});
+  renderChiefRaces(cur, predMap, parties || {});
   renderOtherRaces(cur);
 }
 
