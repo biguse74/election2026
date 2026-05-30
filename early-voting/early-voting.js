@@ -289,6 +289,14 @@ function baselineFracSeries(baseline) {
   return out.sort((a, b) => a[0] - b[0]);
 }
 
+// 사전투표율 → 색 (낮음 파랑 ~ 높음 빨강). 막대 히트맵용.
+function rateColor(rate) {
+  const t = Math.max(0, Math.min(1, (rate - 18) / (62 - 18)));
+  const a = [0x3b, 0x6f, 0xb0], b = [0xc4, 0x1e, 0x3a];
+  const c = a.map((x, i) => Math.round(x + (b[i] - x) * t));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+
 // 사전투표율 1위 — 전국 시군구 TOP 15 + 시도별 최고.
 function renderSigunguRanking(data) {
   const block = document.getElementById('sg-rank-block');
@@ -305,7 +313,7 @@ function renderSigunguRanking(data) {
     return `<div class="rk-row${i === 0 ? ' rk-1' : ''}">
       <span class="rk-num">${i + 1}</span>
       <span class="rk-name">${r.name}<span class="rk-sido">${SIDO_SHORT[r.sido] || r.sido}</span></span>
-      <span class="rk-bar-wrap"><span class="rk-bar" style="width:${w.toFixed(1)}%"></span></span>
+      <span class="rk-bar-wrap"><span class="rk-bar" style="width:${w.toFixed(1)}%;background:${rateColor(r.rate)}"></span></span>
       <span class="rk-rate">${r.rate.toFixed(2)}%</span>
     </div>`;
   }).join('');
@@ -344,7 +352,7 @@ function renderSigungu(data) {
       const cls = i === 0 ? ' jn-top' : ((r.name.endsWith('시') || r.name.endsWith('구')) ? ' jn-city' : '');
       return `<div class="jn-row${cls}" title="선거인 ${r.voters.toLocaleString('ko-KR')} · 사전투표자 ${r.voted.toLocaleString('ko-KR')}">
         <span class="jn-name">${r.name}</span>
-        <span class="jn-bar-wrap"><span class="jn-bar" style="width:${w.toFixed(1)}%"></span></span>
+        <span class="jn-bar-wrap"><span class="jn-bar" style="width:${w.toFixed(1)}%;background:${rateColor(r.rate)}"></span></span>
         <span class="jn-rate">${r.rate.toFixed(2)}%</span>
       </div>`;
     }).join('');
