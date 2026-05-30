@@ -1,11 +1,13 @@
 // 실시간 개표 페이지 로직
 // 데이터 소스:
-//   data/live_counting/current.json  — 선관위 OpenAPI 가공본 (투표율 + races[])
-//   data/prediction_sido.json        — 뉴탐사 자체 시뮬레이션 (시도별 민주 당선확률 %)
-//   data/parties.json                — 정당 색상
+//   data/live_counting/current.json    — 선관위 OpenAPI 가공본 (투표율 + races[])
+//   data/live_counting/watchlist.json  — 주목 후보 목록 (수동 편집)
+//   data/prediction_sido.json          — 뉴탐사 자체 시뮬레이션 (시도별 민주 당선확률 %)
+//   data/parties.json                  — 정당 색상
 
 const PATHS = {
   current:     '../data/live_counting/current.json',
+  watchlist:   '../data/live_counting/watchlist.json',
   prediction:  '../data/prediction_sido.json',
   parties:     '../data/parties.json',
 };
@@ -91,6 +93,73 @@ function renderHero(cur) {
   }
 
   document.getElementById('updated-at').textContent = fmtKST(cur?.polled_at) + ' (KST)';
+}
+
+// ── 주목 후보 워치리스트 ────────────────────────────────────────────
+// watchlist의 각 후보를 races에서 (이름 + 시도/지역) 으로 찾아 개표 실황 카드로.
+function findWatch(races, w) {
+  for (const r of races) {
+    if (w.sido && r.sd_name !== w.sido) continue;
+    if (w.where) {
+      const place = [r.sd_name, r.sgg_name, r.wiw_name].filter(Boolean).join(' ');
+      if (!place.includes(w.where)) continue;
+    }
+    const c = (r.candidates || []).find(c => c.name === w.name);
+    if (c) return { race: r, cand: c };
+  }
+  return null;
+}
+
+function watchStatus(race, cand) {
+  const prog = race.progress_pct || 0;
+  const cands = race.candidates || [];
+  const rank = cand.current_rank;
+  if (rank === 1) {
+    const lead = (cand.share_pct ?? 0) - (cands[1]?.share_pct ?? 0);
+    if (prog >= 80 && lead >= 5) return { cls: 'wc-win', label: '당선 유력' };
+    if (prog < 30) return { cls: 'wc-lead', label: '1위 (개표 초반)' };
+    return { cls: 'wc-lead', label: lead < 3 ? '1위 (접전)' : '1위' };
+  }
+  const behind = (cands[0]?.share_pct ?? 0) - (cand.share_pct ?? 0);
+  if (behind < 5) return { cls: 'wc-close', label: `${rank}위 (접전 추격)` };
+  return { cls: 'wc-behind', label: `${rank}위 열세` };
+}
+
+function renderWatchlist(watchlist) {
+  const block = document.getElementById('watch-block');
+  const root = document.getElementById('watchlist');
+  if (!root || !block) return;
+  const list = (watchlist && watchlist.candidates) || [];
+  if (!list.length) { block.hidden = true; return; }
+  block.hidden = false;
+
+  root.innerHTML = list.map(w => {
+    const m = findWatch(LATEST_RACES, w);
+    const where = [w.sido, w.label].filter(Boolean).join(' · ');
+    if (!m) {
+      return `<div class="watch-card">
+        <div class="watch-head"><span class="watch-name">${w.name}</span></div>
+        <div class="watch-where">${where}</div>
+        <div class="watch-figure"><span class="watch-meta">개표 데이터 대기 — 18시 마감 후 표시</span></div>
+        <span class="watch-chip wc-wait">대기</span>
+      </div>`;
+    }
+    const { race, cand } = m;
+    const st = watchStatus(race, cand);
+    const color = partyColor(LATEST_PARTIES, cand.jd_name);
+    return `<div class="watch-card">
+      <div class="watch-head">
+        <span class="watch-name">${cand.name}<span class="watch-party">${cand.jd_name || ''}</span></span>
+        <span class="watch-rank">개표 ${fmt1(race.progress_pct)}%</span>
+      </div>
+      <div class="watch-where">${race.sg_type_label} · ${racePlace(race)}</div>
+      <div class="watch-figure">
+        <span class="watch-share" style="color:${color}">${fmt1(cand.share_pct)}<span style="font-size:0.5em">%</span></span>
+        <span class="watch-rank">${cand.current_rank}위 / ${(race.candidates || []).length}명</span>
+      </div>
+      <span class="watch-chip ${st.cls}">${st.label}</span>
+    </div>`;
+  }).join('');
 }
 
 // ── 시도지사 예측 vs 실제 ──────────────────────────────────────────
@@ -292,6 +361,7 @@ function showWaiting(msg) {
   document.getElementById('hero-progress').innerHTML = `—<span class="pct"></span>`;
   document.getElementById('hero-progress-meta').textContent = '투표 마감(18시) 후 개표 시작';
   document.getElementById('hero-early').innerHTML = `—<span class="pct"></span>`;
+  const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
   document.getElementById('chief-races').innerHTML = `<div class="state-empty">${msg}</div>`;
   document.getElementById('search-results').innerHTML = '';
   document.getElementById('updated-at').textContent = '—';
@@ -305,8 +375,8 @@ async function render() {
     showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
     return;
   }
-  const [cur, prediction, parties] = await Promise.all([
-    loadJSON(PATHS.current), loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
+  const [cur, watchlist, prediction, parties] = await Promise.all([
+    loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
   ]);
   if (!cur) {
     document.getElementById('chief-races').innerHTML =
@@ -319,6 +389,7 @@ async function render() {
   LATEST_PARTIES = parties || {};
 
   renderHero(cur);
+  renderWatchlist(watchlist);
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
   populateFilters(LATEST_RACES);
   bindFilters();

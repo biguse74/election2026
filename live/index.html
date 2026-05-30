@@ -104,6 +104,24 @@
   .v-early { background: #f0f0f0; color: var(--muted); }
   .v-none  { background: #f7f7f7; color: var(--gray); }
 
+  /* 주목 후보 워치리스트 */
+  .watch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+  .watch-card { border: 1px solid var(--line); border-radius: 10px; padding: 13px 15px; background: #fff; }
+  .watch-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .watch-name { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.05rem; }
+  .watch-party { font-size: 0.72rem; color: var(--muted); font-weight: 600; margin-left: 5px; }
+  .watch-where { font-size: 0.77rem; color: var(--muted); margin-top: 2px; }
+  .watch-figure { display: flex; align-items: baseline; gap: 9px; margin: 9px 0 5px; min-height: 28px; }
+  .watch-share { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.8rem; line-height: 1; }
+  .watch-rank { font-size: 0.8rem; font-weight: 700; color: var(--muted); }
+  .watch-meta { font-size: 0.82rem; color: var(--muted); }
+  .watch-chip { display: inline-block; font-size: 0.74rem; font-weight: 800; padding: 2px 10px; border-radius: 999px; }
+  .wc-win { background: #e6f4ea; color: #1a7f37; }
+  .wc-lead { background: #eef2fb; color: var(--blue); }
+  .wc-close { background: #fff4e0; color: #b7791f; }
+  .wc-behind { background: #f0f0f0; color: var(--muted); }
+  .wc-wait { background: #f7f7f7; color: var(--gray); }
+
   /* 검색·필터 바 */
   .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 12px; }
   .filter-bar select, .filter-bar input {
@@ -177,6 +195,12 @@
     <div id="chief-races" class="race-grid">
       <div class="state-loading">개표 데이터 로딩 중…</div>
     </div>
+  </section>
+
+  <section class="block" id="watch-block" hidden>
+    <h2>주목 후보 개표</h2>
+    <p class="block-sub">지켜보는 후보의 개표 실황을 고정 표시합니다. 이름·지역으로 선관위 개표 데이터와 매칭하며, 마감(18시) 전에는 '대기'로 보입니다.</p>
+    <div id="watchlist" class="watch-grid"></div>
   </section>
 
   <section class="block">
