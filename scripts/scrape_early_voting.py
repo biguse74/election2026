@@ -277,20 +277,26 @@ def main() -> None:
         if append_timeseries(ts, at, by_m, nat_m, None, f"{h:02d}"):
             added += 1
 
-    # 최신 상태 결정 (2일차가 있으면 양일 누적, 없으면 1일차 최신)
-    if day2:
-        hmax2 = max(day2)
-        nat2, by2 = day2[hmax2]
-        if day1_final:
-            latest_nat, latest_by = merge_days((day1_final[0], day1_final[1]), (nat2, by2))
-        else:
-            latest_nat, latest_by = nat2, by2
-        latest_d1_code = f"{max(day1):02d}" if day1 else None
-        latest_d2_code = f"{hmax2:02d}"
-    else:
-        hmax1 = max(day1)
-        latest_nat, latest_by = day1[hmax1]
-        latest_d1_code, latest_d2_code = f"{hmax1:02d}", None
+    # 최신 상태는 '이번 수집'이 아니라 시계열의 최고 진행 시각 스냅샷에서 뽑는다.
+    #   → NEC가 일시적으로 일부 시각만 반환해도 화면(latest)이 뒤로 후퇴하지 않음.
+    #     timeseries는 append-only라 한 번 들어온 시각은 사라지지 않으므로 단조 증가 보장.
+    def _prog(snap):
+        t2 = snap.get("day2_time_code"); t1 = snap.get("day1_time_code")
+        if t2:
+            return (2, int(t2))
+        if t1:
+            return (1, int(t1))
+        return (0, 0)
+    snaps = ts.get("snapshots", [])
+    if not snaps:
+        print("\n스냅샷 없음 → 저장 생략.")
+        return
+    best = max(snaps, key=_prog)
+    latest_d2_code = best.get("day2_time_code")
+    # 2일차 진행 중이면 1일차는 마감(18시)으로 표기
+    latest_d1_code = "18" if latest_d2_code else best.get("day1_time_code")
+    latest_nat = best["national"]
+    latest_by = best["by_sido"]
 
     latest = {
         "sgId": TARGET_SG_ID,
