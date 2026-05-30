@@ -10,6 +10,7 @@ const PATHS = {
   current:     '../data/live_counting/current.json',
   watchlist:   '../data/live_counting/watchlist.json',
   groups:      '../data/live_counting/groups.json',
+  prevWinner:  '../data/live_counting/prev_winner.json',
   prediction:  '../data/prediction_sido.json',
   parties:     '../data/parties.json',
 };
@@ -35,6 +36,7 @@ const TYPE_ORDER = ['3', '4', '5', '6', '11'];
 
 let LATEST_RACES = [];
 let LATEST_PARTIES = {};
+let LATEST_PREVWIN = {};
 let filtersBound = false;
 let filtersPopulated = false;
 let expandBound = false;
@@ -318,10 +320,18 @@ function renderWatchlist(watchlist) {
 const DEM_STRONGHOLD = new Set(['광주광역시', '전라남도', '전북특별자치도', '전남광주통합특별시']);
 const CON_STRONGHOLD = new Set(['대구광역시', '경상북도', '경상남도', '부산광역시', '울산광역시']);
 
-// 텃밭에서 상대 진영이 1위면 이변. 개표 초반(20% 미만)은 노이즈라 제외.
+// 이변 = 지난 선거(8회) 당선 정당과 현재 1위 정당이 다른 경우(정당 교체).
+//   지난 당선 정당 미상(선거구 재획정 등)이면 텃밭 휴리스틱(호남=비민주·영남=비국힘)으로 보완.
+//   무당적 선거(교육감 등)·개표 20% 미만은 제외.
+function upsetKey(r) {
+  const t = String(r.sg_type_code);
+  return t === '3' ? `3|${r.sd_name}` : `${t}|${r.sd_name}|${r.sgg_name || ''}`;
+}
 function isUpset(r) {
   const leader = (r.candidates || [])[0];
   if (!leader || !leader.jd_name || (r.progress_pct || 0) < 20) return false;
+  const prev = LATEST_PREVWIN[upsetKey(r)];
+  if (prev) return leader.jd_name !== prev;
   if (DEM_STRONGHOLD.has(r.sd_name) && leader.jd_name !== DEM) return true;
   if (CON_STRONGHOLD.has(r.sd_name) && leader.jd_name !== CON) return true;
   return false;
@@ -572,9 +582,9 @@ async function render() {
     showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
     return;
   }
-  const [cur, watchlist, groups, prediction, parties] = await Promise.all([
+  const [cur, watchlist, groups, prevWinner, prediction, parties] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.groups),
-    loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
+    loadJSON(PATHS.prevWinner), loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
   ]);
   if (!cur) {
     document.getElementById('chief-races').innerHTML =
@@ -585,6 +595,7 @@ async function render() {
   const predMap = (prediction && prediction.sido_dem_win_prob) || {};
   LATEST_RACES = cur.races || [];
   LATEST_PARTIES = parties || {};
+  LATEST_PREVWIN = prevWinner || {};
 
   renderHero(cur);
   renderWatchlist(watchlist);
