@@ -288,7 +288,7 @@ function baselineFracSeries(baseline) {
   return out.sort((a, b) => a[0] - b[0]);
 }
 
-function renderTimeline(ts, baseline8, baseline7) {
+function renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21) {
   const svg = document.getElementById('timeline');
   svg.innerHTML = '';
 
@@ -297,8 +297,10 @@ function renderTimeline(ts, baseline8, baseline7) {
   const plotW = W - padL - padR;
   const plotH = H - padT - padB;
 
-  // Y 스케일 0 ~ 25 (8회 최종 20.62% 여유 있게)
-  const yMax = 25;
+  // Y 스케일 — 대선/총선(참고선)까지 담도록 동적. 지선만이면 30, 대선 포함 40.
+  const _finals = [25, baseline8 && baseline8.national_final, baseline7 && baseline7.national_final,
+    baselineGen22 && baselineGen22.national_final, basePres21 && basePres21.national_final].filter(v => v != null);
+  const yMax = Math.ceil((Math.max.apply(null, _finals) + 2) / 5) * 5;
   const yToPx = v => padT + (1 - v / yMax) * plotH;
   // X 스케일: 투표 가능 시간만 (밤샘 구간 접음)
   const xToPx = frac => padL + frac * plotW;
@@ -337,6 +339,8 @@ function renderTimeline(ts, baseline8, baseline7) {
   }
   if (baseline7) drawBaselineLine(baseline7, '#9aa4b2', '2 3', '7회', 14);
   if (baseline8) drawBaselineLine(baseline8, '#5f6a78', '6 4', '8회', -6);
+  if (baselineGen22) drawBaselineLine(baselineGen22, '#e0921f', '5 4', '22대', -6);
+  if (basePres21) drawBaselineLine(basePres21, '#9183c7', '2 4', '21대', -6);
 
   // 9회 라인 — (day, hour) 정시 기준으로 baseline과 정렬
   const idx9 = build9hRoundIndex(ts);
@@ -364,6 +368,7 @@ function renderTimeline(ts, baseline8, baseline7) {
     const tx = (isLast && nearRight ? p.x - 5 : p.x).toFixed(1);
     const ty = (p.y - (isLast ? 9 : 7)).toFixed(1);
     if (isLast) {
+      lineGroup.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="6" fill="none" stroke="#c41e3a" stroke-width="1.6" opacity="0.55"/>`);
       lineGroup.push(`<text x="${tx}" y="${ty}" font-size="11.5" font-weight="800" fill="#c41e3a" text-anchor="${anchor}">현재 ${p.v.toFixed(2)}%</text>`);
     } else {
       lineGroup.push(`<text x="${tx}" y="${ty}" font-size="9" font-weight="600" fill="#c41e3a" text-anchor="${anchor}" opacity="0.85">${p.v.toFixed(1)}</text>`);
@@ -651,7 +656,7 @@ async function main() {
   setDefaultHourlyDay(latest);
   renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
   bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21);
-  renderTimeline(ts, baseline8, baseline7);
+  renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21);
 }
 
 main();
