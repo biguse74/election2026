@@ -772,6 +772,78 @@
           "current_rank": 3
         }
       ]
+    },
+    {
+      "race_key": "4|대구광역시|수성구|합계",
+      "sg_type_code": "4",
+      "sg_type_label": "기초단체장",
+      "sd_name": "대구광역시",
+      "sgg_name": "수성구",
+      "wiw_name": "합계",
+      "eligible_voters": 195000,
+      "valid_votes": 97000,
+      "invalid_votes": 1745,
+      "progress_pct": 50.64,
+      "rank1_minus_rank2_pp": 4.12,
+      "candidates": [
+        {
+          "name": "수성후보가",
+          "jd_name": "더불어민주당",
+          "votes": 48000,
+          "share_pct": 49.48,
+          "current_rank": 1
+        },
+        {
+          "name": "수성후보나",
+          "jd_name": "국민의힘",
+          "votes": 44000,
+          "share_pct": 45.36,
+          "current_rank": 2
+        },
+        {
+          "name": "수성후보다",
+          "jd_name": "개혁신당",
+          "votes": 5000,
+          "share_pct": 5.15,
+          "current_rank": 3
+        }
+      ]
+    },
+    {
+      "race_key": "4|전라남도|해남군|합계",
+      "sg_type_code": "4",
+      "sg_type_label": "기초단체장",
+      "sd_name": "전라남도",
+      "sgg_name": "해남군",
+      "wiw_name": "합계",
+      "eligible_voters": 58000,
+      "valid_votes": 30500,
+      "invalid_votes": 549,
+      "progress_pct": 53.53,
+      "rank1_minus_rank2_pp": 4.92,
+      "candidates": [
+        {
+          "name": "해남후보가",
+          "jd_name": "국민의힘",
+          "votes": 14000,
+          "share_pct": 45.9,
+          "current_rank": 1
+        },
+        {
+          "name": "해남후보나",
+          "jd_name": "더불어민주당",
+          "votes": 12500,
+          "share_pct": 40.98,
+          "current_rank": 2
+        },
+        {
+          "name": "해남후보다",
+          "jd_name": "무소속",
+          "votes": 4000,
+          "share_pct": 13.11,
+          "current_rank": 3
+        }
+      ]
     }
   ]
 }
