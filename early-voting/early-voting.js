@@ -544,6 +544,19 @@ function renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21)
     <div class="fc-chips"><span class="fc-chips-lbl">회귀 입력(현재→최종):</span>${chips}</div>`;
 }
 
+// 시간대별 표 기본 탭 — 현재 일차에 맞춰 1회만 설정(이후 자동 새로고침이 사용자 선택을 덮지 않게).
+let hourlyDefaultSet = false;
+function setDefaultHourlyDay(latest) {
+  if (hourlyDefaultSet) return;
+  const prog = progressFromLatest(latest);
+  if (!prog) return;                 // 데이터 없으면 다음 갱신 때 재시도
+  if (prog.day === 2) {              // 2일차면 기본을 오늘(2일차)로
+    document.querySelectorAll('.hourly-tab').forEach(b =>
+      b.classList.toggle('active', b.dataset.day === '2'));
+  }
+  hourlyDefaultSet = true;
+}
+
 async function main() {
   const [latest, ts, baseline8, baseline7, baselineGen22, basePres21] = await Promise.all([
     loadJSON(PATHS.latest),
@@ -558,6 +571,7 @@ async function main() {
   renderForecast(latest, baseline8, baseline7, baselineGen22, basePres21);
   renderSidoStats(latest, baseline8);
   renderSidoList(latest, baseline8);
+  setDefaultHourlyDay(latest);
   renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
   bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21);
   renderTimeline(ts, baseline8, baseline7);
