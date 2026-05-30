@@ -56,7 +56,7 @@ function fmtKST(iso) {
 }
 
 function racePlace(r) {
-  const tail = [r.sgg_name, r.wiw_name].filter(x => x && x !== '합계').join(' ');
+  const tail = [r.sgg_name, r.wiw_name].filter(x => x && x !== '합계' && x !== r.sd_name).join(' ');
   return tail ? `${r.sd_name} ${tail}` : r.sd_name;
 }
 
