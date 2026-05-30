@@ -289,27 +289,35 @@ function baselineFracSeries(baseline) {
   return out.sort((a, b) => a[0] - b[0]);
 }
 
-// 전남 시군별 사전투표율 (최종) — 농촌 군이 시보다 높은 패턴이 핵심.
-function renderJeonnamSigungu(data) {
-  const block = document.getElementById('jeonnam-block');
-  const root = document.getElementById('jeonnam-list');
-  const head = document.getElementById('jeonnam-head');
+// 시군별 사전투표율 (최종) — 시도별로 묶어 표시. 농촌 군이 시·구보다 높은 패턴.
+function renderSigungu(data) {
+  const block = document.getElementById('sigungu-block');
+  const root = document.getElementById('sigungu-groups');
   if (!block || !root) return;
-  const jn = data && data.sido && data.sido['전라남도'];
-  if (!jn || !jn.sigungu || !jn.sigungu.length) { block.hidden = true; return; }
+  const sido = (data && data.sido) || {};
+  const names = Object.keys(sido).sort((a, b) => SIDO_ORDER.indexOf(a) - SIDO_ORDER.indexOf(b));
+  if (!names.length) { block.hidden = true; return; }
   block.hidden = false;
-  if (head && jn.total) {
-    head.innerHTML = `전남 합계 <strong>${jn.total.rate}%</strong> · 선거인 ${(jn.total.voters/10000).toFixed(1)}만 · 사전투표자 ${(jn.total.voted/10000).toFixed(1)}만`;
-  }
-  const rows = jn.sigungu.slice().sort((a, b) => b.rate - a.rate);
-  const barMax = Math.ceil(Math.max.apply(null, rows.map(r => r.rate)) / 5) * 5;
-  root.innerHTML = rows.map((r, i) => {
-    const w = Math.min(100, r.rate / barMax * 100);
-    const cls = i === 0 ? ' jn-top' : (r.name.endsWith('시') ? ' jn-city' : '');
-    return `<div class="jn-row${cls}" title="선거인 ${r.voters.toLocaleString('ko-KR')} · 사전투표자 ${r.voted.toLocaleString('ko-KR')}">
-      <span class="jn-name">${r.name}</span>
-      <span class="jn-bar-wrap"><span class="jn-bar" style="width:${w.toFixed(1)}%"></span></span>
-      <span class="jn-rate">${r.rate.toFixed(2)}%</span>
+  root.innerHTML = names.map(sd => {
+    const g = sido[sd];
+    const rows = (g.sigungu || []).slice().sort((a, b) => b.rate - a.rate);
+    if (!rows.length) return '';
+    const barMax = Math.ceil(Math.max.apply(null, rows.map(r => r.rate)) / 5) * 5;
+    const head = g.total
+      ? `합계 <strong>${g.total.rate}%</strong> · 선거인 ${(g.total.voters / 10000).toFixed(1)}만 · 사전 ${(g.total.voted / 10000).toFixed(1)}만`
+      : '';
+    const list = rows.map((r, i) => {
+      const w = Math.min(100, r.rate / barMax * 100);
+      const cls = i === 0 ? ' jn-top' : ((r.name.endsWith('시') || r.name.endsWith('구')) ? ' jn-city' : '');
+      return `<div class="jn-row${cls}" title="선거인 ${r.voters.toLocaleString('ko-KR')} · 사전투표자 ${r.voted.toLocaleString('ko-KR')}">
+        <span class="jn-name">${r.name}</span>
+        <span class="jn-bar-wrap"><span class="jn-bar" style="width:${w.toFixed(1)}%"></span></span>
+        <span class="jn-rate">${r.rate.toFixed(2)}%</span>
+      </div>`;
+    }).join('');
+    return `<div class="sg-group">
+      <div class="sg-head"><span class="sg-sido">${SIDO_SHORT[sd] || sd}</span><span class="sg-total">${head}</span></div>
+      <div class="jn-list">${list}</div>
     </div>`;
   }).join('');
 }
@@ -698,7 +706,7 @@ async function main() {
   renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
   bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21);
   renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21);
-  loadJSON(PATHS.sigungu).then(renderJeonnamSigungu);
+  loadJSON(PATHS.sigungu).then(renderSigungu);
 }
 
 main();
