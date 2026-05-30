@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>실시간 개표 — 6·3 지방선거 2026</title>
+<meta name="description" content="2026년 6월 3일 제9회 전국동시지방선거 실시간 개표·투표율 트래커. 시도지사 개표 현황을 선거 전 예측(MBC 베이지안 모형)과 직접 비교. 뉴탐사.">
+<meta name="author" content="뉴탐사">
+<meta name="theme-color" content="#c41e3a">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://election2026.newtamsa.org/live/">
+<meta property="og:title" content="실시간 개표 — 예측은 맞았나">
+<meta property="og:description" content="시도지사 개표 현황을 선거 전 예측과 같은 화면에서 비교. 중앙선관위 실측, 자동 갱신. 뉴탐사.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="뉴탐사">
+<link rel="canonical" href="https://election2026.newtamsa.org/live/">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23c41e3a'/%3E%3Ctext x='14' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'%3E6%3C/text%3E%3Ccircle cx='32' cy='30' r='3.5' fill='%23fff'/%3E%3Ctext x='38' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'%3E3%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
+<style>
+  :root {
+    --ink: #1a1a1a; --muted: #6b6b6b; --line: #e5e5e5;
+    --accent: #c41e3a; --blue: #1e4a8a; --gray: #999;
+    --dem: #152484; --con: #E61E2B;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: 'Pretendard', -apple-system, sans-serif;
+    color: var(--ink); background: #fff; line-height: 1.55;
+  }
+  a { color: inherit; }
+  .ev-header { background: #1a1a1a; color: #fff; padding: 14px 0; border-bottom: 3px solid var(--accent); }
+  .ev-header-inner {
+    max-width: 1100px; margin: 0 auto; padding: 0 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .ev-brand { display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: #fff; }
+  .ev-brand-title { font-family: 'Noto Serif KR', serif; font-size: 1.1rem; font-weight: 900; letter-spacing: -0.01em; }
+  .ev-brand-sub { font-size: 0.78rem; color: var(--accent); font-weight: 700; }
+  .ev-nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  .ev-nav a {
+    color: rgba(255,255,255,0.78); text-decoration: none; font-size: 0.86rem; font-weight: 600;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .ev-nav a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .ev-nav .ev-nav-active { background: var(--accent); color: #fff; }
+  main { max-width: 1100px; margin: 0 auto; padding: 28px 20px 60px; }
+
+  h1.page-title { font-family: 'Noto Serif KR', serif; font-size: 1.6rem; font-weight: 900; margin: 0 0 4px; letter-spacing: -0.02em; }
+  .page-sub { color: var(--muted); font-size: 0.95rem; margin: 0 0 20px; }
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 0.74rem; font-weight: 800;
+    color: #fff; background: var(--accent); padding: 3px 10px; border-radius: 999px; vertical-align: middle; margin-left: 8px;
+  }
+  .live-badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: pulse 1.4s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* Hero */
+  .hero { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 20px 0 28px; }
+  @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } }
+  .hero-card { border: 1px solid var(--line); border-radius: 8px; padding: 20px 22px; background: #fafafa; }
+  .hero-card-main { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+  .hero-label { font-size: 0.76rem; color: rgba(255,255,255,0.65); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .hero-card:not(.hero-card-main) .hero-label { color: var(--muted); }
+  .hero-big { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 3.0rem; line-height: 1.05; margin: 6px 0 2px; letter-spacing: -0.03em; }
+  .hero-big .pct { font-size: 0.5em; font-weight: 700; color: rgba(255,255,255,0.7); margin-left: 4px; }
+  .hero-card:not(.hero-card-main) .hero-big .pct { color: var(--muted); }
+  .hero-meta { font-size: 0.84rem; color: rgba(255,255,255,0.75); }
+  .hero-card:not(.hero-card-main) .hero-meta { color: var(--muted); }
+  .hero-sub2 { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: 6px; }
+  .hero-card:not(.hero-card-main) .hero-sub2 { color: var(--muted); }
+
+  section.block { margin: 36px 0 0; }
+  section.block h2 { font-family: 'Noto Serif KR', serif; font-size: 1.15rem; font-weight: 900; margin: 0 0 4px; letter-spacing: -0.01em; }
+  section.block .block-sub { color: var(--muted); font-size: 0.86rem; margin: 0 0 14px; }
+
+  /* 시도지사 예측비교 카드 */
+  .race-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 720px) { .race-grid { grid-template-columns: 1fr; } }
+  .race-card { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; background: #fff; }
+  .race-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+  .race-sido { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.05rem; }
+  .race-progress { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+  .race-progress b { color: var(--ink); }
+
+  .cand-row { display: flex; align-items: center; gap: 8px; margin: 5px 0; }
+  .cand-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+  .cand-name { font-weight: 700; font-size: 0.9rem; flex: 0 0 auto; }
+  .cand-party { font-size: 0.74rem; color: var(--muted); font-weight: 600; }
+  .cand-bar-wrap { flex: 1 1 auto; height: 9px; background: #f0f0f0; border-radius: 5px; overflow: hidden; min-width: 40px; }
+  .cand-bar { height: 100%; border-radius: 5px; transition: width 0.5s; }
+  .cand-share { font-weight: 800; font-size: 0.92rem; flex: 0 0 auto; width: 54px; text-align: right; }
+  .cand-rank1 .cand-name::after { content: ' ▲'; color: var(--accent); font-size: 0.7em; }
+
+  .race-compare { margin-top: 11px; padding-top: 10px; border-top: 1px dashed var(--line); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .rc-item { font-size: 0.8rem; color: var(--muted); }
+  .rc-item b { color: var(--ink); font-weight: 800; }
+  .rc-verdict { margin-left: auto; font-size: 0.76rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+  .v-hit   { background: #e6f4ea; color: #1a7f37; }
+  .v-band  { background: #eef2fb; color: var(--blue); }
+  .v-upset { background: #fde6eb; color: var(--accent); }
+  .v-early { background: #f0f0f0; color: var(--muted); }
+  .v-none  { background: #f7f7f7; color: var(--gray); }
+
+  /* 기타 개표 표 */
+  .other-wrap { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #fff; }
+  table.other { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+  table.other th, table.other td { padding: 9px 11px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+  table.other thead th { background: #fafafa; font-weight: 700; color: var(--muted); font-size: 0.78rem; border-bottom: 1px solid var(--line); }
+  table.other td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.other tbody tr:last-child td { border-bottom: none; }
+  .lead-chip { font-weight: 800; }
+
+  .meta-bar { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.82rem; color: var(--muted); padding: 12px 0; border-top: 1px solid var(--line); margin-top: 36px; }
+  .meta-bar a { color: var(--muted); text-decoration: underline; }
+  .disclosure { margin: 28px 0 0; padding: 14px 18px; background: #f6f6f6; border-left: 3px solid #ccc; border-radius: 3px; color: #555; font-size: 0.8rem; line-height: 1.65; }
+  .disclosure strong { color: #333; }
+  .state-loading, .state-empty { padding: 40px 0; text-align: center; color: var(--muted); font-size: 0.95rem; }
+  footer.ev-footer { max-width: 1100px; margin: 0 auto; padding: 30px 20px 50px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.82rem; }
+  footer.ev-footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<header class="ev-header">
+  <div class="ev-header-inner">
+    <a href="/" class="ev-brand">
+      <span class="ev-brand-title">6·3 지방선거 2026</span>
+      <span class="ev-brand-sub">뉴탐사 데이터</span>
+    </a>
+    <nav class="ev-nav">
+      <a href="/">메인</a>
+      <a href="/early-voting/">사전투표율</a>
+      <a href="/live/" class="ev-nav-active">실시간 개표</a>
+      <a href="/sim/">결과 예측 시뮬레이션</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <h1 class="page-title">실시간 개표<span id="live-badge" class="live-badge" hidden>LIVE</span></h1>
+  <p class="page-sub">2026-06-03(수) 투표 마감 18시 이후 개표 진행 · 자동 갱신 · 선거 전 예측(MBC 베이지안 모형)과 비교</p>
+
+  <section id="hero" class="hero">
+    <div class="hero-card hero-card-main">
+      <div class="hero-label">전국 투표율</div>
+      <div class="hero-big" id="hero-turnout">—<span class="pct">%</span></div>
+      <div class="hero-meta" id="hero-turnout-meta">로딩 중…</div>
+    </div>
+    <div class="hero-card hero-card-main">
+      <div class="hero-label">개표 진행률</div>
+      <div class="hero-big" id="hero-progress">—<span class="pct">%</span></div>
+      <div class="hero-meta" id="hero-progress-meta">—</div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-label">사전투표 비중</div>
+      <div class="hero-big" id="hero-early" style="color:var(--ink)">—<span class="pct">%</span></div>
+      <div class="hero-meta" id="hero-early-meta">전체 투표자 중 사전투표 비율</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>시도지사 개표 — 예측 vs 실제</h2>
+    <p class="block-sub">각 시도지사 개표 현황(실측)을 선거 전 예측(MBC 베이지안 상태공간 모형의 민주−국힘 격차 ±표준편차)과 같은 화면에서 비교. <b>부합</b>=같은 진영 우세·예측구간 내, <b>예측이탈</b>=구간 밖, <b>이변</b>=1·2위 진영 뒤바뀜.</p>
+    <div id="chief-races" class="race-grid">
+      <div class="state-loading">개표 데이터 로딩 중…</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>그 외 개표 현황</h2>
+    <p class="block-sub">교육감·기초단체장 등 수집된 그 외 선거구의 1·2위와 개표 진행률. (예측 비교는 시도지사 한정)</p>
+    <div id="other-races" class="other-wrap"></div>
+  </section>
+
+  <aside class="disclosure">
+    <strong>자료 출처·갱신</strong><br>
+    · 개표·투표율: 중앙선거관리위원회 OpenAPI(<code>VoteXmntckInfoInqireService2</code>)를 6/3 18시 이후 5분 간격 자동 수집.<br>
+    · 예측: <strong>MBC 베이지안 상태공간 모형</strong>(poll-mbc.co.kr) 각 시도 최신 다자 추정의 민주−국힘 평균 격차·표준편차. 2026-05-27 기준 스냅샷.<br>
+    · '부합/이탈/이변' 판정은 <strong>개표 진행 중 잠정치</strong> 기반의 자동 분류로, 개표가 진행되며 바뀔 수 있습니다. 최종 당락은 선관위 공식 발표를 따릅니다.<br>
+    · 개표 초반(진행률 낮음)에는 특정 지역 개표소 순서 때문에 실제와 크게 다를 수 있어 '개표 초반'으로 표시합니다.<br>
+    · 오류 제보 <a href="mailto:news@newtamsa.org">news@newtamsa.org</a>
+  </aside>
+
+  <div class="meta-bar">
+    <span>마지막 갱신: <span id="updated-at">—</span></span>
+    <span>· <a href="https://nec.go.kr" target="_blank" rel="noopener">선관위 공식</a></span>
+    <span>· <a href="/early-voting/">사전투표율 보기</a></span>
+  </div>
+</main>
+<footer class="ev-footer">
+  <p>
+    <strong>뉴탐사</strong>가 만들었습니다 ·
+    문의 <a href="mailto:news@newtamsa.org">news@newtamsa.org</a> ·
+    <a href="https://newtamsa.org" target="_blank" rel="noopener">홈</a> ·
+    <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
+  </p>
+</footer>
+<script src="live.js?v=20260603a"></script>
+</body>
+</html>
