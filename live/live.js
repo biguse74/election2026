@@ -246,6 +246,9 @@ function matcherHit(r, m) {
     const place = [r.sd_name, r.sgg_name, r.wiw_name].filter(Boolean).join(' ');
     if (!place.includes(m.where)) return false;
   }
+  if (m.party && !(r.candidates || []).some(c => c.jd_name === m.party)) return false;
+  if (m.name && !(r.candidates || []).some(c => c.name === m.name)) return false;
+  if (m.closeRace != null && !(r.rank1_minus_rank2_pp != null && r.rank1_minus_rank2_pp <= m.closeRace)) return false;
   return true;
 }
 
