@@ -13,6 +13,7 @@ const PATHS = {
   baselineGen22:  `../data/early_voting/baseline_general22nd.json`,
   basePres21:     `../data/early_voting/baseline_president21st.json`,
   sigungu:    `../data/early_voting/sigungu_20260603.json`,
+  sigungu8:   `../data/early_voting/sigungu_8th_20220601.json`,
 };
 
 // 시도 표준 순서 (행정안전부) — 그리드 정렬용
@@ -294,6 +295,34 @@ let NAT_AVG = 24;  // 전국 평균 사전투표율(데이터에서 계산). 막
 // 색 원칙: 전국 평균 이상 = 뉴탐사 레드, 미만 = 차분한 회색. (길이=사전투표율)
 function rateColor(rate) {
   return rate >= NAT_AVG ? '#c41e3a' : '#9aa4b2';
+}
+
+// 4년 전(8회) 대비 사전투표율 변화 — 시군구별 증감. 상승 레드·하락 파랑.
+function renderDelta(d9, d8) {
+  const block = document.getElementById('delta-block');
+  if (!block) return;
+  const s8 = {};
+  const sd8 = (d8 && d8.sido) || {};
+  for (const sd in sd8) for (const r of (sd8[sd].sigungu || [])) s8[sd + '|' + r.name] = r.rate;
+  const ALIAS = { '대구광역시|군위군': '경상북도|군위군' };  // 2023 경북→대구 편입
+  const items = [];
+  const s9 = (d9 && d9.sido) || {};
+  for (const sd in s9) for (const r of (s9[sd].sigungu || [])) {
+    const key = sd + '|' + r.name, k8 = ALIAS[key] || key;
+    if (s8[k8] != null) items.push({ sido: sd, name: r.name, r8: s8[k8], r9: r.rate, delta: Math.round((r.rate - s8[k8]) * 100) / 100 });
+  }
+  if (items.length < 5) { block.hidden = true; return; }
+  block.hidden = false;
+  const maxAbs = Math.max.apply(null, items.map(x => Math.abs(x.delta))) || 1;
+  const up = items.slice().sort((a, b) => b.delta - a.delta).slice(0, 15);
+  const down = items.filter(x => x.delta < 0).sort((a, b) => a.delta - b.delta).slice(0, 25);
+  const rowH = (x, color) => `<div class="rk-row">
+    <span class="rk-name">${x.name}<span class="rk-sido">${SIDO_SHORT[x.sido] || x.sido}</span></span>
+    <span class="rk-bar-wrap"><span class="rk-bar" style="width:${(Math.abs(x.delta) / maxAbs * 100).toFixed(1)}%;background:${color}"></span></span>
+    <span class="rk-rate">${x.delta > 0 ? '+' : ''}${x.delta.toFixed(2)}%p</span>
+  </div>`;
+  document.getElementById('delta-up').innerHTML = up.map(x => rowH(x, '#c41e3a')).join('');
+  document.getElementById('delta-down').innerHTML = down.length ? down.map(x => rowH(x, '#1e4a8a')).join('') : '<div class="state-empty" style="padding:14px 0">하락한 시군구 없음</div>';
 }
 
 // 사전투표율 1위 — 전국 시군구 TOP 15 + 시도별 최고.
@@ -746,12 +775,12 @@ async function main() {
   renderHourlyTable(ts, baseline8, baseline7, baselineGen22, basePres21);
   bindHourlyTabs(ts, baseline8, baseline7, baselineGen22, basePres21);
   renderTimeline(ts, baseline8, baseline7, baselineGen22, basePres21);
-  loadJSON(PATHS.sigungu).then(d => {
+  Promise.all([loadJSON(PATHS.sigungu), loadJSON(PATHS.sigungu8)]).then(([d, d8]) => {
     const sd = (d && d.sido) || {};
     let vd = 0, vt = 0;
     for (const k in sd) { if (sd[k].total) { vd += sd[k].total.voted || 0; vt += sd[k].total.voters || 0; } }
     if (vt) NAT_AVG = vd / vt * 100;
-    renderSigungu(d); renderSigunguRanking(d);
+    renderSigungu(d); renderSigunguRanking(d); renderDelta(d, d8);
   });
 }
 

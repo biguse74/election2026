@@ -409,6 +409,15 @@
     </div>
   </section>
 
+  <section class="block" id="delta-block" hidden>
+    <h2>4년 전(8회) 대비 사전투표율 변화 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(시군구)</span></h2>
+    <p class="block-sub">2022년 8회 지선 대비 같은 시군구의 사전투표율 증감(%p). <span class="lg-sw" style="background:#c41e3a"></span>상승 <span class="lg-sw" style="background:#1e4a8a"></span>하락. 호남은 더 결집(급등)하고 영남(특히 경북 농촌)은 빠진 게 뚜렷. 행정구역 변경 지역은 제외.</p>
+    <div class="rk-grid">
+      <div><p class="rk-cap">가장 많이 오른 시군구 TOP 15</p><div id="delta-up"></div></div>
+      <div><p class="rk-cap">떨어진 시군구</p><div id="delta-down"></div></div>
+    </div>
+  </section>
+
   <section class="block" id="sigungu-block" hidden>
     <h2>시군별 사전투표율 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(최종)</span></h2>
     <p class="block-sub">막대 <strong>길이</strong>=사전투표율 · <strong>색</strong>=전국 평균(약 24%) 대비:<span class="lg-sw lg-hi"></span>이상<span class="lg-sw lg-lo"></span>미만. 농촌 <strong>군</strong>이 도시 <strong>시·구</strong>보다 크게 높은 게 공통 특징. 행에 마우스를 올리면 선거인·사전투표자 수.</p>
@@ -448,6 +457,6 @@
     if (el && Date.now() >= Date.parse('2026-06-03T18:00:00+09:00')) el.hidden = false;
   })();
 </script>
-<script src="early-voting.js?v=202605302345"></script>
+<script src="early-voting.js?v=202605310600"></script>
 </body>
 </html>
