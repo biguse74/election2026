@@ -293,6 +293,8 @@ function baselineFracSeries(baseline) {
 // 사전투표율 → 색 (낮음 파랑 ~ 높음 빨강). 막대 히트맵용.
 let NAT_AVG = 24;  // 전국 평균 사전투표율(데이터에서 계산). 막대 색 기준선.
 // 색 원칙: 전국 평균 이상 = 뉴탐사 레드, 미만 = 차분한 회색. (길이=사전투표율)
+let SG_DELTA = {};
+let SIDO_DELTA = {};
 function rateColor(rate) {
   return rate >= NAT_AVG ? '#c41e3a' : '#9aa4b2';
 }
@@ -372,16 +374,19 @@ function renderSigungu(data) {
     const rows = (g.sigungu || []).slice().sort((a, b) => b.rate - a.rate);
     if (!rows.length) return '';
     const barMax = Math.ceil(Math.max.apply(null, rows.map(r => r.rate)) / 5) * 5;
+    const sdv = SIDO_DELTA[sd];
     const head = g.total
-      ? `합계 <strong>${g.total.rate}%</strong> · 선거인 ${(g.total.voters / 10000).toFixed(1)}만 · 사전 ${(g.total.voted / 10000).toFixed(1)}만`
+      ? `합계 <strong>${g.total.rate}%</strong>${sdv ? ` <span class="sg-dlt ${sdv.delta >= 0 ? 'up' : 'down'}">${sdv.delta >= 0 ? '▲' : '▼'}${Math.abs(sdv.delta).toFixed(2)}%p<span class="sg-dlt-sub">8회比</span></span>` : ''} · 선거인 ${(g.total.voters / 10000).toFixed(1)}만 · 사전 ${(g.total.voted / 10000).toFixed(1)}만`
       : '';
     const list = rows.map((r, i) => {
       const w = Math.min(100, r.rate / barMax * 100);
       const cls = i === 0 ? ' jn-top' : ((r.name.endsWith('시') || r.name.endsWith('구')) ? ' jn-city' : '');
-      return `<div class="jn-row${cls}" title="선거인 ${r.voters.toLocaleString('ko-KR')} · 사전투표자 ${r.voted.toLocaleString('ko-KR')}">
+      const dv = SG_DELTA[sd + '|' + r.name];
+      const dchip = dv ? `<span class="jn-delta ${dv.delta >= 0 ? 'up' : 'down'}">${dv.delta >= 0 ? '+' : ''}${dv.delta}</span>` : '<span class="jn-delta na">–</span>';
+      return `<div class="jn-row${cls}" title="${dv ? '8회 ' + dv.r8 + '% → 9회 ' + r.rate + '% (' + (dv.delta >= 0 ? '+' : '') + dv.delta + '%p)' : '8회 비교 불가(행정구역 변경)'} · 선거인 ${r.voters.toLocaleString('ko-KR')} · 사전투표자 ${r.voted.toLocaleString('ko-KR')}">
         <span class="jn-name">${r.name}</span>
         <span class="jn-bar-wrap"><span class="jn-bar" style="width:${w.toFixed(1)}%;background:${rateColor(r.rate)}"></span></span>
-        <span class="jn-rate">${r.rate.toFixed(2)}%</span>
+        <span class="jn-rate">${r.rate.toFixed(2)}%</span>${dchip}
       </div>`;
     }).join('');
     return `<div class="sg-group">
@@ -780,6 +785,15 @@ async function main() {
     let vd = 0, vt = 0;
     for (const k in sd) { if (sd[k].total) { vd += sd[k].total.voted || 0; vt += sd[k].total.voters || 0; } }
     if (vt) NAT_AVG = vd / vt * 100;
+    // 8회 대비 격차 맵(시군구·시도)
+    const _s8 = {}, _t8 = {}, _sd8 = (d8 && d8.sido) || {};
+    for (const k in _sd8) { if (_sd8[k].total) _t8[k] = _sd8[k].total.rate; for (const r of (_sd8[k].sigungu || [])) _s8[k + '|' + r.name] = r.rate; }
+    const _AL = { '대구광역시|군위군': '경상북도|군위군' };
+    SG_DELTA = {}; SIDO_DELTA = {};
+    for (const k in sd) {
+      if (_t8[k] != null && sd[k].total) SIDO_DELTA[k] = { r8: _t8[k], delta: Math.round((sd[k].total.rate - _t8[k]) * 100) / 100 };
+      for (const r of (sd[k].sigungu || [])) { const kk = k + '|' + r.name, k8 = _AL[kk] || kk; if (_s8[k8] != null) SG_DELTA[kk] = { r8: _s8[k8], delta: Math.round((r.rate - _s8[k8]) * 100) / 100 }; }
+    }
     renderSigungu(d); renderSigunguRanking(d); renderDelta(d, d8);
   });
 }

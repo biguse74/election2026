@@ -281,6 +281,14 @@
   .jn-bar-wrap { flex: 1 1 auto; height: 12px; background: #f0f1f3; border-radius: 6px; overflow: hidden; }
   .jn-bar { display: block; height: 100%; background: #8aa0c8; border-radius: 6px; }
   .jn-rate { width: 50px; text-align: right; font-weight: 800; font-size: 0.88rem; flex-shrink: 0; color: var(--ink); }
+  .jn-delta { width: 48px; text-align: right; font-size: 0.76rem; font-weight: 700; flex-shrink: 0; }
+  .jn-delta.up { color: var(--accent); }
+  .jn-delta.down { color: var(--blue); }
+  .jn-delta.na { color: #ccc; font-weight: 400; }
+  .sg-dlt { font-weight: 800; font-size: 0.86rem; }
+  .sg-dlt.up { color: var(--accent); }
+  .sg-dlt.down { color: var(--blue); }
+  .sg-dlt-sub { font-weight: 600; font-size: 0.78em; color: var(--muted); margin-left: 2px; }
 
   .meta-bar {
     display: flex; gap: 16px; flex-wrap: wrap;
@@ -420,7 +428,7 @@
 
   <section class="block" id="sigungu-block" hidden>
     <h2>시군별 사전투표율 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(최종)</span></h2>
-    <p class="block-sub">막대 <strong>길이</strong>=사전투표율 · <strong>색</strong>=전국 평균(약 24%) 대비:<span class="lg-sw lg-hi"></span>이상<span class="lg-sw lg-lo"></span>미만. 농촌 <strong>군</strong>이 도시 <strong>시·구</strong>보다 크게 높은 게 공통 특징. 행에 마우스를 올리면 선거인·사전투표자 수.</p>
+    <p class="block-sub">막대 <strong>길이</strong>=사전투표율 · <strong>색</strong>=전국 평균(약 24%) 대비:<span class="lg-sw lg-hi"></span>이상<span class="lg-sw lg-lo"></span>미만. 농촌 <strong>군</strong>이 도시 <strong>시·구</strong>보다 크게 높음. 줄 끝 <span class="sg-dlt up">+</span>/<span class="sg-dlt down">−</span>는 8회(2022) 대비 증감(%p). 행에 마우스 올리면 상세.</p>
     <div id="sigungu-groups"></div>
   </section>
 
@@ -457,6 +465,6 @@
     if (el && Date.now() >= Date.parse('2026-06-03T18:00:00+09:00')) el.hidden = false;
   })();
 </script>
-<script src="early-voting.js?v=202605310600"></script>
+<script src="early-voting.js?v=202605310630"></script>
 </body>
 </html>
