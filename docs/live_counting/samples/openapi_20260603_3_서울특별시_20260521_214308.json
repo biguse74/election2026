@@ -1,0 +1,8 @@
+{
+  "response": {
+    "header": {
+      "resultCode": "INFO-03",
+      "resultMsg": "데이터 정보가 없습니다. 입력 파라미터값을 확인해주시기 바랍니다."
+    }
+  }
+}

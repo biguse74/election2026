@@ -1,0 +1,50 @@
+[100161815 도희재] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 3
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음
+[100162708 서재원] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 4
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음
+[100161391 이우청] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 3
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음
+[100154075 임승식] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 1
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음
+[100156458 이정운] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 1
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음
+[100163388 이대선] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 2
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음
+[100163407 이규선] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 2
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음
+[100164219 이종석] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 3
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음
+[100160386 송종화] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 2
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음
+[100160943 임원희] PDF 접근: 성공 (PDF cache=Y, image cache=Y)
+  텍스트 추출 방식: 캐시된 PDF 이미지 원문 대조 + 표 수동 전사
+  추출된 전과 행 수: 7
+  정규화 불확실 항목: PDF 표에 처분기관·확정 여부 별도 칼럼 없음, PDF 표에 연번 칼럼 없음: 표 순서를 offense_seq로 기록
+  our_category_match 공란 죄명: 없음

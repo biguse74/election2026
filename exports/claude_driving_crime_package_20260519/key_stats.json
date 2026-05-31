@@ -1,0 +1,81 @@
+{
+  "snapshot": "2026-05-19 후보 등록 스냅샷",
+  "registered_candidates": 7824,
+  "criminal_pdf_records": 2627,
+  "criminal_classification_version": 17,
+  "dangerous_driving_candidates": 11,
+  "drunk_driving_candidates": 964,
+  "both_dangerous_and_drunk_candidates": 9,
+  "dangerous_by_party": {
+    "국민의힘": 6,
+    "더불어민주당": 2,
+    "무소속": 3
+  },
+  "major_party_summary": [
+    {
+      "party": "더불어민주당",
+      "registered_candidates": 3213,
+      "drunk_driving_candidates": 353,
+      "drunk_driving_rate_pct": 10.99,
+      "dangerous_driving_candidates": 2,
+      "dangerous_driving_rate_pct": 0.06,
+      "both_categories_candidates": 2
+    },
+    {
+      "party": "국민의힘",
+      "registered_candidates": 2742,
+      "drunk_driving_candidates": 376,
+      "drunk_driving_rate_pct": 13.71,
+      "dangerous_driving_candidates": 6,
+      "dangerous_driving_rate_pct": 0.22,
+      "both_categories_candidates": 5
+    }
+  ],
+  "five_party_summary": [
+    {
+      "party": "더불어민주당",
+      "registered_candidates": 3213,
+      "drunk_driving_candidates": 353,
+      "drunk_driving_rate_pct": 10.99,
+      "dangerous_driving_candidates": 2,
+      "dangerous_driving_rate_pct": 0.06,
+      "both_categories_candidates": 2
+    },
+    {
+      "party": "국민의힘",
+      "registered_candidates": 2742,
+      "drunk_driving_candidates": 376,
+      "drunk_driving_rate_pct": 13.71,
+      "dangerous_driving_candidates": 6,
+      "dangerous_driving_rate_pct": 0.22,
+      "both_categories_candidates": 5
+    },
+    {
+      "party": "진보당",
+      "registered_candidates": 316,
+      "drunk_driving_candidates": 24,
+      "drunk_driving_rate_pct": 7.59,
+      "dangerous_driving_candidates": 0,
+      "dangerous_driving_rate_pct": 0.0,
+      "both_categories_candidates": 0
+    },
+    {
+      "party": "조국혁신당",
+      "registered_candidates": 263,
+      "drunk_driving_candidates": 36,
+      "drunk_driving_rate_pct": 13.69,
+      "dangerous_driving_candidates": 0,
+      "dangerous_driving_rate_pct": 0.0,
+      "both_categories_candidates": 0
+    },
+    {
+      "party": "개혁신당",
+      "registered_candidates": 192,
+      "drunk_driving_candidates": 7,
+      "drunk_driving_rate_pct": 3.65,
+      "dangerous_driving_candidates": 0,
+      "dangerous_driving_rate_pct": 0.0,
+      "both_categories_candidates": 0
+    }
+  ]
+}

@@ -1,0 +1,351 @@
+{
+  "generated_at_kst": "2026-05-17 08:30 KST",
+  "data_snapshot": "후보 등록 스냅샷 + 후보자 공개정보 + 전과 PDF 죄명 분류 데이터",
+  "active_candidates": 7828,
+  "disclosure_rows_used": 7828,
+  "criminal_record_candidates": 2627,
+  "criminal_record_rate_all_candidates": "33.6%",
+  "criminal_pdf_candidates_processed": 2627,
+  "important_criminal_candidates": 1293,
+  "important_criminal_rate_among_criminal_pdf_candidates": "49.2%",
+  "important_criminal_rate_all_candidates": "16.5%",
+  "tax_arrears_5y_candidates": 1072,
+  "tax_arrears_5y_rate_all_candidates": "13.7%",
+  "tax_arrears_current_candidates": 66,
+  "tax_arrears_current_rate_all_candidates": "0.8%",
+  "candidates_with_both_5y_tax_and_criminal_record": 436,
+  "candidates_with_both_5y_tax_and_important_criminal": 219,
+  "candidates_with_both_current_tax_and_criminal_record": 34,
+  "military_not_served_candidates": 609,
+  "military_not_served_rate_all_disclosure_rows": "7.8%",
+  "top_important_criminal_categories": [
+    {
+      "category": "음주·위험운전",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 949,
+      "share_of_criminal_pdf_candidates": "36.1%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "공직선거법",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 150,
+      "share_of_criminal_pdf_candidates": "5.7%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "사기",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 100,
+      "share_of_criminal_pdf_candidates": "3.8%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "무면허운전",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 95,
+      "share_of_criminal_pdf_candidates": "3.6%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "허위공문서·문서위조·공용서류",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 54,
+      "share_of_criminal_pdf_candidates": "2.1%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "횡령",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 50,
+      "share_of_criminal_pdf_candidates": "1.9%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "특가법",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 40,
+      "share_of_criminal_pdf_candidates": "1.5%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "보조금",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 28,
+      "share_of_criminal_pdf_candidates": "1.1%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "배임",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 22,
+      "share_of_criminal_pdf_candidates": "0.8%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "뇌물",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 19,
+      "share_of_criminal_pdf_candidates": "0.7%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "절도",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 14,
+      "share_of_criminal_pdf_candidates": "0.5%",
+      "note": "후보별 중복 분류 가능"
+    },
+    {
+      "category": "정치자금법",
+      "group": "공직 검증",
+      "tone": "priority",
+      "count": 11,
+      "share_of_criminal_pdf_candidates": "0.4%",
+      "note": "후보별 중복 분류 가능"
+    }
+  ],
+  "tax_5y_top_party": [
+    {
+      "name": "국민의힘",
+      "count": 451,
+      "share_of_affected": "42.1%",
+      "base_count": 2744,
+      "rate_within_base": "16.4%"
+    },
+    {
+      "name": "더불어민주당",
+      "count": 391,
+      "share_of_affected": "36.5%",
+      "base_count": 3214,
+      "rate_within_base": "12.2%"
+    },
+    {
+      "name": "무소속",
+      "count": 135,
+      "share_of_affected": "12.6%",
+      "base_count": 888,
+      "rate_within_base": "15.2%"
+    },
+    {
+      "name": "조국혁신당",
+      "count": 36,
+      "share_of_affected": "3.4%",
+      "base_count": 263,
+      "rate_within_base": "13.7%"
+    },
+    {
+      "name": "개혁신당",
+      "count": 23,
+      "share_of_affected": "2.1%",
+      "base_count": 192,
+      "rate_within_base": "12.0%"
+    },
+    {
+      "name": "진보당",
+      "count": 18,
+      "share_of_affected": "1.7%",
+      "base_count": 316,
+      "rate_within_base": "5.7%"
+    },
+    {
+      "name": "자유와혁신",
+      "count": 7,
+      "share_of_affected": "0.7%",
+      "base_count": 48,
+      "rate_within_base": "14.6%"
+    },
+    {
+      "name": "사회민주당",
+      "count": 2,
+      "share_of_affected": "0.2%",
+      "base_count": 6,
+      "rate_within_base": "33.3%"
+    }
+  ],
+  "tax_5y_top_office": [
+    {
+      "name": "구시군의회의원",
+      "count": 644,
+      "share_of_affected": "60.1%",
+      "base_count": 4401,
+      "rate_within_base": "14.6%"
+    },
+    {
+      "name": "시도의원",
+      "count": 212,
+      "share_of_affected": "19.8%",
+      "base_count": 1657,
+      "rate_within_base": "12.8%"
+    },
+    {
+      "name": "기초의원비례",
+      "count": 90,
+      "share_of_affected": "8.4%",
+      "base_count": 672,
+      "rate_within_base": "13.4%"
+    },
+    {
+      "name": "기초단체장",
+      "count": 65,
+      "share_of_affected": "6.1%",
+      "base_count": 585,
+      "rate_within_base": "11.1%"
+    },
+    {
+      "name": "광역의원비례",
+      "count": 42,
+      "share_of_affected": "3.9%",
+      "base_count": 354,
+      "rate_within_base": "11.9%"
+    },
+    {
+      "name": "교육감",
+      "count": 7,
+      "share_of_affected": "0.7%",
+      "base_count": 58,
+      "rate_within_base": "12.1%"
+    },
+    {
+      "name": "국회의원(재보궐)",
+      "count": 7,
+      "share_of_affected": "0.7%",
+      "base_count": 47,
+      "rate_within_base": "14.9%"
+    },
+    {
+      "name": "시도지사",
+      "count": 5,
+      "share_of_affected": "0.5%",
+      "base_count": 54,
+      "rate_within_base": "9.3%"
+    }
+  ],
+  "tax_5y_top_region": [
+    {
+      "name": "경기도",
+      "count": 182,
+      "share_of_affected": "17.0%",
+      "base_count": 1201,
+      "rate_within_base": "15.2%"
+    },
+    {
+      "name": "경상북도",
+      "count": 135,
+      "share_of_affected": "12.6%",
+      "base_count": 691,
+      "rate_within_base": "19.5%"
+    },
+    {
+      "name": "서울특별시",
+      "count": 101,
+      "share_of_affected": "9.4%",
+      "base_count": 1036,
+      "rate_within_base": "9.7%"
+    },
+    {
+      "name": "경상남도",
+      "count": 99,
+      "share_of_affected": "9.2%",
+      "base_count": 712,
+      "rate_within_base": "13.9%"
+    },
+    {
+      "name": "충청남도",
+      "count": 76,
+      "share_of_affected": "7.1%",
+      "base_count": 479,
+      "rate_within_base": "15.9%"
+    },
+    {
+      "name": "강원특별자치도",
+      "count": 60,
+      "share_of_affected": "5.6%",
+      "base_count": 490,
+      "rate_within_base": "12.2%"
+    },
+    {
+      "name": "전북특별자치도",
+      "count": 58,
+      "share_of_affected": "5.4%",
+      "base_count": 455,
+      "rate_within_base": "12.7%"
+    },
+    {
+      "name": "인천광역시",
+      "count": 55,
+      "share_of_affected": "5.1%",
+      "base_count": 330,
+      "rate_within_base": "16.7%"
+    }
+  ],
+  "current_tax_top_party": [
+    {
+      "name": "국민의힘",
+      "count": 29,
+      "share_of_affected": "43.9%",
+      "base_count": 2744,
+      "rate_within_base": "1.1%"
+    },
+    {
+      "name": "무소속",
+      "count": 16,
+      "share_of_affected": "24.2%",
+      "base_count": 888,
+      "rate_within_base": "1.8%"
+    },
+    {
+      "name": "더불어민주당",
+      "count": 10,
+      "share_of_affected": "15.2%",
+      "base_count": 3214,
+      "rate_within_base": "0.3%"
+    },
+    {
+      "name": "개혁신당",
+      "count": 4,
+      "share_of_affected": "6.1%",
+      "base_count": 192,
+      "rate_within_base": "2.1%"
+    },
+    {
+      "name": "조국혁신당",
+      "count": 3,
+      "share_of_affected": "4.5%",
+      "base_count": 263,
+      "rate_within_base": "1.1%"
+    },
+    {
+      "name": "기독당",
+      "count": 1,
+      "share_of_affected": "1.5%",
+      "base_count": 1,
+      "rate_within_base": "100.0%"
+    },
+    {
+      "name": "대한국민당",
+      "count": 1,
+      "share_of_affected": "1.5%",
+      "base_count": 3,
+      "rate_within_base": "33.3%"
+    },
+    {
+      "name": "자유민주당",
+      "count": 1,
+      "share_of_affected": "1.5%",
+      "base_count": 1,
+      "rate_within_base": "100.0%"
+    }
+  ]
+}

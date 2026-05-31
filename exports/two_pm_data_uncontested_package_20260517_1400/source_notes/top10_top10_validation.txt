@@ -1,0 +1,11 @@
+top10 전과 원문 세부 추출 검증
+검증 시각: 2026-05-17T15:26:15+09:00
+
+[PASS] top10_offense_details 고유 huboid 수 = 10 (10/10)
+[PASS] summary total_offense_count 합 = details 행 수 (28/28)
+[PASS] 사기·횡령·배임·뇌물 중 최소 하나가 매칭된 후보 수 (10/10)
+disposition_date_iso 입력률: 28/28 (100.0%)
+needs_human_review=Y 행 수: 0
+
+비고: PDF 표에는 처분기관과 확정 여부 칼럼이 없어 해당 컬럼은 추정하지 않고 비워 두었습니다.
+비고: PDF 표에는 연번 칼럼이 없어 표의 위에서 아래 순서를 offense_seq로 기록했습니다.

@@ -1,0 +1,39 @@
+{
+  "package_name": "article_data_package_20260517_0830",
+  "generated_at_kst": "2026-05-17 08:30 KST",
+  "docs": [
+    "README.md",
+    "00_CLAUDE_MASTER_INSTRUCTIONS.md",
+    "00_CLAUDE_PROMPT.md",
+    "01_STORY_BRIEF.md",
+    "02_BROADCAST_RUNDOWN_60MIN.md",
+    "03_DATA_NOTES_AND_CAVEATS.md"
+  ],
+  "files": [
+    "data/all_candidates_by_office.csv",
+    "data/all_candidates_by_party.csv",
+    "data/all_candidates_by_region.csv",
+    "data/asset_candidates_lowest.csv",
+    "data/asset_candidates_top.csv",
+    "data/criminal_by_party.csv",
+    "data/criminal_candidates_full.csv",
+    "data/criminal_candidates_multi_category_top.csv",
+    "data/criminal_categories.csv",
+    "data/important_criminal_by_office.csv",
+    "data/important_criminal_by_party.csv",
+    "data/important_criminal_by_region.csv",
+    "data/important_criminal_candidates_full.csv",
+    "data/important_criminal_categories.csv",
+    "data/key_stats.json",
+    "data/story_ideas.json",
+    "data/tax_5y_by_office.csv",
+    "data/tax_5y_by_party.csv",
+    "data/tax_5y_by_region.csv",
+    "data/tax_5y_candidates_full.csv",
+    "data/tax_5y_candidates_top.csv",
+    "data/tax_current_by_party.csv",
+    "data/tax_current_candidates_full.csv",
+    "data/tax_current_candidates_top.csv",
+    "data/watchlist_tax_and_criminal.csv"
+  ]
+}

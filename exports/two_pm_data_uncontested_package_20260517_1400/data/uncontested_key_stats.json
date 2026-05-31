@@ -1,0 +1,81 @@
+{
+  "generated_at": "2026-05-17T22:31:39+09:00",
+  "snapshot_date": "2026-05-17",
+  "candidate_snapshot_fetched_at": "2026-05-17T04:34:13+09:00",
+  "criminal_classification_generated_at": "2026-05-16T23:13:27.064413+00:00",
+  "source_files": {
+    "candidate_snapshot": "data/candidates/20260603/snapshot_20260517.json",
+    "candidate_details": "data/candidate_details.json",
+    "constituencies": "data/constituencies.json",
+    "criminal_classification": "전과 PDF 죄명 분류 결과"
+  },
+  "total_districts": 2349,
+  "total_uncontested_districts": 307,
+  "total_uncontested_candidates": 513,
+  "uncontested_with_tax_history_candidates": 74,
+  "uncontested_with_current_tax_candidates": 3,
+  "uncontested_with_criminal_disclosure_candidates": 138,
+  "uncontested_with_official_misconduct_record_candidates": 76,
+  "uncontested_with_election_law_record_candidates": 9,
+  "uncontested_with_both_tax_and_official_misconduct": 12,
+  "top_party_uncontested": [
+    {
+      "name": "더불어민주당",
+      "count": 314
+    },
+    {
+      "name": "국민의힘",
+      "count": 198
+    },
+    {
+      "name": "진보당",
+      "count": 1
+    }
+  ],
+  "top_region_uncontested": [
+    {
+      "name": "서울특별시",
+      "count": 51
+    },
+    {
+      "name": "전라남도",
+      "count": 49
+    },
+    {
+      "name": "경기도",
+      "count": 43
+    },
+    {
+      "name": "경상북도",
+      "count": 42
+    },
+    {
+      "name": "전북특별자치도",
+      "count": 37
+    }
+  ],
+  "top_office_uncontested": [
+    {
+      "name": "구시군의회의원",
+      "count": 139
+    },
+    {
+      "name": "시도의원",
+      "count": 108
+    },
+    {
+      "name": "기초의원비례",
+      "count": 57
+    },
+    {
+      "name": "기초단체장",
+      "count": 3
+    }
+  ],
+  "share_of_uncontested_among_all_districts": 13.1,
+  "share_of_uncontested_candidates_with_any_red_flag": 26.9,
+  "underfilled_districts": 0,
+  "zero_candidate_districts": 0,
+  "missing_seats_count": 0,
+  "series_lead_cases_count": 27
+}

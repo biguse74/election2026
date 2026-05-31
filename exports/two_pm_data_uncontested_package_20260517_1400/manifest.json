@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-05-17T22:35:37+09:00",
+  "source_package": "exports/uncontested_series_package_20260517_1545",
+  "top10_package": "exports/top10_offense_details_20260517_1230",
+  "files": [
+    "README.md",
+    "data/core_stats.json",
+    "data/draft_claim_checklist.csv",
+    "data/top10_broadcast_cards.csv",
+    "data/top10_offense_details.csv",
+    "data/top10_offense_summary.csv",
+    "data/top10_target_offense_rows.csv",
+    "data/uncontested_by_office.csv",
+    "data/uncontested_by_party.csv",
+    "data/uncontested_by_region.csv",
+    "data/uncontested_key_stats.json",
+    "data/uncontested_red_flag_candidates.csv",
+    "data/uncontested_single_party_pr_added_19.csv",
+    "data/uncontested_tax_candidates.csv",
+    "docs/00_BROADCAST_BRIEF.md",
+    "docs/01_RUNDOWN_2PM_DATA.md",
+    "docs/02_ON_AIR_NUMBERS.md",
+    "docs/03_TOP10_CANDIDATE_CARDS.md",
+    "docs/04_GRAPHICS_AND_LOWER_THIRDS.md",
+    "docs/05_FACTCHECK_NOTES.md",
+    "docs/06_CLAUDE_BROADCAST_PROMPT.md",
+    "source_notes/top10_README.md",
+    "source_notes/top10_top10_extraction_log.txt",
+    "source_notes/top10_top10_validation.txt",
+    "source_notes/validation_report.txt"
+  ]
+}
