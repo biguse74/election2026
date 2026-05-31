@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-05-30T22:43:38+09:00",
+  "updated_at": "2026-05-31T13:03:48+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 336,
+  "count": 337,
   "articles": [
+    {
+      "date": "2026-05-31",
+      "title": "무소속 돌풍에 출렁이는 호남…정청래 공천 심판론 확산",
+      "url": "https://newtamsa.org/news/aPxEBP",
+      "category": "호남뉴탐사",
+      "tags": [
+        "호남",
+        "사전투표",
+        "전북",
+        "김관영",
+        "이원택",
+        "CCTV",
+        "정청래",
+        "공작",
+        "지방선거",
+        "무소속",
+        "신안군",
+        "무안군"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-05-29",
       "title": "강진구 잡겠다던 이제일, 무안·신안 고발도 맡았다",
