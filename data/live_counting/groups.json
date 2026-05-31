@@ -1,5 +1,5 @@
 {
-  "note": "주제별 관심 지역 그룹. matchers 조건: type·sido·where·party·name·closeRace·upset(텃밭에서 상대 진영 1위인 이변). 한 그룹 여러 매처면 OR. 6/3 데이터에서 자동 매칭, 그 전엔 '대기'. 자유롭게 편집.",
+  "note": "주제별 관심 지역 그룹. matchers 조건: type·sido·where·party·name·closeRace·prevClose(8회 1·2위 격차 ≤N%p)·upset(텃밭에서 상대 진영 1위인 이변). 한 그룹 여러 매처면 OR. 6/3 데이터에서 자동 매칭, 그 전엔 '대기'. 자유롭게 편집.",
   "groups": [
     {
       "title": "이변 선거구",
@@ -7,6 +7,57 @@
       "matchers": [
         {
           "upset": true
+        }
+      ]
+    },
+    {
+      "title": "8회 칼날 접전지 (재대결 주목)",
+      "desc": "지난 선거(8회) 1·2위 격차 3%p 이내 — 작은 표차로 뒤집힐 수 있는 곳 (개표 20%+에서 의미)",
+      "matchers": [
+        {
+          "prevClose": 3
+        }
+      ]
+    },
+    {
+      "title": "무소속 변수지 — 호남 재대결",
+      "desc": "8회에 무소속이 민주를 꺾었고 9회 사전투표가 결집한 곳 (전북 김관영의 전국판)",
+      "matchers": [
+        {
+          "where": "순천",
+          "party": "무소속"
+        },
+        {
+          "where": "광양",
+          "party": "무소속"
+        },
+        {
+          "where": "진도",
+          "party": "무소속"
+        },
+        {
+          "where": "강진",
+          "party": "무소속"
+        },
+        {
+          "where": "무안",
+          "party": "무소속"
+        },
+        {
+          "where": "목포",
+          "party": "무소속"
+        },
+        {
+          "where": "영광",
+          "party": "무소속"
+        },
+        {
+          "where": "순창",
+          "party": "무소속"
+        },
+        {
+          "where": "임실",
+          "party": "무소속"
         }
       ]
     },

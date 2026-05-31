@@ -11,6 +11,7 @@ const PATHS = {
   watchlist:   '../data/live_counting/watchlist.json',
   groups:      '../data/live_counting/groups.json',
   prevWinner:  '../data/live_counting/prev_winner.json',
+  prevResult:  '../data/live_counting/prev_result.json',
   prediction:  '../data/prediction_sido.json',
   parties:     '../data/parties.json',
 };
@@ -37,6 +38,7 @@ const TYPE_ORDER = ['3', '4', '5', '6', '11'];
 let LATEST_RACES = [];
 let LATEST_PARTIES = {};
 let LATEST_PREVWIN = {};
+let LATEST_PREVRESULT = {};
 let filtersBound = false;
 let filtersPopulated = false;
 let expandBound = false;
@@ -347,6 +349,10 @@ function matcherHit(r, m) {
   if (m.party && !(r.candidates || []).some(c => c.jd_name === m.party)) return false;
   if (m.name && !(r.candidates || []).some(c => c.name === m.name)) return false;
   if (m.closeRace != null && !(r.rank1_minus_rank2_pp != null && r.rank1_minus_rank2_pp <= m.closeRace)) return false;
+  if (m.prevClose != null) {
+    const pr = LATEST_PREVRESULT[upsetKey(r)];
+    if (!(pr && pr.lead != null && pr.lead <= m.prevClose)) return false;
+  }
   if (m.upset && !isUpset(r)) return false;
   return true;
 }
@@ -582,9 +588,9 @@ async function render() {
     showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
     return;
   }
-  const [cur, watchlist, groups, prevWinner, prediction, parties] = await Promise.all([
+  const [cur, watchlist, groups, prevWinner, prevResult, prediction, parties] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.groups),
-    loadJSON(PATHS.prevWinner), loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
+    loadJSON(PATHS.prevWinner), loadJSON(PATHS.prevResult), loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
   ]);
   if (!cur) {
     document.getElementById('chief-races').innerHTML =
@@ -596,6 +602,7 @@ async function render() {
   LATEST_RACES = cur.races || [];
   LATEST_PARTIES = parties || {};
   LATEST_PREVWIN = (prevWinner && prevWinner.winner_party) || {};
+  LATEST_PREVRESULT = (prevResult && prevResult.results) || {};
 
   renderHero(cur);
   renderWatchlist(watchlist);
