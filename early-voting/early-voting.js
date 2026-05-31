@@ -317,7 +317,7 @@ function renderDelta(d9, d8) {
   block.hidden = false;
   const maxAbs = Math.max.apply(null, items.map(x => Math.abs(x.delta))) || 1;
   const up = items.slice().sort((a, b) => b.delta - a.delta).slice(0, 15);
-  const down = items.filter(x => x.delta < 0).sort((a, b) => a.delta - b.delta).slice(0, 25);
+  const down = items.filter(x => x.delta < 0).sort((a, b) => a.delta - b.delta).slice(0, 15);
   const rowH = (x, color) => `<div class="rk-row">
     <span class="rk-name">${x.name}<span class="rk-sido">${SIDO_SHORT[x.sido] || x.sido}</span></span>
     <span class="rk-bar-wrap"><span class="rk-bar" style="width:${(Math.abs(x.delta) / maxAbs * 100).toFixed(1)}%;background:${color}"></span></span>
