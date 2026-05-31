@@ -70,8 +70,11 @@ def check_findmenu(verbose: bool) -> dict:
     # leafCount > 0 또는 internalMessage 비어있지 않으면 변화 신호.
     leaves = sum(int(m.get("leafCount") or 0) for m in menus)
     has_msg = any((m.get("internalMessage") or "").strip() for m in menus)
-    # 기준 상태: 메뉴 4개(BI/CP/EC/VC), leafCount 모두 0, message 없음.
-    baseline = set(menu_ids) == {"BI", "CP", "EC", "VC"} and leaves == 0 and not has_msg
+    # 기준 상태: 알려진 메뉴(BI/CP/EC/VC/INSP)만 존재, leafCount 모두 0, message 없음.
+    #   5/31 — 'INSP'(점검·감시 메뉴) 신규 등장. leafCount=0·VC 응답 변화 없음 →
+    #   본격 활성화 신호 아니므로 baseline에 흡수('Poll' 선례와 동일). 실제 개표 신호는
+    #   VC 서브메뉴·VC 페이지·사전투표 페이지 체크가 담당한다.
+    baseline = set(menu_ids) <= {"BI", "CP", "EC", "VC", "INSP"} and leaves == 0 and not has_msg
     summary = f"{len(menus)}개 메뉴 {menu_ids}, leafCount={leaves}, msg={has_msg}"
     if verbose:
         print(f"  {summary}")
