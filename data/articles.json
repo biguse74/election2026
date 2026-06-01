@@ -1,9 +1,45 @@
 {
-  "updated_at": "2026-05-31T22:48:53+09:00",
+  "updated_at": "2026-06-01T13:18:01+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 337,
+  "count": 339,
   "articles": [
+    {
+      "date": "2026-06-01",
+      "title": "순천 노관규, 공무원·신천지 선거 동원 정황 녹취 공개",
+      "url": "https://newtamsa.org/news/9He193",
+      "category": "호남뉴탐사",
+      "tags": [
+        "순천시",
+        "노관규",
+        "검찰",
+        "신천지",
+        "김문수",
+        "김건희",
+        "박람회",
+        "이원택",
+        "송영길",
+        "김관영",
+        "전북지사"
+      ],
+      "author": "강진구, 허경혜"
+    },
+    {
+      "date": "2026-06-01",
+      "title": "신안 나무값 110억 \"박우량 돼야 무마\"…운송업자 녹취 나왔다",
+      "url": "https://newtamsa.org/news/T_ALbQ",
+      "category": "호남뉴탐사",
+      "tags": [
+        "신안군",
+        "박우량",
+        "정원수",
+        "꿈에그린",
+        "제주도",
+        "기증수목",
+        "사례금"
+      ],
+      "author": "허경혜, 강진구"
+    },
     {
       "date": "2026-05-31",
       "title": "무소속 돌풍에 출렁이는 호남…정청래 공천 심판론 확산",
