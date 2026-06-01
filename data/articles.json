@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-06-01T20:39:42+09:00",
+  "updated_at": "2026-06-02T02:44:40+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 339,
+  "count": 340,
   "articles": [
+    {
+      "date": "2026-06-02",
+      "title": "정천수 \"법대로 하라\"더니… 명예훼손 검찰행",
+      "url": "https://newtamsa.org/news/paR683",
+      "category": "긴급보도",
+      "tags": [
+        "정천수",
+        "불륜설",
+        "거짓말",
+        "송치",
+        "의정부지검",
+        "명예훼손",
+        "연상녀",
+        "열린공감TV"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-06-01",
       "title": "순천 노관규, 공무원·신천지 선거 동원 정황 녹취 공개",
