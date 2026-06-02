@@ -212,6 +212,26 @@ SIDO_ORDER = ["서울특별시","부산광역시","대구광역시","인천광�
     "경기도","강원특별자치도","충청북도","충청남도","전북특별자치도","전라남도","경상북도","경상남도"]
 BUCKET_KR = {"D":"민주당","C":"국민의힘","I":"무소속·기타"}
 
+HEADERHTML = '''<header class="sim-header"><div class="sim-header-inner">
+<a href="https://election2026.newtamsa.org/" class="sim-brand"><span class="sim-brand-title">뉴탐사 · 6·3 지방선거 2026</span><span class="sim-brand-sub">결과 예측 시뮬레이션</span></a>
+<nav class="sim-nav"><a class="sim-nav-link" href="/sim/">시뮬레이션 홈</a><a class="sim-nav-link" href="/sim/sido/">시도지사 17</a><a class="sim-nav-link sim-nav-link-active" href="/sim/basic-head/" aria-current="page">기초단체장 226</a><a class="sim-nav-link" href="/sim/assembly/">재·보궐 14</a></nav>
+<a class="sim-live-link js-live-gate" href="https://election2026.newtamsa.org/#live" hidden>실시간 개표 →</a>
+<script>document.addEventListener('DOMContentLoaded',function(){if(Date.now()>=Date.parse('2026-06-03T18:00:00+09:00')){var e=document.querySelectorAll('.js-live-gate');for(var i=0;i<e.length;i++)e[i].hidden=false;}});</script>
+</div></header>'''
+HEADERCSS = '''
+.sim-header{background:#1a1a1a;color:#fff;border-bottom:3px solid #c41e3a}
+.sim-header-inner{max-width:1100px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.sim-brand{color:#fff;text-decoration:none;display:flex;flex-direction:column;line-height:1.2;margin-right:auto}
+.sim-brand-title{font-size:1.05rem;font-weight:800;letter-spacing:-.01em}
+.sim-brand-sub{font-size:.78rem;color:#c41e3a;font-weight:700}
+.sim-nav{display:flex;gap:4px;flex-wrap:wrap}
+.sim-nav-link{color:rgba(255,255,255,.78);text-decoration:none;font-size:.86rem;font-weight:600;padding:6px 12px;border-radius:999px}
+.sim-nav-link:hover{background:rgba(255,255,255,.08);color:#fff}
+.sim-nav-link-active{background:#c41e3a;color:#fff}
+.sim-live-link{background:#c41e3a;color:#fff;text-decoration:none;padding:7px 14px;border-radius:6px;font-size:.84rem;font-weight:700}
+@media(max-width:720px){.sim-header-inner{padding:10px 16px;gap:10px}.sim-brand-title{font-size:.95rem}.sim-nav-link{font-size:.78rem;padding:5px 10px}}
+'''
+
 def write_html(rows, modes, cis, means, n_poll, n_total):
     by = {}
     for r in rows: by.setdefault(r["시도"], []).append(r)
@@ -240,7 +260,9 @@ def write_html(rows, modes, cis, means, n_poll, n_total):
             + "".join(srow(r) for r in rs) + '</tbody></table></section>')
     html = f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>기초단체장 시뮬 v2 (여론조사 반영) — 뉴탐사</title><style>
-body{{font-family:-apple-system,'Pretendard',sans-serif;max-width:1000px;margin:0 auto;padding:22px;color:#1a1a1a;line-height:1.5}}
+body{{font-family:-apple-system,'Pretendard',sans-serif;margin:0;padding:0;color:#1a1a1a;line-height:1.5}}
+.wrap{{max-width:1000px;margin:0 auto;padding:22px}}
+{HEADERCSS}
 h1{{font-size:1.5rem;margin:0 0 4px}} .sub{{color:#666;font-size:.85rem;margin:0 0 14px}}
 .legal{{background:#fff8e1;border:1px solid #ffe08a;border-radius:6px;padding:10px 14px;font-size:.82rem;color:#7a5b00;margin:0 0 16px}}
 .pills{{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 8px}}
@@ -258,6 +280,8 @@ th{{font-size:.72rem;color:#777}} td.sgg{{font-weight:600}}
 .b-detail{{color:#777;margin-left:5px}} tr.r-ind{{background:#f4f5f6}} tr.r-toss{{background:#fffbe9}}
 @media(max-width:720px){{.basis .b-detail{{display:none}} .bar{{min-width:60px;max-width:90px}} th,td{{padding:3px 4px}}}}
 </style></head><body>
+{HEADERHTML}
+<main class="wrap">
 <h1>기초단체장 226 — 결과 예측 시뮬레이션</h1>
 <p class="sub">2026-06-02 · 본선 여론조사 + 2022지선·2024총선·2025대선 + 무소속 3진영 · 1만 회 몬테카를로 · 뉴탐사</p>
 <div class="legal">⚖️ 인용한 여론조사는 모두 <b>공직선거법 공표금지기간(5/28) 전에 조사·여심위 등록</b>된 것입니다. (§108 단서: 금지기간 전 조사임을 명시한 공표는 제한되지 않음)</div>
@@ -268,6 +292,7 @@ th{{font-size:.72rem;color:#777}} td.sgg{{font-weight:600}}
 </div>
 <div class="note"><b>모델:</b> 본선 여론조사 있는 <b>{n_poll}곳</b>은 폴 마진(±7%p)을 중심값(국힘 대결은 과거선거 lean과 7:3 혼합), 없는 {n_total-n_poll}곳은 <b>2022지선·2024총선·2025대선 가중평균</b>(최근↑). 사전투표율 미반영(방향 불명 지표). 막대 색: 민주=파랑, 국힘=빨강, <b>무소속·기타=회색</b>. <b>노란 행</b>=칼날 접전(42~58%). 현직 이점·합구 선거구 배분은 미반영. 예측이지 단정이 아닙니다.</div>
 {"".join(secs)}
+</main>
 </body></html>'''
     for sub in ("basic-head", "basic-head-v2"):   # 공개 경로 + 기존 미리보기 경로 동시 갱신
         out = ROOT / "sim" / sub
