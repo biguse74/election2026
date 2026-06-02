@@ -632,14 +632,28 @@ function showWaiting(msg) {
 async function render() {
   const preview = location.search.includes('preview');
   const COUNT_START = Date.parse('2026-06-03T18:00:00+09:00');
-  if (!preview && Date.now() < COUNT_START) {
-    showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
-    return;
-  }
+  const beforeCount = !preview && Date.now() < COUNT_START;
   const [cur, watchlist, groups, prevWinner, prevResult, prediction, predBasicHead, parties] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.groups),
     loadJSON(PATHS.prevWinner), loadJSON(PATHS.prevResult), loadJSON(PATHS.prediction), loadJSON(PATHS.predBasicHead), loadJSON(PATHS.parties),
   ]);
+  // 투표 시간대(개표 전): 실제 투표율이 있으면 투표율만 표시, 개표 섹션은 대기.
+  if (beforeCount) {
+    const nat = cur && cur.turnout && cur.turnout.national;
+    if (nat && nat.turnout_pct != null) {
+      renderHero(cur);
+      renderTurnoutCorr(cur);
+      const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
+      const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
+      const w = '투표 진행 중 — 개표는 18시 투표 마감 후 시작됩니다.';
+      document.getElementById('chief-races').innerHTML = `<div class="state-empty">${w}</div>`;
+      const bh = document.getElementById('bh-compare'); if (bh) bh.innerHTML = `<div class="state-empty">${w}</div>`;
+      document.getElementById('search-results').innerHTML = '';
+    } else {
+      showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
+    }
+    return;
+  }
   if (!cur) {
     document.getElementById('chief-races').innerHTML =
       `<div class="state-empty">개표 데이터가 아직 없습니다. 6/3 18시 투표 마감 후 수집이 시작됩니다.</div>`;
