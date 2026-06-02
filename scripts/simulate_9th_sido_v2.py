@@ -22,6 +22,8 @@ ALIAS = {"강원도":"강원특별자치도","전라북도":"전북특별자치�
 # 2026 전남광주통합특별시 = 2022·총선·대선의 광주+전남 합산
 MERGE = {"전남광주통합특별시": ["광주광역시","전라남도"]}
 def bucket(p): return "D" if p in DEMP else ("C" if p in CONP else "I")
+ABBR={"더불어민주당":"민주","민주당":"민주","국민의힘":"국힘","조국혁신당":"조국","진보당":"진보","개혁신당":"개혁","정의당":"정의","기본소득당":"기본","국민연합":"국연","여성의당":"여성","자유통일당":"자유","새미래민주연합":"새미"}
+def ab(p): return ABBR.get(p,(p or "무소속")[:2])
 def norm(s): return ALIAS.get(s,s)
 
 def load_ballot():
@@ -82,7 +84,7 @@ def build(races, v8, lean, polls):
             chal=bucket(poll["비민주당"])
             center = (POLL_W*poll["margin"]+LEAN_W*P) if (chal=="C" and P is not None) else poll["margin"]
             specs[sido]={"center":center,"sigma":POLL_SIGMA,"chal":chal,"source":"poll","prior":P,
-                "polltxt":f'여론조사 {poll["등록일"][5:]} · 민주 {poll["민주"]} vs {poll["비민주당"][:2]} {poll["비민주top"]}'}
+                "polltxt":f'여론조사 {poll.get("조사일") or ("~05-27" if poll["등록일"]>="2026-05-28" else poll["등록일"][5:])} · 민주 {poll["민주"]} vs {ab(poll["비민주당"])} {poll["비민주top"]}'}
         else:
             chal="C" if "C" in buckets else "I"
             specs[sido]={"center":(P if P is not None else 0.0),"sigma":HIST_SIGMA,"chal":chal,
@@ -155,7 +157,7 @@ def write_html(races,specs,prob,modes,cis):
         basis=(f'<span class="b-poll">{sp["polltxt"]}</span>' if sp["source"]=="poll"
                else f'<span class="b-hist">과거선거 (민주 {sp["prior"]:+.0f})</span>' if sp["prior"] is not None else '<span class="b-hist">—</span>')
         cls="r-toss" if 42<=p<=58 else ("r-ind" if (is_i and p<50) else "")
-        cn=', '.join(f'{n}({(pp or "무소속")[:2]})' for n,pp in races[k])
+        cn=', '.join(f'{n}({ab(pp)})' for n,pp in races[k])
         return (f'<tr class="{cls}"><td class="sgg">{k.replace("특별자치도","").replace("광역시","").replace("특별시","").replace("특별자치시","")}</td>'
             f'<td><div class="bar"><span class="bd" style="width:{p:.0f}%"></span><span class="bc" style="width:{rp:.0f}%;background:{cc}"></span></div></td>'
             f'<td class="nd">{p:.0f}%</td><td class="nc">vs {chal} {rp:.0f}%</td><td class="basis">{basis}</td></tr>'

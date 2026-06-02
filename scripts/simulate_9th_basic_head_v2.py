@@ -187,7 +187,7 @@ def main():
         rows.append({"시도":sd,"시군구":sgg,"민주확률%":p,"도전진영":sp["chal"],"근거":sp["source"],
             "무투표승자":sp.get("won",""),
             "prior마진":round(sp["prior"],1) if sp.get("prior") is not None else "",
-            "폴기관":poll["기관"] if poll else "","폴등록일":poll["등록일"] if poll else "",
+            "폴기관":poll["기관"] if poll else "","폴등록일":poll["등록일"] if poll else "","폴조사일":(poll.get("조사일") or "") if poll else "",
             "폴민주":poll["민주"] if poll else "","폴비민주":poll["비민주top"] if poll else "",
             "폴비민주당":poll["비민주당"] if poll else "","폴마진":poll["margin"] if poll else ""})
     rows.sort(key=lambda r:-r["민주확률%"])
@@ -216,7 +216,7 @@ def main():
 
 SIDO_ORDER = ["서울특별시","부산광역시","대구광역시","인천광역시","광주광역시","대전광역시","울산광역시",
     "경기도","강원특별자치도","충청북도","충청남도","전북특별자치도","전라남도","경상북도","경상남도"]
-BUCKET_KR = {"D":"민주당","C":"국민의힘","I":"무소속·기타"}
+BUCKET_KR = {"D":"민주","C":"국힘","I":"무소속"}
 
 HEADERHTML = '''<header class="sim-header"><div class="sim-header-inner">
 <a href="https://election2026.newtamsa.org/" class="sim-brand"><span class="sim-brand-title">뉴탐사 · 6·3 지방선거 2026</span><span class="sim-brand-sub">결과 예측 시뮬레이션</span></a>
@@ -255,7 +255,8 @@ def write_html(rows, modes, cis, means, n_poll, n_total):
         pm = r.get("prior마진","")
         if r["근거"]=="poll":
             blend = ' +과거선거' if (r["도전진영"]=="C" and pm!="") else ''
-            basis = f'<span class="b-poll">여론조사 {r["폴등록일"][5:]}{blend}</span><span class="b-detail">민주 {r["폴민주"]} vs {BUCKET_KR.get(r["도전진영"],"")[:2]} {r["폴비민주"]}</span>'
+            dt = r.get("폴조사일") or ("~05-27" if r["폴등록일"]>="2026-05-28" else r["폴등록일"][5:])
+            basis = f'<span class="b-poll">여론조사 {dt}{blend}</span><span class="b-detail">민주 {r["폴민주"]} vs {BUCKET_KR.get(r["도전진영"],"")} {r["폴비민주"]}</span>'
         else:
             pmt = f' (민주 {float(pm):+.0f})' if pm!="" else ''
             basis = f'<span class="b-hist">과거선거 지선·총선·대선{pmt}</span>'
