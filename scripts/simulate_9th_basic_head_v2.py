@@ -33,6 +33,10 @@ OUT = ROOT / "exports" / "simulation_9th_basic_head_v2"
 N_SIM = 10_000
 SEED = 42
 POLL_SIGMA = 7.0          # 폴 마진의 불확실성(여론조사→실제 오차+시점표류, %p)
+HIST_SIGMA = 11.0         # 무폴 지역(과거선거 기반)의 불확실성
+W_LOCAL, W_GEN, W_PRES = 0.25, 0.30, 0.45   # prior 가중: 2022지선·2024총선·2025대선(최근↑)
+POLL_W, LEAN_W = 0.70, 0.30                 # 폴 있는 곳: 폴 vs 과거선거 lean 혼합 비중
+NAT_SD = 4.5              # 선거 당일 전국 동시 스윙(상관된 불확실성, %p)
 GEN = "2026-06-02"
 
 DEMP = {"민주당","새천년민주당","열린우리당","대통합민주신당","통합민주당","민주통합당","새정치민주연합","더불어민주당"}
@@ -84,60 +88,62 @@ def load_hist_params():
         glb += [v - region_mean[s] for v in res]
     residual_sd = statistics.pstdev(glb) if glb else 12.0
     ye_vals = list(year_effect.values())
+    margin8 = {s: dd[8] for s, dd in margin.items() if 8 in dd}   # 2022 지선 민주-국힘 마진
     return {"year_effect": year_effect, "ye_vals": ye_vals, "region_mean": region_mean,
-            "region_sd": region_sd, "residual_sd": residual_sd}
+            "region_sd": region_sd, "residual_sd": residual_sd, "margin8": margin8}
 
 # ── 3. race별 모델 스펙 ──────────────────────────────────────────
-def build_specs(races, polls, hp):
+def prior_margin(sd, sgg, hp, lean):
+    """민주-국힘 prior 마진 = 2022지선·2024총선·2025대선 가중평균(있는 것만 정규화)."""
+    vals, ws = [], []
+    m8 = hp["margin8"].get((sd, sgg))
+    if m8 is not None: vals.append(m8); ws.append(W_LOCAL)
+    L = lean.get(f"{sd}/{sgg}", {})
+    if L.get("gen2024"): vals.append(L["gen2024"]["margin"]); ws.append(W_GEN)
+    if L.get("pres2025"): vals.append(L["pres2025"]["margin"]); ws.append(W_PRES)
+    if not vals: return None
+    return sum(v*w for v, w in zip(vals, ws)) / sum(ws)
+
+def build_specs(races, polls, hp, lean):
     specs = {}
     for (sd, sgg), cands in races.items():
         buckets = {bucket(p) for _, p in cands}
         has_D = "D" in buckets
-        key = f"{sd}/{sgg}"
-        poll = polls.get(key)
+        P = prior_margin(sd, sgg, hp, lean)
+        poll = polls.get(f"{sd}/{sgg}")
         if poll:
-            specs[(sd,sgg)] = {"source":"poll","center":poll["margin"],"sigma":POLL_SIGMA,
-                "chal":bucket(poll["비민주당"]),"poll":poll,"buckets":buckets}
-            continue
-        if not has_D:
+            chal = bucket(poll["비민주당"])
+            if chal == "C" and P is not None:
+                center = POLL_W*poll["margin"] + LEAN_W*P   # 폴 + 과거선거 lean 혼합
+            else:
+                center = poll["margin"]                      # 무소속 도전: 폴만(과거 민주-국힘 무관)
+            specs[(sd,sgg)] = {"source":"poll","center":center,"sigma":POLL_SIGMA,
+                "chal":chal,"poll":poll,"prior":P,"buckets":buckets}
+        elif not has_D:
             chal = "C" if "C" in buckets else "I"
-            specs[(sd,sgg)] = {"source":"none","fixed":"chal","chal":chal,"buckets":buckets}
-            continue
-        if buckets == {"D"}:
-            specs[(sd,sgg)] = {"source":"uncontested","fixed":"D","chal":"C","buckets":buckets}
-            continue
-        rm = hp["region_mean"].get((sd,sgg))
-        rs = hp["region_sd"].get((sd,sgg))
-        chal = "C" if "C" in buckets else "I"
-        specs[(sd,sgg)] = {"source":"hist","region_mean":rm,"region_sd":rs,
-            "chal":chal,"buckets":buckets}
+            specs[(sd,sgg)] = {"source":"none","center":-100.0,"sigma":0.1,"chal":chal,"prior":P,"buckets":buckets}
+        elif buckets == {"D"}:
+            specs[(sd,sgg)] = {"source":"uncontested","center":100.0,"sigma":0.1,"chal":"C","prior":P,"buckets":buckets}
+        else:
+            chal = "C" if "C" in buckets else "I"
+            specs[(sd,sgg)] = {"source":"past","center":(P if P is not None else 0.0),"sigma":HIST_SIGMA,
+                "chal":chal,"prior":P,"buckets":buckets}
     return specs
 
 # ── 4. 몬테카를로 ────────────────────────────────────────────────
-def simulate(specs, hp, n=N_SIM, seed=SEED):
+def simulate(specs, n=N_SIM, seed=SEED):
     rng = random.Random(seed)
-    ye_vals = hp["ye_vals"]; resid = hp["residual_sd"]
-    win_D = Counter(); seat = Counter()  # seat: tuple counts
+    win_D = Counter()
     seat_dist = {"D":Counter(),"C":Counter(),"I":Counter()}
     keys = list(specs.keys())
     for _ in range(n):
-        ye = rng.choice(ye_vals)  # 폴 없는 곳 환경효과(혼합 추출, 중립)
+        natswing = rng.gauss(0, NAT_SD)   # 전국 동시 스윙(모든 race 공통)
         cnt = {"D":0,"C":0,"I":0}
         for k in keys:
             sp = specs[k]
-            src = sp["source"]
-            if src == "poll":
-                margin = sp["center"] + rng.gauss(0, sp["sigma"])
-                w = "D" if margin > 0 else sp["chal"]
-            elif src == "uncontested":
-                w = "D"
-            elif src == "none":
-                w = sp["chal"]
-            else:  # hist
-                rm = sp["region_mean"] if sp["region_mean"] is not None else 0.0
-                rs = sp["region_sd"] if (sp["region_sd"] and sp["region_sd"]>0) else resid
-                margin = ye + rng.gauss(rm, rs) + rng.gauss(0, resid)
-                w = "D" if margin > 0 else sp["chal"]
+            sw = natswing if sp["source"] in ("poll","past") else 0.0
+            margin = sp["center"] + sw + rng.gauss(0, sp["sigma"])
+            w = "D" if margin > 0 else sp["chal"]
             cnt[w] += 1
             if w == "D": win_D[k] += 1
         for b in "DCI": seat_dist[b][cnt[b]] += 1
@@ -155,10 +161,11 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     races = load_ballot()
     hp = load_hist_params()
-    pj = json.load(open(ROOT/"data/polls_basic_head_extracted.json", encoding="utf-8"))
-    polls = pj["polls"]
-    specs = build_specs(races, polls, hp)
-    win_D, seat_dist = simulate(specs, hp)
+    polls = json.load(open(ROOT/"data/polls_basic_head_extracted.json", encoding="utf-8"))["polls"]
+    leanf = ROOT/"data/national_lean.json"
+    lean = json.load(open(leanf, encoding="utf-8"))["lean"] if leanf.exists() else {}
+    specs = build_specs(races, polls, hp, lean)
+    win_D, seat_dist = simulate(specs)
 
     n_poll = sum(1 for s in specs.values() if s["source"]=="poll")
     print(f"226 본선 race: {len(specs)}곳 | 폴 반영 {n_poll}곳 | 폴 없음 {len(specs)-n_poll}곳")
@@ -173,6 +180,7 @@ def main():
         p = round(win_D.get((sd,sgg),0)/N_SIM*100,1)
         poll = sp.get("poll")
         rows.append({"시도":sd,"시군구":sgg,"민주확률%":p,"도전진영":sp["chal"],"근거":sp["source"],
+            "prior마진":round(sp["prior"],1) if sp.get("prior") is not None else "",
             "폴기관":poll["기관"] if poll else "","폴등록일":poll["등록일"] if poll else "",
             "폴민주":poll["민주"] if poll else "","폴비민주":poll["비민주top"] if poll else "",
             "폴비민주당":poll["비민주당"] if poll else "","폴마진":poll["margin"] if poll else ""})
@@ -212,10 +220,13 @@ def write_html(rows, modes, cis, means, n_poll, n_total):
         is_ind = r["도전진영"]=="I"
         chal = "무소속·기타" if is_ind else "국민의힘"
         cc = "#6b7280" if is_ind else "#E61E2B"   # 무소속·기타는 회색, 국힘은 빨강
+        pm = r.get("prior마진","")
         if r["근거"]=="poll":
-            basis = f'<span class="b-poll">여론조사 {r["폴등록일"][5:]}</span><span class="b-detail">민주 {r["폴민주"]} vs {BUCKET_KR.get(r["도전진영"],"")[:2]} {r["폴비민주"]}</span>'
+            blend = ' +과거선거' if (r["도전진영"]=="C" and pm!="") else ''
+            basis = f'<span class="b-poll">여론조사 {r["폴등록일"][5:]}{blend}</span><span class="b-detail">민주 {r["폴민주"]} vs {BUCKET_KR.get(r["도전진영"],"")[:2]} {r["폴비민주"]}</span>'
         else:
-            basis = '<span class="b-hist">과거 개표</span>'
+            pmt = f' (민주 {float(pm):+.0f})' if pm!="" else ''
+            basis = f'<span class="b-hist">과거선거 지선·총선·대선{pmt}</span>'
         cls = "r-ind" if (is_ind and p<50) else ("r-toss" if 42<=p<=58 else "")
         return (f'<tr class="{cls}"><td class="sgg">{r["시군구"]}</td>'
             f'<td><div class="bar"><span class="bd" style="width:{p:.0f}%"></span><span class="bc" style="width:{rp:.0f}%;background:{cc}"></span></div></td>'
@@ -255,7 +266,7 @@ th{{font-size:.72rem;color:#777}} td.sgg{{font-weight:600}}
   <div class="pill p-c"><span class="pl">국민의힘</span><b>{modes['C']}곳</b><span class="ps">예상범위 {cis['C'][0]}~{cis['C'][1]}</span></div>
   <div class="pill p-i"><span class="pl">무소속·기타</span><b>{modes['I']}곳</b><span class="ps">예상범위 {cis['I'][0]}~{cis['I'][1]}</span></div>
 </div>
-<div class="note"><b>모델:</b> 본선 여론조사 있는 <b>{n_poll}곳</b>은 폴 마진(±7%p)을 중심값으로, 없는 {n_total-n_poll}곳은 과거 6회차(1995~2022) 개표 회귀. 사전투표율 미반영(방향 불명 지표). 막대 색: 민주=파랑, 국힘=빨강, <b>무소속·기타=회색</b>. <b>노란 행</b>=칼날 접전(42~58%). 시군구는 후보·현직 효과가 커 시도지사보다 정확도 낮습니다. 예측이지 단정이 아닙니다.</div>
+<div class="note"><b>모델:</b> 본선 여론조사 있는 <b>{n_poll}곳</b>은 폴 마진(±7%p)을 중심값(국힘 대결은 과거선거 lean과 7:3 혼합), 없는 {n_total-n_poll}곳은 <b>2022지선·2024총선·2025대선 가중평균</b>(최근↑). 사전투표율 미반영(방향 불명 지표). 막대 색: 민주=파랑, 국힘=빨강, <b>무소속·기타=회색</b>. <b>노란 행</b>=칼날 접전(42~58%). 현직 이점·합구 선거구 배분은 미반영. 예측이지 단정이 아닙니다.</div>
 {"".join(secs)}
 </body></html>'''
     out = ROOT / "sim" / "basic-head-v2"
