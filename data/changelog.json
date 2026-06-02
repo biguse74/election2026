@@ -1,24 +1,80 @@
 {
   "source": "candidates",
-  "today_date": "20260602",
-  "previous_date": "20260601",
+  "today_date": "20260603",
+  "previous_date": "20260602",
   "summary": {
     "new": 0,
     "gone": 0,
     "party": 0,
-    "status": 0
+    "status": 3
   },
   "samples": {
     "new": [],
     "gone": [],
     "party": [],
-    "status": []
+    "status": [
+      {
+        "name": "최민영",
+        "jdName": "국민의힘",
+        "sdName": "충청북도",
+        "sggName": "충청북도",
+        "sgTypecode": "8",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김성근",
+        "jdName": "무소속",
+        "sdName": "부산광역시",
+        "sggName": "북구갑",
+        "sgTypecode": "2",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "이강산",
+        "jdName": "자유통일당",
+        "sdName": "서울특별시",
+        "sggName": "서울특별시",
+        "sgTypecode": "3",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      }
+    ]
   },
   "full": {
     "new": [],
     "gone": [],
     "party": [],
-    "status": []
+    "status": [
+      {
+        "name": "최민영",
+        "jdName": "국민의힘",
+        "sdName": "충청북도",
+        "sggName": "충청북도",
+        "sgTypecode": "8",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "김성근",
+        "jdName": "무소속",
+        "sdName": "부산광역시",
+        "sggName": "북구갑",
+        "sgTypecode": "2",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      },
+      {
+        "name": "이강산",
+        "jdName": "자유통일당",
+        "sdName": "서울특별시",
+        "sggName": "서울특별시",
+        "sgTypecode": "3",
+        "status_prev": "등록",
+        "status_now": "사퇴"
+      }
+    ]
   },
-  "generated_at": "2026-06-02T06:52:40+09:00"
+  "generated_at": "2026-06-03T06:34:55+09:00"
 }
