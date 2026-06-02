@@ -197,7 +197,70 @@ def main():
         "basic_head_dem_win_prob":prob,"challenger":chal,"basis":src,
         "note":"키 sgType|sd|sgg → 민주 당선확률(%). challenger=도전진영(C국힘/I무소속·기타). basis=poll/hist."},
         open(ROOT/"data/prediction_basic_head_v2.json","w",encoding="utf-8"), ensure_ascii=False, indent=1)
-    print(f"저장: {OUT.relative_to(ROOT)}/ , data/prediction_basic_head_v2.json")
+    write_html(rows, modes, cis, means, n_poll, len(specs))
+    print(f"저장: {OUT.relative_to(ROOT)}/ , data/prediction_basic_head_v2.json , sim/basic-head-v2/index.html")
+
+SIDO_ORDER = ["서울특별시","부산광역시","대구광역시","인천광역시","광주광역시","대전광역시","울산광역시",
+    "경기도","강원특별자치도","충청북도","충청남도","전북특별자치도","전라남도","경상북도","경상남도"]
+BUCKET_KR = {"D":"민주당","C":"국민의힘","I":"무소속·기타"}
+
+def write_html(rows, modes, cis, means, n_poll, n_total):
+    by = {}
+    for r in rows: by.setdefault(r["시도"], []).append(r)
+    def srow(r):
+        p = float(r["민주확률%"]); rp = 100 - p
+        is_ind = r["도전진영"]=="I"
+        chal = "무소속·기타" if is_ind else "국민의힘"
+        cc = "#6b7280" if is_ind else "#E61E2B"   # 무소속·기타는 회색, 국힘은 빨강
+        if r["근거"]=="poll":
+            basis = f'<span class="b-poll">여론조사 {r["폴등록일"][5:]}</span><span class="b-detail">민주 {r["폴민주"]} vs {BUCKET_KR.get(r["도전진영"],"")[:2]} {r["폴비민주"]}</span>'
+        else:
+            basis = '<span class="b-hist">과거 개표</span>'
+        cls = "r-ind" if (is_ind and p<50) else ("r-toss" if 42<=p<=58 else "")
+        return (f'<tr class="{cls}"><td class="sgg">{r["시군구"]}</td>'
+            f'<td><div class="bar"><span class="bd" style="width:{p:.0f}%"></span><span class="bc" style="width:{rp:.0f}%;background:{cc}"></span></div></td>'
+            f'<td class="nd">{p:.0f}%</td><td class="nc">vs {chal} {rp:.0f}%</td><td class="basis">{basis}</td></tr>')
+    secs = []
+    for sd in sorted(by, key=lambda x: SIDO_ORDER.index(x) if x in SIDO_ORDER else 99):
+        rs = sorted(by[sd], key=lambda r: -float(r["민주확률%"]))
+        np = sum(1 for r in rs if r["근거"]=="poll")
+        secs.append(f'<section class="sd"><h3>{sd} <span class="m">{len(rs)}곳 · 여론조사 반영 {np}곳</span></h3>'
+            f'<table><thead><tr><th>시군구</th><th></th><th>민주</th><th>도전</th><th>근거</th></tr></thead><tbody>'
+            + "".join(srow(r) for r in rs) + '</tbody></table></section>')
+    html = f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>기초단체장 시뮬 v2 (여론조사 반영) — 뉴탐사</title><style>
+body{{font-family:-apple-system,'Pretendard',sans-serif;max-width:1000px;margin:0 auto;padding:22px;color:#1a1a1a;line-height:1.5}}
+h1{{font-size:1.5rem;margin:0 0 4px}} .sub{{color:#666;font-size:.85rem;margin:0 0 14px}}
+.legal{{background:#fff8e1;border:1px solid #ffe08a;border-radius:6px;padding:10px 14px;font-size:.82rem;color:#7a5b00;margin:0 0 16px}}
+.pills{{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 8px}}
+.pill{{flex:1;min-width:160px;padding:12px 16px;border-radius:8px}} .pill b{{font-size:1.7rem;display:block}}
+.p-d{{background:#eef2fb;border-left:5px solid #152484}} .p-c{{background:#fdecee;border-left:5px solid #E61E2B}} .p-i{{background:#f0f0ee;border-left:5px solid #6b7280}}
+.pl{{font-size:.78rem;color:#555;font-weight:700}} .ps{{font-size:.76rem;color:#666}}
+.note{{font-size:.84rem;color:#555;background:#f6f6f6;padding:10px 14px;border-radius:6px;margin:14px 0}}
+.sd{{margin:16px 0;padding:10px 12px;border:1px solid #e6e6e6;border-radius:6px;background:#fafafa}}
+.sd h3{{font-size:1rem;margin:0 0 6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}} .sd .m{{font-size:.76rem;font-weight:400;color:#666}}
+table{{width:100%;border-collapse:collapse;font-size:.8rem}} th,td{{padding:4px 6px;border-bottom:1px solid #eee;text-align:left;font-variant-numeric:tabular-nums}}
+th{{font-size:.72rem;color:#777}} td.sgg{{font-weight:600}}
+.bar{{display:flex;height:11px;border-radius:3px;overflow:hidden;min-width:120px;max-width:200px;background:#eee}}
+.bd{{background:#152484}} .bc{{background:#E61E2B}} .nd{{color:#152484;font-weight:700}} .nc{{color:#666;font-size:.74rem}}
+.basis{{font-size:.72rem}} .b-poll{{background:#152484;color:#fff;padding:1px 5px;border-radius:3px;font-size:.68rem}} .b-hist{{color:#999;font-size:.72rem}}
+.b-detail{{color:#777;margin-left:5px}} tr.r-ind{{background:#f4f5f6}} tr.r-toss{{background:#fffbe9}}
+@media(max-width:720px){{.basis .b-detail{{display:none}} .bar{{min-width:60px;max-width:90px}} th,td{{padding:3px 4px}}}}
+</style></head><body>
+<h1>기초단체장 226 — 여론조사 반영 시뮬 (v2)</h1>
+<p class="sub">2026-06-02 · 무소속 3진영 + 본선 여론조사 반영 · 1만 회 몬테카를로 · 뉴탐사 (※ 미리보기)</p>
+<div class="legal">⚖️ 인용한 여론조사는 모두 <b>공직선거법 공표금지기간(5/28) 전에 조사·여심위 등록</b>된 것입니다. (§108 단서: 금지기간 전 조사임을 명시한 공표는 제한되지 않음)</div>
+<div class="pills">
+  <div class="pill p-d"><span class="pl">더불어민주당</span><b>{modes['D']}곳</b><span class="ps">예상범위 {cis['D'][0]}~{cis['D'][1]}</span></div>
+  <div class="pill p-c"><span class="pl">국민의힘</span><b>{modes['C']}곳</b><span class="ps">예상범위 {cis['C'][0]}~{cis['C'][1]}</span></div>
+  <div class="pill p-i"><span class="pl">무소속·기타</span><b>{modes['I']}곳</b><span class="ps">예상범위 {cis['I'][0]}~{cis['I'][1]}</span></div>
+</div>
+<div class="note"><b>모델:</b> 본선 여론조사 있는 <b>{n_poll}곳</b>은 폴 마진(±7%p)을 중심값으로, 없는 {n_total-n_poll}곳은 과거 6회차(1995~2022) 개표 회귀. 사전투표율 미반영(방향 불명 지표). 막대 색: 민주=파랑, 국힘=빨강, <b>무소속·기타=회색</b>. <b>노란 행</b>=칼날 접전(42~58%). 시군구는 후보·현직 효과가 커 시도지사보다 정확도 낮습니다. 예측이지 단정이 아닙니다.</div>
+{"".join(secs)}
+</body></html>'''
+    out = ROOT / "sim" / "basic-head-v2"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "index.html").write_text(html, encoding="utf-8")
 
 if __name__ == "__main__":
     main()
