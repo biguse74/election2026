@@ -300,8 +300,8 @@ th{{font-size:.72rem;color:#777}} td.sgg{{font-weight:600}}
 <p class="sub">2026-06-02 · 본선 여론조사 + 2022지선·2024총선·2025대선 + 무소속 3진영 · 1만 회 몬테카를로 · 뉴탐사</p>
 <div class="legal">⚖️ 인용한 여론조사는 모두 <b>공직선거법 공표금지기간(5/28) 전에 조사·여심위 등록</b>된 것입니다. (§108 단서: 금지기간 전 조사임을 명시한 공표는 제한되지 않음)</div>
 <div class="pills">
-  <div class="pill p-d"><span class="pl">더불어민주당</span><b>{modes['D']}곳</b><span class="ps">예상범위 {cis['D'][0]}~{cis['D'][1]}</span></div>
-  <div class="pill p-c"><span class="pl">국민의힘</span><b>{modes['C']}곳</b><span class="ps">예상범위 {cis['C'][0]}~{cis['C'][1]}</span></div>
+  <div class="pill p-d"><span class="pl">민주</span><b>{modes['D']}곳</b><span class="ps">예상범위 {cis['D'][0]}~{cis['D'][1]}</span></div>
+  <div class="pill p-c"><span class="pl">국힘</span><b>{modes['C']}곳</b><span class="ps">예상범위 {cis['C'][0]}~{cis['C'][1]}</span></div>
   <div class="pill p-i"><span class="pl">무소속·기타</span><b>{modes['I']}곳</b><span class="ps">예상범위 {cis['I'][0]}~{cis['I'][1]}</span></div>
 </div>
 <div class="note"><b>모델:</b> 본선 여론조사 있는 <b>{n_poll}곳</b>은 폴 마진(±7%p)을 중심값(국힘 대결은 과거선거 lean과 7:3 혼합), 없는 {n_total-n_poll}곳은 <b>2022지선·2024총선·2025대선 가중평균</b>(최근↑). 사전투표율 미반영(방향 불명 지표). 막대 색: 민주=파랑, 국힘=빨강, <b>무소속·기타=회색</b>. <b>노란 행</b>=칼날 접전(42~58%). 현직 이점·합구 선거구 배분은 미반영. 예측이지 단정이 아닙니다.</div>
