@@ -350,6 +350,69 @@ def normalize_turnout(raw: dict) -> dict | None:
     return {"national": national, "by_sido": by_sido}
 
 
+# ============ 투표율 웹 스크랩 폴백 (OpenAPI INFO-03 대응) ============
+
+_VCVP_URL = "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml"
+_SIDO_FULL = {"서울":"서울특별시","부산":"부산광역시","대구":"대구광역시","인천":"인천광역시","광주":"광주광역시",
+    "대전":"대전광역시","울산":"울산광역시","세종":"세종특별자치시","경기":"경기도","강원":"강원특별자치도",
+    "충북":"충청북도","충남":"충청남도","전북":"전북특별자치도","전남":"전라남도","경북":"경상북도",
+    "경남":"경상남도","제주":"제주특별자치도"}
+_SIDO_SET = set(_SIDO_FULL.values())
+
+
+def scrape_turnout_web(sg_id: str) -> dict | None:
+    """OpenAPI가 투표율을 주지 않을 때 NEC 웹 리포트(VCVP01)를 스크랩.
+    20260603 본투표 전용. 표: 시도명|선거인[당일·사전·계]|투표[당일·사전·계]|투표율%.
+    반환 스키마는 normalize_turnout과 동일({national, by_sido}). 실패 시 None."""
+    import re
+    if sg_id != "20260603":
+        return None
+    eid = "00" + sg_id
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0",
+               "Accept-Language": "ko-KR,ko;q=0.9",
+               "Referer": f"https://info.nec.go.kr/main/showDocument.xhtml?electionId={eid}&topMenuId=VC&secondMenuId=VCVP01"}
+    body = {"electionId": eid, "requestURI": f"/electioninfo/{eid}/vc/vcvp01.jsp",
+            "topMenuId": "VC", "secondMenuId": "VCVP01", "menuId": "VCVP01",
+            "statementId": "VCVP01_#2_SUM", "cityCode": "0", "sggTime": "30시", "timeCode": "30"}
+    def _num(s):
+        s = re.sub(r"[^\d.]", "", s or "")
+        if not s:
+            return None
+        return int(float(s)) if "." not in s else float(s)
+    try:
+        r = requests.post(_VCVP_URL, data=body, headers=headers, timeout=25)
+        r.raise_for_status()
+        html = r.text
+    except Exception as e:
+        print(f"  ! 투표율 웹 스크랩 실패: {e}", file=sys.stderr)
+        return None
+    national, by_sido = None, []
+    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", html, re.S):
+        cells = [re.sub(r"<[^>]+>", "", c).strip() for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
+        if len(cells) != 8:
+            continue
+        name = cells[0]
+        if name not in _SIDO_SET and name not in _SIDO_FULL and name not in ("합계", "계", "전국"):
+            continue
+        entry = {
+            "sd_name": "전국" if name in ("합계", "계", "전국") else _SIDO_FULL.get(name, name),
+            "eligible_voters": _num(cells[3]),
+            "voters_so_far": _num(cells[6]),
+            "turnout_pct": _num(cells[7]),
+            "day_voters_so_far": _num(cells[4]),
+            "early_voters_so_far": _num(cells[5]),
+            "day_eligible_voters": _num(cells[1]),
+            "early_eligible_voters": _num(cells[2]),
+        }
+        if entry["sd_name"] == "전국":
+            national = entry
+        else:
+            by_sido.append(entry)
+    if not national and not by_sido:
+        return None
+    return {"national": national, "by_sido": by_sido, "source": "info.nec.go.kr VCVP01 (웹)"}
+
+
 # ============ 가공 / 저장 ============
 
 def build_current(
@@ -519,9 +582,15 @@ def main() -> None:
         except PortalQuotaError as e:
             sys.exit(f"포털 한도/권한 에러 (투표율). 후속 호출 중단: {e}")
         turnout = normalize_turnout(turnout_raw)
+        if not turnout:
+            # OpenAPI가 투표율 미제공(6/3 당일 INFO-03) → NEC 웹 리포트 스크랩 폴백
+            turnout = scrape_turnout_web(args.sg_id)
+            if turnout:
+                turnout_raw["result_code"] = "WEB-SCRAPE"
         if turnout:
+            src = " (웹)" if turnout.get("source", "").endswith("(웹)") else ""
             print(
-                f"  · 투표율  전국 {turnout['national'].get('turnout_pct')}% · "
+                f"  · 투표율{src}  전국 {turnout['national'].get('turnout_pct')}% · "
                 f"시도 {len(turnout['by_sido'])}개"
             )
         else:
