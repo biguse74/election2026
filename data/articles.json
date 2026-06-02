@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-06-02T02:44:40+09:00",
+  "updated_at": "2026-06-02T13:11:36+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 340,
+  "count": 341,
   "articles": [
+    {
+      "date": "2026-06-02",
+      "title": "청담동 첼리스트폰 조작 정황 무더기…한동훈 행적 4년째 침묵",
+      "url": "https://newtamsa.org/news/Bl__cV",
+      "category": "단독보도",
+      "tags": [
+        "청담동",
+        "술자리",
+        "한동훈",
+        "첼리스트",
+        "국과수",
+        "포렌식",
+        "해시값",
+        "휴대폰",
+        "증거조작"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-06-02",
       "title": "정천수 \"법대로 하라\"더니… 명예훼손 검찰행",
