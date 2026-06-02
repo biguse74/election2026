@@ -1,257 +1,44 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta name="robots" content="noindex,nofollow">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>9회 지방선거 시도지사 시뮬레이션 — 뉴탐사</title>
-<style>
-body { font-family: -apple-system, 'Pretendard', sans-serif; max-width: 1100px; margin: 0 auto; padding: 24px; color: #1a1a1a; line-height: 1.5; }
-h1 { font-size: 1.6rem; margin: 0 0 8px; }
-.intro { background: transparent; border-left: 3px solid #ddd; padding: 8px 14px; margin: 4px 0 20px; font-size: 0.85rem; color: #666; }
-.intro strong { color: #444; font-weight: 700; }
-.scenario { border: 1px solid #ddd; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px; background: #fff; }
-.scenario-primary { border: 2px solid #152484; box-shadow: 0 2px 12px rgba(21,36,132,0.08); }
-.scenario-primary-badge { display: inline-block; background: #152484; color: #fff; font-size: 0.72rem; padding: 3px 10px; border-radius: 999px; vertical-align: middle; margin-left: 6px; font-weight: 700; }
-.scenario-title { font-size: 1.2rem; margin: 0 0 4px; }
-.scenario-desc { font-size: 0.85rem; color: #666; margin: 0 0 14px; }
-.scenario-stats { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
-.stat-pill { flex: 1; min-width: 200px; padding: 10px 14px; border-radius: 8px; }
-.stat-pill.stat-d { background: #eef2fb; border-left: 4px solid #152484; }
-.stat-pill.stat-r { background: #fdecee; border-left: 4px solid #E61E2B; }
-.pill-label { display: block; font-size: 0.78rem; color: #555; font-weight: 700; }
-.pill-value { display: block; font-size: 1.6rem; font-weight: 800; margin: 2px 0; }
-.pill-sub { font-size: 0.74rem; color: #555; }
-.charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 720px) {
-  .charts { grid-template-columns: 1fr; }
-  body { padding: 14px 12px; }
-  h1 { font-size: 1.25rem; }
-  .scenario { padding: 12px 14px; }
-  .scenario-title { font-size: 1rem; }
-  .scenario-desc { font-size: 0.78rem; }
-  .stat-pill { padding: 8px 10px; min-width: 160px; }
-  .pill-value { font-size: 1.3rem; }
-  .pill-sub { font-size: 0.7rem; }
-  .hide-mobile { display: none; }
-  .sido-marginal table { font-size: 0.78rem; }
-  .sido-marginal th, .sido-marginal td { padding: 5px 4px; }
-  .sido-name { width: auto; }
-  .stacked-bar { min-width: 80px; }
-  .bar-chart { font-size: 0.7rem; }
-  .backtest table { font-size: 0.8rem; }
-}
-.bar-chart-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: #444; }
-.bar-row { display: grid; grid-template-columns: 38px 1fr 50px; align-items: center; gap: 8px; margin-bottom: 3px; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
-.bar-label { color: #888; }
-.bar-track { background: #f3f3f3; height: 14px; border-radius: 3px; overflow: hidden; }
-.bar-fill { display: block; height: 100%; transition: width 0.3s; }
-.bar-value { font-weight: 600; color: #1a1a1a; text-align: right; }
-.sido-marginal { margin: 28px 0; }
-.sido-marginal table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-.sido-marginal th, .sido-marginal td { padding: 6px 8px; border-bottom: 1px solid #eee; text-align: left; vertical-align: middle; }
-.sido-marginal th { font-size: 0.78rem; color: #666; }
-.sido-name { font-weight: 700; width: 130px; }
-.stacked-bar { display: flex; height: 12px; border-radius: 3px; overflow: hidden; background: #f0f0f0; min-width: 160px; max-width: 220px; }
-.stacked-d { background: #152484; height: 100%; }
-.stacked-r { background: #E61E2B; height: 100%; }
-.num-d { color: #152484; font-weight: 700; font-variant-numeric: tabular-nums; }
-.num-r { color: #E61E2B; font-weight: 700; font-variant-numeric: tabular-nums; }
-.num-sub { color: #888; font-size: 0.78rem; font-variant-numeric: tabular-nums; }
-.backtest table { width: 100%; border-collapse: collapse; max-width: 480px; }
-.backtest th, .backtest td { padding: 6px 10px; border-bottom: 1px solid #eee; text-align: left; font-variant-numeric: tabular-nums; }
-.acc-good { color: #126b3f; font-weight: 700; }
-.acc-warn { color: #8b6500; font-weight: 700; }
-.acc-bad { color: #b3261e; font-weight: 700; }
-.limits { background: #f6f6f6; padding: 14px 20px; border-radius: 4px; margin-top: 28px; font-size: 0.85rem; }
-.limits h2 { font-size: 1rem; margin: 0 0 8px; }
-.limits ul { margin: 0; padding-left: 20px; color: #555; }
-.legal { display: none; }
-</style>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23c41e3a'/%3E%3Ctext x='14' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'%3E6%3C/text%3E%3Ccircle cx='32' cy='30' r='3.5' fill='%23fff'/%3E%3Ctext x='38' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'%3E3%3C/text%3E%3C/svg%3E">
-</head>
-<body>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>시도지사 시뮬 v2 — 뉴탐사</title><style>
+body{font-family:-apple-system,'Pretendard',sans-serif;margin:0;padding:0;color:#1a1a1a;line-height:1.5}
+.wrap{max-width:840px;margin:0 auto;padding:22px}
 
-<header class="sim-header">
-  <div class="sim-header-inner">
-    <a href="https://election2026.newtamsa.org/" class="sim-brand">
-      <span class="sim-brand-title">뉴탐사 · 6·3 지방선거 2026</span>
-      <span class="sim-brand-sub">결과 예측 시뮬레이션</span>
-    </a>
-    <nav class="sim-nav"><a class="sim-nav-link" href="/sim/">시뮬레이션 홈</a><a class="sim-nav-link sim-nav-link-active" href="/sim/sido/" aria-current="page">시도지사 17</a><a class="sim-nav-link" href="/sim/basic-head/">기초단체장 226</a><a class="sim-nav-link" href="/sim/assembly/">재·보궐 14</a></nav>
-    <a class="sim-live-link js-live-gate" href="https://election2026.newtamsa.org/#live" hidden>실시간 개표 →</a>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (Date.now() >= Date.parse('2026-06-03T18:00:00+09:00')) {
-      var els = document.querySelectorAll('.js-live-gate');
-      for (var i = 0; i < els.length; i++) els[i].hidden = false;
-    }
-  });
-</script>
-  </div>
-</header>
-<style>
-  body { margin: 0 !important; padding: 0 !important; max-width: none !important; }
-  .sim-page { max-width: 1100px; margin: 0 auto; padding: 20px 24px 48px; }
-  .sim-header {
-    background: #1a1a1a; color: #fff; border-bottom: 3px solid #c41e3a;
-    font-family: -apple-system, 'Pretendard', sans-serif;
-  }
-  .sim-header-inner {
-    max-width: 1200px; margin: 0 auto; padding: 12px 24px;
-    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
-  }
-  .sim-brand {
-    color: #fff; text-decoration: none; display: flex; flex-direction: column; line-height: 1.2; margin-right: auto;
-  }
-  .sim-brand-title { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em; }
-  .sim-brand-sub { font-size: 0.78rem; color: #c41e3a; font-weight: 700; }
-  .sim-nav { display: flex; gap: 4px; flex-wrap: wrap; }
-  .sim-nav-link {
-    color: rgba(255,255,255,0.78); text-decoration: none; font-size: 0.86rem; font-weight: 600;
-    padding: 6px 12px; border-radius: 999px; transition: background 0.15s, color 0.15s;
-  }
-  .sim-nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
-  .sim-nav-link-active { background: #c41e3a; color: #fff; }
-  .sim-live-link {
-    background: #c41e3a; color: #fff; text-decoration: none; padding: 7px 14px;
-    border-radius: 6px; font-size: 0.84rem; font-weight: 700;
-  }
-  .sim-live-link:hover { background: #a31628; }
-  @media (max-width: 720px) {
-    .sim-header-inner { padding: 10px 16px; gap: 10px; }
-    .sim-brand-title { font-size: 0.95rem; }
-    .sim-brand-sub { font-size: 0.72rem; }
-    .sim-nav-link { font-size: 0.78rem; padding: 5px 10px; }
-    .sim-live-link { padding: 6px 12px; font-size: 0.78rem; }
-    .sim-page { padding: 16px 16px 40px; }
-  }
-</style>
+.sim-header{background:#1a1a1a;color:#fff;border-bottom:3px solid #c41e3a}
+.sim-header-inner{max-width:1100px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.sim-brand{color:#fff;text-decoration:none;display:flex;flex-direction:column;line-height:1.2;margin-right:auto}
+.sim-brand-title{font-size:1.05rem;font-weight:800}.sim-brand-sub{font-size:.78rem;color:#c41e3a;font-weight:700}
+.sim-nav{display:flex;gap:4px;flex-wrap:wrap}
+.sim-nav-link{color:rgba(255,255,255,.78);text-decoration:none;font-size:.86rem;font-weight:600;padding:6px 12px;border-radius:999px}
+.sim-nav-link:hover{background:rgba(255,255,255,.08);color:#fff}.sim-nav-link-active{background:#c41e3a;color:#fff}
+.sim-live-link{background:#c41e3a;color:#fff;text-decoration:none;padding:7px 14px;border-radius:6px;font-size:.84rem;font-weight:700}
+@media(max-width:720px){.sim-header-inner{padding:10px 16px;gap:10px}.sim-brand-title{font-size:.95rem}.sim-nav-link{font-size:.78rem;padding:5px 10px}}
 
-<main class="sim-page">
-<div style="max-width:880px;margin:8px auto 16px;font-size:0.74rem;color:#888;text-align:right">
-  여론조사 아닌 시뮬레이션 결과 · 단정 아님 · <a href="#sim-notice-full" style="color:#888;text-decoration:underline">자세한 한계 ↓</a>
-</div>
-
-
-<h1>9회 전국동시지방선거 시도지사 당선 시뮬레이션</h1>
-<p style="color:#666;font-size:0.85rem;margin:0 0 16px;">2026-05-27 기준 · 과거 6회차(3~8회) 개표결과 기반 몬테카를로 1만회 · 뉴탐사</p>
-
-
-
-<div class="intro">
-  <strong>읽는 법</strong> — 9회 지선의 정치 환경이 어떨지 모르므로 세 시나리오로 분리해 보여줍니다. 9회 결과는 셋 중 어느 시나리오에 가깝게 나타나는지에 따라 달라질 것입니다. 단일 예측이 아닙니다.
-</div>
-
-
-    <section class="scenario scenario-primary">
-      <h2 class="scenario-title">현재 추세 반영 — 메인 시나리오 <span class="scenario-primary-badge">현재 환경 추정</span></h2>
-      <p class="scenario-desc">5월 27일까지 보도된 시도별 공개 여론조사를 참고 자료로 사용. 여론조사 자료가 없는 시도는 정권 출범 1년차 과거 패턴으로 보완.</p>
-      <div class="scenario-stats">
-        <div class="stat-pill stat-d">
-          <span class="pill-label">민주당</span>
-          <strong class="pill-value">11곳</strong>
-          <span class="pill-sub">예상 범위 9~13곳</span>
-        </div>
-        <div class="stat-pill stat-r">
-          <span class="pill-label">국힘·무소속 등</span>
-          <strong class="pill-value">5곳</strong>
-          <span class="pill-sub">예상 범위 3~7곳</span>
-        </div>
-      </div>
-      <div class="charts"><div class="bar-chart"><div class="bar-chart-title">민주당 당선 분포</div><div class="bar-row"><span class="bar-label">5곳</span><span class="bar-track"><span class="bar-fill" style="width:0.0%;background:#152484"></span></span><span class="bar-value">0.0%</span></div><div class="bar-row"><span class="bar-label">6곳</span><span class="bar-track"><span class="bar-fill" style="width:0.9%;background:#152484"></span></span><span class="bar-value">0.2%</span></div><div class="bar-row"><span class="bar-label">7곳</span><span class="bar-track"><span class="bar-fill" style="width:4.6%;background:#152484"></span></span><span class="bar-value">1.2%</span></div><div class="bar-row"><span class="bar-label">8곳</span><span class="bar-track"><span class="bar-fill" style="width:17.6%;background:#152484"></span></span><span class="bar-value">4.7%</span></div><div class="bar-row"><span class="bar-label">9곳</span><span class="bar-track"><span class="bar-fill" style="width:43.3%;background:#152484"></span></span><span class="bar-value">11.5%</span></div><div class="bar-row"><span class="bar-label">10곳</span><span class="bar-track"><span class="bar-fill" style="width:75.6%;background:#152484"></span></span><span class="bar-value">20.0%</span></div><div class="bar-row"><span class="bar-label">11곳</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#152484"></span></span><span class="bar-value">26.5%</span></div><div class="bar-row"><span class="bar-label">12곳</span><span class="bar-track"><span class="bar-fill" style="width:77.4%;background:#152484"></span></span><span class="bar-value">20.5%</span></div><div class="bar-row"><span class="bar-label">13곳</span><span class="bar-track"><span class="bar-fill" style="width:43.0%;background:#152484"></span></span><span class="bar-value">11.4%</span></div><div class="bar-row"><span class="bar-label">14곳</span><span class="bar-track"><span class="bar-fill" style="width:14.1%;background:#152484"></span></span><span class="bar-value">3.7%</span></div><div class="bar-row"><span class="bar-label">15곳</span><span class="bar-track"><span class="bar-fill" style="width:1.5%;background:#152484"></span></span><span class="bar-value">0.4%</span></div><div class="bar-row"><span class="bar-label">16곳</span><span class="bar-track"><span class="bar-fill" style="width:0.2%;background:#152484"></span></span><span class="bar-value">0.0%</span></div></div><div class="bar-chart"><div class="bar-chart-title">국민의힘 당선 분포</div><div class="bar-row"><span class="bar-label">0곳</span><span class="bar-track"><span class="bar-fill" style="width:0.2%;background:#E61E2B"></span></span><span class="bar-value">0.0%</span></div><div class="bar-row"><span class="bar-label">1곳</span><span class="bar-track"><span class="bar-fill" style="width:1.5%;background:#E61E2B"></span></span><span class="bar-value">0.4%</span></div><div class="bar-row"><span class="bar-label">2곳</span><span class="bar-track"><span class="bar-fill" style="width:14.1%;background:#E61E2B"></span></span><span class="bar-value">3.7%</span></div><div class="bar-row"><span class="bar-label">3곳</span><span class="bar-track"><span class="bar-fill" style="width:43.0%;background:#E61E2B"></span></span><span class="bar-value">11.4%</span></div><div class="bar-row"><span class="bar-label">4곳</span><span class="bar-track"><span class="bar-fill" style="width:77.4%;background:#E61E2B"></span></span><span class="bar-value">20.5%</span></div><div class="bar-row"><span class="bar-label">5곳</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#E61E2B"></span></span><span class="bar-value">26.5%</span></div><div class="bar-row"><span class="bar-label">6곳</span><span class="bar-track"><span class="bar-fill" style="width:75.6%;background:#E61E2B"></span></span><span class="bar-value">20.0%</span></div><div class="bar-row"><span class="bar-label">7곳</span><span class="bar-track"><span class="bar-fill" style="width:43.3%;background:#E61E2B"></span></span><span class="bar-value">11.5%</span></div><div class="bar-row"><span class="bar-label">8곳</span><span class="bar-track"><span class="bar-fill" style="width:17.6%;background:#E61E2B"></span></span><span class="bar-value">4.7%</span></div><div class="bar-row"><span class="bar-label">9곳</span><span class="bar-track"><span class="bar-fill" style="width:4.6%;background:#E61E2B"></span></span><span class="bar-value">1.2%</span></div><div class="bar-row"><span class="bar-label">10곳</span><span class="bar-track"><span class="bar-fill" style="width:0.9%;background:#E61E2B"></span></span><span class="bar-value">0.2%</span></div><div class="bar-row"><span class="bar-label">11곳</span><span class="bar-track"><span class="bar-fill" style="width:0.0%;background:#E61E2B"></span></span><span class="bar-value">0.0%</span></div></div></div>
-    </section>
-    <section class="scenario">
-      <h2 class="scenario-title">정권 출범 1년차 환경 (과거 개표결과 패턴만) </h2>
-      <p class="scenario-desc">여론조사 미반영. 박근혜 탄핵 후 문재인 정부 출범 1년차였던 7회(2018) 지선과 유사한 환경 가정.</p>
-      <div class="scenario-stats">
-        <div class="stat-pill stat-d">
-          <span class="pill-label">민주당</span>
-          <strong class="pill-value">14곳</strong>
-          <span class="pill-sub">예상 범위 8~15곳</span>
-        </div>
-        <div class="stat-pill stat-r">
-          <span class="pill-label">국힘·무소속 등</span>
-          <strong class="pill-value">2곳</strong>
-          <span class="pill-sub">예상 범위 1~8곳</span>
-        </div>
-      </div>
-      <div class="charts"><div class="bar-chart"><div class="bar-chart-title">민주당 당선 분포</div><div class="bar-row"><span class="bar-label">1곳</span><span class="bar-track"><span class="bar-fill" style="width:0.1%;background:#152484"></span></span><span class="bar-value">0.0%</span></div><div class="bar-row"><span class="bar-label">2곳</span><span class="bar-track"><span class="bar-fill" style="width:1.8%;background:#152484"></span></span><span class="bar-value">0.3%</span></div><div class="bar-row"><span class="bar-label">3곳</span><span class="bar-track"><span class="bar-fill" style="width:3.8%;background:#152484"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">4곳</span><span class="bar-track"><span class="bar-fill" style="width:7.1%;background:#152484"></span></span><span class="bar-value">1.1%</span></div><div class="bar-row"><span class="bar-label">5곳</span><span class="bar-track"><span class="bar-fill" style="width:9.7%;background:#152484"></span></span><span class="bar-value">1.4%</span></div><div class="bar-row"><span class="bar-label">6곳</span><span class="bar-track"><span class="bar-fill" style="width:16.6%;background:#152484"></span></span><span class="bar-value">2.5%</span></div><div class="bar-row"><span class="bar-label">7곳</span><span class="bar-track"><span class="bar-fill" style="width:21.3%;background:#152484"></span></span><span class="bar-value">3.2%</span></div><div class="bar-row"><span class="bar-label">8곳</span><span class="bar-track"><span class="bar-fill" style="width:34.7%;background:#152484"></span></span><span class="bar-value">5.1%</span></div><div class="bar-row"><span class="bar-label">9곳</span><span class="bar-track"><span class="bar-fill" style="width:45.5%;background:#152484"></span></span><span class="bar-value">6.8%</span></div><div class="bar-row"><span class="bar-label">10곳</span><span class="bar-track"><span class="bar-fill" style="width:55.9%;background:#152484"></span></span><span class="bar-value">8.3%</span></div><div class="bar-row"><span class="bar-label">11곳</span><span class="bar-track"><span class="bar-fill" style="width:69.9%;background:#152484"></span></span><span class="bar-value">10.4%</span></div><div class="bar-row"><span class="bar-label">12곳</span><span class="bar-track"><span class="bar-fill" style="width:82.6%;background:#152484"></span></span><span class="bar-value">12.3%</span></div><div class="bar-row"><span class="bar-label">13곳</span><span class="bar-track"><span class="bar-fill" style="width:95.1%;background:#152484"></span></span><span class="bar-value">14.1%</span></div><div class="bar-row"><span class="bar-label">14곳</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#152484"></span></span><span class="bar-value">14.8%</span></div><div class="bar-row"><span class="bar-label">15곳</span><span class="bar-track"><span class="bar-fill" style="width:81.6%;background:#152484"></span></span><span class="bar-value">12.1%</span></div><div class="bar-row"><span class="bar-label">16곳</span><span class="bar-track"><span class="bar-fill" style="width:48.1%;background:#152484"></span></span><span class="bar-value">7.1%</span></div></div><div class="bar-chart"><div class="bar-chart-title">국민의힘 당선 분포</div><div class="bar-row"><span class="bar-label">0곳</span><span class="bar-track"><span class="bar-fill" style="width:48.1%;background:#E61E2B"></span></span><span class="bar-value">7.1%</span></div><div class="bar-row"><span class="bar-label">1곳</span><span class="bar-track"><span class="bar-fill" style="width:81.6%;background:#E61E2B"></span></span><span class="bar-value">12.1%</span></div><div class="bar-row"><span class="bar-label">2곳</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#E61E2B"></span></span><span class="bar-value">14.8%</span></div><div class="bar-row"><span class="bar-label">3곳</span><span class="bar-track"><span class="bar-fill" style="width:95.1%;background:#E61E2B"></span></span><span class="bar-value">14.1%</span></div><div class="bar-row"><span class="bar-label">4곳</span><span class="bar-track"><span class="bar-fill" style="width:82.6%;background:#E61E2B"></span></span><span class="bar-value">12.3%</span></div><div class="bar-row"><span class="bar-label">5곳</span><span class="bar-track"><span class="bar-fill" style="width:69.9%;background:#E61E2B"></span></span><span class="bar-value">10.4%</span></div><div class="bar-row"><span class="bar-label">6곳</span><span class="bar-track"><span class="bar-fill" style="width:55.9%;background:#E61E2B"></span></span><span class="bar-value">8.3%</span></div><div class="bar-row"><span class="bar-label">7곳</span><span class="bar-track"><span class="bar-fill" style="width:45.5%;background:#E61E2B"></span></span><span class="bar-value">6.8%</span></div><div class="bar-row"><span class="bar-label">8곳</span><span class="bar-track"><span class="bar-fill" style="width:34.7%;background:#E61E2B"></span></span><span class="bar-value">5.1%</span></div><div class="bar-row"><span class="bar-label">9곳</span><span class="bar-track"><span class="bar-fill" style="width:21.3%;background:#E61E2B"></span></span><span class="bar-value">3.2%</span></div><div class="bar-row"><span class="bar-label">10곳</span><span class="bar-track"><span class="bar-fill" style="width:16.6%;background:#E61E2B"></span></span><span class="bar-value">2.5%</span></div><div class="bar-row"><span class="bar-label">11곳</span><span class="bar-track"><span class="bar-fill" style="width:9.7%;background:#E61E2B"></span></span><span class="bar-value">1.4%</span></div><div class="bar-row"><span class="bar-label">12곳</span><span class="bar-track"><span class="bar-fill" style="width:7.1%;background:#E61E2B"></span></span><span class="bar-value">1.1%</span></div><div class="bar-row"><span class="bar-label">13곳</span><span class="bar-track"><span class="bar-fill" style="width:3.8%;background:#E61E2B"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">14곳</span><span class="bar-track"><span class="bar-fill" style="width:1.8%;background:#E61E2B"></span></span><span class="bar-value">0.3%</span></div><div class="bar-row"><span class="bar-label">15곳</span><span class="bar-track"><span class="bar-fill" style="width:0.1%;background:#E61E2B"></span></span><span class="bar-value">0.0%</span></div></div></div>
-    </section>
-    <section class="scenario">
-      <h2 class="scenario-title">혼합 환경 (참고) </h2>
-      <p class="scenario-desc">6회차 분위기를 모두 무작위 추출. 외부 환경 무관 분포 — 정치 환경 가정을 빼고 과거 6회 평균만 본 결과.</p>
-      <div class="scenario-stats">
-        <div class="stat-pill stat-d">
-          <span class="pill-label">민주당</span>
-          <strong class="pill-value">5곳</strong>
-          <span class="pill-sub">예상 범위 3~12곳</span>
-        </div>
-        <div class="stat-pill stat-r">
-          <span class="pill-label">국힘·무소속 등</span>
-          <strong class="pill-value">11곳</strong>
-          <span class="pill-sub">예상 범위 4~13곳</span>
-        </div>
-      </div>
-      <div class="charts"><div class="bar-chart"><div class="bar-chart-title">민주당 당선 분포</div><div class="bar-row"><span class="bar-label">1곳</span><span class="bar-track"><span class="bar-fill" style="width:3.7%;background:#152484"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">2곳</span><span class="bar-track"><span class="bar-fill" style="width:37.1%;background:#152484"></span></span><span class="bar-value">5.9%</span></div><div class="bar-row"><span class="bar-label">3곳</span><span class="bar-track"><span class="bar-fill" style="width:75.2%;background:#152484"></span></span><span class="bar-value">12.0%</span></div><div class="bar-row"><span class="bar-label">4곳</span><span class="bar-track"><span class="bar-fill" style="width:93.9%;background:#152484"></span></span><span class="bar-value">15.0%</span></div><div class="bar-row"><span class="bar-label">5곳</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#152484"></span></span><span class="bar-value">16.0%</span></div><div class="bar-row"><span class="bar-label">6곳</span><span class="bar-track"><span class="bar-fill" style="width:93.7%;background:#152484"></span></span><span class="bar-value">14.9%</span></div><div class="bar-row"><span class="bar-label">7곳</span><span class="bar-track"><span class="bar-fill" style="width:70.8%;background:#152484"></span></span><span class="bar-value">11.3%</span></div><div class="bar-row"><span class="bar-label">8곳</span><span class="bar-track"><span class="bar-fill" style="width:34.9%;background:#152484"></span></span><span class="bar-value">5.6%</span></div><div class="bar-row"><span class="bar-label">9곳</span><span class="bar-track"><span class="bar-fill" style="width:13.5%;background:#152484"></span></span><span class="bar-value">2.1%</span></div><div class="bar-row"><span class="bar-label">10곳</span><span class="bar-track"><span class="bar-fill" style="width:9.3%;background:#152484"></span></span><span class="bar-value">1.5%</span></div><div class="bar-row"><span class="bar-label">11곳</span><span class="bar-track"><span class="bar-fill" style="width:17.0%;background:#152484"></span></span><span class="bar-value">2.7%</span></div><div class="bar-row"><span class="bar-label">12곳</span><span class="bar-track"><span class="bar-fill" style="width:30.9%;background:#152484"></span></span><span class="bar-value">4.9%</span></div><div class="bar-row"><span class="bar-label">13곳</span><span class="bar-track"><span class="bar-fill" style="width:29.0%;background:#152484"></span></span><span class="bar-value">4.6%</span></div><div class="bar-row"><span class="bar-label">14곳</span><span class="bar-track"><span class="bar-fill" style="width:14.0%;background:#152484"></span></span><span class="bar-value">2.2%</span></div><div class="bar-row"><span class="bar-label">15곳</span><span class="bar-track"><span class="bar-fill" style="width:3.6%;background:#152484"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">16곳</span><span class="bar-track"><span class="bar-fill" style="width:0.3%;background:#152484"></span></span><span class="bar-value">0.1%</span></div></div><div class="bar-chart"><div class="bar-chart-title">국민의힘 당선 분포</div><div class="bar-row"><span class="bar-label">0곳</span><span class="bar-track"><span class="bar-fill" style="width:0.3%;background:#E61E2B"></span></span><span class="bar-value">0.1%</span></div><div class="bar-row"><span class="bar-label">1곳</span><span class="bar-track"><span class="bar-fill" style="width:3.6%;background:#E61E2B"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">2곳</span><span class="bar-track"><span class="bar-fill" style="width:14.0%;background:#E61E2B"></span></span><span class="bar-value">2.2%</span></div><div class="bar-row"><span class="bar-label">3곳</span><span class="bar-track"><span class="bar-fill" style="width:29.0%;background:#E61E2B"></span></span><span class="bar-value">4.6%</span></div><div class="bar-row"><span class="bar-label">4곳</span><span class="bar-track"><span class="bar-fill" style="width:30.9%;background:#E61E2B"></span></span><span class="bar-value">4.9%</span></div><div class="bar-row"><span class="bar-label">5곳</span><span class="bar-track"><span class="bar-fill" style="width:17.0%;background:#E61E2B"></span></span><span class="bar-value">2.7%</span></div><div class="bar-row"><span class="bar-label">6곳</span><span class="bar-track"><span class="bar-fill" style="width:9.3%;background:#E61E2B"></span></span><span class="bar-value">1.5%</span></div><div class="bar-row"><span class="bar-label">7곳</span><span class="bar-track"><span class="bar-fill" style="width:13.5%;background:#E61E2B"></span></span><span class="bar-value">2.1%</span></div><div class="bar-row"><span class="bar-label">8곳</span><span class="bar-track"><span class="bar-fill" style="width:34.9%;background:#E61E2B"></span></span><span class="bar-value">5.6%</span></div><div class="bar-row"><span class="bar-label">9곳</span><span class="bar-track"><span class="bar-fill" style="width:70.8%;background:#E61E2B"></span></span><span class="bar-value">11.3%</span></div><div class="bar-row"><span class="bar-label">10곳</span><span class="bar-track"><span class="bar-fill" style="width:93.7%;background:#E61E2B"></span></span><span class="bar-value">14.9%</span></div><div class="bar-row"><span class="bar-label">11곳</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#E61E2B"></span></span><span class="bar-value">16.0%</span></div><div class="bar-row"><span class="bar-label">12곳</span><span class="bar-track"><span class="bar-fill" style="width:93.9%;background:#E61E2B"></span></span><span class="bar-value">15.0%</span></div><div class="bar-row"><span class="bar-label">13곳</span><span class="bar-track"><span class="bar-fill" style="width:75.2%;background:#E61E2B"></span></span><span class="bar-value">12.0%</span></div><div class="bar-row"><span class="bar-label">14곳</span><span class="bar-track"><span class="bar-fill" style="width:37.1%;background:#E61E2B"></span></span><span class="bar-value">5.9%</span></div><div class="bar-row"><span class="bar-label">15곳</span><span class="bar-track"><span class="bar-fill" style="width:3.7%;background:#E61E2B"></span></span><span class="bar-value">0.6%</span></div></div></div>
-    </section>
-    <section class="scenario">
-      <h2 class="scenario-title">정권 안정기 환경 (대안 가설) </h2>
-      <p class="scenario-desc">5·6·8회처럼 정권 중반 평년 분위기가 9회에도 이어졌다고 가정.</p>
-      <div class="scenario-stats">
-        <div class="stat-pill stat-d">
-          <span class="pill-label">민주당</span>
-          <strong class="pill-value">4곳</strong>
-          <span class="pill-sub">예상 범위 3~8곳</span>
-        </div>
-        <div class="stat-pill stat-r">
-          <span class="pill-label">국힘·무소속 등</span>
-          <strong class="pill-value">12곳</strong>
-          <span class="pill-sub">예상 범위 8~13곳</span>
-        </div>
-      </div>
-      <div class="charts"><div class="bar-chart"><div class="bar-chart-title">민주당 당선 분포</div><div class="bar-row"><span class="bar-label">0곳</span><span class="bar-track"><span class="bar-fill" style="width:0.1%;background:#152484"></span></span><span class="bar-value">0.0%</span></div><div class="bar-row"><span class="bar-label">1곳</span><span class="bar-track"><span class="bar-fill" style="width:3.1%;background:#152484"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">2곳</span><span class="bar-track"><span class="bar-fill" style="width:39.3%;background:#152484"></span></span><span class="bar-value">7.6%</span></div><div class="bar-row"><span class="bar-label">3곳</span><span class="bar-track"><span class="bar-fill" style="width:80.6%;background:#152484"></span></span><span class="bar-value">15.7%</span></div><div class="bar-row"><span class="bar-label">4곳</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#152484"></span></span><span class="bar-value">19.4%</span></div><div class="bar-row"><span class="bar-label">5곳</span><span class="bar-track"><span class="bar-fill" style="width:95.6%;background:#152484"></span></span><span class="bar-value">18.6%</span></div><div class="bar-row"><span class="bar-label">6곳</span><span class="bar-track"><span class="bar-fill" style="width:77.2%;background:#152484"></span></span><span class="bar-value">15.0%</span></div><div class="bar-row"><span class="bar-label">7곳</span><span class="bar-track"><span class="bar-fill" style="width:55.5%;background:#152484"></span></span><span class="bar-value">10.8%</span></div><div class="bar-row"><span class="bar-label">8곳</span><span class="bar-track"><span class="bar-fill" style="width:32.3%;background:#152484"></span></span><span class="bar-value">6.3%</span></div><div class="bar-row"><span class="bar-label">9곳</span><span class="bar-track"><span class="bar-fill" style="width:19.0%;background:#152484"></span></span><span class="bar-value">3.7%</span></div><div class="bar-row"><span class="bar-label">10곳</span><span class="bar-track"><span class="bar-fill" style="width:8.2%;background:#152484"></span></span><span class="bar-value">1.6%</span></div><div class="bar-row"><span class="bar-label">11곳</span><span class="bar-track"><span class="bar-fill" style="width:2.6%;background:#152484"></span></span><span class="bar-value">0.5%</span></div><div class="bar-row"><span class="bar-label">12곳</span><span class="bar-track"><span class="bar-fill" style="width:1.2%;background:#152484"></span></span><span class="bar-value">0.2%</span></div><div class="bar-row"><span class="bar-label">13곳</span><span class="bar-track"><span class="bar-fill" style="width:0.2%;background:#152484"></span></span><span class="bar-value">0.0%</span></div></div><div class="bar-chart"><div class="bar-chart-title">국민의힘 당선 분포</div><div class="bar-row"><span class="bar-label">3곳</span><span class="bar-track"><span class="bar-fill" style="width:0.2%;background:#E61E2B"></span></span><span class="bar-value">0.0%</span></div><div class="bar-row"><span class="bar-label">4곳</span><span class="bar-track"><span class="bar-fill" style="width:1.2%;background:#E61E2B"></span></span><span class="bar-value">0.2%</span></div><div class="bar-row"><span class="bar-label">5곳</span><span class="bar-track"><span class="bar-fill" style="width:2.6%;background:#E61E2B"></span></span><span class="bar-value">0.5%</span></div><div class="bar-row"><span class="bar-label">6곳</span><span class="bar-track"><span class="bar-fill" style="width:8.2%;background:#E61E2B"></span></span><span class="bar-value">1.6%</span></div><div class="bar-row"><span class="bar-label">7곳</span><span class="bar-track"><span class="bar-fill" style="width:19.0%;background:#E61E2B"></span></span><span class="bar-value">3.7%</span></div><div class="bar-row"><span class="bar-label">8곳</span><span class="bar-track"><span class="bar-fill" style="width:32.3%;background:#E61E2B"></span></span><span class="bar-value">6.3%</span></div><div class="bar-row"><span class="bar-label">9곳</span><span class="bar-track"><span class="bar-fill" style="width:55.5%;background:#E61E2B"></span></span><span class="bar-value">10.8%</span></div><div class="bar-row"><span class="bar-label">10곳</span><span class="bar-track"><span class="bar-fill" style="width:77.2%;background:#E61E2B"></span></span><span class="bar-value">15.0%</span></div><div class="bar-row"><span class="bar-label">11곳</span><span class="bar-track"><span class="bar-fill" style="width:95.6%;background:#E61E2B"></span></span><span class="bar-value">18.6%</span></div><div class="bar-row"><span class="bar-label">12곳</span><span class="bar-track"><span class="bar-fill" style="width:100.0%;background:#E61E2B"></span></span><span class="bar-value">19.4%</span></div><div class="bar-row"><span class="bar-label">13곳</span><span class="bar-track"><span class="bar-fill" style="width:80.6%;background:#E61E2B"></span></span><span class="bar-value">15.7%</span></div><div class="bar-row"><span class="bar-label">14곳</span><span class="bar-track"><span class="bar-fill" style="width:39.3%;background:#E61E2B"></span></span><span class="bar-value">7.6%</span></div><div class="bar-row"><span class="bar-label">15곳</span><span class="bar-track"><span class="bar-fill" style="width:3.1%;background:#E61E2B"></span></span><span class="bar-value">0.6%</span></div><div class="bar-row"><span class="bar-label">16곳</span><span class="bar-track"><span class="bar-fill" style="width:0.1%;background:#E61E2B"></span></span><span class="bar-value">0.0%</span></div></div></div>
-    </section>
-
-
-    <section class="sido-marginal">
-      <h2>시도별 양당 승리 확률</h2>
-      <p style="color:#666;font-size:0.85rem;margin:0 0 8px">막대: <span style="color:#152484;font-weight:700">파랑=민주당</span> · <span style="color:#E61E2B;font-weight:700">빨강=국민의힘</span> · <span style="color:#888;font-weight:700">회색=무소속 1위</span>.</p>
-      <table>
-        <thead><tr><th>시도</th><th>막대</th><th>민주당</th><th>그외</th><th class="hide-mobile">정권 출범 1년차 환경<br><small>민주/그외</small></th><th class="hide-mobile">혼합 환경<br><small>민주/그외</small></th><th class="hide-mobile">정권 안정기 환경<br><small>민주/그외</small></th></tr></thead>
-        <tbody><tr><td class="sido-name">전남광주통합특별시</td><td><div class="stacked-bar"><span class="stacked-d" style="width:100%" title="민주당 100%"></span><span style="background:#E61E2B;width:0%;height:100%;display:block" title="국민의힘 0%"></span></div></td><td class="num-d">100%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">0%</td><td class="num-sub hide-mobile">100% / 0%</td><td class="num-sub hide-mobile">99% / 1%</td><td class="num-sub hide-mobile">99% / 1%</td></tr><tr><td class="sido-name">제주특별자치도</td><td><div class="stacked-bar"><span class="stacked-d" style="width:100%" title="민주당 100%"></span><span style="background:#E61E2B;width:0%;height:100%;display:block" title="국민의힘 0%"></span></div></td><td class="num-d">100%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">0%</td><td class="num-sub hide-mobile">89% / 11%</td><td class="num-sub hide-mobile">53% / 47%</td><td class="num-sub hide-mobile">46% / 54%</td></tr><tr><td class="sido-name">경기도</td><td><div class="stacked-bar"><span class="stacked-d" style="width:98%" title="민주당 98%"></span><span style="background:#E61E2B;width:2%;height:100%;display:block" title="국민의힘 2%"></span></div></td><td class="num-d">98%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">2%</td><td class="num-sub hide-mobile">75% / 25%</td><td class="num-sub hide-mobile">32% / 68%</td><td class="num-sub hide-mobile">21% / 79%</td></tr><tr><td class="sido-name">세종특별자치시</td><td><div class="stacked-bar"><span class="stacked-d" style="width:96%" title="민주당 96%"></span><span style="background:#E61E2B;width:4%;height:100%;display:block" title="국민의힘 4%"></span></div></td><td class="num-d">96%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">4%</td><td class="num-sub hide-mobile">95% / 5%</td><td class="num-sub hide-mobile">63% / 37%</td><td class="num-sub hide-mobile">55% / 45%</td></tr><tr><td class="sido-name">충청북도</td><td><div class="stacked-bar"><span class="stacked-d" style="width:86%" title="민주당 86%"></span><span style="background:#E61E2B;width:14%;height:100%;display:block" title="국민의힘 14%"></span></div></td><td class="num-d">86%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">14%</td><td class="num-sub hide-mobile">79% / 21%</td><td class="num-sub hide-mobile">33% / 67%</td><td class="num-sub hide-mobile">22% / 78%</td></tr><tr><td class="sido-name">인천광역시</td><td><div class="stacked-bar"><span class="stacked-d" style="width:83%" title="민주당 83%"></span><span style="background:#E61E2B;width:17%;height:100%;display:block" title="국민의힘 17%"></span></div></td><td class="num-d">83%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">17%</td><td class="num-sub hide-mobile">87% / 13%</td><td class="num-sub hide-mobile">38% / 62%</td><td class="num-sub hide-mobile">26% / 74%</td></tr><tr><td class="sido-name">대전광역시</td><td><div class="stacked-bar"><span class="stacked-d" style="width:82%" title="민주당 82%"></span><span style="background:#E61E2B;width:18%;height:100%;display:block" title="국민의힘 18%"></span></div></td><td class="num-d">82%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">18%</td><td class="num-sub hide-mobile">87% / 13%</td><td class="num-sub hide-mobile">40% / 60%</td><td class="num-sub hide-mobile">30% / 70%</td></tr><tr><td class="sido-name">부산광역시</td><td><div class="stacked-bar"><span class="stacked-d" style="width:72%" title="민주당 72%"></span><span style="background:#E61E2B;width:28%;height:100%;display:block" title="국민의힘 28%"></span></div></td><td class="num-d">72%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">28%</td><td class="num-sub hide-mobile">60% / 40%</td><td class="num-sub hide-mobile">15% / 85%</td><td class="num-sub hide-mobile">7% / 93%</td></tr><tr><td class="sido-name">강원특별자치도</td><td><div class="stacked-bar"><span class="stacked-d" style="width:67%" title="민주당 67%"></span><span style="background:#E61E2B;width:33%;height:100%;display:block" title="국민의힘 33%"></span></div></td><td class="num-d">67%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">33%</td><td class="num-sub hide-mobile">81% / 19%</td><td class="num-sub hide-mobile">35% / 65%</td><td class="num-sub hide-mobile">24% / 76%</td></tr><tr><td class="sido-name">울산광역시</td><td><div class="stacked-bar"><span class="stacked-d" style="width:67%" title="민주당 67%"></span><span style="background:#E61E2B;width:33%;height:100%;display:block" title="국민의힘 33%"></span></div></td><td class="num-d">67%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">33%</td><td class="num-sub hide-mobile">44% / 56%</td><td class="num-sub hide-mobile">10% / 90%</td><td class="num-sub hide-mobile">4% / 96%</td></tr><tr><td class="sido-name">충청남도</td><td><div class="stacked-bar"><span class="stacked-d" style="width:63%" title="민주당 63%"></span><span style="background:#E61E2B;width:37%;height:100%;display:block" title="국민의힘 37%"></span></div></td><td class="num-d">63%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">37%</td><td class="num-sub hide-mobile">88% / 12%</td><td class="num-sub hide-mobile">47% / 53%</td><td class="num-sub hide-mobile">36% / 64%</td></tr><tr><td class="sido-name">서울특별시</td><td><div class="stacked-bar"><span class="stacked-d" style="width:58%" title="민주당 58%"></span><span style="background:#E61E2B;width:42%;height:100%;display:block" title="국민의힘 42%"></span></div></td><td class="num-d">58%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">42%</td><td class="num-sub hide-mobile">89% / 11%</td><td class="num-sub hide-mobile">44% / 56%</td><td class="num-sub hide-mobile">34% / 66%</td></tr><tr><td class="sido-name">경상남도</td><td><div class="stacked-bar"><span class="stacked-d" style="width:51%" title="민주당 51%"></span><span style="background:#E61E2B;width:49%;height:100%;display:block" title="국민의힘 49%"></span></div></td><td class="num-d">51%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">49%</td><td class="num-sub hide-mobile">53% / 47%</td><td class="num-sub hide-mobile">10% / 90%</td><td class="num-sub hide-mobile">2% / 98%</td></tr><tr><td class="sido-name">대구광역시</td><td><div class="stacked-bar"><span class="stacked-d" style="width:37%" title="민주당 37%"></span><span style="background:#E61E2B;width:63%;height:100%;display:block" title="국민의힘 63%"></span></div></td><td class="num-d">37%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">63%</td><td class="num-sub hide-mobile">38% / 62%</td><td class="num-sub hide-mobile">7% / 93%</td><td class="num-sub hide-mobile">2% / 98%</td></tr><tr><td class="sido-name">전북특별자치도</td><td><div class="stacked-bar"><span class="stacked-d" style="width:25%" title="민주당 25%"></span><span style="background:#888;width:75%;height:100%;display:block" title="무소속 75%"></span></div></td><td class="num-d">25%</td><td style="color:#888;font-weight:700;font-variant-numeric:tabular-nums">75%</td><td class="num-sub hide-mobile">100% / 0%</td><td class="num-sub hide-mobile">98% / 2%</td><td class="num-sub hide-mobile">98% / 2%</td></tr><tr><td class="sido-name">경상북도</td><td><div class="stacked-bar"><span class="stacked-d" style="width:9%" title="민주당 9%"></span><span style="background:#E61E2B;width:91%;height:100%;display:block" title="국민의힘 91%"></span></div></td><td class="num-d">9%</td><td style="color:#E61E2B;font-weight:700;font-variant-numeric:tabular-nums">91%</td><td class="num-sub hide-mobile">19% / 81%</td><td class="num-sub hide-mobile">1% / 99%</td><td class="num-sub hide-mobile">0% / 100%</td></tr></tbody>
-      </table>
-    </section>
-
-
-    <section class="backtest">
-      <h2>모델 검증 — 과거 선거로 되짚어보기</h2>
-      <p class="backtest-note">과거 한 회차를 빼고 나머지 선거로 모델을 만든 뒤, 빼놓은 그 회차의 실제 결과를 얼마나 맞히는지 대조했습니다.
-      <strong>평년 분위기였던 8회는 잘 맞혔고, 정권 교체 직후 격변기였던 7회는 많이 빗나갔습니다.</strong></p>
-      <table class="backtest-table">
-        <thead><tr><th>대상</th><th>적중</th><th>정확도</th></tr></thead>
-        <tbody><tr><td>6회 (2014)</td><td>10/16</td><td class="acc-warn">62.5%</td></tr><tr><td>7회 (2018)</td><td>4/16</td><td class="acc-bad">25.0%</td></tr><tr><td>8회 (2022)</td><td>13/16</td><td class="acc-good">81.2%</td></tr></tbody>
-      </table>
-    </section>
-
-<section class="limits">
-  <h2>모델 한계</h2>
-  <ul><li>과거 6회차(1995~2022) 데이터 — 표본 적음</li><li>후보 개별 효과·사전투표 변화·외부 충격 미반영</li><li>과거 패턴 기반 시나리오이지 예측이 아닙니다</li></ul>
-</section>
-
-<p style="text-align:center;color:#aaa;font-size:0.75rem;margin-top:36px;">제9회 전국동시지방선거 시도지사 시뮬레이션 · 시민언론 뉴탐사</p>
-
-<aside id="sim-notice-full" style="max-width:880px;margin:40px auto 12px;padding:12px 16px;background:#f6f6f6;border-left:3px solid #ccc;border-radius:3px;font-family:-apple-system,'Pretendard',sans-serif;font-size:0.78rem;color:#666;line-height:1.6">
-  <strong style="color:#444">자료의 성격 · 한계</strong><br>
-  · 여론조사가 아니라 과거 개표결과와 5월 27일까지 보도된 공개 여론조사를 입력으로 한 시뮬레이션 결과(시나리오별 분포).<br>
-  · 후보·정당의 당락을 단정하지 않습니다. 메인 시나리오는 "이재명 정부 출범 1년차(7회 문재인 정부 출범 직후와 유사한 환경)" 가정.<br>
-  · 외부 충격·후보 효과·정당 변동·사전투표 패턴 변화 미반영. 가정이 흔들리면 결과도 흔들림.<br>
-  · 인용·재가공 시 위 한계를 함께 표기해 주십시오.
-</aside>
-<div style="max-width:880px;margin:8px auto 32px;text-align:center;font-size:0.78rem;color:#888">
-  오류·문의 제보: <a href="mailto:news@newtamsa.org" style="color:#666;text-decoration:underline">news@newtamsa.org</a>
-</div>
-
+h1{font-size:1.5rem;margin:0 0 4px}.sub{color:#666;font-size:.85rem;margin:0 0 14px}
+.legal{background:#fff8e1;border:1px solid #ffe08a;border-radius:6px;padding:10px 14px;font-size:.82rem;color:#7a5b00;margin:0 0 16px}
+.pills{display:flex;gap:10px;margin:0 0 14px}.pill{flex:1;padding:12px;border-radius:8px}.pill b{font-size:1.6rem;display:block}
+.p-d{background:#eef2fb;border-left:5px solid #152484}.p-c{background:#fdecee;border-left:5px solid #E61E2B}.p-i{background:#f0f0ee;border-left:5px solid #6b7280}
+.pl{font-size:.76rem;color:#555;font-weight:700}.ps{font-size:.74rem;color:#666}
+table{width:100%;border-collapse:collapse;font-size:.86rem}td{padding:5px 7px;border-bottom:1px solid #eee}
+td.sgg{font-weight:700}.bar{display:flex;height:13px;border-radius:3px;overflow:hidden;min-width:150px;background:#eee}
+.bd{background:#152484}.bc{background:#E61E2B}.nd{color:#152484;font-weight:700}.nc{color:#666;font-size:.78rem}
+.basis{font-size:.72rem}.b-poll{background:#152484;color:#fff;padding:1px 5px;border-radius:3px;font-size:.66rem}.b-hist{color:#888;font-size:.72rem}
+tr.cand td{padding:0 7px 6px;font-size:.74rem;color:#888;border-bottom:1px solid #eee}
+tr.r-toss td{background:#fffbe9}tr.r-ind td{background:#f4f5f6}
+</style></head><body>
+<header class="sim-header"><div class="sim-header-inner">
+<a href="https://election2026.newtamsa.org/" class="sim-brand"><span class="sim-brand-title">뉴탐사 · 6·3 지방선거 2026</span><span class="sim-brand-sub">결과 예측 시뮬레이션</span></a>
+<nav class="sim-nav"><a class="sim-nav-link" href="/sim/">시뮬레이션 홈</a><a class="sim-nav-link sim-nav-link-active" href="/sim/sido/" aria-current="page">시도지사 17</a><a class="sim-nav-link" href="/sim/basic-head/">기초단체장 226</a><a class="sim-nav-link" href="/sim/assembly/">재·보궐 14</a></nav>
+<a class="sim-live-link js-live-gate" href="https://election2026.newtamsa.org/#live" hidden>실시간 개표 →</a>
+<script>document.addEventListener('DOMContentLoaded',function(){if(Date.now()>=Date.parse('2026-06-03T18:00:00+09:00')){var e=document.querySelectorAll('.js-live-gate');for(var i=0;i<e.length;i++)e[i].hidden=false;}});</script>
+</div></header>
+<main class="wrap">
+<h1>시도지사 16 — 결과 예측 시뮬레이션</h1>
+<p class="sub">2026-06-02 · 본선 여론조사 16곳 + 과거선거(2022지선·2024총선·2025대선) + 무소속 3진영 · 1만 회 몬테카를로 · 뉴탐사</p>
+<div class="legal">⚖️ 인용 여론조사는 모두 공직선거법 공표금지기간(5/28) 전 조사·여심위 등록분입니다. (§108 단서) 폴 없는 곳은 과거선거 기반.</div>
+<div class="pills"><div class="pill p-d"><span class="pl">민주</span><b>10곳</b><span class="ps">7~12</span></div>
+<div class="pill p-c"><span class="pl">국힘</span><b>5곳</b><span class="ps">3~8</span></div>
+<div class="pill p-i"><span class="pl">무소속·기타</span><b>1곳</b><span class="ps">1~1</span></div></div>
+<table><tbody><tr class=""><td class="sgg">인천</td><td><div class="bar"><span class="bd" style="width:100%"></span><span class="bc" style="width:0%;background:#E61E2B"></span></div></td><td class="nd">100%</td><td class="nc">vs 국민의힘 0%</td><td class="basis"><span class="b-poll">여론조사 05-28 · 민주 60.7 vs 국민 31.2</span></td></tr><tr class="cand"><td colspan="5">박찬대(더불), 유정복(국민), 이기붕(개혁)</td></tr><tr class=""><td class="sgg">제주</td><td><div class="bar"><span class="bd" style="width:100%"></span><span class="bc" style="width:0%;background:#E61E2B"></span></div></td><td class="nd">100%</td><td class="nc">vs 국민의힘 0%</td><td class="basis"><span class="b-poll">여론조사 05-26 · 민주 58.4 vs 국민 28.1</span></td></tr><tr class="cand"><td colspan="5">위성곤(더불), 문성유(국민), 양윤녕(무소)</td></tr><tr class=""><td class="sgg">전남광주통합</td><td><div class="bar"><span class="bd" style="width:100%"></span><span class="bc" style="width:0%;background:#E61E2B"></span></div></td><td class="nd">100%</td><td class="nc">vs 국민의힘 0%</td><td class="basis"><span class="b-poll">여론조사 05-22 · 민주 67.5 vs 국민 10.3</span></td></tr><tr class="cand"><td colspan="5">민형배(더불), 이정현(국민), 이종욱(진보), 강은미(정의), 김광만(무소)</td></tr><tr class=""><td class="sgg">세종</td><td><div class="bar"><span class="bd" style="width:99%"></span><span class="bc" style="width:1%;background:#E61E2B"></span></div></td><td class="nd">99%</td><td class="nc">vs 국민의힘 1%</td><td class="basis"><span class="b-poll">여론조사 05-26 · 민주 52.8 vs 국민 34.1</span></td></tr><tr class="cand"><td colspan="5">조상호(더불), 최민호(국민), 하헌휘(개혁)</td></tr><tr class=""><td class="sgg">경기도</td><td><div class="bar"><span class="bd" style="width:95%"></span><span class="bc" style="width:5%;background:#E61E2B"></span></div></td><td class="nd">95%</td><td class="nc">vs 국민의힘 5%</td><td class="basis"><span class="b-poll">여론조사 05-28 · 민주 49.8 vs 국민 36.4</span></td></tr><tr class="cand"><td colspan="5">추미애(더불), 양향자(국민), 조응천(개혁), 홍성규(진보), 김현욱(국민)</td></tr><tr class=""><td class="sgg">충청북도</td><td><div class="bar"><span class="bd" style="width:72%"></span><span class="bc" style="width:28%;background:#E61E2B"></span></div></td><td class="nd">72%</td><td class="nc">vs 국민의힘 28%</td><td class="basis"><span class="b-poll">여론조사 05-22 · 민주 45.4 vs 국민 40.8</span></td></tr><tr class="cand"><td colspan="5">신용한(더불), 김영환(국민)</td></tr><tr class=""><td class="sgg">대전</td><td><div class="bar"><span class="bd" style="width:71%"></span><span class="bc" style="width:29%;background:#E61E2B"></span></div></td><td class="nd">71%</td><td class="nc">vs 국민의힘 29%</td><td class="basis"><span class="b-poll">여론조사 05-27 · 민주 46.9 vs 국민 42.7</span></td></tr><tr class="cand"><td colspan="5">허태정(더불), 이장우(국민), 강희린(개혁)</td></tr><tr class=""><td class="sgg">강원</td><td><div class="bar"><span class="bd" style="width:69%"></span><span class="bc" style="width:31%;background:#E61E2B"></span></div></td><td class="nd">69%</td><td class="nc">vs 국민의힘 31%</td><td class="basis"><span class="b-poll">여론조사 05-23 · 민주 49.3 vs 국민 45.1</span></td></tr><tr class="cand"><td colspan="5">우상호(더불), 김진태(국민)</td></tr><tr class="r-toss"><td class="sgg">부산</td><td><div class="bar"><span class="bd" style="width:55%"></span><span class="bc" style="width:45%;background:#E61E2B"></span></div></td><td class="nd">55%</td><td class="nc">vs 국민의힘 45%</td><td class="basis"><span class="b-poll">여론조사 05-28 · 민주 47.2 vs 국민 46.1</span></td></tr><tr class="cand"><td colspan="5">전재수(더불), 박형준(국민), 정이한(개혁)</td></tr><tr class="r-toss"><td class="sgg">울산</td><td><div class="bar"><span class="bd" style="width:52%"></span><span class="bc" style="width:48%;background:#E61E2B"></span></div></td><td class="nd">52%</td><td class="nc">vs 국민의힘 48%</td><td class="basis"><span class="b-poll">여론조사 05-27 · 민주 35.8 vs 국민 35.5</span></td></tr><tr class="cand"><td colspan="5">김상욱(더불), 김두겸(국민), 김종훈(진보), 박맹우(무소)</td></tr><tr class="r-toss"><td class="sgg">충청남도</td><td><div class="bar"><span class="bd" style="width:52%"></span><span class="bc" style="width:48%;background:#E61E2B"></span></div></td><td class="nd">52%</td><td class="nc">vs 국민의힘 48%</td><td class="basis"><span class="b-poll">여론조사 05-26 · 민주 45.2 vs 국민 44.7</span></td></tr><tr class="cand"><td colspan="5">박수현(더불), 김태흠(국민)</td></tr><tr class=""><td class="sgg">경상남도</td><td><div class="bar"><span class="bd" style="width:39%"></span><span class="bc" style="width:61%;background:#E61E2B"></span></div></td><td class="nd">39%</td><td class="nc">vs 국민의힘 61%</td><td class="basis"><span class="b-poll">여론조사 05-28 · 민주 43.5 vs 국민 45.6</span></td></tr><tr class="cand"><td colspan="5">김경수(더불), 박완수(국민), 전희영(진보)</td></tr><tr class=""><td class="sgg">서울</td><td><div class="bar"><span class="bd" style="width:29%"></span><span class="bc" style="width:71%;background:#E61E2B"></span></div></td><td class="nd">29%</td><td class="nc">vs 국민의힘 71%</td><td class="basis"><span class="b-poll">여론조사 05-30 · 민주 40.8 vs 국민 45.2</span></td></tr><tr class="cand"><td colspan="5">정원오(더불), 오세훈(국민), 김정철(개혁), 유지혜(여성), 이강산(자유), 권영국(정의)</td></tr><tr class=""><td class="sgg">대구</td><td><div class="bar"><span class="bd" style="width:27%"></span><span class="bc" style="width:73%;background:#E61E2B"></span></div></td><td class="nd">27%</td><td class="nc">vs 국민의힘 73%</td><td class="basis"><span class="b-poll">여론조사 05-28 · 민주 43.3 vs 국민 48.2</span></td></tr><tr class="cand"><td colspan="5">김부겸(더불), 추경호(국민), 이수찬(개혁)</td></tr><tr class="r-ind"><td class="sgg">전북</td><td><div class="bar"><span class="bd" style="width:2%"></span><span class="bc" style="width:98%;background:#6b7280"></span></div></td><td class="nd">2%</td><td class="nc">vs 무소속·기타 98%</td><td class="basis"><span class="b-poll">여론조사 05-26 · 민주 35.3 vs 무소 51.9</span></td></tr><tr class="cand"><td colspan="5">이원택(더불), 양정무(국민), 백승재(진보), 김성수(무소), 김관영(무소)</td></tr><tr class=""><td class="sgg">경상북도</td><td><div class="bar"><span class="bd" style="width:0%"></span><span class="bc" style="width:100%;background:#E61E2B"></span></div></td><td class="nd">0%</td><td class="nc">vs 국민의힘 100%</td><td class="basis"><span class="b-poll">여론조사 05-27 · 민주 30.2 vs 국민 59.0</span></td></tr><tr class="cand"><td colspan="5">오중기(더불), 이철우(국민)</td></tr></tbody></table>
+<p style="color:#666;font-size:.8rem;margin-top:14px">노랑=접전(42~58%), 회색=무소속 우세. 막대 회색=무소속 도전. 현직 이점 미반영. 세종은 총선·대선 시군구 데이터 부재로 8회만 반영. 예측이지 단정 아님.</p>
 </main>
-</body>
-</html>
+</body></html>

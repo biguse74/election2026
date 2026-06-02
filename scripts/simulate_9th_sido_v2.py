@@ -190,7 +190,8 @@ tr.r-toss td{{background:#fffbe9}}tr.r-ind td{{background:#f4f5f6}}
 <p style="color:#666;font-size:.8rem;margin-top:14px">노랑=접전(42~58%), 회색=무소속 우세. 막대 회색=무소속 도전. 현직 이점 미반영. 세종은 총선·대선 시군구 데이터 부재로 8회만 반영. 예측이지 단정 아님.</p>
 </main>
 </body></html>'''
-    out=ROOT/"sim"/"sido-v2"; out.mkdir(parents=True,exist_ok=True)
-    (out/"index.html").write_text(html,encoding="utf-8")
+    for sub in ("sido","sido-v2"):   # 공개 경로 + 미리보기 경로 동시 발행
+        out=ROOT/"sim"/sub; out.mkdir(parents=True,exist_ok=True)
+        (out/"index.html").write_text(html,encoding="utf-8")
 
 if __name__=="__main__": main()
