@@ -140,6 +140,22 @@
   .tr-meta { font-size: 0.72rem; color: var(--muted); }
   .tr-pct { text-align: right; font-weight: 800; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
 
+  /* 사전 vs 본투표 표 */
+  .evd-table { display: grid; gap: 3px; font-variant-numeric: tabular-nums; }
+  .evd-row { display: grid; grid-template-columns: 86px 1fr 1fr 64px; align-items: center; gap: 10px; padding: 5px 2px; border-bottom: 1px solid #f2f2f2; }
+  .evd-table.has-count .evd-row { grid-template-columns: 86px 1fr 1fr 64px 70px; }
+  .evd-head { font-size: 0.72rem; color: var(--muted); font-weight: 700; border-bottom: 2px solid #1a1a1a; }
+  .evd-head > div { text-align: left; }
+  .evd-name { font-size: 0.88rem; font-weight: 700; }
+  .evd-cell { display: flex; align-items: center; gap: 7px; }
+  .evd-bar { height: 14px; border-radius: 3px; flex-shrink: 0; min-width: 2px; }
+  .evd-bar.e { background: #2b6cb0; }
+  .evd-bar.d { background: #c0392b; }
+  .evd-num { font-size: 0.8rem; font-weight: 700; }
+  .evd-share { text-align: right; font-size: 0.82rem; font-weight: 800; }
+  .evd-share.m-dem { color: var(--dem); }
+  .evd-share.m-con { color: var(--con); }
+
   /* 투표율-표심 산점도 */
   .corr-wrap { border: 1px solid var(--line); border-radius: 8px; padding: 16px; background: #fff; }
   svg#corr-svg { width: 100%; height: auto; display: block; }
@@ -244,6 +260,13 @@
     <div id="turnout-table" class="turnout-table"></div>
   </section>
 
+  <section class="block" id="evd-block" hidden>
+    <h2>사전투표 vs 본투표 — 진보·보수 가설</h2>
+    <p class="block-sub">시도별 <b>사전투표율</b>(5/29~30 최종)과 <b>당일 본투표율</b>(실시간)을 나란히. 사전투표 비중이 큰 곳일수록 민주에 유리하다는 <b>가설</b>을 개표로 검증합니다.</p>
+    <div id="evd-table" class="evd-table"></div>
+    <div id="evd-note" class="corr-note"></div>
+  </section>
+
   <section class="block">
     <h2>시도지사 개표 — 예측 vs 실제</h2>
     <p class="block-sub">각 시도지사 개표 현황(실측)을 <b>뉴탐사 자체 시뮬레이션</b>(과거 개표결과 기반 10000회 몬테카를로)의 민주 당선확률과 같은 화면에서 비교. <b>예측 적중</b>=우세 예측 진영이 실제 우세, <b>접전 예측 적중</b>=박빙으로 본 곳이 실제 박빙, <b>이변</b>=예측과 1·2위 진영 뒤바뀜.</p>
@@ -315,6 +338,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603e"></script>
+<script src="live.js?v=20260603f"></script>
 </body>
 </html>

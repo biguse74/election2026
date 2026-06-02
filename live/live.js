@@ -15,6 +15,7 @@ const PATHS = {
   prediction:  '../data/prediction_sido.json',
   predBasicHead: '../data/prediction_basic_head.json',
   parties:     '../data/parties.json',
+  earlyVoting: '../data/early_voting/20260603/latest.json',
 };
 
 const DEM = '더불어민주당';
@@ -209,6 +210,65 @@ function renderTurnoutTable(cur) {
     `<div class="tr-bar-wrap"><div class="tr-bar" style="width:${((s.turnout_pct || 0) / maxPct * 100).toFixed(1)}%"></div></div>` +
     `<div class="tr-pct">${fmt1(s.turnout_pct)}%</div></div>`;
   wrap.innerHTML = row(nat, true) + sidos.map(s => row(s, false)).join('');
+}
+
+// ── 사전 vs 본투표 (진보·보수 가설) ────────────────────────────────
+function renderEarlyVsDay(cur, earlyVoting) {
+  const block = document.getElementById('evd-block');
+  const wrap = document.getElementById('evd-table');
+  const note = document.getElementById('evd-note');
+  if (!block || !wrap) return;
+  const evSido = {};
+  for (const s of (earlyVoting && earlyVoting.by_sido || [])) evSido[s.sdName] = s;
+  const curSido = {};
+  for (const s of (cur && cur.turnout && cur.turnout.by_sido || [])) curSido[s.sd_name] = s;
+  const marginSido = {};
+  for (const r of (cur && cur.races || [])) {
+    if (String(r.sg_type_code) !== '3') continue;
+    const dem = partyShare(r, DEM), con = partyShare(r, CON);
+    if (dem && con) marginSido[r.sd_name] = dem.share - con.share;
+  }
+  const rows = [];
+  for (const sd of Object.keys(evSido)) {
+    const ev = evSido[sd], cu = curSido[sd];
+    const eligible = ev.voters || (cu && cu.eligible_voters) || 0;
+    const dayVoted = (cu && cu.day_voters_so_far) || 0;
+    const dayPct = eligible ? dayVoted / eligible * 100 : null;
+    const earlyShare = (ev.voted + dayVoted) ? ev.voted / (ev.voted + dayVoted) * 100 : null;
+    rows.push({ sd, earlyPct: ev.turnout, dayPct, earlyShare, margin: marginSido[sd] });
+  }
+  if (rows.length < 3) { block.hidden = true; return; }
+  block.hidden = false;
+  rows.sort((a, b) => (b.earlyShare || 0) - (a.earlyShare || 0));
+  const maxE = Math.max(...rows.map(r => r.earlyPct || 0), 1);
+  const maxD = Math.max(...rows.map(r => r.dayPct || 0), 1);
+  const hasCount = rows.some(r => r.margin != null);
+  const head = `<div class="evd-row evd-head"><div>시도</div><div>사전투표율</div><div>당일 본투표율</div><div class="evd-share">사전비중</div>${hasCount ? '<div class="evd-share">민주격차</div>' : ''}</div>`;
+  const body = rows.map(r => {
+    const mc = hasCount
+      ? `<div class="evd-share ${r.margin > 0 ? 'm-dem' : r.margin < 0 ? 'm-con' : ''}">${r.margin == null ? '—' : (r.margin > 0 ? '민주+' : '국힘+') + fmt1(Math.abs(r.margin))}</div>`
+      : '';
+    return `<div class="evd-row"><div class="evd-name">${r.sd}</div>` +
+      `<div class="evd-cell"><span class="evd-bar e" style="width:${(r.earlyPct / maxE * 100).toFixed(0)}%"></span><span class="evd-num">${fmt1(r.earlyPct)}%</span></div>` +
+      `<div class="evd-cell"><span class="evd-bar d" style="width:${r.dayPct == null ? 0 : (r.dayPct / maxD * 100).toFixed(0)}%"></span><span class="evd-num">${r.dayPct == null ? '—' : fmt1(r.dayPct) + '%'}</span></div>` +
+      `<div class="evd-share">${r.earlyShare == null ? '—' : fmt1(r.earlyShare) + '%'}</div>${mc}</div>`;
+  }).join('');
+  wrap.className = 'evd-table' + (hasCount ? ' has-count' : '');
+  wrap.innerHTML = head + body;
+  if (!note) return;
+  if (hasCount) {
+    const pts = rows.filter(r => r.earlyShare != null && r.margin != null);
+    if (pts.length >= 3) {
+      const st = pearson(pts.map(p => p.earlyShare), pts.map(p => p.margin));
+      let v;
+      if (st.r > 0.3) v = `사전투표 비중이 높은 시도일수록 <b>민주 우세</b> 경향 (r=${st.r.toFixed(2)}, n=${st.n}) — <b>가설과 부합</b>`;
+      else if (st.r < -0.3) v = `사전투표 비중이 높은 시도일수록 <b>국힘 우세</b> 경향 (r=${st.r.toFixed(2)}, n=${st.n}) — <b>가설과 반대</b>`;
+      else v = `사전비중과 우세 정당 사이 <b>뚜렷한 상관 없음</b> (r=${st.r.toFixed(2)}, n=${st.n})`;
+      note.innerHTML = `📊 <b>개표로 본 가설 검증:</b> ${v}.<br><span class="corr-warn">⚠️ 호남(사전·민주 모두 높음)·영남처럼 지역 고유 성향이 섞여 '사전투표→정당' 인과로 단정할 수 없습니다. 2022 대선은 사전투표율이 높았어도 보수가 이긴 반례입니다.</span>`;
+    }
+  } else {
+    note.innerHTML = `<b>가설:</b> 사전투표는 진보(민주)에, 당일 본투표는 보수(국힘)에 상대적으로 유리하다는 통념. <b>검증되지 않은 가설</b>이며 오늘 <b>개표로 확인</b>됩니다(18시 마감 후 이 표에 민주격차가 채워지고 상관이 계산됩니다).<br><span class="corr-warn">⚠️ 사전투표율↑이 특정 정당 유·불리로 직결되지 않습니다. 2022 대선 반례·지역 성향 교란이 큽니다.</span>`;
+  }
 }
 
 // ── 투표율과 표심 (상관 산점도) ────────────────────────────────────
@@ -653,9 +713,10 @@ async function render() {
   const preview = location.search.includes('preview');
   const COUNT_START = Date.parse('2026-06-03T18:00:00+09:00');
   const beforeCount = !preview && Date.now() < COUNT_START;
-  const [cur, watchlist, groups, prevWinner, prevResult, prediction, predBasicHead, parties] = await Promise.all([
+  const [cur, watchlist, groups, prevWinner, prevResult, prediction, predBasicHead, parties, earlyVoting] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.groups),
     loadJSON(PATHS.prevWinner), loadJSON(PATHS.prevResult), loadJSON(PATHS.prediction), loadJSON(PATHS.predBasicHead), loadJSON(PATHS.parties),
+    loadJSON(PATHS.earlyVoting),
   ]);
   // 투표 시간대(개표 전): 실제 투표율이 있으면 투표율만 표시, 개표 섹션은 대기.
   if (beforeCount) {
@@ -663,6 +724,7 @@ async function render() {
     if (nat && nat.turnout_pct != null) {
       renderHero(cur);
       renderTurnoutTable(cur);
+      renderEarlyVsDay(cur, earlyVoting);
       renderTurnoutCorr(cur);
       const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
       const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
@@ -691,6 +753,7 @@ async function render() {
 
   renderHero(cur);
   renderTurnoutTable(cur);
+  renderEarlyVsDay(cur, earlyVoting);
   renderWatchlist(watchlist);
   renderGroups(groups);
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
