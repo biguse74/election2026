@@ -191,6 +191,26 @@ function renderHero(cur) {
   document.getElementById('updated-at').textContent = fmtKST(cur?.polled_at) + ' (KST)';
 }
 
+// ── 시도별 실시간 투표율 표 ────────────────────────────────────────
+function renderTurnoutTable(cur) {
+  const block = document.getElementById('turnout-block');
+  const wrap = document.getElementById('turnout-table');
+  if (!block || !wrap) return;
+  const nat = cur && cur.turnout && cur.turnout.national;
+  if (!nat || nat.turnout_pct == null) { block.hidden = true; return; }
+  block.hidden = false;
+  const tt = document.getElementById('turnout-time');
+  if (tt) tt.textContent = fmtKST(cur.polled_at) + ' (KST)';
+  const sidos = (cur.turnout.by_sido || []).slice().sort((a, b) => (b.turnout_pct || 0) - (a.turnout_pct || 0));
+  const maxPct = Math.max(nat.turnout_pct || 0, ...sidos.map(s => s.turnout_pct || 0), 1);
+  const row = (s, isNat) =>
+    `<div class="tr-row${isNat ? ' tr-nat' : ''}" title="투표 ${intComma(s.voters_so_far)} / 선거인 ${intComma(s.eligible_voters)}">` +
+    `<div class="tr-name">${s.sd_name}</div>` +
+    `<div class="tr-bar-wrap"><div class="tr-bar" style="width:${((s.turnout_pct || 0) / maxPct * 100).toFixed(1)}%"></div></div>` +
+    `<div class="tr-pct">${fmt1(s.turnout_pct)}%</div></div>`;
+  wrap.innerHTML = row(nat, true) + sidos.map(s => row(s, false)).join('');
+}
+
 // ── 투표율과 표심 (상관 산점도) ────────────────────────────────────
 // 시도별 투표율(X) vs 시도지사 민주−국힘 격차(Y). 점=시도, 점선=추세, 피어슨 r.
 function renderTurnoutCorr(cur) {
@@ -642,6 +662,7 @@ async function render() {
     const nat = cur && cur.turnout && cur.turnout.national;
     if (nat && nat.turnout_pct != null) {
       renderHero(cur);
+      renderTurnoutTable(cur);
       renderTurnoutCorr(cur);
       const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
       const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
@@ -669,6 +690,7 @@ async function render() {
   LATEST_PREVRESULT = (prevResult && prevResult.results) || {};
 
   renderHero(cur);
+  renderTurnoutTable(cur);
   renderWatchlist(watchlist);
   renderGroups(groups);
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
