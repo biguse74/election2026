@@ -13,6 +13,7 @@ const PATHS = {
   prevWinner:  '../data/live_counting/prev_winner.json',
   prevResult:  '../data/live_counting/prev_result.json',
   prediction:  '../data/prediction_sido.json',
+  predBasicHead: '../data/prediction_basic_head.json',
   parties:     '../data/parties.json',
 };
 
@@ -482,6 +483,52 @@ function renderChiefRaces(cur, predMap, parties) {
   }).join('');
 }
 
+// ── 기초단체장 226 — 예측 vs 실제 ──────────────────────────────────
+function renderBasicHead(cur, predBH) {
+  const root = document.getElementById('bh-compare');
+  if (!root) return;
+  const prob = (predBH && predBH.basic_head_dem_win_prob) || {};
+  const sm = (predBH && predBH.summary) || {};
+  const races = (cur?.races || []).filter(r => String(r.sg_type_code) === '4');
+  const counted = races.filter(r => (r.progress_pct || 0) > 0 && (r.candidates || []).length);
+  if (!counted.length) {
+    root.innerHTML = `<div class="state-empty">기초단체장 개표 데이터가 아직 없습니다. 18시 마감 후 표시됩니다.</div>`;
+    return;
+  }
+  let dem = 0, con = 0, etc = 0, matched = 0, withPred = 0;
+  const upsets = [];
+  for (const r of counted) {
+    const lead = (r.candidates || [])[0]; if (!lead) continue;
+    const p = lead.jd_name;
+    if (p === DEM) dem++; else if (p === CON) con++; else etc++;
+    const pr = prob[`4|${r.sd_name}|${r.sgg_name || ''}`];
+    if (pr != null && (r.progress_pct || 0) >= 20) {
+      const predDem = pr >= 50, actualDem = p === DEM;
+      withPred++;
+      if (predDem === actualDem) matched++; else upsets.push(r);
+    }
+  }
+  const ci = sm.dem_80_ci || [];
+  const predLine = (sm.dem_mode != null)
+    ? `<b style="color:var(--dem)">민주 ${sm.dem_mode}곳</b> · 그외 ${sm.con_mode}곳 <span class="bh-sub">(민주 예상범위 ${ci[0]}~${ci[1]}곳)</span>`
+    : '—';
+  const acc = withPred ? Math.round(matched / withPred * 100) : null;
+  const verdict = acc != null ? `예측 방향 적중 ${matched}/${withPred}곳 (${acc}%)` : '개표 20%+ 선거구부터 적중 집계';
+  root.innerHTML = `
+    <div class="bh-grid">
+      <div class="bh-card" style="border-left:4px solid var(--dem)">
+        <div class="bh-label">뉴탐사 예측 (시뮬)</div>
+        <div class="bh-figure">${predLine}</div>
+      </div>
+      <div class="bh-card" style="border-left:4px solid #777">
+        <div class="bh-label">실제 개표 집계 (${counted.length}/226곳 개표중)</div>
+        <div class="bh-figure"><b style="color:var(--dem)">민주 ${dem}</b> · <b style="color:var(--con)">국힘 ${con}</b> · 그외 ${etc}</div>
+        <div class="bh-sub">${verdict}</div>
+      </div>
+    </div>
+    ${upsets.length ? `<div class="bh-upset-h">예측과 다른 곳 — 예측 우세 진영이 실제로 뒤집힌 기초단체장 ${upsets.length}곳</div>${raceTable(upsets.slice(0, 40).map(raceTableRow).join(''))}` : ''}`;
+}
+
 // ── 전체 선거구 검색·필터 ──────────────────────────────────────────
 function populateFilters(races) {
   if (filtersPopulated) return;
@@ -576,6 +623,7 @@ function showWaiting(msg) {
   const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
   const cb = document.getElementById('corr-block'); if (cb) cb.hidden = true;
   document.getElementById('chief-races').innerHTML = `<div class="state-empty">${msg}</div>`;
+  const bh = document.getElementById('bh-compare'); if (bh) bh.innerHTML = `<div class="state-empty">${msg}</div>`;
   document.getElementById('search-results').innerHTML = '';
   document.getElementById('updated-at').textContent = '—';
 }
@@ -588,13 +636,15 @@ async function render() {
     showWaiting('개표는 6월 3일(수) 18시 투표 마감 후 시작됩니다. 마감 후 자동으로 결과가 표시됩니다.');
     return;
   }
-  const [cur, watchlist, groups, prevWinner, prevResult, prediction, parties] = await Promise.all([
+  const [cur, watchlist, groups, prevWinner, prevResult, prediction, predBasicHead, parties] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.groups),
-    loadJSON(PATHS.prevWinner), loadJSON(PATHS.prevResult), loadJSON(PATHS.prediction), loadJSON(PATHS.parties),
+    loadJSON(PATHS.prevWinner), loadJSON(PATHS.prevResult), loadJSON(PATHS.prediction), loadJSON(PATHS.predBasicHead), loadJSON(PATHS.parties),
   ]);
   if (!cur) {
     document.getElementById('chief-races').innerHTML =
       `<div class="state-empty">개표 데이터가 아직 없습니다. 6/3 18시 투표 마감 후 수집이 시작됩니다.</div>`;
+    const bh0 = document.getElementById('bh-compare');
+    if (bh0) bh0.innerHTML = `<div class="state-empty">기초단체장 개표 데이터가 아직 없습니다. 18시 마감 후 표시됩니다.</div>`;
     document.getElementById('search-results').innerHTML = '';
     return;
   }
@@ -608,6 +658,7 @@ async function render() {
   renderWatchlist(watchlist);
   renderGroups(groups);
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
+  renderBasicHead(cur, predBasicHead);
   renderTurnoutCorr(cur);
   populateFilters(LATEST_RACES);
   bindFilters();
