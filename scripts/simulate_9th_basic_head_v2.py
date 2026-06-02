@@ -186,6 +186,7 @@ def main():
         poll = sp.get("poll")
         rows.append({"시도":sd,"시군구":sgg,"민주확률%":p,"도전진영":sp["chal"],"근거":sp["source"],
             "무투표승자":sp.get("won",""),
+            "후보표시":' · '.join(f'{n}({abbr(pty)})' for n,pty in races.get((sd,sgg),[])),
             "prior마진":round(sp["prior"],1) if sp.get("prior") is not None else "",
             "폴기관":poll["기관"] if poll else "","폴등록일":poll["등록일"] if poll else "","폴조사일":(poll.get("조사일") or "") if poll else "",
             "폴민주":poll["민주"] if poll else "","폴비민주":poll["비민주top"] if poll else "",
@@ -217,6 +218,8 @@ def main():
 SIDO_ORDER = ["서울특별시","부산광역시","대구광역시","인천광역시","광주광역시","대전광역시","울산광역시",
     "경기도","강원특별자치도","충청북도","충청남도","전북특별자치도","전라남도","경상북도","경상남도"]
 BUCKET_KR = {"D":"민주","C":"국힘","I":"무소속"}
+ABBR={"더불어민주당":"민주","국민의힘":"국힘","조국혁신당":"조국혁신","진보당":"진보","개혁신당":"개혁","정의당":"정의","기본소득당":"기본","무소속":"무소속"}
+def abbr(p): return ABBR.get(p,(p or "무소속")[:3])
 
 HEADERHTML = '''<header class="sim-header"><div class="sim-header-inner">
 <a href="https://election2026.newtamsa.org/" class="sim-brand"><span class="sim-brand-title">뉴탐사 · 6·3 지방선거 2026</span><span class="sim-brand-sub">결과 예측 시뮬레이션</span></a>
@@ -246,10 +249,11 @@ def write_html(rows, modes, cis, means, n_poll, n_total):
         is_ind = r["도전진영"]=="I"
         if r["근거"]=="uncontested":
             color = "#152484" if p>=50 else ("#6b7280" if is_ind else "#E61E2B")
-            return (f'<tr class="r-uncon"><td class="sgg">{r["시군구"]}</td>'
+            det = f'<tr class="cd" hidden><td colspan="5"><b>출마자</b> · {r.get("후보표시","")}</td></tr>'
+            return (f'<tr class="r-uncon"><td class="sgg" onclick="tgc(this)">{r["시군구"]} <span class="cv">▾</span></td>'
                 f'<td><div class="bar"><span class="bd" style="width:100%;background:{color}"></span></div></td>'
                 f'<td class="nd" style="color:{color}">당선확정</td><td class="nc">무투표 당선</td>'
-                f'<td class="basis"><span class="b-uncon">무투표 · {r.get("무투표승자","")}</span></td></tr>')
+                f'<td class="basis"><span class="b-uncon">무투표 · {r.get("무투표승자","")}</span></td></tr>{det}')
         chal = "무소속·기타" if is_ind else "국민의힘"
         cc = "#6b7280" if is_ind else "#E61E2B"   # 무소속·기타는 회색, 국힘은 빨강
         pm = r.get("prior마진","")
@@ -261,9 +265,10 @@ def write_html(rows, modes, cis, means, n_poll, n_total):
             pmt = f' (민주 {float(pm):+.0f})' if pm!="" else ''
             basis = f'<span class="b-hist">과거선거 지선·총선·대선{pmt}</span>'
         cls = "r-toss" if 42<=p<=58 else ("r-ind" if (is_ind and p<50) else "")  # 접전 우선(노랑), 그 밖 무소속 우세는 회색
-        return (f'<tr class="{cls}"><td class="sgg">{r["시군구"]}</td>'
+        det = f'<tr class="cd" hidden><td colspan="5"><b>출마자</b> · {r.get("후보표시","")}</td></tr>'
+        return (f'<tr class="{cls}"><td class="sgg" onclick="tgc(this)">{r["시군구"]} <span class="cv">▾</span></td>'
             f'<td><div class="bar"><span class="bd" style="width:{p:.0f}%"></span><span class="bc" style="width:{rp:.0f}%;background:{cc}"></span></div></td>'
-            f'<td class="nd">{p:.0f}%</td><td class="nc">vs {chal} {rp:.0f}%</td><td class="basis">{basis}</td></tr>')
+            f'<td class="nd">{p:.0f}%</td><td class="nc">vs {chal} {rp:.0f}%</td><td class="basis">{basis}</td></tr>{det}')
     secs = []
     for sd in sorted(by, key=lambda x: SIDO_ORDER.index(x) if x in SIDO_ORDER else 99):
         rs = sorted(by[sd], key=lambda r: -float(r["민주확률%"]))
@@ -292,6 +297,7 @@ th{{font-size:.72rem;color:#777}} td.sgg{{font-weight:600}}
 .basis{{font-size:.72rem}} .b-poll{{background:#152484;color:#fff;padding:1px 5px;border-radius:3px;font-size:.68rem}} .b-hist{{color:#999;font-size:.72rem}}
 .b-detail{{color:#777;margin-left:5px}} tr.r-ind{{background:#f4f5f6}} tr.r-toss{{background:#fffbe9}}
 .b-uncon{{background:#126b3f;color:#fff;padding:1px 5px;border-radius:3px;font-size:.68rem}} tr.r-uncon{{background:#eef7f1}}
+td.sgg{{cursor:pointer}} td.sgg:hover{{color:#152484}} .cv{{color:#bbb;font-size:.72em}} tr.cd td{{padding:6px 10px;font-size:.8rem;color:#333;background:#f4f7fc;border-bottom:2px solid #dde5f0}}
 @media(max-width:720px){{.basis .b-detail{{display:none}} .bar{{min-width:60px;max-width:90px}} th,td{{padding:3px 4px}}}}
 </style></head><body>
 {HEADERHTML}
@@ -307,6 +313,7 @@ th{{font-size:.72rem;color:#777}} td.sgg{{font-weight:600}}
 <div class="note"><b>모델:</b> 본선 여론조사 있는 <b>{n_poll}곳</b>은 폴 마진(±7%p)을 중심값(국힘 대결은 과거선거 lean과 7:3 혼합), 없는 {n_total-n_poll}곳은 <b>2022지선·2024총선·2025대선 가중평균</b>(최근↑). 사전투표율 미반영(방향 불명 지표). 막대 색: 민주=파랑, 국힘=빨강, <b>무소속·기타=회색</b>. <b>노란 행</b>=칼날 접전(42~58%). 현직 이점·합구 선거구 배분은 미반영. 예측이지 단정이 아닙니다.</div>
 {"".join(secs)}
 </main>
+<script>function tgc(td){{var r=td.parentElement.nextElementSibling;if(r&&r.classList.contains('cd')){{r.hidden=!r.hidden;var c=td.querySelector('.cv');if(c)c.textContent=r.hidden?'▾':'▴';}}}}</script>
 </body></html>'''
     for sub in ("basic-head", "basic-head-v2"):   # 공개 경로 + 기존 미리보기 경로 동시 갱신
         out = ROOT / "sim" / sub
