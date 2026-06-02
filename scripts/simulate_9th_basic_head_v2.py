@@ -227,7 +227,7 @@ def write_html(rows, modes, cis, means, n_poll, n_total):
         else:
             pmt = f' (민주 {float(pm):+.0f})' if pm!="" else ''
             basis = f'<span class="b-hist">과거선거 지선·총선·대선{pmt}</span>'
-        cls = "r-ind" if (is_ind and p<50) else ("r-toss" if 42<=p<=58 else "")
+        cls = "r-toss" if 42<=p<=58 else ("r-ind" if (is_ind and p<50) else "")  # 접전 우선(노랑), 그 밖 무소속 우세는 회색
         return (f'<tr class="{cls}"><td class="sgg">{r["시군구"]}</td>'
             f'<td><div class="bar"><span class="bd" style="width:{p:.0f}%"></span><span class="bc" style="width:{rp:.0f}%;background:{cc}"></span></div></td>'
             f'<td class="nd">{p:.0f}%</td><td class="nc">vs {chal} {rp:.0f}%</td><td class="basis">{basis}</td></tr>')
