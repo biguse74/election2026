@@ -110,6 +110,11 @@ def build_specs(races, polls, hp, lean):
         buckets = {bucket(p) for _, p in cands}
         has_D = "D" in buckets
         P = prior_margin(sd, sgg, hp, lean)
+        if len(cands) == 1:   # 무투표 당선(후보 1명)
+            nm, pty = cands[0]; b = bucket(pty)
+            specs[(sd,sgg)] = {"source":"uncontested","center":(100.0 if b=="D" else -100.0),"sigma":0.1,
+                "chal":(b if b!="D" else "C"),"prior":P,"buckets":buckets,"won":f"{nm}·{(pty or '무소속')[:2]}"}
+            continue
         poll = polls.get(f"{sd}/{sgg}")
         if poll:
             chal = bucket(poll["비민주당"])
@@ -180,6 +185,7 @@ def main():
         p = round(win_D.get((sd,sgg),0)/N_SIM*100,1)
         poll = sp.get("poll")
         rows.append({"시도":sd,"시군구":sgg,"민주확률%":p,"도전진영":sp["chal"],"근거":sp["source"],
+            "무투표승자":sp.get("won",""),
             "prior마진":round(sp["prior"],1) if sp.get("prior") is not None else "",
             "폴기관":poll["기관"] if poll else "","폴등록일":poll["등록일"] if poll else "",
             "폴민주":poll["민주"] if poll else "","폴비민주":poll["비민주top"] if poll else "",
@@ -238,6 +244,12 @@ def write_html(rows, modes, cis, means, n_poll, n_total):
     def srow(r):
         p = float(r["민주확률%"]); rp = 100 - p
         is_ind = r["도전진영"]=="I"
+        if r["근거"]=="uncontested":
+            color = "#152484" if p>=50 else ("#6b7280" if is_ind else "#E61E2B")
+            return (f'<tr class="r-uncon"><td class="sgg">{r["시군구"]}</td>'
+                f'<td><div class="bar"><span class="bd" style="width:100%;background:{color}"></span></div></td>'
+                f'<td class="nd" style="color:{color}">당선확정</td><td class="nc">무투표 당선</td>'
+                f'<td class="basis"><span class="b-uncon">무투표 · {r.get("무투표승자","")}</span></td></tr>')
         chal = "무소속·기타" if is_ind else "국민의힘"
         cc = "#6b7280" if is_ind else "#E61E2B"   # 무소속·기타는 회색, 국힘은 빨강
         pm = r.get("prior마진","")
@@ -278,6 +290,7 @@ th{{font-size:.72rem;color:#777}} td.sgg{{font-weight:600}}
 .bd{{background:#152484}} .bc{{background:#E61E2B}} .nd{{color:#152484;font-weight:700}} .nc{{color:#666;font-size:.74rem}}
 .basis{{font-size:.72rem}} .b-poll{{background:#152484;color:#fff;padding:1px 5px;border-radius:3px;font-size:.68rem}} .b-hist{{color:#999;font-size:.72rem}}
 .b-detail{{color:#777;margin-left:5px}} tr.r-ind{{background:#f4f5f6}} tr.r-toss{{background:#fffbe9}}
+.b-uncon{{background:#126b3f;color:#fff;padding:1px 5px;border-radius:3px;font-size:.68rem}} tr.r-uncon{{background:#eef7f1}}
 @media(max-width:720px){{.basis .b-detail{{display:none}} .bar{{min-width:60px;max-width:90px}} th,td{{padding:3px 4px}}}}
 </style></head><body>
 {HEADERHTML}
