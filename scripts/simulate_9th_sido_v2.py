@@ -131,12 +131,29 @@ def main():
     write_html(races,specs,prob,modes,cis)
     print("저장: data/prediction_sido_v2.json , sim/sido-v2/index.html")
 
+HEADERHTML='''<header class="sim-header"><div class="sim-header-inner">
+<a href="https://election2026.newtamsa.org/" class="sim-brand"><span class="sim-brand-title">뉴탐사 · 6·3 지방선거 2026</span><span class="sim-brand-sub">결과 예측 시뮬레이션</span></a>
+<nav class="sim-nav"><a class="sim-nav-link" href="/sim/">시뮬레이션 홈</a><a class="sim-nav-link sim-nav-link-active" href="/sim/sido/" aria-current="page">시도지사 17</a><a class="sim-nav-link" href="/sim/basic-head/">기초단체장 226</a><a class="sim-nav-link" href="/sim/assembly/">재·보궐 14</a></nav>
+<a class="sim-live-link js-live-gate" href="https://election2026.newtamsa.org/#live" hidden>실시간 개표 →</a>
+<script>document.addEventListener('DOMContentLoaded',function(){if(Date.now()>=Date.parse('2026-06-03T18:00:00+09:00')){var e=document.querySelectorAll('.js-live-gate');for(var i=0;i<e.length;i++)e[i].hidden=false;}});</script>
+</div></header>'''
+HEADERCSS='''
+.sim-header{background:#1a1a1a;color:#fff;border-bottom:3px solid #c41e3a}
+.sim-header-inner{max-width:1100px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.sim-brand{color:#fff;text-decoration:none;display:flex;flex-direction:column;line-height:1.2;margin-right:auto}
+.sim-brand-title{font-size:1.05rem;font-weight:800}.sim-brand-sub{font-size:.78rem;color:#c41e3a;font-weight:700}
+.sim-nav{display:flex;gap:4px;flex-wrap:wrap}
+.sim-nav-link{color:rgba(255,255,255,.78);text-decoration:none;font-size:.86rem;font-weight:600;padding:6px 12px;border-radius:999px}
+.sim-nav-link:hover{background:rgba(255,255,255,.08);color:#fff}.sim-nav-link-active{background:#c41e3a;color:#fff}
+.sim-live-link{background:#c41e3a;color:#fff;text-decoration:none;padding:7px 14px;border-radius:6px;font-size:.84rem;font-weight:700}
+@media(max-width:720px){.sim-header-inner{padding:10px 16px;gap:10px}.sim-brand-title{font-size:.95rem}.sim-nav-link{font-size:.78rem;padding:5px 10px}}
+'''
 def write_html(races,specs,prob,modes,cis):
     def row(k):
         p=prob[k]; rp=100-p; sp=specs[k]; is_i=sp["chal"]=="I"
         cc="#6b7280" if is_i else "#E61E2B"; chal="무소속·기타" if is_i else "국민의힘"
         basis=(f'<span class="b-poll">{sp["polltxt"]}</span>' if sp["source"]=="poll"
-               else f'<span class="b-hist">지선·총선·대선 (민주 {sp["prior"]:+.0f})</span>' if sp["prior"] is not None else '<span class="b-hist">—</span>')
+               else f'<span class="b-hist">과거선거 (민주 {sp["prior"]:+.0f})</span>' if sp["prior"] is not None else '<span class="b-hist">—</span>')
         cls="r-toss" if 42<=p<=58 else ("r-ind" if (is_i and p<50) else "")
         cn=', '.join(f'{n}({(pp or "무소속")[:2]})' for n,pp in races[k])
         return (f'<tr class="{cls}"><td class="sgg">{k.replace("특별자치도","").replace("광역시","").replace("특별시","").replace("특별자치시","")}</td>'
@@ -146,7 +163,9 @@ def write_html(races,specs,prob,modes,cis):
     rows="".join(row(k) for k in sorted(SIDO_ORDER,key=lambda x:-prob.get(x,0)) if k in specs)
     html=f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>시도지사 시뮬 v2 — 뉴탐사</title><style>
-body{{font-family:-apple-system,'Pretendard',sans-serif;max-width:840px;margin:0 auto;padding:22px;color:#1a1a1a;line-height:1.5}}
+body{{font-family:-apple-system,'Pretendard',sans-serif;margin:0;padding:0;color:#1a1a1a;line-height:1.5}}
+.wrap{{max-width:840px;margin:0 auto;padding:22px}}
+{HEADERCSS}
 h1{{font-size:1.5rem;margin:0 0 4px}}.sub{{color:#666;font-size:.85rem;margin:0 0 14px}}
 .legal{{background:#fff8e1;border:1px solid #ffe08a;border-radius:6px;padding:10px 14px;font-size:.82rem;color:#7a5b00;margin:0 0 16px}}
 .pills{{display:flex;gap:10px;margin:0 0 14px}}.pill{{flex:1;padding:12px;border-radius:8px}}.pill b{{font-size:1.6rem;display:block}}
@@ -159,14 +178,17 @@ td.sgg{{font-weight:700}}.bar{{display:flex;height:13px;border-radius:3px;overfl
 tr.cand td{{padding:0 7px 6px;font-size:.74rem;color:#888;border-bottom:1px solid #eee}}
 tr.r-toss td{{background:#fffbe9}}tr.r-ind td{{background:#f4f5f6}}
 </style></head><body>
-<h1>시도지사 16 — 시뮬 v2 (지선·총선·대선 + 여론조사)</h1>
-<p class="sub">2026-06-02 · 2022지선+2024총선+2025대선 prior + 무소속 3진영 · 1만 회 · 뉴탐사 (※ 미리보기, 폴 보강 예정)</p>
-<div class="legal">⚖️ 전북 등 인용 여론조사는 공표금지기간(5/28) 전 조사분. · 현재 시도지사 본선 폴은 수집 중 — 우선 지선·총선·대선 prior 기반.</div>
+{HEADERHTML}
+<main class="wrap">
+<h1>시도지사 16 — 결과 예측 시뮬레이션</h1>
+<p class="sub">2026-06-02 · 본선 여론조사 16곳 + 과거선거(2022지선·2024총선·2025대선) + 무소속 3진영 · 1만 회 몬테카를로 · 뉴탐사</p>
+<div class="legal">⚖️ 인용 여론조사는 모두 공직선거법 공표금지기간(5/28) 전 조사·여심위 등록분입니다. (§108 단서) 폴 없는 곳은 과거선거 기반.</div>
 <div class="pills"><div class="pill p-d"><span class="pl">민주</span><b>{modes['D']}곳</b><span class="ps">{cis['D'][0]}~{cis['D'][1]}</span></div>
 <div class="pill p-c"><span class="pl">국힘</span><b>{modes['C']}곳</b><span class="ps">{cis['C'][0]}~{cis['C'][1]}</span></div>
 <div class="pill p-i"><span class="pl">무소속·기타</span><b>{modes['I']}곳</b><span class="ps">{cis['I'][0]}~{cis['I'][1]}</span></div></div>
 <table><tbody>{rows}</tbody></table>
 <p style="color:#666;font-size:.8rem;margin-top:14px">노랑=접전(42~58%), 회색=무소속 우세. 막대 회색=무소속 도전. 현직 이점 미반영. 세종은 총선·대선 시군구 데이터 부재로 8회만 반영. 예측이지 단정 아님.</p>
+</main>
 </body></html>'''
     out=ROOT/"sim"/"sido-v2"; out.mkdir(parents=True,exist_ok=True)
     (out/"index.html").write_text(html,encoding="utf-8")
