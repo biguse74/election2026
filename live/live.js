@@ -270,7 +270,23 @@ function projectionContext(pj) {
 function renderProjection(cur, histHourly) {
   const e = document.getElementById('hero-early');
   const meta = document.getElementById('hero-early-meta');
+  const label = document.getElementById('hero-early-label');
   if (!e) return;
+  // 투표 마감(18시) 후엔 '예상'이 아니라 확정 최종 투표율 + 역대 맥락을 표시.
+  const nat = cur && cur.turnout && cur.turnout.national;
+  const ended = cur && typeof cur.polled_at === 'string' && cur.polled_at.slice(11, 16) >= '18:00';
+  if (ended && nat && nat.turnout_pct != null) {
+    const fin = nat.turnout_pct;
+    if (label) label.innerHTML = '최종 투표율 <span style="font-weight:600;opacity:0.7">· 확정</span>';
+    e.innerHTML = `${fmt1(fin)}<span class="pct">%</span>`;
+    const rank = ZIBANG_HISTORY.filter(h => h.rate > fin).length + 1;
+    const prev22 = ZIBANG_HISTORY.find(h => h.year === 2022);
+    const dv = prev22 ? fin - prev22.rate : null;
+    if (meta) meta.textContent = (dv != null)
+      ? `역대 ${rank}위 · 4년 전(2022) ${fmt1(prev22.rate)}%보다 ${dv >= 0 ? '+' : ''}${fmt1(dv)}%p`
+      : `역대 ${rank}위`;
+    return;
+  }
   const pj = computeProjection(cur, histHourly);
   if (!pj) return;
   e.innerHTML = `${fmt1(pj.proj)}<span class="pct">%</span>`;
