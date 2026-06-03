@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-03T16:58:29+09:00",
+  "polled_at": "2026-06-03T17:03:42+09:00",
   "source": "openapi",
   "phase": "pre",
   "races": [],
@@ -8,9 +8,9 @@
     "national": {
       "sd_name": "전국",
       "eligible_voters": 44649908,
-      "voters_so_far": 25597125,
+      "voters_so_far": 25606561,
       "turnout_pct": 57.3,
-      "day_voters_so_far": 15032554,
+      "day_voters_so_far": 15041990,
       "early_voters_so_far": 10564571,
       "day_eligible_voters": 34079860,
       "early_eligible_voters": 10570048
@@ -19,9 +19,9 @@
       {
         "sd_name": "서울특별시",
         "eligible_voters": 8319134,
-        "voters_so_far": 4909815,
-        "turnout_pct": 59.0,
-        "day_voters_so_far": 2918443,
+        "voters_so_far": 4919251,
+        "turnout_pct": 59.1,
+        "day_voters_so_far": 2927879,
         "early_voters_so_far": 1991372,
         "day_eligible_voters": 6327113,
         "early_eligible_voters": 1992021
@@ -237,6 +237,11 @@
         "time": "16:00",
         "turnout_pct": 54.7,
         "voters_so_far": 24428042
+      },
+      {
+        "time": "17:00",
+        "turnout_pct": 56.9,
+        "voters_so_far": 25401085
       }
     ],
     "seoul_gu": [
@@ -291,9 +296,9 @@
       {
         "gu_name": "중랑구",
         "eligible_voters": 342996,
-        "voters_so_far": 185904,
-        "turnout_pct": 54.2,
-        "day_voters_so_far": 100378,
+        "voters_so_far": 195340,
+        "turnout_pct": 57.0,
+        "day_voters_so_far": 109814,
         "early_voters_so_far": 85526
       },
       {
@@ -446,9 +451,9 @@
         "total": {
           "name": "합계",
           "eligible_voters": 8319134,
-          "voters_so_far": 4909815,
-          "turnout_pct": 59.0,
-          "day_voters_so_far": 2918443,
+          "voters_so_far": 4919251,
+          "turnout_pct": 59.1,
+          "day_voters_so_far": 2927879,
           "early_voters_so_far": 1991372
         },
         "sigungu": [
@@ -503,9 +508,9 @@
           {
             "name": "중랑구",
             "eligible_voters": 342996,
-            "voters_so_far": 185904,
-            "turnout_pct": 54.2,
-            "day_voters_so_far": 100378,
+            "voters_so_far": 195340,
+            "turnout_pct": 57.0,
+            "day_voters_so_far": 109814,
             "early_voters_so_far": 85526
           },
           {
