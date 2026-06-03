@@ -6,7 +6,9 @@ const PATHS = {
   parties:   '../data/parties.json',
   photos:    '../live/candidate_photos.json',
   cards:     '../data/candidate_cards.json',
+  eduOrient: '../data/edu_orientation.json',
 };
+let EDU_ORIENT = {};
 const DEM = '더불어민주당';
 const CON = '국민의힘';
 const REFRESH_MS = 60 * 1000;
@@ -243,6 +245,31 @@ function labeledSeatBar(t) {
     <div class="bar-sub">당선자 <b>${t.total}</b>명 · 정당별 실제 당선자 수</div>`;
 }
 
+// 교육감 성향(진보/보수) 집계 바 — 당선자 기준
+function renderEduTally(eduRaces) {
+  const el = document.getElementById('edu-tally');
+  if (!el) return;
+  let prog = 0, cons = 0, etc = 0;
+  for (const r of eduRaces) {
+    const w = (r.candidates || [])[0]; if (!w) continue;
+    const o = EDU_ORIENT[w.name];
+    if (o === '진보') prog++; else if (o === '보수') cons++; else etc++;
+  }
+  const tot = prog + cons + etc || 1;
+  const BLUE = '#2b6cb0', RED = '#c0392b';
+  el.innerHTML = `<div class="bar-counts">
+      <div class="bc"><b style="color:${BLUE}">${prog}</b><span>진보</span></div>
+      ${etc ? `<div class="bc etc"><b>${etc}</b><span>그 외</span></div>` : ''}
+      <div class="bc con"><b style="color:${RED}">${cons}</b><span>보수</span></div>
+    </div>
+    <div class="seat-bar labeled">
+      <i style="width:${prog / tot * 100}%;background:${BLUE}"></i>
+      <i style="width:${etc / tot * 100}%;background:#8a8a96"></i>
+      <i style="width:${cons / tot * 100}%;background:${RED}"></i>
+    </div>
+    <div class="bar-sub">진보 <b>${prog}</b> : 보수 <b>${cons}</b>${etc ? ` · 그 외 ${etc}` : ''} · 당선 ${tot}곳 (교육단체 추천·언론 분류 기준)</div>`;
+}
+
 function renderBH(bh) {
   document.getElementById('bh-tally').innerHTML = labeledSeatBar(tallyByLeader(bh));
   const byS = {};
@@ -269,12 +296,14 @@ function renderBH(bh) {
 
 let _huboidLoaded = false;
 async function render() {
-  const [cur, prediction, parties, photos, huboids] = await Promise.all([
+  const [cur, prediction, parties, photos, huboids, eduOri] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.prediction), loadJSON(PATHS.parties), loadJSON(PATHS.photos),
     _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.cards),
+    _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.eduOrient),
   ]);
   if (!cur || !cur.races) { document.getElementById('rs-sub').textContent = '데이터를 불러오지 못했습니다.'; return; }
   if (huboids) { HUBOID = huboids; _huboidLoaded = true; }
+  if (eduOri) EDU_ORIENT = eduOri.by_name || {};
   PARTIES = parties || {};
   PHOTO_MAP = photos || { by_full: {}, by_sd: {} };
   const predMap = (prediction && prediction.sido_dem_win_prob) || {};
@@ -288,6 +317,7 @@ async function render() {
   renderHero(cur, chiefs, edu, repoll, bh);
   renderHistory(chiefs);
   renderGrid('grid-chief', chiefs, { predMap });
+  renderEduTally(edu);
   renderGrid('grid-edu', edu, {});
   renderGrid('grid-repoll', repoll, {});
   renderBH(bh);
