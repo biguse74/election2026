@@ -39,7 +39,7 @@ const SIDO_SHORT = {
   '전북특별자치도': '전북', '전라남도': '전남', '경상북도': '경북', '경상남도': '경남',
   '제주특별자치도': '제주', '전남광주통합특별시': '전남광주',
 };
-const TYPE_ORDER = ['3', '4', '5', '6', '11'];
+const TYPE_ORDER = ['2', '3', '4', '5', '6', '11'];
 
 let LATEST_RACES = [];
 let LATEST_PARTIES = {};
@@ -1065,6 +1065,21 @@ function renderBasicHead(cur, predBH) {
     ${upsets.length ? `<div class="bh-upset-h">예측과 다른 곳 — 예측 우세 진영이 실제로 뒤집힌 기초단체장 ${upsets.length}곳</div>${raceTable(upsets.slice(0, 40).map(raceTableRow).join(''))}` : ''}`;
 }
 
+// ── 국회의원 재·보궐 개표 ──────────────────────────────────────────
+function renderRepoll(cur) {
+  const block = document.getElementById('repoll-block');
+  const root = document.getElementById('repoll-races');
+  if (!block || !root) return;
+  const races = (cur?.races || []).filter(r => String(r.sg_type_code) === '2');
+  if (!races.length) { block.hidden = true; return; }
+  // 개표율 높은 곳 → 접전(격차 작은) 순으로
+  races.sort((a, b) =>
+    (b.progress_pct || 0) - (a.progress_pct || 0) ||
+    (a.rank1_minus_rank2_pp ?? 999) - (b.rank1_minus_rank2_pp ?? 999));
+  block.hidden = false;
+  root.innerHTML = raceTable(races.map(raceTableRow).join(''));
+}
+
 // ── 전체 선거구 검색·필터 ──────────────────────────────────────────
 function populateFilters(races) {
   if (filtersPopulated) return;
@@ -1158,6 +1173,7 @@ function showWaiting(msg) {
   const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
   const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
   const cb = document.getElementById('corr-block'); if (cb) cb.hidden = true;
+  const rp = document.getElementById('repoll-block'); if (rp) rp.hidden = true;
   document.getElementById('chief-races').innerHTML = `<div class="state-empty">${msg}</div>`;
   const bh = document.getElementById('bh-compare'); if (bh) bh.innerHTML = `<div class="state-empty">${msg}</div>`;
   document.getElementById('search-results').innerHTML = '';
@@ -1263,6 +1279,7 @@ async function render() {
   renderGroups(groups);
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
   renderBasicHead(cur, predBasicHead);
+  renderRepoll(cur);
   renderTurnoutCorr(cur);
   populateFilters(LATEST_RACES);
   bindFilters();

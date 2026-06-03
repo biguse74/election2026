@@ -47,6 +47,7 @@ OUT_DIR = ROOT / "data" / "live_counting"
 RAW_DIR = OUT_DIR / "raw"
 
 SG_LABELS = {
+    "2": "국회의원",
     "3": "시도지사",
     "4": "기초단체장",
     "5": "시도의원",
@@ -539,9 +540,12 @@ def _vccp_rows(eid: str, sg_type: str, city_code: str, statement_id: str) -> lis
             for tr in _re.findall(r"<tr[^>]*>(.*?)</tr>", tbls[0], _re.S)]
 
 
-def _parse_vccp_blocks(rows: list[list[str]], sg_type: str, sd_override: str | None = None) -> list[dict]:
+def _parse_vccp_blocks(rows: list[list[str]], sg_type: str, sd_override: str | None = None,
+                       sd_lookup: dict | None = None) -> list[dict]:
     """VCCP09 3행 블록(이름헤더/득표/득표율)을 races 리스트로 변환.
-    sd_override가 있으면(기초단체장) a[0]은 선거구(sgg), sd_name은 인자값. 없으면 a[0]=sd_name."""
+    - sd_override: a[0]=선거구(sgg), sd_name=인자값 (기초단체장: 시도 cityCode로 순회 시).
+    - sd_lookup: a[0]=선거구(sgg), sd_name=lookup[a[0]] (국회의원 재보궐: 전국 1콜·선거구명→시도).
+    - 둘 다 없으면 a[0]=sd_name (시도지사)."""
     import re as _re
 
     def _i(s):
@@ -555,7 +559,9 @@ def _parse_vccp_blocks(rows: list[list[str]], sg_type: str, sd_override: str | N
         if len(a) >= 6 and a[0] and a[0] not in ("선거구명", "합계") and "계" in a:
             b = rows[i + 1] if i + 1 < len(rows) else []
             gi = a.index("계")
-            if sd_override:
+            if sd_lookup is not None:
+                sd_name, sgg_name = sd_lookup.get(a[0]), a[0]
+            elif sd_override:
                 sd_name, sgg_name = sd_override, a[0]
             else:
                 sd_name, sgg_name = a[0], None
@@ -624,6 +630,31 @@ def scrape_counting_basic_head(sg_id: str) -> list[dict] | None:
         all_races += rr
         time.sleep(0.15)
     return all_races or None
+
+
+def _assembly_sd_lookup(sg_id: str) -> dict:
+    """국회의원(sgTypecode=2) 등록자료에서 선거구명(sggName)→시도(sdName) 매핑."""
+    try:
+        fs = sorted((ROOT / "data" / "candidates" / sg_id).glob("snapshot_*.json"))
+        if not fs:
+            return {}
+        d = json.loads(fs[-1].read_text(encoding="utf-8"))
+        cands = d if isinstance(d, list) else d.get("candidates", [])
+        return {c.get("sggName"): c.get("sdName") for c in cands
+                if str(c.get("sgTypecode")) == "2" and c.get("sggName")}
+    except Exception:
+        return {}
+
+
+def scrape_counting_assembly(sg_id: str) -> list[dict] | None:
+    """국회의원 재·보궐선거 개표 — VCCP09_#2, 전국 1콜(cityCode=0).
+    이름이 표 헤더에 직접 들어와 안전. 선거구명→시도는 등록자료로 매핑."""
+    if sg_id != "20260603":
+        return None
+    rows = _vccp_rows("00" + sg_id, "2", "0", "VCCP09_#2")
+    if not rows:
+        return None
+    return _parse_vccp_blocks(rows, "2", sd_lookup=_assembly_sd_lookup(sg_id)) or None
 
 
 # ============ 가공 / 저장 ============
@@ -857,7 +888,11 @@ def main() -> None:
         bh = scrape_counting_basic_head(args.sg_id) or []
         if bh:
             print(f"  · 개표 웹(VCCP09 #4) 폴백: 기초단체장 {len(bh)}곳")
-        web_races = (gov + bh) or None
+        # 국회의원 재·보궐 — VCCP09_#2, 전국 1콜. 이름 직접 포함.
+        na = scrape_counting_assembly(args.sg_id) or []
+        if na:
+            print(f"  · 개표 웹(VCCP09 #2) 폴백: 국회의원 재보궐 {len(na)}곳")
+        web_races = (gov + bh + na) or None
 
     current, meta = build_current(args.sg_id, polled_at, counting_calls, turnout, web_races)
     meta["counting_calls_total"] = len(counting_calls) + failed
