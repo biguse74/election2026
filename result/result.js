@@ -44,62 +44,20 @@ function candPhotoImg(r, c, cls) {
     : `<span class="${cls} cand-noimg">${esc((c.name || ' ').slice(0, 1))}</span>`;
 }
 
-// 후보자 카드(이름 클릭 → 프로필 모달). 키 = 'type|sd|sgg|name' (사진맵과 동일).
-let CARD_MAP = null, _cardPromise = null;
-function ensureCards() {
-  if (CARD_MAP) return Promise.resolve(CARD_MAP);
-  if (!_cardPromise) _cardPromise = loadJSON(PATHS.cards).then(m => (CARD_MAP = m || { by_full: {}, by_sd: {} }));
-  return _cardPromise;
+// 후보 huboid 맵 (이름 → 기존 후보 카드 /#cand/{huboid}). 키 = 'type|sd|sgg|name' (사진맵과 동일).
+let HUBOID = { by_full: {}, by_sd: {} };
+function candHuboid(r, c) {
+  const t = r.sg_type_code || '', sd = r.sd_name || '', sgg = r.sgg_name || sd, nm = (c.name || '').trim();
+  const f = HUBOID.by_full || {}, s = HUBOID.by_sd || {};
+  return f[`${t}|${sd}|${sgg}|${nm}`] || f[`${t}|${sd}|${sd}|${nm}`] || s[`${t}|${sd}|${nm}`] || null;
 }
-const ckey = (r, c) => `${r.sg_type_code || ''}|${r.sd_name || ''}|${r.sgg_name || r.sd_name || ''}|${(c.name || '').trim()}`;
+// 당선자 이름 → 메인 사이트 후보 카드(새 탭). huboid 없으면 일반 텍스트.
 function nameLink(r, c, cls) {
-  return `<a class="${cls} cand-link" data-cf="${esc(ckey(r, c))}" role="button" tabindex="0">${esc(c.name) || '—'}</a>`;
+  const hb = candHuboid(r, c), nm = esc(c.name) || '—';
+  return hb
+    ? `<a class="${cls} cand-link" href="/#cand/${esc(hb)}" target="_blank" rel="noopener">${nm}</a>`
+    : `<span class="${cls}">${nm}</span>`;
 }
-
-function openCardModal(cf) {
-  const parts = String(cf).split('|');
-  const [t, sd, sgg, nm] = parts;
-  const card = (CARD_MAP.by_full[cf]) || (CARD_MAP.by_sd[`${t}|${sd}|${nm}`]) || { name: nm, office: '', party: '' };
-  const photo = candPhoto({ sg_type_code: t, sd_name: sd, sgg_name: sgg }, { name: nm });
-  const color = partyColor(card.party);
-  const where = [sd, card.district].filter(Boolean).join(' ');
-  const row = (lab, val) => val ? `<div class="cm-row"><span class="cm-k">${lab}</span><span class="cm-v">${esc(val)}</span></div>` : '';
-  const body = `
-    <div class="cm-head">
-      ${photo ? `<img class="cm-photo" src="${esc(photo)}" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'">` : `<span class="cm-photo cm-noimg">${esc((nm || ' ').slice(0, 1))}</span>`}
-      <div>
-        <div class="cm-name">${esc(card.name || nm)}</div>
-        <div class="cm-party" style="color:${color}">● ${esc(card.party || '')}</div>
-        <div class="cm-office">${esc(card.office || '')}${where ? ` · ${esc(where)}` : ''}</div>
-      </div>
-    </div>
-    <div class="cm-body">
-      ${row('나이', card.age ? `${card.age}세` : '')}
-      ${row('직업', card.job)}
-      ${row('학력', card.edu)}
-      ${row('경력', [card.career1, card.career2].filter(Boolean).join(' / '))}
-      ${card.status && card.status !== '등록' ? `<div class="cm-row"><span class="cm-k">상태</span><span class="cm-v" style="color:var(--con)">${esc(card.status)}</span></div>` : ''}
-    </div>
-    <div class="cm-foot">중앙선거관리위원회 후보자 등록 정보 · 공개 선거정보만 표기</div>`;
-  let m = document.getElementById('card-modal');
-  if (!m) {
-    m = document.createElement('div');
-    m.id = 'card-modal';
-    m.innerHTML = `<div class="cm-backdrop"></div><div class="cm-box" role="dialog" aria-modal="true"><button class="cm-close" aria-label="닫기">✕</button><div class="cm-content"></div></div>`;
-    document.body.appendChild(m);
-    m.querySelector('.cm-backdrop').addEventListener('click', () => m.classList.remove('on'));
-    m.querySelector('.cm-close').addEventListener('click', () => m.classList.remove('on'));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') m.classList.remove('on'); });
-  }
-  m.querySelector('.cm-content').innerHTML = body;
-  m.classList.add('on');
-}
-document.addEventListener('click', e => {
-  const a = e.target.closest('.cand-link');
-  if (!a) return;
-  e.preventDefault();
-  ensureCards().then(() => openCardModal(a.getAttribute('data-cf')));
-});
 
 // 표차·박빙
 const marginVotes = r => { const c = r.candidates || []; return c.length < 2 ? null : Math.abs((c[0].votes || 0) - (c[1].votes || 0)); };
@@ -194,7 +152,7 @@ function resultCard(race, opts = {}) {
   </div>`;
 }
 
-// ── 의석 집계 ──
+// ── 당선 집계 ──
 function tallyByLeader(races) {
   let dem = 0, con = 0, etc = 0;
   for (const r of races) {
@@ -238,7 +196,7 @@ function renderHero(cur, chiefs, edu, repoll, bh) {
     `<div class="ot"><div class="ot-name">교육감</div><div class="ot-fig"><span class="e">${edu.length}곳</span></div><div class="ot-sub">정당 없는 단독 선출</div></div>`;
 }
 
-// 역대 광역단체장(시도지사) 정당 계열별 의석 — 중앙선관위 개표결과 기반(계열 통합).
+// 역대 광역단체장(시도지사) 정당 계열별 당선 — 중앙선관위 개표결과 기반(계열 통합).
 //   민주 계열=새천년민주당·민주당·열린우리당·새정치민주연합·더불어민주당
 //   보수 계열=한나라당·새누리당·자유한국당·국민의힘 / 그 외=자민련·자유선진당·무소속 등
 const HIST_CHIEF = [
@@ -307,11 +265,14 @@ function renderBH(bh) {
   }).join('');
 }
 
+let _huboidLoaded = false;
 async function render() {
-  const [cur, prediction, parties, photos] = await Promise.all([
+  const [cur, prediction, parties, photos, huboids] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.prediction), loadJSON(PATHS.parties), loadJSON(PATHS.photos),
+    _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.cards),
   ]);
   if (!cur || !cur.races) { document.getElementById('rs-sub').textContent = '데이터를 불러오지 못했습니다.'; return; }
+  if (huboids) { HUBOID = huboids; _huboidLoaded = true; }
   PARTIES = parties || {};
   PHOTO_MAP = photos || { by_full: {}, by_sd: {} };
   const predMap = (prediction && prediction.sido_dem_win_prob) || {};

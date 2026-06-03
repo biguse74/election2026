@@ -292,7 +292,7 @@ function projectionContext(pj) {
   return `도달수준 추정 · 범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}% · ${ctx}`;
 }
 
-// 히어로 4번째 카드 — 상징적 헤드라인: 광역단체장 정당별 당선 의석(현재 1위 기준).
+// 히어로 4번째 카드 — 상징적 헤드라인: 광역단체장 정당별 당선(현재 1위 기준).
 // (과거 '예상 최종 투표율'은 투표 종료 후 무의미 + 자정 넘어 살아나는 버그가 있어 대체)
 function renderProjection(cur, _histHourly) {
   const e = document.getElementById('hero-early');

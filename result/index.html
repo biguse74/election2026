@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>당선 결과 — 6·3 지방선거 2026 · 뉴탐사</title>
-<meta name="description" content="2026년 6월 3일 제9회 전국동시지방선거 당선 결과. 광역단체장·교육감·기초단체장·국회의원 재보궐 당선자를 정당 의석 대결과 후보 카드로 한눈에. 중앙선관위 실측·뉴탐사.">
+<meta name="description" content="2026년 6월 3일 제9회 전국동시지방선거 당선 결과. 광역단체장·교육감·기초단체장·국회의원 재보궐 당선자를 정당별 당선 현황과 후보 카드로 한눈에. 중앙선관위 실측·뉴탐사.">
 <meta name="author" content="뉴탐사">
 <meta name="theme-color" content="#c41e3a">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://election2026.newtamsa.org/result/">
 <meta property="og:title" content="6·3 지방선거 당선 결과 · 뉴탐사">
-<meta property="og:description" content="광역단체장·교육감·기초단체장·국회의원 재보궐 당선자를 정당 의석 대결과 후보 카드로 한눈에. 중앙선관위 실측·뉴탐사.">
+<meta property="og:description" content="광역단체장·교육감·기초단체장·국회의원 재보궐 당선자를 정당별 당선 현황과 후보 카드로 한눈에. 중앙선관위 실측·뉴탐사.">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:site_name" content="뉴탐사">
 <meta property="og:image" content="https://election2026.newtamsa.org/assets/og.png">
@@ -54,7 +54,7 @@
   .rs-sub { color: rgba(255,255,255,0.7); font-size: 0.92rem; }
   .rs-sub b { color: #fff; }
 
-  /* 광역단체장 의석 대결 바 */
+  /* 광역단체장 당선 대결 바 */
   .seat-battle { margin: 24px 0 6px; }
   .seat-battle-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; }
   .sb-side { font-weight: 800; }
@@ -172,7 +172,7 @@
   .cm-v { color: var(--ink); }
   .cm-foot { margin-top: 14px; font-size: 0.72rem; color: var(--muted); }
 
-  /* 역대 의석 추이 */
+  /* 역대 당선 추이 */
   .hist-row { display: grid; grid-template-columns: 92px 1fr; align-items: center; gap: 12px; margin: 7px 0; }
   .hist-row.now .hist-yr { color: var(--accent); }
   .hist-yr { font-weight: 800; font-size: 0.9rem; }
@@ -217,7 +217,7 @@
       <div class="seat-battle">
         <div class="seat-battle-head">
           <div class="sb-side dem"><div class="sb-n" id="sb-dem">—</div><div class="sb-label">더불어민주당</div></div>
-          <div class="sb-mid">광역단체장 의석</div>
+          <div class="sb-mid">광역단체장</div>
           <div class="sb-side con"><div class="sb-n" id="sb-con">—</div><div class="sb-label">국민의힘</div></div>
         </div>
         <div class="seat-bar" id="seat-bar"></div>
@@ -234,8 +234,8 @@
     </section>
 
     <section class="rs-block" id="sec-history">
-      <h2 class="rs-h2">역대 광역단체장 의석 추이 <span class="rs-count">2002 → 2026</span></h2>
-      <p class="rs-desc">지방선거 광역단체장(시·도지사) 정당 계열별 의석. 민주 계열·보수(국민의힘) 계열·그 외로 묶었습니다. 막대를 보면 이번 결과가 역대 어디에 위치하는지 한눈에 보입니다.</p>
+      <h2 class="rs-h2">역대 광역단체장 당선 추이 <span class="rs-count">2002 → 2026</span></h2>
+      <p class="rs-desc">지방선거 광역단체장(시·도지사) 정당 계열별 당선자. 민주 계열·보수(국민의힘) 계열·그 외로 묶었습니다. 막대를 보면 이번 결과가 역대 어디에 위치하는지 한눈에 보입니다.</p>
       <div id="hist-rows"></div>
       <p class="hist-foot">계열 분류 — <b>민주 계열</b>: 새천년민주당·민주당·열린우리당·새정치민주연합·더불어민주당 · <b>보수 계열</b>: 한나라당·새누리당·자유한국당·국민의힘 · <b>그 외</b>: 자민련·자유선진당·무소속 등. 광역단체장 수는 2002~2010년 16곳, 2014~2022년 17곳, 2026년은 광주·전남 통합으로 16곳. 자료: 중앙선관위.</p>
     </section>
@@ -266,6 +266,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604c"></script>
+  <script src="./result.js?v=20260604d"></script>
 </body>
 </html>

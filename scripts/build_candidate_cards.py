@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""후보자 카드 데이터 생성 — 당선 결과 페이지의 이름 클릭 → 후보 프로필 모달용.
+"""후보 huboid 맵 생성 — 당선 결과 페이지의 이름 → 기존 후보 카드(/#cand/{huboid}) 링크용.
 
-등록 스냅샷(data/candidates/20260603/snapshot_*.json)에서 공개 선거정보만 추려
+등록 스냅샷(data/candidates/20260603/snapshot_*.json)에서 후보 huboid만 추려
 candidate_photos.json과 동일한 키로 data/candidate_cards.json을 만든다.
-  by_full: 'sgTypecode|sdName|sggName|name' → card
-  by_sd  : 'sgTypecode|sdName|name'         → card
-개인정보(주소·생년월일 등)는 제외하고, 공개된 정당·나이·직업·학력·경력만 담는다.
+  by_full: 'sgTypecode|sdName|sggName|name' → huboid
+  by_sd  : 'sgTypecode|sdName|name'         → huboid
+후보 카드 자체는 메인 사이트(/#cand/{huboid})가 이미 렌더하므로 여기선 키→huboid만 보관.
 """
 from __future__ import annotations
 import json, glob
@@ -31,27 +31,14 @@ def main() -> int:
         if t not in OFFICES:
             continue
         sd, sgg, nm = c.get("sdName") or "", c.get("sggName") or "", (c.get("name") or "").strip()
-        if not (sd and nm):
+        hb = c.get("huboid") or ""
+        if not (sd and nm and hb):
             continue
-        card = {
-            "name": nm,
-            "party": c.get("jdName") or "무소속",
-            "office": LABEL.get(t, t),
-            "district": sgg if sgg and sgg != sd else "",
-            "age": c.get("age") or "",
-            "gender": c.get("gender") or "",
-            "job": c.get("job") or "",
-            "edu": c.get("edu") or "",
-            "career1": c.get("career1") or "",
-            "career2": c.get("career2") or "",
-            "huboid": c.get("huboid") or "",
-            "status": c.get("status") or "",
-        }
-        by_full[f"{t}|{sd}|{sgg}|{nm}"] = card
-        by_sd.setdefault(f"{t}|{sd}|{nm}", card)
+        by_full[f"{t}|{sd}|{sgg}|{nm}"] = hb
+        by_sd.setdefault(f"{t}|{sd}|{nm}", hb)
 
     out = {
-        "note": "후보자 카드(공개 선거정보만 — 정당·나이·직업·학력·경력). 주소 등 개인정보 제외.",
+        "note": "후보 huboid 맵 — 당선자 이름 → /#cand/{huboid} 링크용. 키는 candidate_photos.json과 동일.",
         "sgId": SG_ID,
         "source": "중앙선거관리위원회 후보자 등록 정보",
         "by_full": by_full,
