@@ -1057,7 +1057,6 @@ async function render() {
       renderCompare2022(cur, histHourly);
       renderTurnoutTrend(cur, histHourly);
       renderEarlyVsDay(cur, earlyVoting);
-      renderSeoulGu(cur);
       renderSigunguAll(cur);
       renderHistoryCompare(cur, histHourly);
       renderTurnoutCorr(cur);
@@ -1093,7 +1092,6 @@ async function render() {
   renderProjection(cur, histHourly);
   renderTurnoutTrend(cur, histHourly);
   renderEarlyVsDay(cur, earlyVoting);
-  renderSeoulGu(cur);
   renderSigunguAll(cur);
   renderHistoryCompare(cur, histHourly);
   renderWatchlist(watchlist);
