@@ -17,6 +17,7 @@ const PATHS = {
   parties:     '../data/parties.json',
   earlyVoting: '../data/early_voting/20260603/latest.json',
   histHourly:  '../data/history_turnout_hourly.json',
+  exitPoll:    '../data/live_counting/exit_poll.json',
   photos:      './candidate_photos.json',
 };
 
@@ -830,6 +831,43 @@ function candRowHTML(parties, c, isLead, race) {
   </div>`;
 }
 
+// ── 출구조사 (지상파 3사 공동) — 개표 시작 직후 표시 ────────────────
+function renderExitPoll(exitPoll) {
+  const block = document.getElementById('exitpoll-block');
+  const root = document.getElementById('exitpoll-grid');
+  const asmRoot = document.getElementById('exitpoll-asm');
+  if (!block || !root) return;
+  const gov = (exitPoll && exitPoll.governor) || [];
+  if (!gov.length) { block.hidden = true; return; }
+  block.hidden = false;
+  const sub = document.getElementById('exitpoll-sub');
+  if (sub) sub.textContent = `${exitPoll.source || '출구조사'} · ${exitPoll.note || ''}`;
+  const card = (race) => {
+    const cands = (race.candidates || []).slice().sort((a, b) => b.pct - a.pct);
+    if (!cands.length) return '';
+    const margin = cands.length > 1 ? (cands[0].pct - cands[1].pct) : null;
+    const tag = margin == null ? ''
+      : (margin < 3 ? `<span class="ep-tag close">경합 ${fmt1(margin)}%p</span>`
+        : `<span class="ep-tag">${esc(cands[0].party || '무소속')} 우세</span>`);
+    const rows = cands.map((c, i) => {
+      const color = partyColor(LATEST_PARTIES, c.party);
+      const w = Math.max(0, Math.min(100, c.pct));
+      return `<div class="ep-cand${i === 0 ? ' ep-lead' : ''}">` +
+        `<span class="ep-dot" style="background:${color}"></span>` +
+        `<span class="ep-name">${esc(c.name)}</span>` +
+        `<span class="ep-party" style="color:${color}">${esc(c.party || '무소속')}</span>` +
+        `<span class="ep-bar-wrap"><span class="ep-bar" style="width:${w}%;background:${color}"></span></span>` +
+        `<span class="ep-pct">${fmt1(c.pct)}<small>%</small></span></div>`;
+    }).join('');
+    return `<div class="ep-card"><div class="ep-head"><b>${esc(race.label || race.region)}</b>${tag}</div>${rows}</div>`;
+  };
+  root.innerHTML = gov.map(card).join('');
+  if (asmRoot) {
+    const asm = (exitPoll.assembly) || [];
+    asmRoot.innerHTML = asm.map(r => card({ label: r.region, candidates: r.candidates })).join('');
+  }
+}
+
 function marginText(m) {
   if (m == null) return '—';
   const who = m > 0 ? '민주' : '국힘';
@@ -1043,11 +1081,13 @@ async function render() {
   if (_ts) _ts.textContent = beforeCount
     ? '2026-06-03(수) 투표 진행 중 · 시도별 투표율 자동 갱신 · 18시 마감 후 개표로 전환'
     : '2026-06-03(수) 개표 진행 · 자동 갱신 · 뉴탐사 자체 시뮬레이션 예측과 비교';
-  const [cur, watchlist, groups, prevWinner, prevResult, prediction, predBasicHead, parties, earlyVoting, histHourly] = await Promise.all([
+  const [cur, watchlist, groups, prevWinner, prevResult, prediction, predBasicHead, parties, earlyVoting, histHourly, exitPoll] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.groups),
     loadJSON(PATHS.prevWinner), loadJSON(PATHS.prevResult), loadJSON(PATHS.prediction), loadJSON(PATHS.predBasicHead), loadJSON(PATHS.parties),
-    loadJSON(PATHS.earlyVoting), loadJSON(PATHS.histHourly),
+    loadJSON(PATHS.earlyVoting), loadJSON(PATHS.histHourly), loadJSON(PATHS.exitPoll),
   ]);
+  LATEST_PARTIES = parties || LATEST_PARTIES;
+  renderExitPoll(exitPoll);
   // 투표 시간대(개표 전): 실제 투표율이 있으면 투표율만 표시, 개표 섹션은 대기.
   if (beforeCount) {
     const nat = cur && cur.turnout && cur.turnout.national;

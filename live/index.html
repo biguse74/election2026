@@ -110,6 +110,25 @@
   .cand-share { font-weight: 800; font-size: 0.92rem; flex: 0 0 auto; width: 54px; text-align: right; }
   .cand-rank1 .cand-name::after { content: ' ▲'; color: var(--accent); font-size: 0.7em; }
 
+  /* 출구조사 */
+  .ep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 720px) { .ep-grid { grid-template-columns: 1fr; } }
+  .ep-subh { font-family: 'Noto Serif KR', serif; font-weight: 800; font-size: 0.98rem; margin: 20px 0 8px; }
+  .ep-card { border: 1px solid var(--line); border-radius: 9px; padding: 11px 13px; background: #fff; }
+  .ep-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+  .ep-head b { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 900; }
+  .ep-tag { font-size: 0.72rem; font-weight: 800; color: var(--muted); background: #f2f2f2; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+  .ep-tag.close { color: #a15c00; background: #fdf0d5; }
+  .ep-cand { display: grid; grid-template-columns: 11px auto auto 1fr 54px; align-items: center; gap: 6px; margin: 3px 0; }
+  .ep-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .ep-name { font-weight: 800; font-size: 0.9rem; white-space: nowrap; }
+  .ep-party { font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
+  .ep-bar-wrap { height: 9px; background: #f0f0f0; border-radius: 5px; overflow: hidden; min-width: 30px; }
+  .ep-bar { display: block; height: 100%; border-radius: 5px; }
+  .ep-pct { text-align: right; font-weight: 800; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+  .ep-pct small { font-size: 0.7em; font-weight: 700; }
+  .ep-lead .ep-name::after { content: ' ▲'; color: var(--accent); font-size: 0.7em; }
+
   /* 후보 사진 (개표) */
   .cand-photo { width: 34px; height: 42px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background: #eee; border: 1px solid var(--line); }
   .rd-photo { width: 26px; height: 32px; border-radius: 3px; object-fit: cover; flex-shrink: 0; background: #eee; border: 1px solid var(--line); }
@@ -320,6 +339,14 @@
     </div>
   </section>
 
+  <section class="block" id="exitpoll-block" hidden>
+    <h2>출구조사 — 시도지사 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(투표 마감 직후 예측)</span></h2>
+    <p class="block-sub" id="exitpoll-sub">출구조사</p>
+    <div id="exitpoll-grid" class="ep-grid"></div>
+    <h3 class="ep-subh">재·보궐 국회의원</h3>
+    <div id="exitpoll-asm" class="ep-grid"></div>
+  </section>
+
   <section class="block" id="trend-block" hidden>
     <h2>시간대별 투표율 추이 — 과거 선거 비교</h2>
     <p class="block-sub">오늘(2026 지선)의 시간대별 누계 투표율을 <b>2025 대선·2024 총선·2022·2018 지선</b>과 같은 시각끼리 비교(중앙선관위 실측 그대로). 13시 전후 급등은 사전투표 합산 시점입니다.</p>
@@ -420,6 +447,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603E"></script>
+<script src="live.js?v=20260603F"></script>
 </body>
 </html>
