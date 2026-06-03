@@ -18,6 +18,7 @@ const PATHS = {
   earlyVoting: '../data/early_voting/20260603/latest.json',
   histHourly:  '../data/history_turnout_hourly.json',
   exitPoll:    '../data/live_counting/exit_poll.json',
+  exitCompare: '../data/live_counting/exit_poll_compare.json',
   photos:      './candidate_photos.json',
 };
 
@@ -868,6 +869,30 @@ function renderExitPoll(exitPoll) {
   }
 }
 
+// ── 출구조사·예측 3종 비교표 (방송3사 / JTBC / 뉴탐사) ──────────────
+function renderExitPollCompare(data) {
+  const block = document.getElementById('epc-block');
+  const root = document.getElementById('epc-table');
+  if (!block || !root) return;
+  const rows = (data && data.rows) || [];
+  if (!rows.length) { block.hidden = true; return; }
+  block.hidden = false;
+  const sumEl = document.getElementById('epc-summary');
+  if (sumEl) sumEl.textContent = data.jtbc_summary || '';
+  const cell = (e, kind) => {
+    if (!e) return '<span class="epc-na">–</span>';
+    const color = partyColor(LATEST_PARTIES, e.party);
+    const val = kind === 'ours' ? `${fmt1(e.prob)}%` : `+${fmt1(e.margin)}`;
+    return `<span class="epc-dot" style="background:${color}"></span><b>${esc(e.name)}</b> <span class="epc-v">${val}</span>`;
+  };
+  const head = `<div class="epc-row epc-head"><div>선거</div><div>방송3사</div><div>JTBC</div><div>뉴탐사 예측</div></div>`;
+  const body = rows.map(r =>
+    `<div class="epc-row${r.disagree ? ' epc-diff' : ''}">` +
+    `<div class="epc-rg">${esc(r.label)}${r.disagree ? '<span class="epc-flag">엇갈림</span>' : ''}</div>` +
+    `<div>${cell(r.b3, 'm')}</div><div>${cell(r.jtbc, 'm')}</div><div>${cell(r.ours, 'ours')}</div></div>`).join('');
+  root.innerHTML = head + body;
+}
+
 function marginText(m) {
   if (m == null) return '—';
   const who = m > 0 ? '민주' : '국힘';
@@ -1088,6 +1113,7 @@ async function render() {
   ]);
   LATEST_PARTIES = parties || LATEST_PARTIES;
   renderExitPoll(exitPoll);
+  loadJSON(PATHS.exitCompare).then(renderExitPollCompare);
   // 투표 시간대(개표 전): 실제 투표율이 있으면 투표율만 표시, 개표 섹션은 대기.
   if (beforeCount) {
     const nat = cur && cur.turnout && cur.turnout.national;
