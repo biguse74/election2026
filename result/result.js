@@ -108,7 +108,7 @@ function candRow(c, isLead) {
     const o = EDU_ORIENT[c.name];
     if (o === '보수') { color = '#c0392b'; partyHTML = '<b style="color:#c0392b">보수</b>'; }
     else if (o === '진보') { color = '#2b6cb0'; partyHTML = '<b style="color:#2b6cb0">진보</b>'; }
-    else { color = '#8a8a96'; partyHTML = '<span style="color:var(--muted)">무소속</span>'; }
+    else { color = '#8a8a96'; partyHTML = ''; }  // 교육감은 기본이 무소속 → 미분류는 라벨 없음
   }
   const w = Math.max(0, Math.min(100, c.share_pct || 0));
   return `<div class="cand-row ${isLead ? 'cand-rank1' : ''}">
@@ -127,9 +127,10 @@ function resultCard(race, opts = {}) {
   const call = callResult(race);
   const callHTML = call ? `<span class="call-chip ${call.cls}">${call.label}</span>` : '';
   // 제목: 선거구(시군구)가 있는 선거(재보궐2·기초단체장4·기초의원6)는 선거구명(+시도), 시도지사·교육감은 시도명
-  const hasSgg = ['2', '4', '6'].includes(String(race.sg_type_code));
+  const t = String(race.sg_type_code);
+  const hasSgg = ['2', '4', '6'].includes(t);
   const title = opts.title || (hasSgg ? (race.sgg_name || race.sd_name) : race.sd_name);
-  const whereTxt = hasSgg ? race.sd_name : '';
+  const whereTxt = t === '11' ? '교육감' : (hasSgg ? race.sd_name : '');  // 교육감은 시장과 구분되게 표시
   const where = whereTxt ? `<span class="rs-where">${esc(whereTxt)}</span>` : '';
 
   // 하단 비교줄
