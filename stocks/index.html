@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>후보 주식보유 — 6·3 지방선거 2026</title>
+<meta name="description" content="제9회 전국동시지방선거 시도지사·기초단체장·교육감 후보의 재산신고서(중앙선거관리위원회) 상 보유 주식. OCR 자동추출 참고자료.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#c41e3a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
+<style>
+  :root { --ink:#1a1a1a; --muted:#6b6b6b; --line:#e5e5e5; --accent:#c41e3a; --dem:#152484; --con:#E61E2B; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:'Pretendard',-apple-system,sans-serif; color:var(--ink); background:#fff; line-height:1.55; }
+  a { color: inherit; }
+  .ev-header { background:#1a1a1a; color:#fff; padding:14px 0; border-bottom:3px solid var(--accent); }
+  .ev-header-inner { max-width:1100px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .ev-brand { display:flex; flex-direction:column; gap:2px; text-decoration:none; color:#fff; }
+  .ev-brand-title { font-family:'Noto Serif KR',serif; font-size:1.1rem; font-weight:900; letter-spacing:-0.01em; }
+  .ev-brand-sub { font-size:0.78rem; color:var(--accent); font-weight:700; }
+  .ev-nav { display:flex; gap:4px; flex-wrap:wrap; }
+  .ev-nav a { color:rgba(255,255,255,0.78); text-decoration:none; font-size:0.86rem; font-weight:600; padding:6px 12px; border-radius:999px; }
+  .ev-nav a:hover { background:rgba(255,255,255,0.08); color:#fff; }
+  .ev-nav .ev-nav-active { background:var(--accent); color:#fff; }
+  main { max-width:1100px; margin:0 auto; padding:28px 20px 60px; }
+  h1.page-title { font-family:'Noto Serif KR',serif; font-size:1.6rem; font-weight:900; margin:0 0 4px; letter-spacing:-0.02em; }
+  .page-sub { color:var(--muted); font-size:0.95rem; margin:0 0 18px; }
+
+  .warn { border:1px solid #f0d6a8; background:#fdf6e8; border-radius:8px; padding:12px 16px; font-size:0.84rem; color:#7a5a1e; margin:0 0 22px; }
+  .warn b { color:#5a430f; }
+
+  .hero { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:0 0 26px; }
+  @media (max-width:640px){ .hero{ grid-template-columns:1fr 1fr; } }
+  .hero-card { border:1px solid var(--line); border-radius:8px; padding:16px 18px; background:#fafafa; }
+  .hero-num { font-family:'Noto Serif KR',serif; font-weight:900; font-size:2rem; line-height:1; }
+  .hero-lbl { font-size:0.78rem; color:var(--muted); font-weight:700; margin-top:5px; }
+
+  section.block { margin:30px 0 0; }
+  section.block h2 { font-family:'Noto Serif KR',serif; font-size:1.15rem; font-weight:900; margin:0 0 4px; }
+  .block-sub { color:var(--muted); font-size:0.84rem; margin:0 0 14px; }
+
+  /* 종목 랭킹 */
+  .rank-list { display:grid; grid-template-columns:1fr 1fr; gap:5px 22px; }
+  @media (max-width:640px){ .rank-list{ grid-template-columns:1fr; } }
+  .rank-row { display:grid; grid-template-columns:20px 1fr 86px 40px; align-items:center; gap:8px; cursor:pointer; padding:3px 4px; border-radius:5px; }
+  .rank-row:hover { background:#f4f4f4; }
+  .rank-row.active { background:#fdeaea; }
+  .rank-i { font-size:0.78rem; color:var(--muted); font-weight:700; text-align:center; }
+  .rank-name { font-weight:700; font-size:0.88rem; }
+  .rank-bar-wrap { height:11px; background:#f0f0f0; border-radius:4px; overflow:hidden; }
+  .rank-bar { height:100%; background:var(--accent); border-radius:4px; }
+  .rank-cnt { text-align:right; font-weight:800; font-size:0.86rem; }
+
+  /* 필터 */
+  .filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:8px 0 16px; position:sticky; top:0; background:#fff; padding:10px 0; z-index:5; border-bottom:1px solid var(--line); }
+  .filters input, .filters select { font-family:inherit; font-size:0.86rem; padding:7px 10px; border:1px solid var(--line); border-radius:7px; color:var(--ink); }
+  .filters input { flex:1 1 200px; min-width:140px; }
+  .filt-clear { font-size:0.8rem; color:var(--accent); cursor:pointer; font-weight:700; white-space:nowrap; }
+  .filt-count { font-size:0.82rem; color:var(--muted); margin-left:auto; }
+
+  /* 후보 카드 */
+  .cand-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:720px){ .cand-grid{ grid-template-columns:1fr; } }
+  .sc-card { border:1px solid var(--line); border-radius:9px; padding:13px 15px; display:flex; gap:12px; }
+  .sc-photo { width:46px; height:57px; border-radius:5px; object-fit:cover; background:#eee; border:1px solid var(--line); flex-shrink:0; }
+  .sc-noimg { width:46px; height:57px; border-radius:5px; background:#eee; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:800; }
+  .sc-body { flex:1; min-width:0; }
+  .sc-top { display:flex; align-items:baseline; gap:7px; flex-wrap:wrap; }
+  .sc-name { font-weight:800; font-size:1rem; }
+  .sc-party { font-size:0.76rem; font-weight:700; }
+  .sc-meta { font-size:0.76rem; color:var(--muted); margin:1px 0 7px; }
+  .sc-chips { display:flex; flex-wrap:wrap; gap:5px; }
+  .sc-chip { font-size:0.76rem; font-weight:700; background:#eef2f8; border:1px solid #dbe5f0; border-radius:999px; padding:2px 9px; white-space:nowrap; }
+  .sc-chip b { color:var(--accent); }
+  .sc-chip.hit { background:#fdeaea; border-color:#f3c5c5; }
+  .sc-review { display:inline-block; font-size:0.7rem; font-weight:800; color:#a15c00; background:#fdf0d5; border-radius:4px; padding:1px 6px; margin-left:4px; }
+  .sc-links { margin-top:8px; font-size:0.76rem; }
+  .sc-links a { color:var(--dem); text-decoration:none; font-weight:700; }
+  .sc-links a:hover { text-decoration:underline; }
+  .empty { color:var(--muted); padding:30px 0; text-align:center; }
+  footer { max-width:1100px; margin:40px auto 0; padding:18px 20px; border-top:1px solid var(--line); color:var(--muted); font-size:0.8rem; }
+</style>
+</head>
+<body>
+<header class="ev-header">
+  <div class="ev-header-inner">
+    <a href="/" class="ev-brand">
+      <span class="ev-brand-title">6·3 지방선거 2026</span>
+      <span class="ev-brand-sub">뉴탐사 데이터</span>
+    </a>
+    <nav class="ev-nav">
+      <a href="/">메인</a>
+      <a href="/early-voting/">사전투표율</a>
+      <a href="/live/">실시간 투표·개표</a>
+      <a href="/sim/">결과 예측 시뮬레이션</a>
+      <a href="/stocks/" class="ev-nav-active">후보 주식보유</a>
+    </nav>
+  </div>
+</header>
+<main>
+  <h1 class="page-title">후보 주식보유 현황</h1>
+  <p class="page-sub">시도지사·기초단체장·교육감 후보가 중앙선거관리위원회에 신고한 재산신고서 상 <b>보유 주식</b>.</p>
+
+  <div class="warn">
+    ⚠️ <b>자동 추출 참고자료입니다.</b> 스캔된 재산신고서를 OCR로 읽어 종목·수량을 자동 추출했습니다.
+    칸 겹침·소수점 분할주 등으로 <b>오차가 있을 수 있습니다.</b> 정확한 값은 각 후보의
+    <b>중앙선관위 재산신고서 원문</b>을 대조하세요(카드의 ‘선관위 원문’ 링크). <span style="color:#a15c00;font-weight:800;">검토필요</span> 표시는 OCR 오류 가능성이 특히 높은 건입니다.
+  </div>
+
+  <div class="hero">
+    <div class="hero-card"><div class="hero-num" id="h-clean">—</div><div class="hero-lbl">주식 보유 후보(확정 추출)</div></div>
+    <div class="hero-card"><div class="hero-num" id="h-review">—</div><div class="hero-lbl">검토필요(원문 대조)</div></div>
+    <div class="hero-card"><div class="hero-num" id="h-top">—</div><div class="hero-lbl" id="h-top-lbl">최다 보유 종목</div></div>
+  </div>
+
+  <section class="block">
+    <h2>종목별 보유 후보 수 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(클릭하면 해당 종목 보유 후보만)</span></h2>
+    <p class="block-sub">보유 후보가 많은 종목 순. 막대=후보 수.</p>
+    <div id="rank-list" class="rank-list"></div>
+  </section>
+
+  <section class="block">
+    <h2>후보별 보유 종목</h2>
+    <div class="filters">
+      <input id="f-q" type="search" placeholder="후보명·종목 검색 (예: 삼성전자, 홍길동)" autocomplete="off">
+      <select id="f-party"><option value="">전체 정당</option></select>
+      <select id="f-sido"><option value="">전체 지역</option></select>
+      <select id="f-office"><option value="">전체 선거</option></select>
+      <span class="filt-clear" id="f-clear">초기화</span>
+      <span class="filt-count" id="f-count"></span>
+    </div>
+    <div id="cand-grid" class="cand-grid"></div>
+    <div id="empty" class="empty" hidden>조건에 맞는 후보가 없습니다.</div>
+  </section>
+</main>
+<footer>
+  자료: 중앙선거관리위원회 후보자 재산신고서(스캔 PDF) OCR 자동추출 · 제9회 전국동시지방선거(2026-06-03) ·
+  <b>참고용</b>, 기사화 전 원문 대조 필수 · 뉴탐사 데이터
+</footer>
+<script src="stocks.js?v=20260603b"></script>
+</body>
+</html>
