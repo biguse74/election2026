@@ -449,6 +449,13 @@ def scrape_turnout_web(sg_id: str) -> dict | None:
         hourly = [by_t[t] for t in sorted(by_t)]
     except Exception:
         pass
+    # 누계는 단조 증가 — 미확정 낮은 값(마감 직후 18시 0.x% 등)은 제거
+    _clean, _mx = [], -1.0
+    for x in hourly:
+        v = x.get("turnout_pct")
+        if v is not None and v > _mx:
+            _clean.append(x); _mx = v
+    hourly = _clean
     # 전국 시군구별 누계 투표율 — 17개 시도 cityCode 드릴다운(셀 구조는 시도별과 동일 8칸).
     # by_sigungu = {시도명: {"total": {합계}, "sigungu": [{name,rate,...}, ...]}}
     by_sigungu = {}
