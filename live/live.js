@@ -840,6 +840,11 @@ async function render() {
   var _tt = document.getElementById('page-title-text');
   var _ts = document.getElementById('page-sub');
   if (_tt) _tt.textContent = beforeCount ? '실시간 투표율' : '실시간 개표';
+  // 투표 중(개표 전)엔 '개표 진행률' 카드 숨김 → 히어로 2칸. 18시 후 노출.
+  const _pc = document.getElementById('hero-progress-card');
+  if (_pc) _pc.hidden = beforeCount;
+  const _heroEl = document.getElementById('hero');
+  if (_heroEl) _heroEl.classList.toggle('hero-voting', beforeCount);
   if (_ts) _ts.textContent = beforeCount
     ? '2026-06-03(수) 투표 진행 중 · 시도별 투표율 자동 갱신 · 18시 마감 후 개표로 전환'
     : '2026-06-03(수) 개표 진행 · 자동 갱신 · 뉴탐사 자체 시뮬레이션 예측과 비교';

@@ -68,6 +68,8 @@
 
   /* Hero */
   .hero { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 20px 0 28px; }
+  /* 투표 중(18시 전): 개표 진행률 카드 숨김 → 2칸 */
+  @media (min-width: 721px) { .hero.hero-voting { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } }
   .hero-card { border: 1px solid var(--line); border-radius: 8px; padding: 20px 22px; background: #fafafa; }
   .hero-card-main { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
@@ -267,7 +269,7 @@
       <div class="hero-big" id="hero-turnout">—<span class="pct">%</span></div>
       <div class="hero-meta" id="hero-turnout-meta">로딩 중…</div>
     </div>
-    <div class="hero-card hero-card-main">
+    <div class="hero-card hero-card-main" id="hero-progress-card">
       <div class="hero-label">개표 진행률</div>
       <div class="hero-big" id="hero-progress">—<span class="pct">%</span></div>
       <div class="hero-meta" id="hero-progress-meta">—</div>
@@ -372,6 +374,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603q"></script>
+<script src="live.js?v=20260603r"></script>
 </body>
 </html>
