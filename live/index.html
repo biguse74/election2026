@@ -184,8 +184,8 @@
   .sgg-list { display: grid; gap: 3px; }
   .sgg-row { display: grid; grid-template-columns: 90px 1fr 46px; align-items: center; gap: 7px; }
   .sgg-name { font-size: 0.79rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .sgg-bar-wrap { height: 13px; background: #f2f2f2; border-radius: 3px; overflow: hidden; display: flex; }
-  .sgg-seg { height: 100%; }
+  .sgg-bar-wrap { height: 16px; background: #f2f2f2; border-radius: 3px; overflow: hidden; display: flex; }
+  .sgg-seg { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.6rem; font-weight: 700; white-space: nowrap; overflow: hidden; font-variant-numeric: tabular-nums; }
   .sgg-seg.e { background: #2b6cb0; }   /* 사전투표 */
   .sgg-seg.d { background: #c0392b; }   /* 당일 본투표 */
   .sgg-rate { text-align: right; font-size: 0.79rem; font-weight: 800; font-variant-numeric: tabular-nums; }
@@ -289,6 +289,7 @@
       <a href="/early-voting/">사전투표율</a>
       <a href="/live/" class="ev-nav-active">실시간 투표·개표</a>
       <a href="/sim/">결과 예측 시뮬레이션</a>
+      <a href="/stocks/">후보 주식보유</a>
     </nav>
   </div>
 </header>
@@ -431,6 +432,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603B"></script>
+<script src="live.js?v=20260603C"></script>
 </body>
 </html>

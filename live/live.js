@@ -437,10 +437,13 @@ function renderSigunguAll(cur) {
       const elig = r.eligible_voters || 0;
       const earlyPct = elig ? (r.early_voters_so_far || 0) / elig * 100 : 0;
       const dayPct = elig ? (r.day_voters_so_far || 0) / elig * 100 : 0;
-      const ew = (earlyPct / barMax * 100).toFixed(1), dw = (dayPct / barMax * 100).toFixed(1);
+      const ew = earlyPct / barMax * 100, dw = dayPct / barMax * 100;
+      // 시도(evd)처럼 막대 안에 수치 라벨 — 칸이 좁으면(약 24px 미만) 생략
+      const eLbl = ew >= 15 ? fmt1(earlyPct) : '';
+      const dLbl = dw >= 15 ? fmt1(dayPct) : '';
       return `<div class="sgg-row" title="${r.name} · 사전 ${fmt1(earlyPct)}% + 당일 ${fmt1(dayPct)}% = ${fmt1(r.turnout_pct)}% · 투표 ${intComma(r.voters_so_far)} / 선거인 ${intComma(r.eligible_voters)}">` +
         `<span class="sgg-name">${r.name}</span>` +
-        `<span class="sgg-bar-wrap"><span class="sgg-seg e" style="width:${ew}%"></span><span class="sgg-seg d" style="width:${dw}%"></span></span>` +
+        `<span class="sgg-bar-wrap"><span class="sgg-seg e" style="width:${ew.toFixed(1)}%">${eLbl}</span><span class="sgg-seg d" style="width:${dw.toFixed(1)}%">${dLbl}</span></span>` +
         `<span class="sgg-rate">${fmt1(r.turnout_pct)}%</span></div>`;
     }).join('');
     return `<div class="sgg-group"><div class="sgg-head"><span class="sgg-sido">${SIDO_SHORT[sd] || sd}</span><span class="sgg-total">${head}</span></div><div class="sgg-list">${list}</div></div>`;
