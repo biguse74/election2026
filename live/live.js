@@ -1176,6 +1176,20 @@ function renderRepoll(cur) {
   root.innerHTML = raceTable(races.map(raceTableRow).join(''));
 }
 
+// ── 교육감 개표 (정당 없는 단독 선출) ──────────────────────────────
+function renderEdu(cur) {
+  const block = document.getElementById('edu-block');
+  const root = document.getElementById('edu-races');
+  if (!block || !root) return;
+  const races = (cur?.races || []).filter(r => String(r.sg_type_code) === '11');
+  if (!races.length) { block.hidden = true; return; }
+  races.sort((a, b) =>
+    (b.progress_pct || 0) - (a.progress_pct || 0) ||
+    (a.rank1_minus_rank2_pp ?? 999) - (b.rank1_minus_rank2_pp ?? 999));
+  block.hidden = false;
+  root.innerHTML = raceTable(races.map(raceTableRow).join(''));
+}
+
 // ── 당선 확실·유력 종합 ────────────────────────────────────────────
 function renderCalled(cur) {
   const block = document.getElementById('called-block');
@@ -1304,6 +1318,7 @@ function showWaiting(msg) {
   const cb = document.getElementById('corr-block'); if (cb) cb.hidden = true;
   const rp = document.getElementById('repoll-block'); if (rp) rp.hidden = true;
   const cb2 = document.getElementById('called-block'); if (cb2) cb2.hidden = true;
+  const eb = document.getElementById('edu-block'); if (eb) eb.hidden = true;
   document.getElementById('chief-races').innerHTML = `<div class="state-empty">${msg}</div>`;
   const bh = document.getElementById('bh-compare'); if (bh) bh.innerHTML = `<div class="state-empty">${msg}</div>`;
   document.getElementById('search-results').innerHTML = '';
@@ -1408,6 +1423,7 @@ async function render() {
   renderWatchlist(watchlist);
   renderGroups(groups);
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
+  renderEdu(cur);
   renderBasicHead(cur, predBasicHead);
   renderRepoll(cur);
   renderCalled(cur);

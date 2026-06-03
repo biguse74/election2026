@@ -516,7 +516,7 @@ def _split_party(s: str) -> tuple[str, str]:
 # statementId: 선거종류별로 다르다. #3=시도지사, #4=기초단체장(시장·군수·구청장).
 # 둘 다 '선거구명+후보이름(정당+성명)' 헤더행 → 득표행 → 득표율행' 3행 블록 구조라
 # 이름이 표에 직접 들어와 기호 추정·사퇴 매핑이 전혀 필요 없다(엉뚱한 당선자 위험 없음).
-_VCCP_STMT = {"3": "VCCP09_#3", "4": "VCCP09_#4"}
+_VCCP_STMT = {"3": "VCCP09_#3", "4": "VCCP09_#4", "11": "VCCP09_#11"}
 
 
 def _vccp_rows(eid: str, sg_type: str, city_code: str, statement_id: str) -> list[list[str]] | None:
@@ -944,7 +944,14 @@ def main() -> None:
         kc = scrape_counting_muni_council_watch(args.sg_id) or []
         if kc:
             print(f"  · 개표 웹(VCCP09 #6) 폴백: 기초의원 주목 {len(kc)}곳")
-        web_races = (gov + bh + na + kc) or None
+        # 교육감 — VCCP09_#11, 전국 1콜(시도별). 정당 없는 단독 선출 → 정당 표기 제거.
+        edu = scrape_counting_web(args.sg_id, "11") or []
+        for r in edu:
+            for c in r.get("candidates", []):
+                c["jd_name"] = ""
+        if edu:
+            print(f"  · 개표 웹(VCCP09 #11) 폴백: 교육감 {len(edu)}곳")
+        web_races = (gov + bh + na + kc + edu) or None
 
     current, meta = build_current(args.sg_id, polled_at, counting_calls, turnout, web_races)
     meta["counting_calls_total"] = len(counting_calls) + failed
