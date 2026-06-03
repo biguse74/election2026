@@ -159,19 +159,18 @@
 
   /* 시도별 투표율 표 */
   .turnout-table { display: grid; gap: 5px; }
-  .tr-row { display: grid; grid-template-columns: 74px 1fr 52px 52px; align-items: center; gap: 9px; padding: 5px 2px; border-bottom: 1px solid #f2f2f2; }
-  .tr-delta { text-align: right; font-size: 0.74rem; font-weight: 700; }
-  .tr-delta.up { color: #c0392b; }
-  .tr-delta.down { color: #2b6cb0; }
-  .tr-natline { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1.5px dashed #c41e3a; pointer-events: none; z-index: 1; }
+  .tr-row { display: grid; grid-template-columns: 74px 1fr 60px; align-items: center; gap: 9px; padding: 5px 2px; border-bottom: 1px solid #f2f2f2; }
+  .tr-natline { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1.5px dashed #c41e3a; pointer-events: none; z-index: 2; }
 
   .tr-row.tr-nat { font-weight: 800; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 4px; }
   .tr-name { font-size: 0.9rem; font-weight: 700; }
-  .tr-bar-wrap { position: relative; height: 18px; background: #f2f2f2; border-radius: 4px; overflow: hidden; }
-  .tr-bar { position: absolute; left: 0; top: 0; bottom: 0; background: #1a1a1a; border-radius: 4px; }
+  .tr-bar-wrap { position: relative; height: 20px; background: #f2f2f2; border-radius: 4px; overflow: hidden; }
+  .tr-bar { position: absolute; left: 0; top: 0; bottom: 0; min-width: 38px; background: #1a1a1a; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; }
   .tr-row.tr-nat .tr-bar { background: #2b6cb0; }
+  .tr-inbar { color: #fff; font-size: 0.78rem; font-weight: 800; padding-right: 7px; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .tr-meta { font-size: 0.72rem; color: var(--muted); }
-  .tr-pct { text-align: right; font-weight: 800; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+  .tr-proj { text-align: right; font-weight: 800; font-size: 0.92rem; font-variant-numeric: tabular-nums; color: #c41e3a; }
+  .tr-proj-u { font-size: 0.72em; font-weight: 700; }
 
   /* 시도별 누적 투표율 (사전+당일 스택) */
   .evd-legend { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
