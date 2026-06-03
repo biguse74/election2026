@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>당선 결과 — 6·3 지방선거 2026 · 뉴탐사</title>
+<meta name="description" content="2026년 6월 3일 제9회 전국동시지방선거 당선 결과. 광역단체장·교육감·기초단체장·국회의원 재보궐 당선자를 정당 의석 대결과 후보 카드로 한눈에. 중앙선관위 실측·뉴탐사.">
+<meta name="author" content="뉴탐사">
+<meta name="theme-color" content="#c41e3a">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://election2026.newtamsa.org/result/">
+<meta property="og:title" content="6·3 지방선거 당선 결과 · 뉴탐사">
+<meta property="og:description" content="광역단체장·교육감·기초단체장·국회의원 재보궐 당선자를 정당 의석 대결과 후보 카드로 한눈에. 중앙선관위 실측·뉴탐사.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:site_name" content="뉴탐사">
+<meta property="og:image" content="https://election2026.newtamsa.org/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://election2026.newtamsa.org/result/">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23c41e3a'/%3E%3Ctext x='14' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'%3E6%3C/text%3E%3Ccircle cx='32' cy='30' r='3.5' fill='%23fff'/%3E%3Ctext x='38' y='48' font-family='serif' font-size='38' font-weight='900' fill='%23fff'%3E3%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
+<style>
+  :root {
+    --ink: #1a1a1a; --muted: #6b6b6b; --line: #e5e5e5;
+    --accent: #c41e3a; --blue: #1e4a8a; --gray: #999;
+    --dem: #152484; --con: #E61E2B;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Pretendard', -apple-system, sans-serif; color: var(--ink); background: #f4f4f6; line-height: 1.55; }
+  a { color: inherit; }
+
+  /* 헤더 */
+  .ev-header { background: #1a1a1a; color: #fff; padding: 14px 0; border-bottom: 3px solid var(--accent); }
+  .ev-header-inner { max-width: 1180px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .ev-brand { display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: #fff; }
+  .ev-brand-title { font-family: 'Noto Serif KR', serif; font-size: 1.1rem; font-weight: 900; letter-spacing: -0.01em; }
+  .ev-brand-sub { font-size: 0.78rem; color: var(--accent); font-weight: 700; }
+  .ev-nav { display: flex; gap: 4px; flex-wrap: wrap; }
+  .ev-nav a { color: rgba(255,255,255,0.78); text-decoration: none; font-size: 0.86rem; font-weight: 600; padding: 6px 12px; border-radius: 999px; }
+  .ev-nav a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+  .ev-nav .ev-nav-active { background: var(--accent); color: #fff; }
+
+  main { max-width: 1180px; margin: 0 auto; padding: 0 20px 70px; }
+
+  /* 에디토리얼 히어로 */
+  .rs-hero { background: #14141a; color: #fff; border-radius: 0 0 16px 16px; margin: 0 0 28px; padding: 34px 30px 30px; position: relative; overflow: hidden; }
+  .rs-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, var(--dem) 0 50%, var(--con) 50% 100%); }
+  .rs-eyebrow { font-size: 0.82rem; font-weight: 800; letter-spacing: 0.06em; color: var(--accent); text-transform: uppercase; }
+  .rs-title { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 2.6rem; letter-spacing: -0.03em; margin: 6px 0 4px; line-height: 1.05; }
+  .rs-title .live-dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: var(--accent); margin-left: 10px; animation: pulse 1.4s infinite; vertical-align: middle; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+  .rs-sub { color: rgba(255,255,255,0.7); font-size: 0.92rem; }
+  .rs-sub b { color: #fff; }
+
+  /* 광역단체장 의석 대결 바 */
+  .seat-battle { margin: 24px 0 6px; }
+  .seat-battle-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; }
+  .sb-side { font-weight: 800; }
+  .sb-side .sb-n { font-family: 'Noto Serif KR', serif; font-size: 2.2rem; font-weight: 900; line-height: 1; }
+  .sb-side.dem { color: #8aa0ff; text-align: left; }
+  .sb-side.con { color: #ff9aa6; text-align: right; }
+  .sb-side .sb-label { font-size: 0.82rem; font-weight: 700; opacity: 0.9; }
+  .sb-mid { text-align: center; color: rgba(255,255,255,0.55); font-size: 0.78rem; font-weight: 700; align-self: center; }
+  .seat-bar { height: 26px; border-radius: 7px; overflow: hidden; display: flex; background: #2a2a33; box-shadow: inset 0 1px 3px rgba(0,0,0,0.4); }
+  .seat-bar i { height: 100%; display: block; }
+  .seat-bar .s-dem { background: var(--dem); }
+  .seat-bar .s-con { background: var(--con); }
+  .seat-bar .s-etc { background: #6b6b78; }
+  .seat-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; font-size: 0.78rem; color: rgba(255,255,255,0.7); }
+  .seat-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
+
+  /* 직책별 요약 칩 */
+  .office-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
+  @media (max-width: 760px) { .office-tiles { grid-template-columns: 1fr 1fr; } }
+  .ot { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; }
+  .ot-name { font-size: 0.8rem; color: rgba(255,255,255,0.65); font-weight: 700; }
+  .ot-fig { margin-top: 4px; font-weight: 800; font-size: 1rem; }
+  .ot-fig .d { color: #8aa0ff; } .ot-fig .c { color: #ff9aa6; } .ot-fig .e { color: #c9c9d4; }
+  .ot-sub { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 3px; }
+
+  /* 섹션 */
+  section.rs-block { margin: 38px 0 0; }
+  .rs-h2 { font-family: 'Noto Serif KR', serif; font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; margin: 0 0 3px; display: flex; align-items: baseline; gap: 10px; }
+  .rs-h2 .rs-count { font-size: 0.86rem; font-weight: 700; color: var(--muted); font-family: 'Pretendard', sans-serif; }
+  .rs-h2::before { content: ''; width: 6px; height: 1.1em; background: var(--accent); border-radius: 2px; display: inline-block; transform: translateY(0.12em); }
+  .rs-desc { color: var(--muted); font-size: 0.86rem; margin: 0 0 14px; }
+
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 820px) { .result-grid { grid-template-columns: 1fr; } }
+
+  /* 후보 카드 (실시간 개표 페이지와 동일 폼) */
+  .race-card { border: 1px solid var(--line); border-radius: 12px; padding: 15px 17px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .race-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 11px; }
+  .race-sido { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.12rem; }
+  .race-sido .rs-where { font-family: 'Pretendard', sans-serif; font-weight: 700; font-size: 0.78rem; color: var(--muted); margin-left: 6px; }
+  .race-progress { font-size: 0.78rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
+  .race-progress b { color: var(--ink); }
+
+  .cand-row { display: grid; grid-template-columns: 34px 11px 58px 70px 1fr 50px; align-items: center; gap: 7px; margin: 6px 0; }
+  .cand-photo { width: 34px; height: 42px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background: #eee; border: 1px solid var(--line); }
+  .cand-photo.cand-noimg { display: inline-flex; align-items: center; justify-content: center; color: var(--muted); font-weight: 800; font-size: 0.8rem; }
+  .cand-dot { width: 10px; height: 10px; border-radius: 2px; }
+  .cand-name { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cand-party { font-size: 0.74rem; color: var(--muted); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cand-bar-wrap { height: 13px; background: #ececf2; border-radius: 6px; overflow: hidden; }
+  .cand-bar { display: block; height: 100%; border-radius: 6px; transition: width 0.5s; box-shadow: inset 0 -2px 3px rgba(0,0,0,0.10); }
+  .cand-share { font-weight: 800; font-size: 0.98rem; text-align: right; font-variant-numeric: tabular-nums; }
+  .cand-rank1 .cand-name::after { content: ' ▲'; color: var(--accent); font-size: 0.7em; }
+
+  .race-compare { margin-top: 11px; padding-top: 10px; border-top: 1px dashed var(--line); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .rc-item { font-size: 0.8rem; color: var(--muted); }
+  .rc-item b { color: var(--ink); font-weight: 800; }
+  .rc-margin { font-weight: 700; color: var(--muted); }
+  .rc-margin.margin-close { color: var(--con); font-weight: 900; }
+  .rc-verdict { margin-left: auto; font-size: 0.76rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+  .v-hit { background: #e6f4ea; color: #1a7f37; } .v-band { background: #eef2fb; color: var(--blue); }
+  .v-upset { background: #fde6eb; color: var(--accent); } .v-none { background: #f0f0f0; color: var(--muted); }
+
+  /* 당선 배지 */
+  .call-chip { display: inline-block; font-size: 0.7rem; font-weight: 800; padding: 2px 9px; border-radius: 999px; vertical-align: middle; margin-right: 6px; white-space: nowrap; }
+  .call-chip.call-fix { background: #127a3e; color: #fff; box-shadow: 0 1px 3px rgba(18,122,62,0.35); }
+  .call-chip.call-fix::before { content: '✓ '; }
+  .call-chip.call-win { background: #127a3e; color: #fff; }
+  .call-chip.call-win::before { content: '✓ '; }
+  .call-chip.call-lead { background: #fdf0d5; color: #a15c00; border: 1px solid #f0d9a8; }
+
+  /* 기초단체장 — 시도별 당선자 칩 */
+  .bh-sido { margin: 14px 0; }
+  .bh-sido-h { font-weight: 800; font-size: 0.92rem; margin: 0 0 7px; display: flex; align-items: center; gap: 8px; }
+  .bh-sido-h .bh-sido-tally { font-size: 0.76rem; font-weight: 700; color: var(--muted); }
+  .chip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 7px; }
+  .wchip { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--line); border-left-width: 4px; border-radius: 8px; padding: 7px 10px; }
+  .wchip .wc-place { font-size: 0.74rem; color: var(--muted); font-weight: 700; }
+  .wchip .wc-name { font-weight: 800; font-size: 0.9rem; }
+  .wchip .wc-share { margin-left: auto; font-size: 0.78rem; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .wchip.close { box-shadow: inset 0 0 0 1px rgba(230,30,43,0.25); }
+  .wchip .wc-fix { color: #127a3e; font-weight: 900; font-size: 0.7rem; }
+
+  .state-empty { padding: 30px 0; text-align: center; color: var(--muted); }
+  .rs-foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; line-height: 1.7; }
+  .rs-foot b { color: #444; }
+</style>
+</head>
+<body>
+  <header class="ev-header">
+    <div class="ev-header-inner">
+      <a href="/" class="ev-brand">
+        <span class="ev-brand-title">6·3 지방선거 2026</span>
+        <span class="ev-brand-sub">뉴탐사 데이터</span>
+      </a>
+      <nav class="ev-nav">
+        <a href="/">메인</a>
+        <a href="/early-voting/">사전투표율</a>
+        <a href="/live/">실시간 투표·개표</a>
+        <a href="/result/" class="ev-nav-active">당선 결과</a>
+        <a href="/sim/">결과 예측 시뮬레이션</a>
+        <a href="/stocks/">후보 주식보유</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="rs-hero">
+      <div class="rs-eyebrow">뉴탐사 · 제9회 전국동시지방선거</div>
+      <h1 class="rs-title">당선 결과<span id="rs-livedot" class="live-dot" hidden></span></h1>
+      <div class="rs-sub" id="rs-sub">불러오는 중…</div>
+
+      <div class="seat-battle">
+        <div class="seat-battle-head">
+          <div class="sb-side dem"><div class="sb-n" id="sb-dem">—</div><div class="sb-label">더불어민주당</div></div>
+          <div class="sb-mid">광역단체장 의석</div>
+          <div class="sb-side con"><div class="sb-n" id="sb-con">—</div><div class="sb-label">국민의힘</div></div>
+        </div>
+        <div class="seat-bar" id="seat-bar"></div>
+        <div class="seat-legend" id="seat-legend"></div>
+      </div>
+
+      <div class="office-tiles" id="office-tiles"></div>
+    </section>
+
+    <section class="rs-block" id="sec-chief">
+      <h2 class="rs-h2">광역단체장 <span class="rs-count" id="cnt-chief"></span></h2>
+      <p class="rs-desc">시·도지사 당선자. 카드 하단에 실제 득표차와 뉴탐사 자체 시뮬레이션 예측·적중 여부를 함께 표시합니다.</p>
+      <div class="result-grid" id="grid-chief"></div>
+    </section>
+
+    <section class="rs-block" id="sec-edu">
+      <h2 class="rs-h2">교육감 <span class="rs-count" id="cnt-edu"></span></h2>
+      <p class="rs-desc">정당을 표방하지 않는 단독 선출. 광주·전남은 전남광주통합특별시 통합 교육감입니다.</p>
+      <div class="result-grid" id="grid-edu"></div>
+    </section>
+
+    <section class="rs-block" id="sec-repoll">
+      <h2 class="rs-h2">국회의원 재·보궐 <span class="rs-count" id="cnt-repoll"></span></h2>
+      <p class="rs-desc">지선과 함께 치러진 국회의원 재·보궐선거 당선자.</p>
+      <div class="result-grid" id="grid-repoll"></div>
+    </section>
+
+    <section class="rs-block" id="sec-bh">
+      <h2 class="rs-h2">기초단체장 <span class="rs-count" id="cnt-bh"></span></h2>
+      <p class="rs-desc">시장·군수·구청장 당선자. 시·도별로 묶었습니다. 빨간 테두리는 박빙(2%p 미만).</p>
+      <div id="bh-tally"></div>
+      <div id="bh-sido-wrap"></div>
+    </section>
+
+    <div class="rs-foot">
+      <b>자료</b> 중앙선거관리위원회 개표 실측(info.nec.go.kr) · 뉴탐사 자체 집계.
+      <span id="rs-foot-meta"></span><br>
+      <b>당선 판정</b> 당선=개표 99.5%↑ 1위 · 당선 확실=남은 표 전부 2위가 가져가도 1위 못 넘음 · 당선 유력=역전 가능성 매우 낮음. 개표 진행 중인 곳은 최종 결과와 달라질 수 있습니다.
+    </div>
+  </main>
+
+  <script src="./result.js?v=20260604a"></script>
+</body>
+</html>
