@@ -1320,7 +1320,14 @@ function showWaiting(msg) {
 // 투표율 섹션 접기/펴기 — 개표 모드에선 기본 접어 개표까지 스크롤 단축.
 let _collapsibleInit = false;
 function initCollapsible(beforeCount) {
-  const ids = ['trend-block', 'evd-block', 'sigungu-block', 'histcmp-block'];
+  // 스크롤 압박↓ + 정보 보존(아카이빙): 부가 섹션을 접기 가능으로. 헤더 클릭으로 펼침.
+  // 기본 펼침은 핵심 결과(주목 후보·당선 종합·시도지사)만, 나머지는 접어 둔다.
+  const ids = [
+    'watch-block', 'called-block', 'chief-block', 'edu-block', 'bh-block', 'repoll-block', 'search-block',
+    'exitpoll-block', 'epc-block', 'panse-block', 'trend-block', 'evd-block', 'sigungu-block', 'histcmp-block',
+    'corr-block', 'groups-block',
+  ];
+  const openByDefault = new Set(['watch-block', 'chief-block']);
   ids.forEach(id => { const s = document.getElementById(id); if (s) s.classList.add('collapsible'); });
   if (_collapsibleInit) return;
   _collapsibleInit = true;
@@ -1330,7 +1337,10 @@ function initCollapsible(beforeCount) {
       h2.parentElement.classList.toggle('collapsed');
     }
   });
-  if (!beforeCount) ids.forEach(id => { const s = document.getElementById(id); if (s) s.classList.add('collapsed'); });
+  if (!beforeCount) ids.forEach(id => {
+    if (openByDefault.has(id)) return;
+    const s = document.getElementById(id); if (s) s.classList.add('collapsed');
+  });
 }
 
 // ── main ──────────────────────────────────────────────────────────
@@ -1420,10 +1430,41 @@ async function render() {
   renderRepoll(cur);
   renderCalled(cur);
   renderTurnoutCorr(cur);
+  renderHeaderSummaries(cur);
   populateFilters(LATEST_RACES);
   bindFilters();
   bindRaceExpand();
   renderSearch();
+}
+
+// 접힌 섹션 헤더에도 핵심 숫자를 보여 줌(스크롤 없이 한눈에 + 아카이빙).
+function setHeaderSummary(blockId, html) {
+  const sec = document.getElementById(blockId);
+  const h2 = sec && sec.querySelector('h2');
+  if (!h2) return;
+  let s = h2.querySelector('.block-sum');
+  if (!s) { s = document.createElement('span'); s.className = 'block-sum'; h2.appendChild(s); }
+  s.innerHTML = html;
+}
+function _tallyShort(races) {
+  let d = 0, c = 0, e = 0;
+  for (const r of races) { if (!(r.candidates || []).length) continue; const p = r.candidates[0].jd_name; if (p === DEM) d++; else if (p === CON) c++; else e++; }
+  return { d, c, e };
+}
+function renderHeaderSummaries(cur) {
+  const byT = t => (cur?.races || []).filter(r => String(r.sg_type_code) === t && (r.candidates || []).length);
+  const dc = (t) => `<b style="color:var(--dem)">민주 ${t.d}</b> · <b style="color:var(--con)">국힘 ${t.c}</b>${t.e ? ` · 그외 ${t.e}` : ''}`;
+  const ch = byT('3'), bh = byT('4'), rp = byT('2'), ed = byT('11');
+  if (ch.length) setHeaderSummary('chief-block', dc(_tallyShort(ch)));
+  if (bh.length) setHeaderSummary('bh-block', dc(_tallyShort(bh)));
+  if (rp.length) setHeaderSummary('repoll-block', dc(_tallyShort(rp)));
+  if (ed.length) setHeaderSummary('edu-block', `${ed.length}곳 집계`);
+  // 당선 확실·유력 종합 — 접힌 헤더에 확실/유력 수
+  const called = (cur?.races || []).filter(r => ['2', '3', '4'].includes(String(r.sg_type_code)))
+    .map(r => electionCall(r)).filter(Boolean);
+  const sure = called.filter(c => c.cls === 'call-win').length;
+  const lead = called.filter(c => c.cls === 'call-lead').length;
+  if (sure + lead) setHeaderSummary('called-block', `<b style="color:#127a3e">당선 확실 ${sure}</b> · 유력 ${lead}`);
 }
 
 render();
