@@ -24,26 +24,22 @@ name: 라이브 투개표 자동 수집
 #   KST 익일 06:00 = UTC 21:00 (같은 UTC 날짜의 21시)
 #   KST 익일 12:00 = UTC 03:00 (다음 UTC 날짜의 03시)
 
+# ⚠️ 6/3 라이브 수집은 로컬 작업 스케줄러(scripts/run_live_collect_hidden.vbs)가
+#    단독 담당한다. GitHub Actions cron을 동시에 돌리면 ① 같은 main 브랜치에
+#    이중 push → 충돌(push 3회 실패 → exit 1), ② CI에서 info.nec.go.kr 웹 스크랩이
+#    막히면 빈 데이터(races=[])로 좋은 로컬 데이터를 덮어쓸 위험이 있다.
+#    따라서 이벤트 기간 동안 cron 스케줄을 비활성화한다. 필요 시 아래 workflow_dispatch로
+#    수동 실행 가능(OpenAPI가 정식 개표결과를 주기 시작하면 cron 복구 검토).
 on:
-  schedule:
-    # 정찰: 5/22~5/31 매일 KST 18:00 (UTC 09:00) → dry-run
-    - cron: '0 9 22-31 5 *'
-    # 정찰: 6/1~6/2 매일 KST 18:00
-    - cron: '0 9 1-2 6 *'
-
-    # 본투표 시간대 (6/3 KST 06:00~17:55) — 투표율만, 5분 간격
-    - cron: '*/5 21-23 2 6 *'    # KST 6/3 06:00~08:55 (UTC 6/2 21:00~23:55)
-    - cron: '*/5 0-8 3 6 *'      # KST 6/3 09:00~17:55 (UTC 6/3 00:00~08:55)
-
-    # 격렬 개표 초반 (6/3 KST 18:00~20:55) — 풀 호출, 5분 간격
-    - cron: '*/5 9-11 3 6 *'     # UTC 6/3 09:00~11:55  =  KST 6/3 18:00~20:55
-
-    # 정리 개표 (6/3 KST 21:00 ~ 6/4 KST 05:55) — 풀 호출, 10분 간격
-    - cron: '*/10 12-20 3 6 *'   # UTC 6/3 12:00~20:55  =  KST 6/3 21:00 ~ 6/4 05:55
-
-    # 익일 보조 (6/4 KST 06:00 ~ 11:55) — 풀 호출, 30분 간격
-    - cron: '*/30 21-23 3 6 *'   # UTC 6/3 21:00~23:30  =  KST 6/4 06:00~08:30
-    - cron: '*/30 0-2 4 6 *'     # UTC 6/4 00:00~02:30  =  KST 6/4 09:00~11:30
+  # schedule: (이벤트 기간 비활성화 — 로컬 스케줄러 단독 수집. 충돌·덮어쓰기 방지)
+  #   - cron: '0 9 22-31 5 *'      # 정찰 dry-run
+  #   - cron: '0 9 1-2 6 *'
+  #   - cron: '*/5 21-23 2 6 *'    # 본투표 투표율
+  #   - cron: '*/5 0-8 3 6 *'
+  #   - cron: '*/5 9-11 3 6 *'     # 개표 초반 풀
+  #   - cron: '*/10 12-20 3 6 *'   # 정리 개표
+  #   - cron: '*/30 21-23 3 6 *'   # 익일 보조
+  #   - cron: '*/30 0-2 4 6 *'
 
   workflow_dispatch:
     inputs:
@@ -76,10 +72,10 @@ jobs:
 
     steps:
       - name: 레포 체크아웃
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Python 3.12 설치
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: 'pip'
