@@ -386,31 +386,45 @@ def scrape_turnout_web(sg_id: str) -> dict | None:
     except Exception as e:
         print(f"  ! 투표율 웹 스크랩 실패: {e}", file=sys.stderr)
         return None
-    national, by_sido = None, []
-    for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", html, re.S):
-        cells = [re.sub(r"<[^>]+>", "", c).strip() for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
-        if len(cells) != 8:
-            continue
-        name = cells[0]
-        if name not in _SIDO_SET and name not in _SIDO_FULL and name not in ("합계", "계", "전국"):
-            continue
-        entry = {
-            "sd_name": "전국" if name in ("합계", "계", "전국") else _SIDO_FULL.get(name, name),
-            "eligible_voters": _num(cells[3]),
-            "voters_so_far": _num(cells[6]),
-            "turnout_pct": _num(cells[7]),
-            "day_voters_so_far": _num(cells[4]),
-            "early_voters_so_far": _num(cells[5]),
-            "day_eligible_voters": _num(cells[1]),
-            "early_eligible_voters": _num(cells[2]),
-        }
-        if entry["sd_name"] == "전국":
-            national = entry
-        else:
-            by_sido.append(entry)
+    def _parse(html_text):
+        nat, sidos = None, []
+        for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", html_text, re.S):
+            cells = [re.sub(r"<[^>]+>", "", c).strip() for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
+            if len(cells) not in (8, 9):  # 전체=8칸, 특정시각=9칸(끝 개표구 칸)
+                continue
+            name = cells[0]
+            if name not in _SIDO_SET and name not in _SIDO_FULL and name not in ("합계", "계", "전국"):
+                continue
+            entry = {
+                "sd_name": "전국" if name in ("합계", "계", "전국") else _SIDO_FULL.get(name, name),
+                "eligible_voters": _num(cells[3]), "voters_so_far": _num(cells[6]),
+                "turnout_pct": _num(cells[7]), "day_voters_so_far": _num(cells[4]),
+                "early_voters_so_far": _num(cells[5]), "day_eligible_voters": _num(cells[1]),
+                "early_eligible_voters": _num(cells[2]),
+            }
+            if entry["sd_name"] == "전국":
+                nat = entry
+            else:
+                sidos.append(entry)
+        return nat, sidos
+    national, by_sido = _parse(html)
     if not national and not by_sido:
         return None
-    return {"national": national, "by_sido": by_sido, "source": "info.nec.go.kr VCVP01 (웹)"}
+    # 오늘 시간대별 전국 누계 곡선(07시~현재) — 과거선거 비교용
+    hourly = []
+    cur_hour = min(max(datetime.now(KST).hour, 7), 18)
+    for h in range(7, cur_hour + 1):
+        try:
+            hb = dict(body); hb["timeCode"] = str(h); hb["sggTime"] = f"{h}시"
+            ht = requests.post(_VCVP_URL, data=hb, headers=headers, timeout=20).text
+            nat_h, _sd = _parse(ht)
+            if nat_h and nat_h.get("turnout_pct") is not None:
+                hourly.append({"time": f"{h:02d}:00", "turnout_pct": nat_h["turnout_pct"],
+                               "voters_so_far": nat_h.get("voters_so_far")})
+        except Exception:
+            pass
+    return {"national": national, "by_sido": by_sido, "hourly": hourly,
+            "source": "info.nec.go.kr VCVP01 (웹)"}
 
 
 # ============ 가공 / 저장 ============

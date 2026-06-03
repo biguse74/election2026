@@ -129,9 +129,19 @@
   .wc-behind { background: #f0f0f0; color: var(--muted); }
   .wc-wait { background: #f7f7f7; color: var(--gray); }
 
+  /* 시간대별 추이 선그래프 */
+  .trend-wrap { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: #fff; }
+  svg#trend-svg { width: 100%; height: auto; display: block; }
+  .trend-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
+  .tl-item { font-size: 0.78rem; color: var(--muted); display: inline-flex; align-items: center; gap: 5px; }
+  .tl-dot { width: 12px; height: 3px; border-radius: 2px; display: inline-block; }
+
   /* 시도별 투표율 표 */
   .turnout-table { display: grid; gap: 5px; }
-  .tr-row { display: grid; grid-template-columns: 74px 1fr 56px; align-items: center; gap: 10px; padding: 5px 2px; border-bottom: 1px solid #f2f2f2; }
+  .tr-row { display: grid; grid-template-columns: 74px 1fr 52px 52px; align-items: center; gap: 9px; padding: 5px 2px; border-bottom: 1px solid #f2f2f2; }
+  .tr-delta { text-align: right; font-size: 0.74rem; font-weight: 700; }
+  .tr-delta.up { color: #c0392b; }
+  .tr-delta.down { color: #2b6cb0; }
   .tr-row.tr-nat { font-weight: 800; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 4px; }
   .tr-name { font-size: 0.9rem; font-weight: 700; }
   .tr-bar-wrap { position: relative; height: 18px; background: #f2f2f2; border-radius: 4px; overflow: hidden; }
@@ -254,9 +264,18 @@
     </div>
   </section>
 
+  <section class="block" id="trend-block" hidden>
+    <h2>시간대별 투표율 추이 — 과거 지선 비교</h2>
+    <p class="block-sub">오늘(2026)의 시간대별 누계 투표율을 2022·2018 지방선거와 같은 시각끼리 비교. 13시 전후 급등은 사전투표 합산 시점입니다.</p>
+    <div class="trend-wrap">
+      <svg id="trend-svg" viewBox="0 0 640 300" preserveAspectRatio="xMidYMid meet"></svg>
+      <div id="trend-legend" class="trend-legend"></div>
+    </div>
+  </section>
+
   <section class="block" id="turnout-block" hidden>
     <h2>시도별 실시간 투표율</h2>
-    <p class="block-sub">중앙선관위 집계(<span id="turnout-time">—</span> 기준) · 5분 간격 자동 갱신. 당일 투표 진행분이며 사전투표 접수분은 시간대별로 합산됩니다.</p>
+    <p class="block-sub">중앙선관위 집계(<span id="turnout-time">—</span> 기준) · 5분 갱신. <b>▲▼</b>는 2022 지선 같은 시각 대비 증감. 당일 투표분이며 사전투표 접수분은 시간대별로 합산됩니다.</p>
     <div id="turnout-table" class="turnout-table"></div>
   </section>
 
@@ -338,6 +357,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603f"></script>
+<script src="live.js?v=20260603g"></script>
 </body>
 </html>

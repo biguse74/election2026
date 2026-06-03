@@ -16,6 +16,7 @@ const PATHS = {
   predBasicHead: '../data/prediction_basic_head.json',
   parties:     '../data/parties.json',
   earlyVoting: '../data/early_voting/20260603/latest.json',
+  histHourly:  '../data/history_turnout_hourly.json',
 };
 
 const DEM = '더불어민주당';
@@ -193,7 +194,7 @@ function renderHero(cur) {
 }
 
 // ── 시도별 실시간 투표율 표 ────────────────────────────────────────
-function renderTurnoutTable(cur) {
+function renderTurnoutTable(cur, histHourly) {
   const block = document.getElementById('turnout-block');
   const wrap = document.getElementById('turnout-table');
   if (!block || !wrap) return;
@@ -202,14 +203,77 @@ function renderTurnoutTable(cur) {
   block.hidden = false;
   const tt = document.getElementById('turnout-time');
   if (tt) tt.textContent = fmtKST(cur.polled_at) + ' (KST)';
+  const hourly = (cur.turnout.hourly || []);
+  const curT = hourly.length ? hourly[hourly.length - 1].time : null;
+  const r2022 = ((histHourly && histHourly.rounds) || []).find(r => r.year === 2022);
+  const past2022 = sd => {
+    if (!r2022 || !curT) return null;
+    const arr = sd === '전국' ? r2022.national : (r2022.by_sido && r2022.by_sido[sd]);
+    const hit = arr && arr.find(d => d.time === curT);
+    return hit ? hit.turnout_pct : null;
+  };
   const sidos = (cur.turnout.by_sido || []).slice().sort((a, b) => (b.turnout_pct || 0) - (a.turnout_pct || 0));
   const maxPct = Math.max(nat.turnout_pct || 0, ...sidos.map(s => s.turnout_pct || 0), 1);
-  const row = (s, isNat) =>
-    `<div class="tr-row${isNat ? ' tr-nat' : ''}" title="투표 ${intComma(s.voters_so_far)} / 선거인 ${intComma(s.eligible_voters)}">` +
-    `<div class="tr-name">${s.sd_name}</div>` +
-    `<div class="tr-bar-wrap"><div class="tr-bar" style="width:${((s.turnout_pct || 0) / maxPct * 100).toFixed(1)}%"></div></div>` +
-    `<div class="tr-pct">${fmt1(s.turnout_pct)}%</div></div>`;
+  const row = (s, isNat) => {
+    const pv = past2022(s.sd_name);
+    const dv = (pv == null || s.turnout_pct == null) ? null : s.turnout_pct - pv;
+    const deltaCell = dv == null ? `<div class="tr-delta">—</div>`
+      : `<div class="tr-delta ${dv >= 0 ? 'up' : 'down'}">${dv >= 0 ? '▲' : '▼'}${fmt1(Math.abs(dv))}</div>`;
+    return `<div class="tr-row${isNat ? ' tr-nat' : ''}" title="투표 ${intComma(s.voters_so_far)} / 선거인 ${intComma(s.eligible_voters)}${pv != null ? ` · 2022 ${curT} 같은시각 ${fmt1(pv)}%` : ''}">` +
+      `<div class="tr-name">${s.sd_name}</div>` +
+      `<div class="tr-bar-wrap"><div class="tr-bar" style="width:${((s.turnout_pct || 0) / maxPct * 100).toFixed(1)}%"></div></div>` +
+      `<div class="tr-pct">${fmt1(s.turnout_pct)}%</div>${deltaCell}</div>`;
+  };
   wrap.innerHTML = row(nat, true) + sidos.map(s => row(s, false)).join('');
+}
+
+// ── 시간대별 투표율 추이 (오늘 vs 과거선거) ────────────────────────
+function renderTurnoutTrend(cur, histHourly) {
+  const block = document.getElementById('trend-block');
+  const svg = document.getElementById('trend-svg');
+  const legend = document.getElementById('trend-legend');
+  if (!block || !svg) return;
+  const today = (cur && cur.turnout && cur.turnout.hourly || []).filter(h => h.turnout_pct != null);
+  const rounds = (histHourly && histHourly.rounds) || [];
+  const r2022 = rounds.find(r => r.year === 2022);
+  const r2018 = rounds.find(r => r.year === 2018);
+  if (today.length < 1 || !r2022) { block.hidden = true; return; }
+  block.hidden = false;
+  const series = [
+    { label: '2018 (7회)', color: '#c9c9c9', data: (r2018 && r2018.national) || [], dash: '4 3' },
+    { label: '2022 (8회)', color: '#7a7a7a', data: (r2022 && r2022.national) || [], dash: '' },
+    { label: '2026 (오늘)', color: '#c41e3a', data: today, width: 3 },
+  ];
+  const t2x = t => { const [h, m] = t.split(':').map(Number); return (h * 60 + m) - 7 * 60; };
+  const W = 640, H = 300, padL = 34, padR = 12, padT = 12, padB = 26;
+  const xMax = 18 * 60 + 30 - 7 * 60;
+  const yMax = Math.max(62, ...series.flatMap(s => s.data.map(d => d.turnout_pct || 0))) + 2;
+  const px = x => padL + x / xMax * (W - padL - padR);
+  const py = y => H - padB - (y / yMax) * (H - padT - padB);
+  const g = [];
+  for (let y = 0; y <= yMax; y += 10) {
+    g.push(`<line x1="${padL}" y1="${py(y).toFixed(1)}" x2="${W - padR}" y2="${py(y).toFixed(1)}" stroke="#eee"/>`);
+    g.push(`<text x="${padL - 4}" y="${(py(y) + 3).toFixed(1)}" font-size="9" fill="#999" text-anchor="end">${y}</text>`);
+  }
+  for (const t of ['07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '18:00']) {
+    g.push(`<text x="${px(t2x(t)).toFixed(1)}" y="${H - padB + 13}" font-size="9" fill="#999" text-anchor="middle">${t.slice(0, 5)}</text>`);
+  }
+  g.push(`<line x1="${px(t2x('13:00')).toFixed(1)}" y1="${padT}" x2="${px(t2x('13:00')).toFixed(1)}" y2="${H - padB}" stroke="#e3c4c4" stroke-dasharray="2 2"/>`);
+  g.push(`<text x="${(px(t2x('13:00')) + 3).toFixed(1)}" y="${padT + 8}" font-size="8" fill="#b06">13시 사전투표 합산</text>`);
+  for (const s of series) {
+    const dd = s.data.filter(d => d.turnout_pct != null);
+    if (!dd.length) continue;
+    const pts = dd.map(d => `${px(t2x(d.time)).toFixed(1)},${py(d.turnout_pct).toFixed(1)}`).join(' ');
+    g.push(`<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="${s.width || 1.5}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ''} stroke-linejoin="round"/>`);
+    if (s.label.includes('오늘')) {
+      const last = dd[dd.length - 1];
+      g.push(`<circle cx="${px(t2x(last.time)).toFixed(1)}" cy="${py(last.turnout_pct).toFixed(1)}" r="3.6" fill="${s.color}"/>`);
+      g.push(`<text x="${px(t2x(last.time)).toFixed(1)}" y="${(py(last.turnout_pct) - 7).toFixed(1)}" font-size="11" font-weight="800" fill="${s.color}" text-anchor="middle">${fmt1(last.turnout_pct)}%</text>`);
+    }
+  }
+  svg.innerHTML = g.join('');
+  if (legend) legend.innerHTML = series.slice().reverse().map(s =>
+    `<span class="tl-item"><span class="tl-dot" style="background:${s.color}"></span>${s.label}</span>`).join('');
 }
 
 // ── 사전 vs 본투표 (진보·보수 가설) ────────────────────────────────
@@ -713,17 +777,18 @@ async function render() {
   const preview = location.search.includes('preview');
   const COUNT_START = Date.parse('2026-06-03T18:00:00+09:00');
   const beforeCount = !preview && Date.now() < COUNT_START;
-  const [cur, watchlist, groups, prevWinner, prevResult, prediction, predBasicHead, parties, earlyVoting] = await Promise.all([
+  const [cur, watchlist, groups, prevWinner, prevResult, prediction, predBasicHead, parties, earlyVoting, histHourly] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.groups),
     loadJSON(PATHS.prevWinner), loadJSON(PATHS.prevResult), loadJSON(PATHS.prediction), loadJSON(PATHS.predBasicHead), loadJSON(PATHS.parties),
-    loadJSON(PATHS.earlyVoting),
+    loadJSON(PATHS.earlyVoting), loadJSON(PATHS.histHourly),
   ]);
   // 투표 시간대(개표 전): 실제 투표율이 있으면 투표율만 표시, 개표 섹션은 대기.
   if (beforeCount) {
     const nat = cur && cur.turnout && cur.turnout.national;
     if (nat && nat.turnout_pct != null) {
       renderHero(cur);
-      renderTurnoutTable(cur);
+      renderTurnoutTrend(cur, histHourly);
+      renderTurnoutTable(cur, histHourly);
       renderEarlyVsDay(cur, earlyVoting);
       renderTurnoutCorr(cur);
       const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
@@ -752,7 +817,8 @@ async function render() {
   LATEST_PREVRESULT = (prevResult && prevResult.results) || {};
 
   renderHero(cur);
-  renderTurnoutTable(cur);
+  renderTurnoutTrend(cur, histHourly);
+  renderTurnoutTable(cur, histHourly);
   renderEarlyVsDay(cur, earlyVoting);
   renderWatchlist(watchlist);
   renderGroups(groups);
