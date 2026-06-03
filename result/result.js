@@ -7,8 +7,10 @@ const PATHS = {
   photos:    '../live/candidate_photos.json',
   cards:     '../data/candidate_cards.json',
   eduOrient: '../data/edu_orientation.json',
+  covered:   '../data/newtamsa_covered.json',
 };
 let EDU_ORIENT = {};
+let COVERED = null;
 const DEM = '더불어민주당';
 const CON = '국민의힘';
 const REFRESH_MS = 60 * 1000;
@@ -116,10 +118,10 @@ function resultCard(race, opts = {}) {
   const cands = (race.candidates || []).slice(0, 2).map(c => ({ ...c, _race: race }));
   const call = callResult(race);
   const callHTML = call ? `<span class="call-chip ${call.cls}">${call.label}</span>` : '';
-  // 제목: 국회의원 재보궐은 선거구명(+시도), 그 외는 시도명
-  const isRepoll = String(race.sg_type_code) === '2';
-  const title = opts.title || (isRepoll ? (race.sgg_name || race.sd_name) : race.sd_name);
-  const whereTxt = isRepoll ? race.sd_name : '';
+  // 제목: 선거구(시군구)가 있는 선거(재보궐2·기초단체장4·기초의원6)는 선거구명(+시도), 시도지사·교육감은 시도명
+  const hasSgg = ['2', '4', '6'].includes(String(race.sg_type_code));
+  const title = opts.title || (hasSgg ? (race.sgg_name || race.sd_name) : race.sd_name);
+  const whereTxt = hasSgg ? race.sd_name : '';
   const where = whereTxt ? `<span class="rs-where">${esc(whereTxt)}</span>` : '';
 
   // 하단 비교줄
@@ -229,6 +231,58 @@ function renderGrid(id, races, opts) {
   el.innerHTML = races.map(r => resultCard(r, opts)).join('');
 }
 
+// 기초의원(중선거구) — 뉴탐사가 주목한 후보 한 명의 결과만 보여 주는 카드
+function memberCard(race, name) {
+  const cands = race.candidates || [];
+  const c = cands.find(x => x.name === name);
+  if (!c) return '';
+  const color = partyColor(c.jd_name);
+  const w = Math.max(0, Math.min(100, c.share_pct || 0));
+  const cc = { ...c, _race: race };
+  return `<div class="race-card">
+    <div class="race-card-head">
+      <span class="race-sido">${esc(race.sgg_name || '')}<span class="rs-where">${esc(race.sd_name)} · 기초의원</span></span>
+      <span class="race-progress">개표 <b>${fmt1(race.progress_pct)}%</b></span>
+    </div>
+    <div class="cand-row cand-rank1">
+      ${candPhotoImg(race, cc, 'cand-photo')}
+      <span class="cand-dot" style="background:${color}"></span>
+      ${nameLink(race, cc, 'cand-name')}
+      <span class="cand-party">${esc(c.jd_name || '')}</span>
+      <span class="cand-bar-wrap"><span class="cand-bar" style="width:${w}%;background:${color}"></span></span>
+      <span class="cand-share">${fmt1(c.share_pct)}%</span>
+    </div>
+    <div class="race-compare"><span class="rc-item">중선거구(여러 명 당선) · 현재 <b>${c.current_rank}위 / ${cands.length}명</b></span></div>
+  </div>`;
+}
+
+// 뉴탐사 보도 지역 — 페이지 기본 순서(시도지사3→재보궐2→기초단체장4→기초의원6)로 정렬
+function renderCovered(cur, covered, predMap) {
+  const block = document.getElementById('sec-covered');
+  const el = document.getElementById('covered-grid');
+  if (!block || !el) return;
+  const list = (covered && covered.races) || [];
+  const ORD = { '3': 0, '2': 1, '4': 2, '6': 3 };
+  const items = list.map(e => {
+    const t = String(e.sgType);
+    const r = t === '3'
+      ? cur.races.find(x => String(x.sg_type_code) === '3' && x.sd_name === e.sd)
+      : cur.races.find(x => String(x.sg_type_code) === t && x.sd_name === e.sd && x.sgg_name === e.sgg);
+    return { e, r };
+  }).filter(x => x.r);
+  if (!items.length) { block.style.display = 'none'; return; }
+  items.sort((a, b) =>
+    (ORD[String(a.e.sgType)] - ORD[String(b.e.sgType)]) ||
+    (sidoIdx(a.r.sd_name) - sidoIdx(b.r.sd_name)) ||
+    (a.r.sgg_name || '').localeCompare(b.r.sgg_name || '', 'ko'));
+  el.innerHTML = items.map(({ e, r }) => {
+    if (String(e.sgType) === '6' && e.name) return memberCard(r, e.name);
+    return resultCard(r, String(e.sgType) === '3' ? { predMap } : {});
+  }).join('');
+  document.getElementById('cnt-covered').textContent = `${items.length}곳`;
+  block.style.display = '';
+}
+
 // 정당별 실제 당선자 수 — 큰 숫자(방송 가독성) + 가로 막대
 function labeledSeatBar(t) {
   const tot = t.total || 1;
@@ -296,14 +350,16 @@ function renderBH(bh) {
 
 let _huboidLoaded = false;
 async function render() {
-  const [cur, prediction, parties, photos, huboids, eduOri] = await Promise.all([
+  const [cur, prediction, parties, photos, huboids, eduOri, covered] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.prediction), loadJSON(PATHS.parties), loadJSON(PATHS.photos),
     _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.cards),
     _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.eduOrient),
+    _huboidLoaded ? Promise.resolve(COVERED) : loadJSON(PATHS.covered),
   ]);
   if (!cur || !cur.races) { document.getElementById('rs-sub').textContent = '데이터를 불러오지 못했습니다.'; return; }
   if (huboids) { HUBOID = huboids; _huboidLoaded = true; }
   if (eduOri) EDU_ORIENT = eduOri.by_name || {};
+  if (covered) COVERED = covered;
   PARTIES = parties || {};
   PHOTO_MAP = photos || { by_full: {}, by_sd: {} };
   const predMap = (prediction && prediction.sido_dem_win_prob) || {};
@@ -315,6 +371,7 @@ async function render() {
   const bh = byType('4');
 
   renderHero(cur, chiefs, edu, repoll, bh);
+  renderCovered(cur, COVERED, predMap);
   renderHistory(chiefs);
   renderGrid('grid-chief', chiefs, { predMap });
   renderEduTally(edu);
