@@ -265,6 +265,40 @@ function renderCompare2022(cur, histHourly) {
   }
 }
 
+// ── 역대 지방선거 투표율 비교 (1~8회 + 오늘 회귀 추정) ───────────────
+function renderHistoryCompare(cur, histHourly) {
+  const block = document.getElementById('histcmp-block');
+  const wrap = document.getElementById('histcmp-table');
+  const note = document.getElementById('histcmp-note');
+  if (!block || !wrap) return;
+  const pj = computeProjection(cur, histHourly);
+  // 막대 최대 기준: 역대 최고(1995 68.4%)와 오늘 추정 중 큰 값 + 여유
+  const maxRate = Math.max(...ZIBANG_HISTORY.map(h => h.rate), (pj && pj.proj) || 0) + 3;
+  const recordYear = ZIBANG_HISTORY.reduce((a, b) => (b.rate > a.rate ? b : a)).year;
+  const rows = ZIBANG_HISTORY.map(h => {
+    const w = (h.rate / maxRate * 100).toFixed(1);
+    const top1 = h.year === recordYear ? `<span class="hc-top1">역대1위</span>` : '';
+    return `<div class="hc-row">` +
+      `<div class="hc-name">${h.round}회 ${h.year}${top1}</div>` +
+      `<div class="hc-bar-wrap"><div class="hc-bar" style="width:${w}%"></div></div>` +
+      `<div class="hc-val">${fmt1(h.rate)}%</div></div>`;
+  });
+  if (pj) {
+    const w = (pj.proj / maxRate * 100).toFixed(1);
+    rows.push(`<div class="hc-row hc-today">` +
+      `<div class="hc-name">9회 2026<span class="hc-est">예상</span></div>` +
+      `<div class="hc-bar-wrap"><div class="hc-bar hc-bar-today" style="width:${w}%"></div></div>` +
+      `<div class="hc-val">${fmt1(pj.proj)}%</div></div>`);
+  }
+  wrap.innerHTML = rows.join('');
+  if (note) {
+    note.textContent = pj
+      ? `오늘 예상은 같은 시각 과거선거→최종 회귀 추정(범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}%). 확정 아님.`
+      : `역대 지방선거 최종 투표율(중앙선거관리위원회 확정). 1995년 1회가 ${fmt1(Math.max(...ZIBANG_HISTORY.map(h=>h.rate)))}%로 역대 최고.`;
+  }
+  block.hidden = false;
+}
+
 // ── 시도별 실시간 투표율 표 ────────────────────────────────────────
 function renderTurnoutTable(cur, histHourly) {
   const block = document.getElementById('turnout-block');
@@ -306,13 +340,20 @@ function renderTurnoutTrend(cur, histHourly) {
   const svg = document.getElementById('trend-svg');
   const legend = document.getElementById('trend-legend');
   if (!block || !svg) return;
-  const today = (cur && cur.turnout && cur.turnout.hourly || []).filter(h => h.turnout_pct != null).slice();
-  // 정시점(HH:00) 외에 '현재 최신 누계'(박스값)를 끝점으로 추가 → 차트 선이 박스와 같은 값까지 뻗음
+  // 누계 투표율은 시간이 갈수록 단조 증가해야 한다. 정시 스냅샷이 중복·역전되면
+  // 차트가 같은 값 두 번 찍히거나 아래로 꺾이므로, 시간순 + 엄격 증가만 남긴다.
+  let today = (cur && cur.turnout && cur.turnout.hourly || [])
+    .filter(h => h.turnout_pct != null)
+    .slice()
+    .sort((a, b) => (a.time < b.time ? -1 : a.time > b.time ? 1 : 0));
+  let _mx = -1;
+  today = today.filter(h => (h.turnout_pct > _mx + 0.01) ? ((_mx = h.turnout_pct), true) : false);
+  // 정시점(HH:00) 외에 '현재 최신 누계'(박스값)를 끝점으로 추가 → 박스값보다 시간·값 모두 엄격히 클 때만
   const _natNow = cur && cur.turnout && cur.turnout.national;
   if (_natNow && _natNow.turnout_pct != null && typeof cur.polled_at === 'string' && cur.polled_at.length >= 16) {
     const _hhmm = cur.polled_at.slice(11, 16);
     const _last = today[today.length - 1];
-    if (!_last || (_hhmm > _last.time && _natNow.turnout_pct >= _last.turnout_pct - 0.05)) {
+    if (!_last || (_hhmm > _last.time && _natNow.turnout_pct > _last.turnout_pct + 0.15)) {
       today.push({ time: _hhmm, turnout_pct: _natNow.turnout_pct });
     }
   }
@@ -897,6 +938,7 @@ async function render() {
       renderTurnoutTrend(cur, histHourly);
       renderTurnoutTable(cur, histHourly);
       renderEarlyVsDay(cur, earlyVoting);
+      renderHistoryCompare(cur, histHourly);
       renderTurnoutCorr(cur);
       const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
       const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
@@ -928,6 +970,7 @@ async function render() {
   renderTurnoutTrend(cur, histHourly);
   renderTurnoutTable(cur, histHourly);
   renderEarlyVsDay(cur, earlyVoting);
+  renderHistoryCompare(cur, histHourly);
   renderWatchlist(watchlist);
   renderGroups(groups);
   renderChiefRaces(cur, predMap, LATEST_PARTIES);

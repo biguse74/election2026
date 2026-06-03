@@ -181,6 +181,18 @@
   .evd-seg.d { background: #c0392b; }
   .evd-total { text-align: right; font-weight: 800; font-size: 0.9rem; }
 
+  /* 역대 지방선거 투표율 비교 */
+  .histcmp-table { display: grid; gap: 5px; font-variant-numeric: tabular-nums; }
+  .hc-row { display: grid; grid-template-columns: 108px 1fr 52px; align-items: center; gap: 10px; padding: 3px 2px; }
+  .hc-name { font-size: 0.84rem; font-weight: 700; white-space: nowrap; display: flex; align-items: center; gap: 5px; }
+  .hc-top1 { font-size: 0.6rem; font-weight: 800; color: #b7791f; background: #fdf0d5; border-radius: 3px; padding: 1px 4px; }
+  .hc-est { font-size: 0.6rem; font-weight: 800; color: #fff; background: #c41e3a; border-radius: 3px; padding: 1px 4px; }
+  .hc-bar-wrap { height: 16px; background: #f4f4f4; border-radius: 4px; overflow: hidden; }
+  .hc-bar { height: 100%; background: #9aa6b2; border-radius: 4px; }
+  .hc-bar-today { background: #c41e3a; }
+  .hc-today .hc-name { color: #c41e3a; }
+  .hc-val { text-align: right; font-weight: 800; font-size: 0.86rem; }
+
   /* 투표율-표심 산점도 */
   .corr-wrap { border: 1px solid var(--line); border-radius: 8px; padding: 16px; background: #fff; }
   svg#corr-svg { width: 100%; height: auto; display: block; }
@@ -285,7 +297,7 @@
   </section>
 
   <section class="block" id="trend-block" hidden>
-    <h2>시간대별 투표율 추이 — 과거 지선 비교</h2>
+    <h2>시간대별 투표율 추이 — 과거 선거 비교</h2>
     <p class="block-sub">오늘(2026 지선)의 시간대별 누계 투표율을 <b>2025 대선·2024 총선·2022·2018 지선</b>과 같은 시각끼리 비교(중앙선관위 실측 그대로). 13시 전후 급등은 사전투표 합산 시점입니다.</p>
     <div class="trend-wrap">
       <svg id="trend-svg" viewBox="0 0 640 320" preserveAspectRatio="xMidYMid meet"></svg>
@@ -304,6 +316,13 @@
     <p class="block-sub">각 시도의 <b>사전투표율</b>(5/29~30 최종) 위에 <b>당일 본투표율</b>(실시간)이 쌓여 누적 투표율을 이룹니다. 누적 높은 순.</p>
     <div id="evd-note" class="evd-legend"></div>
     <div id="evd-table" class="evd-table"></div>
+  </section>
+
+  <section class="block" id="histcmp-block" hidden>
+    <h2>역대 지방선거 투표율 — 오늘 예상과 비교</h2>
+    <p class="block-sub">1회(1995)~8회(2022) 최종 투표율(중앙선거관리위원회 확정)과 오늘의 <b>회귀 추정치</b>. 빨간 막대가 오늘 예상입니다.</p>
+    <div id="histcmp-table" class="histcmp-table"></div>
+    <div id="histcmp-note" class="corr-note"></div>
   </section>
 
   <section class="block" id="chief-block">
@@ -377,6 +396,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603u"></script>
+<script src="live.js?v=20260603v"></script>
 </body>
 </html>
