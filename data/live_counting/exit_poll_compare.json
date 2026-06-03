@@ -11,7 +11,11 @@
     "party": "더불어민주당",
     "margin": 5.4
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "정원오",
+    "party": "더불어민주당",
+    "margin": 10.6
+   },
    "ours": {
     "name": "정원오",
     "prob": 58.0
@@ -27,7 +31,11 @@
     "party": "더불어민주당",
     "margin": 26.3
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "추미애",
+    "party": "더불어민주당",
+    "margin": 19.2
+   },
    "ours": {
     "name": "추미애",
     "prob": 98.0
@@ -43,7 +51,11 @@
     "party": "더불어민주당",
     "margin": 8.2
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "박찬대",
+    "party": "더불어민주당",
+    "margin": 14.5
+   },
    "ours": {
     "name": "박찬대",
     "prob": 83.0
@@ -183,12 +195,16 @@
     "party": "국민의힘",
     "margin": 0.8
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "김부겸",
+    "party": "더불어민주당",
+    "margin": 0.5
+   },
    "ours": {
     "name": "추경호",
     "prob": 63.0
    },
-   "disagree": false
+   "disagree": true
   },
   {
    "label": "경북지사",
