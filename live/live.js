@@ -1176,6 +1176,39 @@ function renderRepoll(cur) {
   root.innerHTML = raceTable(races.map(raceTableRow).join(''));
 }
 
+// ── 당선 확실·유력 종합 ────────────────────────────────────────────
+function renderCalled(cur) {
+  const block = document.getElementById('called-block');
+  if (!block) return;
+  const races = (cur?.races || []).filter(r => ['2', '3', '4'].includes(String(r.sg_type_code)));
+  const tagged = races.map(r => ({ r, call: electionCall(r) })).filter(x => x.call);
+  if (!tagged.length) { block.hidden = true; return; }
+  block.hidden = false;
+  const ord = { '3': 0, '2': 1, '4': 2 };   // 시도지사 → 국회의원 → 기초단체장
+  const sure = tagged.filter(x => x.call.cls === 'call-win').map(x => x.r).sort((a, b) =>
+    (ord[a.sg_type_code] - ord[b.sg_type_code]) ||
+    (((b.candidates[0] || {}).share_pct || 0) - ((a.candidates[0] || {}).share_pct || 0)));
+  const lead = tagged.filter(x => x.call.cls === 'call-lead').map(x => x.r).sort((a, b) =>
+    (a.rank1_minus_rank2_pp ?? 99) - (b.rank1_minus_rank2_pp ?? 99));  // 박빙(근소) 먼저
+  let dem = 0, con = 0, etc = 0;
+  for (const r of sure.concat(lead)) {
+    const p = (r.candidates[0] || {}).jd_name;
+    if (p === DEM) dem++; else if (p === CON) con++; else etc++;
+  }
+  document.getElementById('called-summary').innerHTML = `<div class="party-tally">
+    <span class="pt-item pt-dem">민주 <b>${dem}</b></span>
+    <span class="pt-item pt-con">국힘 <b>${con}</b></span>
+    <span class="pt-item pt-etc">그외 <b>${etc}</b></span>
+    <span class="pt-meta">확실 ${sure.length} · 유력 ${lead.length} (현재 1위 기준)</span>
+  </div>`;
+  document.getElementById('called-sure-n').textContent = `${sure.length}곳`;
+  document.getElementById('called-lead-n').textContent = `${lead.length}곳`;
+  document.getElementById('called-sure').innerHTML = sure.length
+    ? raceTable(sure.map(raceTableRow).join('')) : '<div class="state-empty" style="padding:12px 0">아직 없음</div>';
+  document.getElementById('called-lead').innerHTML = lead.length
+    ? raceTable(lead.map(raceTableRow).join('')) : '<div class="state-empty" style="padding:12px 0">아직 없음</div>';
+}
+
 // ── 전체 선거구 검색·필터 ──────────────────────────────────────────
 function populateFilters(races) {
   if (filtersPopulated) return;
@@ -1270,6 +1303,7 @@ function showWaiting(msg) {
   const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
   const cb = document.getElementById('corr-block'); if (cb) cb.hidden = true;
   const rp = document.getElementById('repoll-block'); if (rp) rp.hidden = true;
+  const cb2 = document.getElementById('called-block'); if (cb2) cb2.hidden = true;
   document.getElementById('chief-races').innerHTML = `<div class="state-empty">${msg}</div>`;
   const bh = document.getElementById('bh-compare'); if (bh) bh.innerHTML = `<div class="state-empty">${msg}</div>`;
   document.getElementById('search-results').innerHTML = '';
@@ -1376,6 +1410,7 @@ async function render() {
   renderChiefRaces(cur, predMap, LATEST_PARTIES);
   renderBasicHead(cur, predBasicHead);
   renderRepoll(cur);
+  renderCalled(cur);
   renderTurnoutCorr(cur);
   populateFilters(LATEST_RACES);
   bindFilters();
