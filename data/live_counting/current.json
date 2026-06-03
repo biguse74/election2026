@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-03T14:27:29+09:00",
+  "polled_at": "2026-06-03T14:41:48+09:00",
   "source": "openapi",
   "phase": "pre",
   "races": [],
@@ -8,10 +8,10 @@
     "national": {
       "sd_name": "전국",
       "eligible_voters": 44649908,
-      "voters_so_far": 21832984,
-      "turnout_pct": 48.9,
-      "day_voters_so_far": 11268723,
-      "early_voters_so_far": 10564261,
+      "voters_so_far": 22186226,
+      "turnout_pct": 49.7,
+      "day_voters_so_far": 11621963,
+      "early_voters_so_far": 10564263,
       "day_eligible_voters": 34079860,
       "early_eligible_voters": 10570048
     },
@@ -19,9 +19,9 @@
       {
         "sd_name": "서울특별시",
         "eligible_voters": 8319134,
-        "voters_so_far": 4108583,
-        "turnout_pct": 49.4,
-        "day_voters_so_far": 2117264,
+        "voters_so_far": 4182314,
+        "turnout_pct": 50.3,
+        "day_voters_so_far": 2190995,
         "early_voters_so_far": 1991319,
         "day_eligible_voters": 6327113,
         "early_eligible_voters": 1992021
@@ -29,9 +29,9 @@
       {
         "sd_name": "부산광역시",
         "eligible_voters": 2857335,
-        "voters_so_far": 1384617,
-        "turnout_pct": 48.5,
-        "day_voters_so_far": 772257,
+        "voters_so_far": 1404110,
+        "turnout_pct": 49.1,
+        "day_voters_so_far": 791750,
         "early_voters_so_far": 612360,
         "day_eligible_voters": 2244639,
         "early_eligible_voters": 612696
@@ -39,9 +39,9 @@
       {
         "sd_name": "대구광역시",
         "eligible_voters": 2049683,
-        "voters_so_far": 1024606,
-        "turnout_pct": 50.0,
-        "day_voters_so_far": 639940,
+        "voters_so_far": 1034865,
+        "turnout_pct": 50.5,
+        "day_voters_so_far": 650199,
         "early_voters_so_far": 384666,
         "day_eligible_voters": 1664798,
         "early_eligible_voters": 384885
@@ -49,9 +49,9 @@
       {
         "sd_name": "인천광역시",
         "eligible_voters": 2663459,
-        "voters_so_far": 1233658,
-        "turnout_pct": 46.3,
-        "day_voters_so_far": 654767,
+        "voters_so_far": 1264695,
+        "turnout_pct": 47.5,
+        "day_voters_so_far": 685804,
         "early_voters_so_far": 578891,
         "day_eligible_voters": 2084317,
         "early_eligible_voters": 579142
@@ -59,9 +59,9 @@
       {
         "sd_name": "광주광역시",
         "eligible_voters": 1189519,
-        "voters_so_far": 539272,
-        "turnout_pct": 45.3,
-        "day_voters_so_far": 206490,
+        "voters_so_far": 546860,
+        "turnout_pct": 46.0,
+        "day_voters_so_far": 214078,
         "early_voters_so_far": 332782,
         "day_eligible_voters": 856587,
         "early_eligible_voters": 332932
@@ -79,9 +79,9 @@
       {
         "sd_name": "울산광역시",
         "eligible_voters": 936171,
-        "voters_so_far": 470153,
-        "turnout_pct": 50.2,
-        "day_voters_so_far": 258852,
+        "voters_so_far": 476028,
+        "turnout_pct": 50.8,
+        "day_voters_so_far": 264727,
         "early_voters_so_far": 211301,
         "day_eligible_voters": 724764,
         "early_eligible_voters": 211407
@@ -99,9 +99,9 @@
       {
         "sd_name": "경기도",
         "eligible_voters": 11878997,
-        "voters_so_far": 5464912,
-        "turnout_pct": 46.0,
-        "day_voters_so_far": 2961146,
+        "voters_so_far": 5606299,
+        "turnout_pct": 47.2,
+        "day_voters_so_far": 3102533,
         "early_voters_so_far": 2503766,
         "day_eligible_voters": 9374125,
         "early_eligible_voters": 2504872
@@ -109,9 +109,9 @@
       {
         "sd_name": "강원특별자치도",
         "eligible_voters": 1329742,
-        "voters_so_far": 724502,
-        "turnout_pct": 54.5,
-        "day_voters_so_far": 361247,
+        "voters_so_far": 733248,
+        "turnout_pct": 55.1,
+        "day_voters_so_far": 369993,
         "early_voters_so_far": 363255,
         "day_eligible_voters": 966209,
         "early_eligible_voters": 363533
@@ -119,9 +119,9 @@
       {
         "sd_name": "충청북도",
         "eligible_voters": 1396588,
-        "voters_so_far": 681681,
-        "turnout_pct": 48.8,
-        "day_voters_so_far": 350579,
+        "voters_so_far": 698230,
+        "turnout_pct": 50.0,
+        "day_voters_so_far": 367128,
         "early_voters_so_far": 331102,
         "day_eligible_voters": 1065298,
         "early_eligible_voters": 331290
@@ -129,9 +129,9 @@
       {
         "sd_name": "충청남도",
         "eligible_voters": 1857239,
-        "voters_so_far": 896655,
-        "turnout_pct": 48.3,
-        "day_voters_so_far": 476515,
+        "voters_so_far": 908105,
+        "turnout_pct": 48.9,
+        "day_voters_so_far": 487965,
         "early_voters_so_far": 420140,
         "day_eligible_voters": 1436868,
         "early_eligible_voters": 420371
@@ -139,9 +139,9 @@
       {
         "sd_name": "전북특별자치도",
         "eligible_voters": 1509854,
-        "voters_so_far": 818345,
-        "turnout_pct": 54.2,
-        "day_voters_so_far": 284938,
+        "voters_so_far": 836499,
+        "turnout_pct": 55.4,
+        "day_voters_so_far": 303092,
         "early_voters_so_far": 533407,
         "day_eligible_voters": 976004,
         "early_eligible_voters": 533850
@@ -149,19 +149,19 @@
       {
         "sd_name": "전라남도",
         "eligible_voters": 1558206,
-        "voters_so_far": 904196,
-        "turnout_pct": 58.0,
-        "day_voters_so_far": 291791,
-        "early_voters_so_far": 612405,
+        "voters_so_far": 908070,
+        "turnout_pct": 58.3,
+        "day_voters_so_far": 295663,
+        "early_voters_so_far": 612407,
         "day_eligible_voters": 945270,
         "early_eligible_voters": 612936
       },
       {
         "sd_name": "경상북도",
         "eligible_voters": 2202861,
-        "voters_so_far": 1102862,
+        "voters_so_far": 1104028,
         "turnout_pct": 50.1,
-        "day_voters_so_far": 604553,
+        "day_voters_so_far": 605719,
         "early_voters_so_far": 498309,
         "day_eligible_voters": 1704126,
         "early_eligible_voters": 498735
@@ -169,9 +169,9 @@
       {
         "sd_name": "경상남도",
         "eligible_voters": 2775745,
-        "voters_so_far": 1453782,
-        "turnout_pct": 52.4,
-        "day_voters_so_far": 762762,
+        "voters_so_far": 1457715,
+        "turnout_pct": 52.5,
+        "day_voters_so_far": 766695,
         "early_voters_so_far": 691020,
         "day_eligible_voters": 2084131,
         "early_eligible_voters": 691614
