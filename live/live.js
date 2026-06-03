@@ -346,18 +346,43 @@ function renderTurnoutTable(cur, histHourly) {
     const hit = arr && arr.find(d => d.time === curT);
     return hit ? hit.turnout_pct : null;
   };
+  // 시도별 예상 최종 투표율 — '도달 수준' 매칭 가산법.
+  // 현재 누계값엔 사전투표가 이미 합산돼 있을 수 있어, 시각 기준 배율법은 과대추정된다.
+  // 대신 과거선거에서 '같은 누계 수준'에 도달했던 지점을 찾아, 거기서 최종까지의
+  // 증가분(평균)을 현재값에 더한다. 수준으로 매칭하므로 사전 합산 타이밍에 둔감하다.
+  const remainingPP = (sd, level) => {
+    if (level == null) return null;
+    const incs = [];
+    for (const r of ((histHourly && histHourly.rounds) || [])) {
+      const arr = sd === '전국' ? r.national : (r.by_sido && r.by_sido[sd]);
+      if (!arr || !arr.length) continue;
+      const fin = arr[arr.length - 1].turnout_pct;
+      if (fin == null) continue;
+      let base = null;
+      for (const d of arr) { if (d.turnout_pct != null && d.turnout_pct >= level) { base = d.turnout_pct; break; } }
+      if (base == null) base = fin;  // 과거 최종보다 이미 높으면 잔여 증가분 0
+      incs.push(Math.max(0, fin - base));
+    }
+    return incs.length ? incs.reduce((a, b) => a + b, 0) / incs.length : null;
+  };
+  const natRem = remainingPP('전국', nat.turnout_pct);
+  const projOf = (s) => {
+    if (s.turnout_pct == null) return null;
+    const rem = remainingPP(s.sd_name, s.turnout_pct) ?? natRem;
+    if (rem == null) return null;
+    return Math.min(99, s.turnout_pct + rem);
+  };
   const sidos = (cur.turnout.by_sido || []).slice().sort((a, b) => (b.turnout_pct || 0) - (a.turnout_pct || 0));
   const maxPct = Math.max(nat.turnout_pct || 0, ...sidos.map(s => s.turnout_pct || 0), 1);
   const natMark = ((nat.turnout_pct || 0) / maxPct * 100).toFixed(1);  // 전국 평균 파선 위치
   const row = (s, isNat) => {
     const pv = past2022(s.sd_name);
-    const dv = (pv == null || s.turnout_pct == null) ? null : s.turnout_pct - pv;
-    const deltaCell = dv == null ? `<div class="tr-delta">—</div>`
-      : `<div class="tr-delta ${dv >= 0 ? 'up' : 'down'}">${dv >= 0 ? '▲' : '▼'}${fmt1(Math.abs(dv))}</div>`;
+    const proj = projOf(s);
+    const w = ((s.turnout_pct || 0) / maxPct * 100).toFixed(1);
     return `<div class="tr-row${isNat ? ' tr-nat' : ''}" title="투표 ${intComma(s.voters_so_far)} / 선거인 ${intComma(s.eligible_voters)}${pv != null ? ` · 2022 ${curT} 같은시각 ${fmt1(pv)}%` : ''}">` +
       `<div class="tr-name">${s.sd_name}</div>` +
-      `<div class="tr-bar-wrap"><div class="tr-bar" style="width:${((s.turnout_pct || 0) / maxPct * 100).toFixed(1)}%"></div>${isNat ? '' : `<span class="tr-natline" style="left:${natMark}%"></span>`}</div>` +
-      `<div class="tr-pct">${fmt1(s.turnout_pct)}%</div>${deltaCell}</div>`;
+      `<div class="tr-bar-wrap"><div class="tr-bar" style="width:${w}%"><span class="tr-inbar">${fmt1(s.turnout_pct)}%</span></div>${isNat ? '' : `<span class="tr-natline" style="left:${natMark}%"></span>`}</div>` +
+      `<div class="tr-proj">${proj == null ? '—' : `${fmt1(proj)}<span class="tr-proj-u">%</span>`}</div></div>`;
   };
   wrap.innerHTML = row(nat, true) + sidos.map(s => row(s, false)).join('');
 }
