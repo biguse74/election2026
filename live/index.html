@@ -107,6 +107,14 @@
   .race-progress { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
   .race-progress b { color: var(--ink); }
 
+  /* 당선 확실/유력 배지 — 단독 1인 선출(시도지사·기초단체장·재보궐) */
+  .call-chip { display: inline-block; font-size: 0.68rem; font-weight: 800; padding: 2px 8px; border-radius: 999px;
+               vertical-align: middle; margin-right: 6px; white-space: nowrap; letter-spacing: 0.01em; }
+  .call-chip.call-win { background: #127a3e; color: #fff; box-shadow: 0 1px 3px rgba(18,122,62,0.35); }
+  .call-chip.call-win::before { content: '✓ '; }
+  .call-chip.call-lead { background: #fdf0d5; color: #a15c00; border: 1px solid #f0d9a8; }
+  table.other td.lead-cell .call-chip { font-size: 0.64rem; padding: 1px 6px; margin-right: 0; margin-left: 4px; }
+
   /* 고정폭 그리드 → 후보별 막대 시작점이 항상 같은 위치(당이름 길이 무관) */
   .cand-row { display: grid; grid-template-columns: 34px 11px 56px 66px 1fr 48px; align-items: center; gap: 7px; margin: 5px 0; }
   .cand-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
@@ -511,6 +519,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603U"></script>
+<script src="live.js?v=20260603V"></script>
 </body>
 </html>

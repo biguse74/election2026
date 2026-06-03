@@ -146,7 +146,9 @@ function raceTableRow(r) {
   const c2 = (r.candidates || [])[1];
   const dot = c1 ? `<span class="cand-dot" style="background:${partyColor(LATEST_PARTIES, c1.jd_name)}"></span>` : '';
   const lphoto = c1 ? candPhotoImg(r, c1, 'lead-photo') : '';
-  const lead = c1 ? `${lphoto}${dot}<b>${c1.name}</b> <span class="cand-party">${c1.jd_name || ''}</span> ${fmt1(c1.share_pct)}%` : '—';
+  const call = electionCall(r);
+  const callHTML = call ? ` <span class="call-chip ${call.cls}">${call.label}</span>` : '';
+  const lead = c1 ? `${lphoto}${dot}<b>${c1.name}</b> <span class="cand-party">${c1.jd_name || ''}</span> ${fmt1(c1.share_pct)}%${callHTML}` : '—';
   const second = c2 ? `${c2.name} ${fmt1(c2.share_pct)}%` : '—';
   const open = expandedKeys.has(rk);
   const summary = `<tr class="race-sum" data-rk="${esc(rk)}">
@@ -695,6 +697,28 @@ function findWatch(races, w) {
   return null;
 }
 
+// 당선 확실/유력 판정 — 단독 1인 선출(시도지사3·기초단체장4·국회의원2)만. 기자용 보수 기준.
+//   당선 확실 = 남은 표가 전부 2위에게 가도 1위를 못 넘는 경우(수학적 확정).
+//   당선 유력 = 격차가 남은 표의 60%를 초과(역전 가능성 매우 낮음).
+function electionCall(r) {
+  if (!['2', '3', '4'].includes(String(r.sg_type_code))) return null;  // 중선거구 제외
+  const cands = r.candidates || [];
+  const c1 = cands[0];
+  if (!c1) return null;
+  const prog = r.progress_pct || 0;
+  if (prog < 30) return null;                          // 개표 초반 제외
+  const v1 = c1.votes || 0;
+  const v2 = cands[1] ? (cands[1].votes || 0) : 0;
+  const margin = v1 - v2;
+  if (margin <= 0) return null;
+  const counted = r.valid_votes || cands.reduce((s, c) => s + (c.votes || 0), 0);
+  // 남은 유효표 추정(개표율 기준, NEC 개표율은 투표수 대비라 신뢰 가능). 살짝 과대추정=보수적.
+  const remaining = prog > 0 ? counted * (100 - prog) / prog : Infinity;
+  if (prog >= 50 && margin > remaining) return { cls: 'call-win', label: '당선 확실' };
+  if (margin > remaining * 0.6) return { cls: 'call-lead', label: '당선 유력' };
+  return null;
+}
+
 function watchStatus(race, cand) {
   const prog = race.progress_pct || 0;
   const cands = race.candidates || [];
@@ -706,6 +730,8 @@ function watchStatus(race, cand) {
     return { cls, label: `현재 ${rank}위 (중선거구)${tail}` };
   }
   if (rank === 1) {
+    const call = electionCall(race);
+    if (call) return { cls: call.cls === 'call-win' ? 'wc-win' : 'wc-lead', label: call.label };
     const lead = (cand.share_pct ?? 0) - (cands[1]?.share_pct ?? 0);
     if (prog >= 80 && lead >= 5) return { cls: 'wc-win', label: '당선 유력' };
     if (prog < 30) return { cls: 'wc-lead', label: '1위 (개표 초반)' };
@@ -1016,10 +1042,12 @@ function renderChiefRaces(cur, predMap, parties) {
         <span class="rc-verdict v-${cls.verdict}">${cls.label}</span>`;
     }
 
+    const call = electionCall(race);
+    const callHTML = call ? `<span class="call-chip ${call.cls}">${call.label}</span>` : '';
     return `<div class="race-card">
       <div class="race-card-head">
         <span class="race-sido">${race.sd_name}</span>
-        <span class="race-progress">개표 <b>${fmt1(race.progress_pct)}%</b></span>
+        <span class="race-progress">${callHTML}개표 <b>${fmt1(race.progress_pct)}%</b></span>
       </div>
       ${candHTML}
       <div class="race-compare">${compareHTML}</div>
