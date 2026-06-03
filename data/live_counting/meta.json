@@ -1,10 +1,10 @@
 {
-  "polled_at": "2026-06-03T21:45:03+09:00",
+  "polled_at": "2026-06-03T21:50:03+09:00",
   "source": "openapi",
   "phase": "live",
   "races_total": 254,
   "races_with_data": 254,
-  "avg_progress_pct": 17.72,
+  "avg_progress_pct": 19.02,
   "openapi_empty": true,
   "progress_calc": "(yutusu + mutusu) / sunsu * 100",
   "turnout_available": true,
@@ -12,5 +12,5 @@
   "counting_calls_total": 85,
   "counting_calls_failed": 0,
   "portal_aborted": false,
-  "elapsed_seconds": 136.8
+  "elapsed_seconds": 173.4
 }
