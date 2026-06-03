@@ -270,12 +270,12 @@ function renderCovered(cur, covered, predMap) {
   const el = document.getElementById('covered-grid');
   if (!block || !el) return;
   const list = (covered && covered.races) || [];
-  const ORD = { '3': 0, '2': 1, '4': 2, '6': 3 };
+  const ORD = { '3': 0, '11': 1, '2': 2, '4': 3, '6': 4 };  // 시도지사·교육감·재보궐·기초단체장·기초의원
   const items = list.map(e => {
     const t = String(e.sgType);
-    const r = t === '3'
-      ? cur.races.find(x => String(x.sg_type_code) === '3' && x.sd_name === e.sd)
-      : cur.races.find(x => String(x.sg_type_code) === t && x.sd_name === e.sd && x.sgg_name === e.sgg);
+    const r = e.sgg
+      ? cur.races.find(x => String(x.sg_type_code) === t && x.sd_name === e.sd && x.sgg_name === e.sgg)
+      : cur.races.find(x => String(x.sg_type_code) === t && x.sd_name === e.sd);
     return { e, r };
   }).filter(x => x.r);
   if (!items.length) { block.style.display = 'none'; return; }
