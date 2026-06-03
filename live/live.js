@@ -852,8 +852,8 @@ function renderExitPoll(exitPoll) {
     const tag = margin == null ? ''
       : (margin < 3 ? `<span class="ep-tag close">경합 ${fmt1(margin)}%p</span>`
         : `<span class="ep-tag">${esc(cands[0].party || '무소속')} 우세</span>`);
-    // 후보 사진 룩업용 가상 race (시도지사 type 3, 시도명=region)
-    const pr = { sg_type_code: race.sgType || '3', sd_name: race.region || '', sgg_name: null };
+    // 후보 사진 룩업용 가상 race (시도지사 type 3=시도명, 재보궐 type 2=시도+시군구)
+    const pr = { sg_type_code: race.sgType || '3', sd_name: race.sdName || race.region || '', sgg_name: race.sggName || null };
     const rows = cands.map((c, i) => {
       const color = partyColor(LATEST_PARTIES, c.party);
       const w = Math.max(0, Math.min(100, c.pct));
@@ -870,7 +870,7 @@ function renderExitPoll(exitPoll) {
   root.innerHTML = gov.map(card).join('');
   if (asmRoot) {
     const asm = (exitPoll.assembly) || [];
-    asmRoot.innerHTML = asm.map(r => card({ label: r.region, region: r.region, sgType: '2', candidates: r.candidates })).join('');
+    asmRoot.innerHTML = asm.map(r => card({ label: r.region, region: r.region, sdName: r.sd, sggName: r.sgg, sgType: '2', candidates: r.candidates })).join('');
   }
 }
 
@@ -886,11 +886,11 @@ function renderExitPollCompare(data) {
   if (sumEl) sumEl.textContent = data.jtbc_summary || '';
   const cell = (e, kind) => {
     if (!e) return '<span class="epc-na">–</span>';
+    if (kind === 'ours') return `<b>${esc(e.name)}</b>`;  // 뉴탐사: 예측 1위 이름만(확률은 척도가 달라 제외)
     const color = partyColor(LATEST_PARTIES, e.party);
-    const val = kind === 'ours' ? `${fmt1(e.prob)}%` : `+${fmt1(e.margin)}`;
-    return `<span class="epc-dot" style="background:${color}"></span><b>${esc(e.name)}</b> <span class="epc-v">${val}</span>`;
+    return `<span class="epc-dot" style="background:${color}"></span><b>${esc(e.name)}</b> <span class="epc-v">${fmt1(e.pct)}%</span>`;
   };
-  const head = `<div class="epc-row epc-head"><div>선거</div><div>방송3사 출구조사</div><div>JTBC 예측조사</div><div>뉴탐사 시뮬레이션<span class="epc-h-sub">당선확률</span></div></div>`;
+  const head = `<div class="epc-row epc-head"><div>선거</div><div>방송3사 출구조사</div><div>JTBC 예측조사</div><div>뉴탐사 시뮬레이션<span class="epc-h-sub">예측 1위</span></div></div>`;
   const body = rows.map(r =>
     `<div class="epc-row${r.disagree ? ' epc-diff' : ''}">` +
     `<div class="epc-rg">${esc(r.label)}${r.disagree ? '<span class="epc-flag">엇갈림</span>' : ''}</div>` +

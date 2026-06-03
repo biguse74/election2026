@@ -1,5 +1,5 @@
 {
- "generated_note": "출구조사·예측 3종 비교. 방송3사·JTBC=출구조사 득표율(1위 격차%p), 뉴탐사=자체 시뮬 당선확률(%).",
+ "note": "방송3사 출구조사·JTBC 예측조사=1위 후보와 득표율(%). 뉴탐사=시뮬레이션 예측 1위(이름만, 당선확률은 척도가 달라 제외).",
  "jtbc_summary": "JTBC 총괄: 민주 10 · 국힘 1(경북) · 경합 5(대구·충북·충남·전북·경남)",
  "rows": [
   {
@@ -9,16 +9,15 @@
    "b3": {
     "name": "정원오",
     "party": "더불어민주당",
-    "margin": 5.4
+    "pct": 51.4
    },
    "jtbc": {
     "name": "정원오",
     "party": "더불어민주당",
-    "margin": 10.6
+    "pct": 53.5
    },
    "ours": {
-    "name": "정원오",
-    "prob": 58.0
+    "name": "정원오"
    },
    "disagree": false
   },
@@ -29,16 +28,15 @@
    "b3": {
     "name": "추미애",
     "party": "더불어민주당",
-    "margin": 26.3
+    "pct": 60.4
    },
    "jtbc": {
     "name": "추미애",
     "party": "더불어민주당",
-    "margin": 19.2
+    "pct": 56.4
    },
    "ours": {
-    "name": "추미애",
-    "prob": 98.0
+    "name": "추미애"
    },
    "disagree": false
   },
@@ -49,16 +47,15 @@
    "b3": {
     "name": "박찬대",
     "party": "더불어민주당",
-    "margin": 8.2
+    "pct": 53.7
    },
    "jtbc": {
     "name": "박찬대",
     "party": "더불어민주당",
-    "margin": 14.5
+    "pct": 56.6
    },
    "ours": {
-    "name": "박찬대",
-    "prob": 83.0
+    "name": "박찬대"
    },
    "disagree": false
   },
@@ -69,16 +66,15 @@
    "b3": {
     "name": "전재수",
     "party": "더불어민주당",
-    "margin": 1.9
+    "pct": 50.2
    },
    "jtbc": {
     "name": "전재수",
     "party": "더불어민주당",
-    "margin": 9.5
+    "pct": 53.9
    },
    "ours": {
-    "name": "전재수",
-    "prob": 72.0
+    "name": "전재수"
    },
    "disagree": false
   },
@@ -89,16 +85,15 @@
    "b3": {
     "name": "김상욱",
     "party": "더불어민주당",
-    "margin": 9.6
+    "pct": 52.8
    },
    "jtbc": {
     "name": "김상욱",
     "party": "더불어민주당",
-    "margin": 12.4
+    "pct": 51.6
    },
    "ours": {
-    "name": "김상욱",
-    "prob": 67.0
+    "name": "김상욱"
    },
    "disagree": false
   },
@@ -109,16 +104,15 @@
    "b3": {
     "name": "김경수",
     "party": "더불어민주당",
-    "margin": 8.6
+    "pct": 54.3
    },
    "jtbc": {
     "name": "김경수",
     "party": "더불어민주당",
-    "margin": 4.6
+    "pct": 52.3
    },
    "ours": {
-    "name": "김경수",
-    "prob": 51.0
+    "name": "김경수"
    },
    "disagree": false
   },
@@ -129,16 +123,15 @@
    "b3": {
     "name": "허태정",
     "party": "더불어민주당",
-    "margin": 13.0
+    "pct": 55.9
    },
    "jtbc": {
     "name": "허태정",
     "party": "더불어민주당",
-    "margin": 22.9
+    "pct": 59.7
    },
    "ours": {
-    "name": "허태정",
-    "prob": 82.0
+    "name": "허태정"
    },
    "disagree": false
   },
@@ -149,16 +142,15 @@
    "b3": {
     "name": "조상호",
     "party": "더불어민주당",
-    "margin": 31.4
+    "pct": 64.3
    },
    "jtbc": {
     "name": "조상호",
     "party": "더불어민주당",
-    "margin": 24.9
+    "pct": 60.7
    },
    "ours": {
-    "name": "조상호",
-    "prob": 96.0
+    "name": "조상호"
    },
    "disagree": false
   },
@@ -169,16 +161,15 @@
    "b3": {
     "name": "박수현",
     "party": "더불어민주당",
-    "margin": 4.2
+    "pct": 52.1
    },
    "jtbc": {
     "name": "박수현",
     "party": "더불어민주당",
-    "margin": 5.6
+    "pct": 52.8
    },
    "ours": {
-    "name": "박수현",
-    "prob": 63.0
+    "name": "박수현"
    },
    "disagree": false
   },
@@ -189,16 +180,15 @@
    "b3": {
     "name": "신용한",
     "party": "더불어민주당",
-    "margin": 12.4
+    "pct": 56.2
    },
    "jtbc": {
     "name": "신용한",
     "party": "더불어민주당",
-    "margin": 4.4
+    "pct": 52.2
    },
    "ours": {
-    "name": "신용한",
-    "prob": 86.0
+    "name": "신용한"
    },
    "disagree": false
   },
@@ -209,16 +199,15 @@
    "b3": {
     "name": "추경호",
     "party": "국민의힘",
-    "margin": 0.8
+    "pct": 49.9
    },
    "jtbc": {
     "name": "김부겸",
     "party": "더불어민주당",
-    "margin": 0.5
+    "pct": 49.7
    },
    "ours": {
-    "name": "추경호",
-    "prob": 63.0
+    "name": "추경호"
    },
    "disagree": true
   },
@@ -229,16 +218,15 @@
    "b3": {
     "name": "이철우",
     "party": "국민의힘",
-    "margin": 39.4
+    "pct": 69.7
    },
    "jtbc": {
     "name": "이철우",
     "party": "국민의힘",
-    "margin": 27.2
+    "pct": 63.6
    },
    "ours": {
-    "name": "이철우",
-    "prob": 91.0
+    "name": "이철우"
    },
    "disagree": false
   },
@@ -249,16 +237,15 @@
    "b3": {
     "name": "민형배",
     "party": "더불어민주당",
-    "margin": 65.8
+    "pct": 78.6
    },
    "jtbc": {
     "name": "민형배",
     "party": "더불어민주당",
-    "margin": 67.5
+    "pct": 79.3
    },
    "ours": {
-    "name": "민형배",
-    "prob": 100.0
+    "name": "민형배"
    },
    "disagree": false
   },
@@ -269,16 +256,15 @@
    "b3": {
     "name": "이원택",
     "party": "더불어민주당",
-    "margin": 2.2
+    "pct": 48.5
    },
    "jtbc": {
     "name": "이원택",
     "party": "더불어민주당",
-    "margin": 6.3
+    "pct": 50.9
    },
    "ours": {
-    "name": "김관영",
-    "prob": 75.0
+    "name": "김관영"
    },
    "disagree": false
   },
@@ -289,16 +275,15 @@
    "b3": {
     "name": "우상호",
     "party": "더불어민주당",
-    "margin": 2.6
+    "pct": 51.3
    },
    "jtbc": {
     "name": "우상호",
     "party": "더불어민주당",
-    "margin": 13.8
+    "pct": 56.9
    },
    "ours": {
-    "name": "우상호",
-    "prob": 68.0
+    "name": "우상호"
    },
    "disagree": false
   },
@@ -309,16 +294,15 @@
    "b3": {
     "name": "위성곤",
     "party": "더불어민주당",
-    "margin": 27.3
+    "pct": 62.2
    },
    "jtbc": {
     "name": "위성곤",
     "party": "더불어민주당",
-    "margin": 30.9
+    "pct": 63.9
    },
    "ours": {
-    "name": "위성곤",
-    "prob": 100.0
+    "name": "위성곤"
    },
    "disagree": false
   },
@@ -329,12 +313,12 @@
    "b3": {
     "name": "조국",
     "party": "조국혁신당",
-    "margin": 0.5
+    "pct": 31.1
    },
    "jtbc": {
     "name": "김용남",
     "party": "더불어민주당",
-    "margin": 2.6
+    "pct": 34.2
    },
    "ours": null,
    "disagree": true
@@ -346,16 +330,15 @@
    "b3": {
     "name": "하정우",
     "party": "더불어민주당",
-    "margin": 1.0
+    "pct": 42.6
    },
    "jtbc": {
     "name": "한동훈",
     "party": "무소속",
-    "margin": 10.5
+    "pct": 48.1
    },
    "ours": null,
    "disagree": true
   }
- ],
- "note": "방송3사·JTBC=출구조사 득표율(1위 격차%p). 뉴탐사=과거 개표결과 기반 몬테카를로 시뮬레이션 당선확률(%). JTBC 시도지사는 JTBC 홈페이지 공식 수치."
+ ]
 }
