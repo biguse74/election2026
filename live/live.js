@@ -305,15 +305,16 @@ function renderEarlyVsDay(cur, earlyVoting) {
   rows.sort((a, b) => b.total - a.total);
   const maxTotal = Math.max(...rows.map(r => r.total), 1);
   wrap.className = 'evd-table';
-  wrap.innerHTML = rows.map(r =>
-    `<div class="evd-row" title="${r.sd} · 사전 ${fmt1(r.earlyPct)}% + 당일 ${fmt1(r.dayPct)}% = ${fmt1(r.total)}%">` +
-    `<div class="evd-name">${r.sd}</div>` +
-    `<div class="evd-stack">` +
-      `<span class="evd-seg e" style="width:${(r.earlyPct / maxTotal * 100).toFixed(1)}%"></span>` +
-      `<span class="evd-seg d" style="width:${(r.dayPct / maxTotal * 100).toFixed(1)}%"></span>` +
-    `</div>` +
-    `<div class="evd-total">${fmt1(r.total)}%</div></div>`
-  ).join('');
+  wrap.innerHTML = rows.map(r => {
+    const ew = r.earlyPct / maxTotal * 100, dw = r.dayPct / maxTotal * 100;
+    return `<div class="evd-row" title="${r.sd} · 사전 ${fmt1(r.earlyPct)}% + 당일 ${fmt1(r.dayPct)}% = ${fmt1(r.total)}%">` +
+      `<div class="evd-name">${r.sd}</div>` +
+      `<div class="evd-stack">` +
+        `<span class="evd-seg e" style="width:${ew.toFixed(1)}%">${ew >= 9 ? fmt1(r.earlyPct) : ''}</span>` +
+        `<span class="evd-seg d" style="width:${dw.toFixed(1)}%">${dw >= 9 ? fmt1(r.dayPct) : ''}</span>` +
+      `</div>` +
+      `<div class="evd-total">${fmt1(r.total)}%</div></div>`;
+  }).join('');
   if (note) note.innerHTML =
     `<span class="tl-item"><span class="tl-dot" style="background:#2b6cb0"></span>사전투표 (5/29~30 최종)</span>` +
     `<span class="tl-item"><span class="tl-dot" style="background:#c0392b"></span>당일 본투표 (실시간)</span>` +
