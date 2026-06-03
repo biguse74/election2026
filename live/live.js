@@ -888,12 +888,56 @@ function renderExitPollCompare(data) {
     const val = kind === 'ours' ? `${fmt1(e.prob)}%` : `+${fmt1(e.margin)}`;
     return `<span class="epc-dot" style="background:${color}"></span><b>${esc(e.name)}</b> <span class="epc-v">${val}</span>`;
   };
-  const head = `<div class="epc-row epc-head"><div>선거</div><div>방송3사 출구조사</div><div>JTBC 출구조사</div><div>뉴탐사 시뮬레이션<span class="epc-h-sub">당선확률</span></div></div>`;
+  const head = `<div class="epc-row epc-head"><div>선거</div><div>방송3사 출구조사</div><div>JTBC 예측조사</div><div>뉴탐사 시뮬레이션<span class="epc-h-sub">당선확률</span></div></div>`;
   const body = rows.map(r =>
     `<div class="epc-row${r.disagree ? ' epc-diff' : ''}">` +
     `<div class="epc-rg">${esc(r.label)}${r.disagree ? '<span class="epc-flag">엇갈림</span>' : ''}</div>` +
     `<div>${cell(r.b3, 'm')}</div><div>${cell(r.jtbc, 'm')}</div><div>${cell(r.ours, 'ours')}</div></div>`).join('');
   root.innerHTML = head + body;
+}
+
+// ── 판세 그래픽 (뉴탐사 자체 제작 타일 지도) ────────────────────────
+// 17개 시도(전남광주 통합 1) 대략 지리 배치. 색=판정(민주/국힘/경합). 사실 데이터 기반.
+const PANSE_GRID = {
+  '서울특별시': [2, 0], '강원특별자치도': [4, 0],
+  '인천광역시': [1, 1], '경기도': [3, 1],
+  '충청남도': [1, 2], '세종특별자치시': [2, 2], '충청북도': [3, 2], '경상북도': [4, 2],
+  '전북특별자치도': [1, 3], '대전광역시': [2, 3], '대구광역시': [4, 3],
+  '전남광주통합특별시': [1, 4], '경상남도': [3, 4], '울산광역시': [4, 4],
+  '부산광역시': [4, 5], '제주특별자치도': [1, 5],
+};
+// 방송사 공식 '경합' 지역(우열 판정). 그 외엔 1위 정당으로 색칠.
+const B3_TOSSUP = new Set(['부산광역시', '대구광역시', '강원특별자치도', '전북특별자치도']);
+const JTBC_TOSSUP = new Set(['대구광역시', '충청북도', '충청남도', '전북특별자치도', '경상남도']);
+function panseJudge(row, src) {
+  const lead = row[src];
+  if (!lead) return null;
+  if ((src === 'b3' ? B3_TOSSUP : JTBC_TOSSUP).has(row.region)) return '경합';
+  return lead.party === '더불어민주당' ? '민주' : (lead.party === '국민의힘' ? '국힘' : '기타');
+}
+function renderPanseBoard(data) {
+  const block = document.getElementById('panse-block');
+  const root = document.getElementById('panse-boards');
+  if (!block || !root) return;
+  const rows = (data && data.rows || []).filter(r => r.type === 'gov' && PANSE_GRID[r.region]);
+  if (!rows.length) { block.hidden = true; return; }
+  block.hidden = false;
+  const COLOR = { '민주': '#2b6cb0', '국힘': '#e74c3c', '경합': '#8e7cc3', '기타': '#888' };
+  const board = (src, title, sub) => {
+    const cnt = { '민주': 0, '국힘': 0, '경합': 0, '기타': 0 };
+    const tiles = rows.map(r => {
+      const j = panseJudge(r, src); if (!j) return '';
+      cnt[j]++;
+      const pos = PANSE_GRID[r.region], lead = r[src];
+      return `<div class="pb-tile" style="grid-column:${pos[0] + 1};grid-row:${pos[1] + 1};background:${COLOR[j]}">` +
+        `<span class="pb-sd">${SIDO_SHORT[r.region] || r.region}</span><span class="pb-nm">${esc(lead.name)}</span></div>`;
+    }).join('');
+    const legend = `<div class="pb-legend"><span><i style="background:${COLOR['민주']}"></i>민주 ${cnt['민주']}</span>` +
+      `<span><i style="background:${COLOR['국힘']}"></i>국힘 ${cnt['국힘']}</span>` +
+      `<span><i style="background:${COLOR['경합']}"></i>경합 ${cnt['경합']}</span></div>`;
+    return `<div class="pb-col"><div class="pb-title">${title}<span class="pb-sub">${sub}</span></div><div class="pb-grid">${tiles}</div>${legend}</div>`;
+  };
+  root.innerHTML = board('b3', '방송3사', '출구조사') + board('jtbc', 'JTBC', '예측조사');
 }
 
 function marginText(m) {
@@ -1117,7 +1161,7 @@ async function render() {
   LATEST_PARTIES = parties || LATEST_PARTIES;
   if (exitPoll && exitPoll.governor && exitPoll.governor.length) await ensurePhotos();
   renderExitPoll(exitPoll);
-  loadJSON(PATHS.exitCompare).then(renderExitPollCompare);
+  loadJSON(PATHS.exitCompare).then(d => { renderExitPollCompare(d); renderPanseBoard(d); });
   // 투표 시간대(개표 전): 실제 투표율이 있으면 투표율만 표시, 개표 섹션은 대기.
   if (beforeCount) {
     const nat = cur && cur.turnout && cur.turnout.national;

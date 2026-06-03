@@ -131,6 +131,18 @@
   .ep-pct small { font-size: 0.7em; font-weight: 700; }
   .ep-lead .ep-name::after { content: ' ▲'; color: var(--accent); font-size: 0.7em; }
 
+  /* 판세 타일 지도 (뉴탐사 자체 제작) */
+  #panse-boards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 640px) { #panse-boards { grid-template-columns: 1fr; } }
+  .pb-title { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1rem; text-align: center; margin-bottom: 8px; }
+  .pb-sub { font-size: 0.72rem; color: var(--muted); font-weight: 600; margin-left: 5px; }
+  .pb-grid { display: grid; grid-template-columns: repeat(5, 1fr); grid-auto-rows: 48px; gap: 4px; }
+  .pb-tile { border-radius: 5px; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2px; line-height: 1.12; text-align: center; }
+  .pb-sd { font-size: 0.74rem; font-weight: 800; }
+  .pb-nm { font-size: 0.64rem; font-weight: 600; opacity: 0.95; white-space: nowrap; overflow: hidden; }
+  .pb-legend { display: flex; gap: 12px; justify-content: center; margin-top: 9px; font-size: 0.78rem; font-weight: 700; }
+  .pb-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 3px; vertical-align: middle; }
+
   /* 출구조사 3종 비교표 */
   .epc-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   #epc-table { min-width: 480px; }
@@ -362,9 +374,15 @@
     <div id="exitpoll-asm" class="ep-grid"></div>
   </section>
 
+  <section class="block" id="panse-block" hidden>
+    <h2>시도지사 판세 한눈에 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">뉴탐사 자체 제작</span></h2>
+    <p class="block-sub">방송3사 <b>출구조사</b>와 JTBC <b>예측조사</b>의 시도지사 우열을 시도별로. <span style="color:#2b6cb0;font-weight:700;">■민주</span> <span style="color:#e74c3c;font-weight:700;">■국힘</span> <span style="color:#8e7cc3;font-weight:700;">■경합</span>(방송사 판정 기준). 칸 안은 1위 후보.</p>
+    <div id="panse-boards"></div>
+  </section>
+
   <section class="block" id="epc-block" hidden>
-    <h2>출구조사 vs 뉴탐사 시뮬레이션 비교 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">방송3사 · JTBC · 뉴탐사</span></h2>
-    <p class="block-sub"><b style="color:#c41e3a;">엇갈림</b> 표시는 방송3사와 JTBC가 1위를 다르게 본 선거. <b>방송3사·JTBC는 출구조사</b>(실제 투표자 면접) 1위 득표율 격차(%p), <b>뉴탐사는 출구조사·여론조사가 아니라 과거 개표결과 기반 몬테카를로 시뮬레이션</b> 당선확률(%)입니다 — 성격이 다른 지표. <span id="epc-summary" style="font-weight:700;"></span></p>
+    <h2>출구조사·예측조사·시뮬레이션 비교 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">방송3사 · JTBC · 뉴탐사</span></h2>
+    <p class="block-sub"><b style="color:#c41e3a;">엇갈림</b> 표시는 방송3사와 JTBC가 1위를 다르게 본 선거. 세 지표는 성격이 다릅니다 — <b>방송3사=현장 출구조사</b>(득표율 1위 격차%p), <b>JTBC=선거 전 전화 예측조사</b>(득표율 1위 격차%p), <b>뉴탐사=과거 개표결과 기반 몬테카를로 시뮬레이션 당선확률</b>(%). <span id="epc-summary" style="font-weight:700;"></span></p>
     <div class="epc-wrap"><div id="epc-table"></div></div>
   </section>
 
@@ -468,6 +486,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603J"></script>
+<script src="live.js?v=20260603K"></script>
 </body>
 </html>
