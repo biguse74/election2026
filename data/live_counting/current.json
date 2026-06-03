@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-03T17:03:42+09:00",
+  "polled_at": "2026-06-03T17:08:53+09:00",
   "source": "openapi",
   "phase": "pre",
   "races": [],
@@ -8,9 +8,9 @@
     "national": {
       "sd_name": "전국",
       "eligible_voters": 44649908,
-      "voters_so_far": 25606561,
-      "turnout_pct": 57.3,
-      "day_voters_so_far": 15041990,
+      "voters_so_far": 25617431,
+      "turnout_pct": 57.4,
+      "day_voters_so_far": 15052860,
       "early_voters_so_far": 10564571,
       "day_eligible_voters": 34079860,
       "early_eligible_voters": 10570048
@@ -99,9 +99,9 @@
       {
         "sd_name": "경기도",
         "eligible_voters": 11878997,
-        "voters_so_far": 6470890,
-        "turnout_pct": 54.5,
-        "day_voters_so_far": 3967049,
+        "voters_so_far": 6481760,
+        "turnout_pct": 54.6,
+        "day_voters_so_far": 3977919,
         "early_voters_so_far": 2503841,
         "day_eligible_voters": 9374125,
         "early_eligible_voters": 2504872
@@ -240,8 +240,8 @@
       },
       {
         "time": "17:00",
-        "turnout_pct": 56.9,
-        "voters_so_far": 25401085
+        "turnout_pct": 57.4,
+        "voters_so_far": 25617431
       }
     ],
     "seoul_gu": [
@@ -1163,18 +1163,18 @@
         "total": {
           "name": "합계",
           "eligible_voters": 11878997,
-          "voters_so_far": 6470890,
-          "turnout_pct": 54.5,
-          "day_voters_so_far": 3967049,
+          "voters_so_far": 6481760,
+          "turnout_pct": 54.6,
+          "day_voters_so_far": 3977919,
           "early_voters_so_far": 2503841
         },
         "sigungu": [
           {
             "name": "수원시장안구",
             "eligible_voters": 203801,
-            "voters_so_far": 114734,
-            "turnout_pct": 56.3,
-            "day_voters_so_far": 71984,
+            "voters_so_far": 114624,
+            "turnout_pct": 56.2,
+            "day_voters_so_far": 71874,
             "early_voters_so_far": 42750
           },
           {
@@ -1500,9 +1500,9 @@
           {
             "name": "김포시",
             "eligible_voters": 402400,
-            "voters_so_far": 205476,
-            "turnout_pct": 51.1,
-            "day_voters_so_far": 130136,
+            "voters_so_far": 216456,
+            "turnout_pct": 53.8,
+            "day_voters_so_far": 141116,
             "early_voters_so_far": 75340
           },
           {
