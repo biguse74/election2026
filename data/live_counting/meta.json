@@ -1,5 +1,5 @@
 {
-  "polled_at": "2026-06-03T17:35:21+09:00",
+  "polled_at": "2026-06-03T17:39:04+09:00",
   "source": "openapi",
   "phase": "pre",
   "races_total": 0,
@@ -12,5 +12,5 @@
   "counting_calls_total": 0,
   "counting_calls_failed": 0,
   "portal_aborted": false,
-  "elapsed_seconds": 79.1
+  "elapsed_seconds": 27.1
 }
