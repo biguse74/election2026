@@ -359,6 +359,15 @@ _SIDO_FULL = {"서울":"서울특별시","부산":"부산광역시","대구":"�
     "경남":"경상남도","제주":"제주특별자치도"}
 _SIDO_SET = set(_SIDO_FULL.values())
 
+# VCVP01 웹 리포트 시도 cityCode (구·시·군 드릴다운용). 행정구역 개편 반영(2026).
+_SIDO_CITYCODE = {
+    "서울특별시": "1100", "부산광역시": "2600", "대구광역시": "2700", "인천광역시": "2800",
+    "광주광역시": "2900", "대전광역시": "3000", "울산광역시": "3100", "세종특별자치시": "5100",
+    "경기도": "4100", "강원특별자치도": "5200", "충청북도": "4300", "충청남도": "4400",
+    "전북특별자치도": "5300", "전라남도": "4600", "경상북도": "4700", "경상남도": "4800",
+    "제주특별자치도": "4900",
+}
+
 
 def scrape_turnout_web(sg_id: str) -> dict | None:
     """OpenAPI가 투표율을 주지 않을 때 NEC 웹 리포트(VCVP01)를 스크랩.
@@ -423,28 +432,36 @@ def scrape_turnout_web(sg_id: str) -> dict | None:
                                "voters_so_far": nat_h.get("voters_so_far")})
         except Exception:
             pass
-    # 서울 자치구별 누계 투표율(cityCode=1100) — 25개 자치구. 셀 구조는 시도별과 동일(8칸).
-    seoul_gu = []
-    try:
-        gb = dict(body); gb["cityCode"] = "1100"
-        gt = requests.post(_VCVP_URL, data=gb, headers=headers, timeout=20).text
-        for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", gt, re.S):
-            cells = [re.sub(r"<[^>]+>", "", c).strip() for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
-            if len(cells) != 8:
-                continue
-            nm = cells[0]
-            if not nm.endswith("구"):  # 합계 등 제외, 자치구만
-                continue
-            seoul_gu.append({
-                "gu_name": nm,
-                "eligible_voters": _num(cells[3]), "voters_so_far": _num(cells[6]),
-                "turnout_pct": _num(cells[7]), "day_voters_so_far": _num(cells[4]),
-                "early_voters_so_far": _num(cells[5]),
-            })
-    except Exception as e:
-        print(f"  ! 서울 구별 스크랩 실패: {e}", file=sys.stderr)
+    # 전국 시군구별 누계 투표율 — 17개 시도 cityCode 드릴다운(셀 구조는 시도별과 동일 8칸).
+    # by_sigungu = {시도명: {"total": {합계}, "sigungu": [{name,rate,...}, ...]}}
+    by_sigungu = {}
+    for sd_name, code in _SIDO_CITYCODE.items():
+        try:
+            gb = dict(body); gb["cityCode"] = code
+            gt = requests.post(_VCVP_URL, data=gb, headers=headers, timeout=20).text
+            total, items = None, []
+            for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", gt, re.S):
+                cells = [re.sub(r"<[^>]+>", "", c).strip() for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
+                if len(cells) != 8:
+                    continue
+                nm = cells[0]
+                entry = {"name": nm, "eligible_voters": _num(cells[3]),
+                         "voters_so_far": _num(cells[6]), "turnout_pct": _num(cells[7]),
+                         "day_voters_so_far": _num(cells[4]), "early_voters_so_far": _num(cells[5])}
+                if nm in ("합계", "계"):
+                    total = entry
+                else:
+                    items.append(entry)
+            if items or total:
+                by_sigungu[sd_name] = {"total": total, "sigungu": items}
+        except Exception as e:
+            print(f"  ! {sd_name} 시군구 스크랩 실패: {e}", file=sys.stderr)
+    # 하위호환: 서울 자치구별(seoul_gu) — 기존 라이브 섹션이 읽는 키 유지
+    seoul_gu = [{"gu_name": g["name"], **{k: g[k] for k in g if k != "name"}}
+                for g in (by_sigungu.get("서울특별시", {}).get("sigungu") or [])]
     return {"national": national, "by_sido": by_sido, "hourly": hourly,
-            "seoul_gu": seoul_gu, "source": "info.nec.go.kr VCVP01 (웹)"}
+            "seoul_gu": seoul_gu, "by_sigungu": by_sigungu,
+            "source": "info.nec.go.kr VCVP01 (웹)"}
 
 
 # ============ 가공 / 저장 ============

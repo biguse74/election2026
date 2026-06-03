@@ -174,6 +174,20 @@
   /* 서울 자치구별 */
   .tr-bar.sg-hi { background: #2b6cb0; }
   .sg-rank { text-align: right; font-weight: 700; font-size: 0.82rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  /* 전국 시군구별 (시도 그룹) */
+  #sigungu-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { #sigungu-groups { grid-template-columns: 1fr; } }
+  .sgg-group { border: 1px solid var(--line); border-radius: 8px; padding: 11px 13px; }
+  .sgg-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 7px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  .sgg-sido { font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 0.98rem; }
+  .sgg-total { font-size: 0.74rem; color: var(--muted); white-space: nowrap; }
+  .sgg-list { display: grid; gap: 3px; }
+  .sgg-row { display: grid; grid-template-columns: 90px 1fr 46px; align-items: center; gap: 7px; }
+  .sgg-name { font-size: 0.79rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sgg-bar-wrap { height: 13px; background: #f2f2f2; border-radius: 3px; overflow: hidden; }
+  .sgg-bar { height: 100%; background: #1a1a1a; border-radius: 3px; }
+  .sgg-bar.hi { background: #2b6cb0; }
+  .sgg-rate { text-align: right; font-size: 0.79rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 
   /* 시도별 누적 투표율 (사전+당일 스택) */
   .evd-legend { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
@@ -325,6 +339,12 @@
     <div id="seoul-gu-table" class="turnout-table"></div>
   </section>
 
+  <section class="block" id="sigungu-block" hidden>
+    <h2>전국 시군구별 종합 투표율 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(당일+사전 누계)</span></h2>
+    <p class="block-sub">중앙선관위 집계 · 5분 갱신. 시도별로 묶어 시군구 누계 투표율을 높은 순으로. 막대 <b>색</b>=전국 평균 대비 <span style="color:#2b6cb0;font-weight:700;">■</span>이상 <span style="color:#1a1a1a;font-weight:700;">■</span>미만. 보통 농촌 <b>군</b>이 도시 <b>시·구</b>보다 높습니다.</p>
+    <div id="sigungu-groups"></div>
+  </section>
+
   <section class="block" id="evd-block" hidden>
     <h2>시도별 누적 투표율 — 사전 + 당일</h2>
     <p class="block-sub">각 시도의 <b>사전투표율</b>(5/29~30 최종) 위에 <b>당일 본투표율</b>(실시간)이 쌓여 누적 투표율을 이룹니다. 누적 높은 순.</p>
@@ -410,6 +430,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603z"></script>
+<script src="live.js?v=20260603A"></script>
 </body>
 </html>

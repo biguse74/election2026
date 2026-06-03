@@ -414,6 +414,37 @@ function renderSeoulGu(cur) {
   }).join('');
 }
 
+// ── 전국 시군구별 종합 투표율 (시도별 그룹) ─────────────────────────
+function renderSigunguAll(cur) {
+  const block = document.getElementById('sigungu-block');
+  const root = document.getElementById('sigungu-groups');
+  if (!block || !root) return;
+  const bys = (cur && cur.turnout && cur.turnout.by_sigungu) || {};
+  const names = Object.keys(bys).sort((a, b) => SIDO_ORDER.indexOf(a) - SIDO_ORDER.indexOf(b));
+  if (!names.length) { block.hidden = true; return; }
+  block.hidden = false;
+  const nat = cur.turnout.national && cur.turnout.national.turnout_pct;  // 전국 평균(막대 색 기준)
+  root.innerHTML = names.map(sd => {
+    const g = bys[sd];
+    const rows = (g.sigungu || []).filter(r => r.turnout_pct != null).slice()
+      .sort((a, b) => b.turnout_pct - a.turnout_pct);
+    if (!rows.length) return '';
+    const barMax = Math.max(...rows.map(r => r.turnout_pct), nat || 0, 1);
+    const t = g.total;
+    const head = t && t.turnout_pct != null
+      ? `합계 <strong>${fmt1(t.turnout_pct)}%</strong> · 투표 ${intComma(t.voters_so_far)}` : '';
+    const list = rows.map(r => {
+      const w = (r.turnout_pct / barMax * 100).toFixed(1);
+      const hi = nat != null && r.turnout_pct >= nat;
+      return `<div class="sgg-row" title="${r.name} · 투표 ${intComma(r.voters_so_far)} / 선거인 ${intComma(r.eligible_voters)}">` +
+        `<span class="sgg-name">${r.name}</span>` +
+        `<span class="sgg-bar-wrap"><span class="sgg-bar${hi ? ' hi' : ''}" style="width:${w}%"></span></span>` +
+        `<span class="sgg-rate">${fmt1(r.turnout_pct)}%</span></div>`;
+    }).join('');
+    return `<div class="sgg-group"><div class="sgg-head"><span class="sgg-sido">${SIDO_SHORT[sd] || sd}</span><span class="sgg-total">${head}</span></div><div class="sgg-list">${list}</div></div>`;
+  }).join('');
+}
+
 // ── 시간대별 투표율 추이 (오늘 vs 과거선거) ────────────────────────
 function renderTurnoutTrend(cur, histHourly) {
   const block = document.getElementById('trend-block');
@@ -1019,6 +1050,7 @@ async function render() {
       renderTurnoutTrend(cur, histHourly);
       renderTurnoutTable(cur, histHourly);
       renderSeoulGu(cur);
+      renderSigunguAll(cur);
       renderEarlyVsDay(cur, earlyVoting);
       renderHistoryCompare(cur, histHourly);
       renderTurnoutCorr(cur);
@@ -1055,6 +1087,7 @@ async function render() {
   renderTurnoutTrend(cur, histHourly);
   renderTurnoutTable(cur, histHourly);
   renderSeoulGu(cur);
+  renderSigunguAll(cur);
   renderEarlyVsDay(cur, earlyVoting);
   renderHistoryCompare(cur, histHourly);
   renderWatchlist(watchlist);
