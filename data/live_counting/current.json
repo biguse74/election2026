@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-03T12:57:48+09:00",
+  "polled_at": "2026-06-03T13:00:50+09:00",
   "source": "openapi",
   "phase": "pre",
   "races": [],
@@ -8,10 +8,10 @@
     "national": {
       "sd_name": "전국",
       "eligible_voters": 44649908,
-      "voters_so_far": 20491168,
-      "turnout_pct": 45.9,
-      "day_voters_so_far": 9949720,
-      "early_voters_so_far": 10541448,
+      "voters_so_far": 20518553,
+      "turnout_pct": 46.0,
+      "day_voters_so_far": 9954331,
+      "early_voters_so_far": 10564222,
       "day_eligible_voters": 34079860,
       "early_eligible_voters": 10570048
     },
@@ -39,10 +39,10 @@
       {
         "sd_name": "대구광역시",
         "eligible_voters": 2049683,
-        "voters_so_far": 925514,
-        "turnout_pct": 45.2,
-        "day_voters_so_far": 563650,
-        "early_voters_so_far": 361864,
+        "voters_so_far": 952899,
+        "turnout_pct": 46.5,
+        "day_voters_so_far": 568261,
+        "early_voters_so_far": 384638,
         "day_eligible_voters": 1664798,
         "early_eligible_voters": 384885
       },
@@ -217,6 +217,11 @@
         "time": "12:00",
         "turnout_pct": 19.0,
         "voters_so_far": 8490711
+      },
+      {
+        "time": "13:00",
+        "turnout_pct": 46.0,
+        "voters_so_far": 20518553
       }
     ],
     "source": "info.nec.go.kr VCVP01 (웹)"
