@@ -112,8 +112,8 @@
   .cand-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
   .cand-name { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .cand-party { font-size: 0.74rem; color: var(--muted); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .cand-bar-wrap { height: 9px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
-  .cand-bar { display: block; height: 100%; border-radius: 5px; transition: width 0.5s; }
+  .cand-bar-wrap { height: 12px; background: #ececf2; border-radius: 6px; overflow: hidden; }
+  .cand-bar { display: block; height: 100%; border-radius: 6px; transition: width 0.5s; box-shadow: inset 0 -2px 3px rgba(0,0,0,0.10); }
   .cand-share { font-weight: 800; font-size: 0.92rem; text-align: right; font-variant-numeric: tabular-nums; }
   .cand-rank1 .cand-name::after { content: ' ▲'; color: var(--accent); font-size: 0.7em; }
 
@@ -282,16 +282,23 @@
   table.other tr.race-sum:hover { background: #fafafa; }
   .rd-caret { color: var(--muted); font-size: 0.8em; margin-left: 5px; }
   table.other tr.rd-row > td { background: #fafafd; padding: 0; border-bottom: 1px solid #eee; }
-  .rd-box { padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
-  .rd-cand { display: flex; align-items: center; gap: 8px; font-size: 0.84rem; }
-  .rd-rank { width: 16px; text-align: center; font-weight: 700; color: var(--muted); flex-shrink: 0; }
-  .rd-cand .cand-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
-  .rd-name { font-weight: 700; flex-shrink: 0; }
-  .rd-party { color: var(--muted); font-size: 0.76rem; flex-shrink: 0; }
-  .rd-bar-wrap { flex: 1 1 auto; height: 9px; background: #ececec; border-radius: 5px; overflow: hidden; min-width: 30px; }
-  .rd-bar { display: block; height: 100%; border-radius: 5px; }
-  .rd-share { font-weight: 800; width: 50px; text-align: right; flex-shrink: 0; }
-  .rd-votes { color: var(--muted); font-size: 0.76rem; width: 74px; text-align: right; flex-shrink: 0; }
+  .rd-box { padding: 10px 12px; display: flex; flex-direction: column; gap: 3px; }
+  /* 고정폭 그리드 → 검색 상세 막대 시작점도 항상 같은 위치 */
+  .rd-cand { display: grid; grid-template-columns: 20px 26px 11px 60px 74px 1fr 54px 70px; align-items: center;
+             gap: 8px; font-size: 0.84rem; padding: 4px 6px; border-radius: 7px; }
+  .rd-cand.rd-lead { background: linear-gradient(90deg, var(--lead-tint, #eef2fb), transparent 92%); }
+  .rd-rank { text-align: center; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .rd-cand.rd-lead .rd-rank { color: #fff; background: var(--lead-color, #152484); border-radius: 999px;
+             width: 19px; height: 19px; line-height: 19px; margin: 0 auto; }
+  .rd-cand .cand-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .rd-name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rd-cand.rd-lead .rd-name { font-weight: 800; }
+  .rd-party { color: var(--muted); font-size: 0.76rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rd-bar-wrap { height: 12px; background: #e9e9ef; border-radius: 6px; overflow: hidden; min-width: 30px; }
+  .rd-bar { display: block; height: 100%; border-radius: 6px; box-shadow: inset 0 -2px 3px rgba(0,0,0,0.10); transition: width 0.5s; }
+  .rd-share { font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+  .rd-cand.rd-lead .rd-share { color: var(--lead-color, #152484); }
+  .rd-votes { color: var(--muted); font-size: 0.76rem; text-align: right; font-variant-numeric: tabular-nums; }
   .rd-empty { color: var(--muted); font-size: 0.82rem; padding: 4px 0; }
 
   /* 관심 지역 그룹 */
@@ -316,9 +323,13 @@
   table.other td.lead-cell { white-space: nowrap; }
   table.other td.lead-cell .cand-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
   table.other { width: 100%; min-width: 540px; border-collapse: collapse; font-size: 0.86rem; }
-  table.other th, table.other td { padding: 9px 11px; text-align: left; border-bottom: 1px solid #f0f0f0; }
-  table.other thead th { background: #fafafa; font-weight: 700; color: var(--muted); font-size: 0.78rem; border-bottom: 1px solid var(--line); }
-  table.other td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.other th, table.other td { padding: 10px 11px; text-align: left; border-bottom: 1px solid #f0f0f0; }
+  table.other thead th { background: #1a1a1a; font-weight: 800; color: #fff; font-size: 0.76rem; letter-spacing: 0.02em; border-bottom: none; position: sticky; top: 0; z-index: 1; }
+  table.other thead th:first-child { border-top-left-radius: 8px; }
+  table.other thead th:last-child { border-top-right-radius: 8px; }
+  table.other tr.race-sum:hover { background: #eef2fb !important; box-shadow: inset 3px 0 0 var(--dem); }
+  table.other td.lead-cell b { font-size: 0.92rem; }
+  table.other td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
   table.other tbody tr:last-child td { border-bottom: none; }
   .lead-chip { font-weight: 800; }
 
@@ -500,6 +511,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603S"></script>
+<script src="live.js?v=20260603T"></script>
 </body>
 </html>

@@ -121,10 +121,12 @@ function racePlace(r) {
 function candDetailHTML(r) {
   const cands = r.candidates || [];
   if (!cands.length) return '<div class="rd-empty">후보 데이터 없음</div>';
+  const counting = (r.progress_pct || 0) > 0;
   return cands.map(c => {
     const color = partyColor(LATEST_PARTIES, c.jd_name);
     const w = Math.max(0, Math.min(100, c.share_pct || 0));
-    return `<div class="rd-cand">
+    const lead = counting && c.current_rank === 1;
+    return `<div class="rd-cand${lead ? ' rd-lead' : ''}" style="--lead-color:${color}">
       <span class="rd-rank">${c.current_rank}</span>
       ${candPhotoImg(r, c, 'rd-photo')}
       <span class="cand-dot" style="background:${color}"></span>

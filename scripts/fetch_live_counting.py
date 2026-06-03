@@ -503,11 +503,13 @@ except Exception:
 
 
 def _split_party(s: str) -> tuple[str, str]:
-    """'더불어민주당정원오' → ('더불어민주당','정원오'). 매칭 실패 시 ('무소속', 원문)."""
+    """'더불어민주당정원오' → ('더불어민주당','정원오'). '무소속한동훈' → ('무소속','한동훈')."""
     s = (s or "").strip()
     for p in _PARTY_NAMES:
         if p != "무소속" and s.startswith(p):
             return p, s[len(p):].strip()
+    if s.startswith("무소속"):      # 무소속 후보도 접두 제거(이름만 남김)
+        return "무소속", s[len("무소속"):].strip()
     return "무소속", s
 
 
