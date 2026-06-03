@@ -1,0 +1,8 @@
+{
+  "polled_at": "2026-06-03T12:45:44+09:00",
+  "counting_calls": [],
+  "turnout_call": {
+    "result_code": "WEB-SCRAPE",
+    "items": []
+  }
+}
