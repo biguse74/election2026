@@ -292,26 +292,32 @@ function projectionContext(pj) {
   return `도달수준 추정 · 범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}% · ${ctx}`;
 }
 
-// 히어로 4번째 카드 — 상징적 헤드라인: 광역단체장 정당별 당선(현재 1위 기준).
-// (과거 '예상 최종 투표율'은 투표 종료 후 무의미 + 자정 넘어 살아나는 버그가 있어 대체)
+// 히어로 4번째 카드 — 투표율 맥락: 4년 전(2022) 대비 + 역대 순위.
+// (당선 결과는 /result/ 페이지로 분리. 이 페이지는 투표·개표 과정 아카이브)
 function renderProjection(cur, _histHourly) {
   const e = document.getElementById('hero-early');
   const meta = document.getElementById('hero-early-meta');
   const label = document.getElementById('hero-early-label');
   if (!e) return;
-  const chiefs = (cur?.races || []).filter(r => String(r.sg_type_code) === '3' && (r.candidates || []).length);
-  if (!chiefs.length) {
-    if (label) label.textContent = '광역단체장';
-    e.innerHTML = `<span class="pct" style="font-size:1.1rem">개표 대기</span>`;
-    if (meta) meta.textContent = '18시 마감 후 집계';
+  const nat = cur && cur.turnout && cur.turnout.national;
+  if (!nat || nat.turnout_pct == null) {
+    if (label) label.textContent = '투표율';
+    e.innerHTML = `<span class="pct" style="font-size:1.1rem">집계 중</span>`;
+    if (meta) meta.textContent = '';
     return;
   }
-  let dem = 0, con = 0, etc = 0;
-  for (const r of chiefs) { const p = r.candidates[0].jd_name; if (p === DEM) dem++; else if (p === CON) con++; else etc++; }
-  const win = dem >= con ? { n: '민주', c: '#8aa0ff', v: dem } : { n: '국힘', c: '#ff9aa6', v: con };
-  if (label) label.textContent = '광역단체장 당선';
-  e.innerHTML = `<span style="color:${win.c}">${win.n} ${win.v}</span>`;
-  if (meta) meta.textContent = `민주 ${dem} · 국힘 ${con}${etc ? ` · 그외 ${etc}` : ''} · ${chiefs.length}/17곳`;
+  const fin = nat.turnout_pct;
+  const rank = ZIBANG_HISTORY.filter(h => h.rate > fin).length + 1;
+  const prev22 = ZIBANG_HISTORY.find(h => h.year === 2022);
+  const dv = prev22 ? fin - prev22.rate : null;
+  if (label) label.textContent = '4년 전(2022) 대비';
+  if (dv != null) {
+    e.innerHTML = `${dv >= 0 ? '+' : ''}${fmt1(dv)}<span class="pct">%p</span>`;
+    if (meta) meta.textContent = `2022년 ${fmt1(prev22.rate)}% → 올해 ${fmt1(fin)}% · 역대 ${rank}위`;
+  } else {
+    e.innerHTML = `${fmt1(fin)}<span class="pct">%</span>`;
+    if (meta) meta.textContent = `최종 투표율 · 역대 ${rank}위`;
+  }
 }
 
 // ── 4년 전(2022) 동시각 투표율 카드 (투표 중 표시) ─────────────────
@@ -1327,11 +1333,10 @@ function initCollapsible(beforeCount) {
   // 스크롤 압박↓ + 정보 보존(아카이빙): 부가 섹션을 접기 가능으로. 헤더 클릭으로 펼침.
   // 기본 펼침은 핵심 결과(주목 후보·당선 종합·시도지사)만, 나머지는 접어 둔다.
   const ids = [
-    'called-block', 'chief-block', 'edu-block', 'bh-block', 'repoll-block', 'search-block',
-    'exitpoll-block', 'epc-block', 'panse-block', 'trend-block', 'evd-block', 'sigungu-block', 'histcmp-block',
-    'corr-block', 'groups-block',
+    'trend-block', 'evd-block', 'histcmp-block', 'sigungu-block', 'corr-block',
+    'search-block', 'exitpoll-block', 'epc-block', 'panse-block',
   ];
-  const openByDefault = new Set(['chief-block']);
+  const openByDefault = new Set(['trend-block', 'evd-block', 'histcmp-block']);
   ids.forEach(id => { const s = document.getElementById(id); if (s) s.classList.add('collapsible'); });
   if (_collapsibleInit) return;
   _collapsibleInit = true;
@@ -1422,23 +1427,22 @@ async function render() {
   renderHero(cur, earlyVoting);
   initCollapsible(beforeCount);
   renderProjection(cur, histHourly);
+  // 투표(turnout) 아카이브
   renderTurnoutTrend(cur, histHourly);
   renderEarlyVsDay(cur, earlyVoting);
   renderSigunguAll(cur);
   renderHistoryCompare(cur, histHourly);
-  renderWatchlist(watchlist);
-  renderGroups(groups);
-  renderChiefRaces(cur, predMap, LATEST_PARTIES);
-  renderEdu(cur);
-  renderBasicHead(cur, predBasicHead);
-  renderRepoll(cur);
-  renderCalled(cur);
   renderTurnoutCorr(cur);
-  renderHeaderSummaries(cur);
+  renderWatchlist(watchlist);   // watch-block 숨김 처리만
+  // 개표(counting) 아카이브 — 전체 선거구 검색
   populateFilters(LATEST_RACES);
   bindFilters();
   bindRaceExpand();
   renderSearch();
+  // 당선 결과(시도지사·기초단체장·교육감·재보궐·당선 종합)는 /result/ 페이지로 분리 → 중복 섹션 숨김.
+  ['called-block', 'chief-block', 'edu-block', 'bh-block', 'repoll-block', 'groups-block'].forEach(id => {
+    const s = document.getElementById(id); if (s) s.hidden = true;
+  });
 }
 
 // 접힌 섹션 헤더에도 핵심 숫자를 보여 줌(스크롤 없이 한눈에 + 아카이빙).
