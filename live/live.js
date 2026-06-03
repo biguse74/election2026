@@ -759,6 +759,10 @@ function renderWatchlist(watchlist) {
   const block = document.getElementById('watch-block');
   const root = document.getElementById('watchlist');
   if (!root || !block) return;
+  // '주목 후보' 섹션은 비표시(페이지 단순화). watchlist.json은 기초의원 타깃 수집용으로 유지.
+  block.hidden = true;
+  return;
+  /* eslint-disable no-unreachable */
   const list = (watchlist && watchlist.candidates) || [];
   if (!list.length) { block.hidden = true; return; }
   block.hidden = false;
@@ -1323,11 +1327,11 @@ function initCollapsible(beforeCount) {
   // 스크롤 압박↓ + 정보 보존(아카이빙): 부가 섹션을 접기 가능으로. 헤더 클릭으로 펼침.
   // 기본 펼침은 핵심 결과(주목 후보·당선 종합·시도지사)만, 나머지는 접어 둔다.
   const ids = [
-    'watch-block', 'called-block', 'chief-block', 'edu-block', 'bh-block', 'repoll-block', 'search-block',
+    'called-block', 'chief-block', 'edu-block', 'bh-block', 'repoll-block', 'search-block',
     'exitpoll-block', 'epc-block', 'panse-block', 'trend-block', 'evd-block', 'sigungu-block', 'histcmp-block',
     'corr-block', 'groups-block',
   ];
-  const openByDefault = new Set(['watch-block', 'chief-block']);
+  const openByDefault = new Set(['chief-block']);
   ids.forEach(id => { const s = document.getElementById(id); if (s) s.classList.add('collapsible'); });
   if (_collapsibleInit) return;
   _collapsibleInit = true;
