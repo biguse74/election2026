@@ -434,11 +434,13 @@ function renderSigunguAll(cur) {
     const head = t && t.turnout_pct != null
       ? `합계 <strong>${fmt1(t.turnout_pct)}%</strong> · 투표 ${intComma(t.voters_so_far)}` : '';
     const list = rows.map(r => {
-      const w = (r.turnout_pct / barMax * 100).toFixed(1);
-      const hi = nat != null && r.turnout_pct >= nat;
-      return `<div class="sgg-row" title="${r.name} · 투표 ${intComma(r.voters_so_far)} / 선거인 ${intComma(r.eligible_voters)}">` +
+      const elig = r.eligible_voters || 0;
+      const earlyPct = elig ? (r.early_voters_so_far || 0) / elig * 100 : 0;
+      const dayPct = elig ? (r.day_voters_so_far || 0) / elig * 100 : 0;
+      const ew = (earlyPct / barMax * 100).toFixed(1), dw = (dayPct / barMax * 100).toFixed(1);
+      return `<div class="sgg-row" title="${r.name} · 사전 ${fmt1(earlyPct)}% + 당일 ${fmt1(dayPct)}% = ${fmt1(r.turnout_pct)}% · 투표 ${intComma(r.voters_so_far)} / 선거인 ${intComma(r.eligible_voters)}">` +
         `<span class="sgg-name">${r.name}</span>` +
-        `<span class="sgg-bar-wrap"><span class="sgg-bar${hi ? ' hi' : ''}" style="width:${w}%"></span></span>` +
+        `<span class="sgg-bar-wrap"><span class="sgg-seg e" style="width:${ew}%"></span><span class="sgg-seg d" style="width:${dw}%"></span></span>` +
         `<span class="sgg-rate">${fmt1(r.turnout_pct)}%</span></div>`;
     }).join('');
     return `<div class="sgg-group"><div class="sgg-head"><span class="sgg-sido">${SIDO_SHORT[sd] || sd}</span><span class="sgg-total">${head}</span></div><div class="sgg-list">${list}</div></div>`;
@@ -528,30 +530,25 @@ function renderEarlyVsDay(cur, earlyVoting) {
   const wrap = document.getElementById('evd-table');
   const note = document.getElementById('evd-note');
   if (!block || !wrap) return;
-  const evSido = {};
-  for (const s of (earlyVoting && earlyVoting.by_sido || [])) evSido[s.sdName] = s;
-  const curSido = {};
-  for (const s of (cur && cur.turnout && cur.turnout.by_sido || [])) curSido[s.sd_name] = s;
+  // 라이브 집계 자체에 당일·사전 분리값이 있으므로 그대로 사용(외부 사전파일 불필요·일관).
+  //   사전투표율 = 사전접수 / 선거인,  당일 본투표율 = 당일투표 / 선거인,  합 = 누계 투표율
   const rows = [];
-  for (const sd of Object.keys(evSido)) {
-    const ev = evSido[sd], cu = curSido[sd];
-    const eligible = ev.voters || (cu && cu.eligible_voters) || 0;
-    const dayVoted = (cu && cu.day_voters_so_far) || 0;
-    const earlyPct = ev.turnout || 0;                       // 사전투표율 (사전/선거인)
-    const dayPct = eligible ? dayVoted / eligible * 100 : 0; // 당일 본투표율
-    rows.push({ sd, earlyPct, dayPct, total: earlyPct + dayPct });
+  for (const s of (cur && cur.turnout && cur.turnout.by_sido || [])) {
+    const eligible = s.eligible_voters || 0;
+    if (!eligible) continue;
+    const earlyPct = (s.early_voters_so_far || 0) / eligible * 100;
+    const dayPct = (s.day_voters_so_far || 0) / eligible * 100;
+    rows.push({ sd: s.sd_name, earlyPct, dayPct, total: earlyPct + dayPct });
   }
   if (rows.length < 3) { block.hidden = true; return; }
   block.hidden = false;
   rows.sort((a, b) => b.total - a.total);
   const maxTotal = Math.max(...rows.map(r => r.total), 1);
-  // 전국 평균 누적(사전+당일) — 세로 파선 기준선 (위 시도별 표의 평균 파선과 동일 형식)
-  const evN = earlyVoting && earlyVoting.national;
+  // 전국 평균 누적(사전+당일) — 세로 파선 기준선
   const cN = cur && cur.turnout && cur.turnout.national;
   let natTotal = null;
-  if (evN && cN) {
-    const elig = evN.voters || cN.eligible_voters || 0;
-    if (elig) natTotal = ((evN.voted || 0) + (cN.day_voters_so_far || 0)) / elig * 100;
+  if (cN && cN.eligible_voters) {
+    natTotal = ((cN.early_voters_so_far || 0) + (cN.day_voters_so_far || 0)) / cN.eligible_voters * 100;
   }
   const avgMark = (natTotal != null) ? (natTotal / maxTotal * 100).toFixed(1) : null;
   wrap.className = 'evd-table';
