@@ -1,80 +1,8895 @@
 {
   "source": "candidates",
-  "today_date": "20260603",
-  "previous_date": "20260602",
+  "today_date": "20260604",
+  "previous_date": "20260603",
   "summary": {
     "new": 0,
-    "gone": 0,
+    "gone": 1247,
     "party": 0,
-    "status": 3
+    "status": 0
   },
   "samples": {
     "new": [],
-    "gone": [],
-    "party": [],
-    "status": [
+    "gone": [
       {
-        "name": "최민영",
-        "jdName": "국민의힘",
+        "name": "신용한",
+        "jdName": "더불어민주당",
         "sdName": "충청북도",
         "sggName": "충청북도",
-        "sgTypecode": "8",
-        "status_prev": "등록",
-        "status_now": "사퇴"
+        "sgTypecode": "3"
       },
       {
-        "name": "김성근",
+        "name": "이기붕",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "인천광역시",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "김성수",
         "jdName": "무소속",
-        "sdName": "부산광역시",
-        "sggName": "북구갑",
-        "sgTypecode": "2",
-        "status_prev": "등록",
-        "status_now": "사퇴"
+        "sdName": "전북특별자치도",
+        "sggName": "전북특별자치도",
+        "sgTypecode": "3"
       },
       {
-        "name": "이강산",
-        "jdName": "자유통일당",
-        "sdName": "서울특별시",
-        "sggName": "서울특별시",
-        "sgTypecode": "3",
-        "status_prev": "등록",
-        "status_now": "사퇴"
+        "name": "김시현",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "양윤녕",
+        "jdName": "무소속",
+        "sdName": "제주특별자치도",
+        "sggName": "제주특별자치도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "구자열",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "원주시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "서용숙",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제12선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정연희",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박윤경",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제13선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김길모",
+        "jdName": "조국혁신당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제14선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "홍순기",
+        "jdName": "조국혁신당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김창연",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제15선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정영원",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제16선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "손인수",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제17선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김지선",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백진오",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "여수시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박병남",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제9선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김중남",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "강릉시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "양진호",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제11선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이재준",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제11선거구",
+        "sgTypecode": "5"
       }
-    ]
+    ],
+    "party": [],
+    "status": []
   },
   "full": {
     "new": [],
-    "gone": [],
-    "party": [],
-    "status": [
+    "gone": [
       {
-        "name": "최민영",
+        "name": "신용한",
+        "jdName": "더불어민주당",
+        "sdName": "충청북도",
+        "sggName": "충청북도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "이기붕",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "인천광역시",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "김성수",
+        "jdName": "무소속",
+        "sdName": "전북특별자치도",
+        "sggName": "전북특별자치도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "김시현",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "양윤녕",
+        "jdName": "무소속",
+        "sdName": "제주특별자치도",
+        "sggName": "제주특별자치도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "구자열",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "원주시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "서용숙",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제12선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정연희",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박윤경",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제13선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김길모",
+        "jdName": "조국혁신당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제14선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "홍순기",
+        "jdName": "조국혁신당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김창연",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제15선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정영원",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제16선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "손인수",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제17선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김지선",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백진오",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "여수시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박병남",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제9선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김중남",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "강릉시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "양진호",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제11선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이재준",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제11선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김동기",
+        "jdName": "무소속",
+        "sdName": "강원특별자치도",
+        "sggName": "강릉시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "김학서",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김종철",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김철수",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "속초시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "황미래",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "중구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "문상엽",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김소리",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정현희",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "중구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이미경",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제15선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이오상",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "주열아",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최연선",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "용혜랑",
+        "jdName": "진보당",
+        "sdName": "인천광역시",
+        "sggName": "남동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최원석",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제7선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "황규진",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이정훈",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "삼척시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "조성민",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이주언",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김철우",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "엄기윤",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤치용",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임민정",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김동구",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "태백시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "정미옥",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조용봉",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정수진",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김재진",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "순천시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김태형",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최정희",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신화철",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김일중",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이정상",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "주우성",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이윤재",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조민경",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "공우석",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "관악구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이정석",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "목포시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장관훈",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "제물포구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "노광주",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신진영",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김미영",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이성실",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "연수구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김종찬",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한상근",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "송선우",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "목포시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박수인",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "목포시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박성미",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강화영",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "탁현수",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정기순",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김우성",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이선영",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강미라",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "국일선",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김성하",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박정숙",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이진복",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이기연",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백성호",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "광양시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정우범",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "광양시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강정선",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김햇살",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김진형",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이현부",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김환연",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "전상규",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조덕제",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "국정은",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조성철",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "울주군제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이광희",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "양천구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "노경진",
+        "jdName": "진보당",
+        "sdName": "인천광역시",
+        "sggName": "남동구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "권수찬",
+        "jdName": "새미래민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김형우",
+        "jdName": "개혁신당",
+        "sdName": "강원특별자치도",
+        "sggName": "삼척시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "최석순",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강민제",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "남동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이용구",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박태은",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "제물포구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "전영희",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "동구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김연자",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박소준",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유봉선",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "지장근",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "순천시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백동규",
+        "jdName": "정의당",
+        "sdName": "전라남도",
+        "sggName": "목포시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서성태",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이철상",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김준정",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한정민",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정영근",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김준희",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "순천시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김효증",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이성규",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조성희",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이용우",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "권기백",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "동구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이은주",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "동구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박흥석",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박병관",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이윤수",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "손두기",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김수정",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박재기",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "광양시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "고경욱",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이명녀",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강순화",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "전태우",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "서초구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최미자",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "영종구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤희정",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박인경",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이현재",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박희두",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이학정",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강정덕",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "유용",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "동작구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최병은",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김순주",
+        "jdName": "개혁신당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "노명환",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "동구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "황승민",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "연수구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최현호",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "나주시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김선애",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김소영",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김태경",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유형숙",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정민균",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백승화",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이인화",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정회기",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "송인창",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "송순효",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강서구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이승욱",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최준길",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최병호",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "채성군",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이정학",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "동해시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "임석훈",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "순천시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조대익",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "순천시아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "문종관",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이현찬",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "은평구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김영상",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박유진",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "은평구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김홍수",
+        "jdName": "개혁신당",
+        "sdName": "강원특별자치도",
+        "sggName": "동해시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "구영미",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서영배",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임재옥",
+        "jdName": "자유와혁신",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "윤성규",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김정애",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "관악구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김숭선",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이주형",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박계홍",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강서구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박경만",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "장시춘",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "지정수",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김채경",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최재현",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김경순",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장국진",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "문승재",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김은숙",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강지윤",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "안호선",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김호한",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최영식",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이현호",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "남동구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김채원",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시차선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이영란",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "고종덕",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김현정",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "남연우",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "순천시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김종범",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신상용",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김성민",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "고희권",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김동현",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "강남구자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "나현수",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김광훈",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "영종구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "남동관",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강진희",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "서병남",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서선란",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서수형",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "여수시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김용찬",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이정휘",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이현준",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "동구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정광열",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "춘천시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "김경숙",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "제물포구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이수진",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이향미",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "검단구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김호진",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이햇님",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조문경",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "북구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박남조",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이용우",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "송파구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최현주",
+        "jdName": "정의당",
+        "sdName": "전라남도",
+        "sggName": "목포시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이형완",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김희택",
+        "jdName": "국민의힘",
+        "sdName": "전라남도",
+        "sggName": "여수시차선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "민덕희",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김동재",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "서구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "노태손",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "손대중",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강성필",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시차선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황관영",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정홍준",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "순천시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이영주",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "안다미",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김진호",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구차선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장성혁",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "송파구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이희승",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이규영",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제10선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "임만균",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "관악구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박숙희",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이수현",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최정필",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시차선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유영철",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한지혜",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤영한",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한일용",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "마포구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "염하나",
+        "jdName": "무소속",
+        "sdName": "강원특별자치도",
+        "sggName": "속초시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "이선경",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최환석",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김재성",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "손재용",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박수경",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "손근호",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최성필",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "영종구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박용준",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "목포시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이선효",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시차선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한겨레",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김종길",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이돈견",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최미희",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "순천시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최병협",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "북구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김보성",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "장현태",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김상일",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "여수시차선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "안재훈",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최백규",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "안상미",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이수현",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김현미",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제14선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "임우철",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "배정해",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "여수시아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정영신",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황숲",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "권혁춘",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "북구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김선홍",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "영종구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이경천",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "나주시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황광민",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "나주시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임규이",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황우선",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "채승우",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구차선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김성보",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "나주시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김철민",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "나주시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신선혜",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한민정",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제17선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김남복",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "서구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조한결",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "사덕민",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임옥주",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "영종구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이현주",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "검단구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이제욱",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박장열",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "나주시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이상우",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "여수시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김태현",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "구성도",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "강남구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "하기정",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장성란",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "류왕도",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김우성",
+        "jdName": "조국혁신당",
+        "sdName": "울산광역시",
+        "sggName": "울주군제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김한나",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이재철",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김양효",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김형근",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "동구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "양인모",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "검단구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이해지",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정채훈",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최기봉",
+        "jdName": "조국혁신당",
+        "sdName": "울산광역시",
+        "sggName": "북구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박희정",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "금천구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이수영",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강창훈",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "강화군선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이복남",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "순천시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백진기",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "검단구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김봉민",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "울주군제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김경우",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "동작구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "손상희",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김기덕",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "마포구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "임준택",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "나주시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박지효",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구차선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "손명희",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이진용",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "강신학",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "연수구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최재란",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "양천구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "송하진",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백종빈",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "옹진군선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김정숙",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박창수",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최정기",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "나주시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박지상",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "손민지",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "금천구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김지현",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "허정미",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장수진",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이준재",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정지웅",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이원우",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정구호",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이준형",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김종훈",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "울주군제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "임현주",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정신출",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김인제",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "구로구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "문성유",
+        "jdName": "국민의힘",
+        "sdName": "제주특별자치도",
+        "sggName": "제주특별자치도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "황인구",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김재수",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유루경",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박원서",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박영근",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "목포시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박철수",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이정은",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "진명숙",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박무영",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "구로구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "강현태",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최지선",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한기영",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "마포구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김철민",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황선수",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박문섭",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "광양시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이미경",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤유진",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박성미",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이규랑",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "송파구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "고기판",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "문상수",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "서구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김인희",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박종혁",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "장성숙",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "송정호",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "검단구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박병빈",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "검단구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이혜인",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "반미선",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김보식",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임애숙",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김현우",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황충하",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "연수구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이문포",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "진도군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이향기",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김민식",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "서구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이철재",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "광양시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "전예은",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이강구",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김순종",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김정중",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "양양군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "구본호",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "강화군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이상곤",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김호열",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "양양군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "유창훈",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "홍석규",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김병연",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "강화군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이상수",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김영조",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김유자",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "강화군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한금석",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "철원군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "황성주",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "강화군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김영삼",
+        "jdName": "무소속",
+        "sdName": "울산광역시",
+        "sggName": "남구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서상열",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "구로구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김동규",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박지선",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "송파구아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "오봉수",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "금천구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "고제철",
+        "jdName": "무소속",
+        "sdName": "강원특별자치도",
+        "sggName": "양양군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "홍성민",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김승호",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김우성",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김종국",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이효원",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "마포구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "주재현",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유지철",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "강화군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "선상원",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "구례군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "홍영진",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "여명자",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "곽움",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김동일",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "철원군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "이계호",
+        "jdName": "자유와혁신",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제13선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "홍정우",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "강화군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박계수",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "순천시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "옥동준",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "양천구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김재남",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유성헌",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "강화군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이연주",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "원은정",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이승완",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "진도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김종열",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "진도군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김춘화",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "진도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤종철",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "양천구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김세훈",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "화천군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "정재훈",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김광호",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "영종구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김충식",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김오현",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최명수",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "화천군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "장현진",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장수연",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김수철",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "구례군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박형출",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "구례군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "문승옥",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "구례군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤재실",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유시문",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "구례군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강귀전",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "울주군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최윤성",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "울주군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김우정",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "구례군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "송승엽",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "북구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "주무열",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "관악구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "장경용",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "강화군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "권중건",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "울주군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이원국",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "엄삼용",
+        "jdName": "조국혁신당",
+        "sdName": "강원특별자치도",
+        "sggName": "영월군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "김길수",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "영월군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "최규술",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "검단구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이장걸",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "고기영",
+        "jdName": "무소속",
+        "sdName": "강원특별자치도",
+        "sggName": "철원군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "이준회",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "무안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이창래",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "무안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최철규",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "정선군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "이상옥",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "마포구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정옥헌",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "무안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이현숙",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "마포구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "허동조",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "완도군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "기완수",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "노중희",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "해남군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최찬호",
+        "jdName": "자유와혁신",
+        "sdName": "서울특별시",
+        "sggName": "강동구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한상철",
+        "jdName": "무소속",
+        "sdName": "강원특별자치도",
+        "sggName": "인제군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "홍정임",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장흥군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박선규",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "영월군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "이현희",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "완도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임관만",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "제물포구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "윤구영",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김기하",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "동해시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "이재진",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "영종구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박승영",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "홍천군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "최순옥",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "진도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "채은아",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장흥군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김선홍",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "장흥군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박재형",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "서초구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "황윤대",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "울주군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "공진혁",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "울주군제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "윤장혁",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "울주군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임광식",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "횡성군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "장신상",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "횡성군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "양병식",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "곡성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "양해영",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "곡성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "허문회",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "곡성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "설단숙",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "곡성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황진동",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "고흥군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김기천",
+        "jdName": "정의당",
+        "sdName": "전라남도",
+        "sggName": "영암군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서정란",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "장흥군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김관필",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영광군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박순단",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "장흥군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김춘식",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "장성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황호연",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장흥군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김한성",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "강진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김강민",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "강진군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김미순",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김호석",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "강진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "홍우열",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유태영",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장성군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김상은",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "강진군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이봉영",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영암군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김홍재",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영광군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김재범",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "곡성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박현진",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "영광군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조일영",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영광군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김원중",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "무안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이길연",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "장성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박종완",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "곡성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정용호",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영광군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김대현",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "무안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이나겸",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "강진군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김동수",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "해남군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정은상",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "완도군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이민건",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "함평군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임영민",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영광군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한왕기",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "평창군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "이상윤",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "울주군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김요순",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "곡성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정선우",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영광군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김성민",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장흥군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이기우",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "해남군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최태주",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "담양군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤영남",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "강진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신양심",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "영암군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김지숙",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "화순군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "문선웅",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "신안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정학철",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "화순군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "곽승만",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "담양군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장문규",
+        "jdName": "정의당",
+        "sdName": "전라남도",
+        "sggName": "영암군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최용만",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "담양군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박수영",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "신안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "나영효",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "신안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박상범",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "화순군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임윤택",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "무안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김석민",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "담양군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "맹성호",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "해남군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강대성",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "신안군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김상희",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "영광군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정인관",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "곡성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이미행",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "담양군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "홍기균",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "화순군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한승욱",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서휘웅",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "울주군제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이기범",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "담양군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장현동",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "담양군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "노대현",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "담양군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "배홍준",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "강진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조승준",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "담양군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "양광",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "진도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최현동",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "담양군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정선희",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영암군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "진철",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "담양군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김기중",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "화순군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤석진",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "영광군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강기순",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "곡성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박천석",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "보성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이지영",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "울주군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정승태",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "화순군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "류종옥",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "화순군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "남향욱",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "보성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김미숙",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "해남군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "문점숙",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "보성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정상우",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "보성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "안형상",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "보성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "전상호",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "보성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박효동",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "고성군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "윤정국",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "보성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유금렬",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장흥군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김대영",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김옥정",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "진도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이기현",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "장성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박문서",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "함평군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김남현",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "양동술",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "화순군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박상정",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "해남군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김용배",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "신안군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박은심",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "동구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이원우",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이희원",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "동작구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김진현",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "영종구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이명식",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "강진군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정철성",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "함평군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이의명",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "옹진군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이민석",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "마포구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김영진",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "옹진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한종천",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "해남군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김진구",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백광철",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장흥군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김홍순",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "곡성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임세훈",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "영광군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김홍민",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "보성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박현숙",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장성군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김학태",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조영남",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "보성군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이동화",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "강혜순",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "양평호",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김봉용",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "구례군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박주광",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "옹진군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김해원",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "함명준",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "고성군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "이희동",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최영진",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "신안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이은창",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "함평군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이정확",
+        "jdName": "진보당",
+        "sdName": "전라남도",
+        "sggName": "해남군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "주이삭",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최흥섭",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "영암군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김은영",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "함평군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이상걸",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "울주군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "양준식",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "구례군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강재홍",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "화순군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김정원",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "신안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이만진",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영암군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조영미",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김태욱",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최정욱",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "완도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한성환",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "울주군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박기홍",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "울주군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "함성옥",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "목포시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박삼성",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "신안군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "하기억",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "영광군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김학기",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "신안군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김혁성",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "신안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "남효선",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김민열",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장명영",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "담양군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정준모",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "강남구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김서윤",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김선경",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "강남구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김영근",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김용호",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "화순군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "민동헌",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "해남군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "류동철",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조명순",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "화순군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "민찬혁",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "해남군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이춘복",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "보성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박영배",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "영암군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유전종",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "완도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "송종화",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "구부회",
+        "jdName": "기본소득당",
+        "sdName": "인천광역시",
+        "sggName": "영종구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김창문",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "함평군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박봉관",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "류영길",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "화순군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이순열",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제7선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김정구",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "보성군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박병수",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "완도군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최은주",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "영종구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김수경",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤영상",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "강진군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이상우",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "울주군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "양수경",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "남구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "홍남곤",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "옹진군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "엄윤순",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "인제군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "김경미",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "보성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강재헌",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이유경",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최정원",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "순천시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정한솔",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "부평구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "홍성표",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "함평군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김미주",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "구로구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정재훈",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "울주군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정현웅",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "함평군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "고병준",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "마포구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김상용",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "울주군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김윤희",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이성룡",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김왕규",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "양구군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "김재홍",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "옹진군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "안원준",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "신안군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이재식",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "양천구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이영자",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "연수구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김진웅",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조세현",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "화순군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김춘곤",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강서구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박성규",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "완도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "손옥선",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "북구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김일환",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박정환",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "북구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박란희",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제18선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박진구",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영광군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "문기호",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박금례",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "진도군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서충기",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "나주시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김영인",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "함평군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "채우진",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "마포구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김정환",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "동작구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "홍성우",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "울주군제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "고찬양",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강서구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "문석주",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "북구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김안나",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박규대",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "천승훈",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "강명구",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "강진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장경석",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "옹진군선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김은숙",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "전용호",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김효숙",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제8선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김용호",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "남동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김동민",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "한진수",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김병진",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강서구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "고천수",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영암군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김상태",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "북구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "남성훈",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "부평구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "진광원",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "옹진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신중철",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "전승관",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "문현섭",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강후공",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "영종구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김동호",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제16선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김준곤",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박종대",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영암군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김연수",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김지향",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "안정원",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장경원",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "오수연",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "제물포구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정광현",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김영웅",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "은평구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "임원희",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "완도군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "구민호",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김영환",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "해남군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "오온누리",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김미경",
+        "jdName": "정의당",
+        "sdName": "전라남도",
+        "sggName": "무안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "양영복",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "무안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정성미",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "손은비",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "영종구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정보현",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "연수구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정우식",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "울주군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장상기",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강서구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "백현조",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "북구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김관용",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황태현",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정성용",
+        "jdName": "노동당",
+        "sdName": "인천광역시",
+        "sggName": "검단구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "황성순",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "동구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "한창한",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "영종구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한규창",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "검단구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임기현",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "문희성",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이종수",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "진도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김동빈",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이세리",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유인호",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제13선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "황주경",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박경석",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "홍정희",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "한성민",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김기상",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "변영현",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "옹진군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박종현",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "조성환",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "양동진",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "순천시아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박철규",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "곡성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "심재국",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "평창군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "박용걸",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "심우열",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김세윤",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "완도군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정은경",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "무안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박훈동",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "해남군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유은희",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이한종",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김일태",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이용창",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "전남주",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "신안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조원선",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "완도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조영길",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "고흥군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이종선",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "옹진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김도운",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박경흠",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "권순용",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정훈희",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정주리",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박경수",
+        "jdName": "정의당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "우성원",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "순천시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정성헌",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제8선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김재진",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김삼중",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "담양군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정진철",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김기환",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "윤영규",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "곡성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김숙의",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신영희",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "옹진군선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "임현수",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "무안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신영재",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "강동효",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이정호",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이영해",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "민경매",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "해남군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "양송이",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이인교",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김한",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "북구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "임채윤",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강찬원",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영암군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김태훈",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "위정희",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "노두섭",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "강진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김태계",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "홍재희",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강서구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박종부",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "해남군라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "육동한",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "춘천시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "최진유",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신찬호",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강서구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "백은지",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "은평구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김정열",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이강무",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "지민",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "완도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이현진",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "영종구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이성옥",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "해남군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유승분",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김용희",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "원정식",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "검단구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "전재운",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "권태호",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "중구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이종태",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "강동구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이인식",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "금천구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "손일홍",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김광철",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "차상현",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최원석",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김민애",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "옹진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "방평원",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "담양군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임춘대",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "임채오",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김영석",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이양임",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김언지",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이순태",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "해남군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이상기",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박춘선",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최중찬",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "강화군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "천은경",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "담양군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "안대룡",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "조영식",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "완도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이선옥",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "한형철",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "나주시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최문환",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정락재",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "유미현",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이호성",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "무안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박재성",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조관훈",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "담양군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김재형",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제12선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이동수",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김광운",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "공정숙",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서진수",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "홍나영",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제14선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "권오연",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "신안군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김종길",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김광용",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "여수시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신봉규",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "은평구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "문세종",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이원순",
+        "jdName": "진보당",
+        "sdName": "서울특별시",
+        "sggName": "동작구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정지용",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "손혜원",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "목포시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김성준",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "강동구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박상수",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "삼척시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "복진경",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김영민",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "강동구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "한승희",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "강화군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김홍규",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "강릉시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "박용순",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "구로구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정혜원",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "울주군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤재상",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "강화군선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김대영",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이효진",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "서초구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "주현석",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "검단구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최명서",
+        "jdName": "무소속",
+        "sdName": "강원특별자치도",
+        "sggName": "영월군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "장규철",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백승재",
+        "jdName": "진보당",
+        "sdName": "전북특별자치도",
+        "sggName": "전북특별자치도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "안창률",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이명규",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김성호",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "천병태",
+        "jdName": "진보당",
+        "sdName": "울산광역시",
+        "sggName": "중구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "신영재",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "홍천군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "우종혁",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최재",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤지성",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "심민섭",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "장성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이완형",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "서초구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박용갑",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "검단구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박재완",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "북구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "안신일",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "염희옥",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조성오",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김경천",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박용식",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이숙자",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "서초구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이도희",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "원강수",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "원주시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "이강해",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김지훈",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "서초구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박효상",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "목포시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이승미",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "홍순서",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "검단구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤수혁",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이수연",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "동작구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "문미혜",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신충식",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "검단구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박등규",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "은평구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "송건우",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "양천구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "한지산",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강서구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김대곤",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김석봉",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "화순군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김영훈",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "홍유준",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "동구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이경의",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "광양시라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이관호",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이병학",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이병선",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "속초시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "김길영",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "장순욱",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "동작구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "문성호",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "서대문구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박순옥",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최진혁",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강서구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이성배",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "고광민",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "서초구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "강연숙",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "부평구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이인선",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김미정",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정성호",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "구로구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이종원",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이상호",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "태백시",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "정종혁",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김호경",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "관악구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "차인영",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이혜숙",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "남정옥",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "순천시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정은주",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제18선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김영빈",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박인서",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "남구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "노성철",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "동작구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "주광호",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "양천구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이현동",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "차석철",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김남이",
+        "jdName": "국민의힘",
+        "sdName": "울산광역시",
+        "sggName": "남구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박칠성",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "구로구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김종호",
+        "jdName": "정의당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "석정규",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "송광식",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정재환",
+        "jdName": "더불어민주당",
+        "sdName": "울산광역시",
+        "sggName": "중구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김재열",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "고흥군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "오호영",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "목포시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김학엽",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김준영",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "표명자",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조동탁",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김남원",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "검단구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서흥원",
+        "jdName": "국민의힘",
+        "sdName": "강원특별자치도",
+        "sggName": "양구군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "서회원",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박창석",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "무안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최민규",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "동작구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "제갑섭",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김경훈",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강서구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "유경숙",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "강진군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "고선희",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강형구",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "순천시사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "권석환",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "여수시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김명주",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "검단구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "노종용",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "장태용",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "유정인",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정동배",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정성일",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "도문열",
+        "jdName": "무소속",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정철균",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "순천시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김영철",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최승준",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "정선군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "강재훈",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "양천구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "윤정재",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "보성군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최신성",
+        "jdName": "개혁신당",
+        "sdName": "울산광역시",
+        "sggName": "남구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김장호",
+        "jdName": "개혁신당",
+        "sdName": "울산광역시",
+        "sggName": "남구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "노애자",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "민경희",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이태성",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이규민",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "강남구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최미화",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "장성군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이상주",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "신안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김명기",
+        "jdName": "무소속",
+        "sdName": "강원특별자치도",
+        "sggName": "횡성군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "홍범석",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정일경",
+        "jdName": "개혁신당",
+        "sdName": "울산광역시",
+        "sggName": "남구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김소라",
+        "jdName": "개혁신당",
+        "sdName": "울산광역시",
+        "sggName": "남구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박소영",
+        "jdName": "개혁신당",
+        "sdName": "울산광역시",
+        "sggName": "남구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김근우",
+        "jdName": "개혁신당",
+        "sdName": "울산광역시",
+        "sggName": "남구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최상기",
+        "jdName": "더불어민주당",
+        "sdName": "강원특별자치도",
+        "sggName": "인제군",
+        "sgTypecode": "4"
+      },
+      {
+        "name": "박범종",
+        "jdName": "더불어민주당",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제10선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "유만희",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "조영규",
+        "jdName": "무소속",
+        "sdName": "인천광역시",
+        "sggName": "남동구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "손병화",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이병도",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "은평구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "정정문",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "목포시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정해권",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박찬대",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "인천광역시",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "유정복",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "인천광역시",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "하숙자",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박수현",
+        "jdName": "더불어민주당",
+        "sdName": "충청남도",
+        "sggName": "충청남도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "김현석",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "서정호",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "연수구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "서춘경",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "장성군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강석주",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강서구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이원택",
+        "jdName": "더불어민주당",
+        "sdName": "전북특별자치도",
+        "sggName": "전북특별자치도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "김익만",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "장흥군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "위성곤",
+        "jdName": "더불어민주당",
+        "sdName": "제주특별자치도",
+        "sggName": "제주특별자치도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "양정무",
+        "jdName": "국민의힘",
+        "sdName": "전북특별자치도",
+        "sggName": "전북특별자치도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "김영환",
         "jdName": "국민의힘",
         "sdName": "충청북도",
         "sggName": "충청북도",
-        "sgTypecode": "8",
-        "status_prev": "등록",
-        "status_now": "사퇴"
+        "sgTypecode": "3"
       },
       {
-        "name": "김성근",
+        "name": "김규성",
         "jdName": "무소속",
-        "sdName": "부산광역시",
-        "sggName": "북구갑",
-        "sgTypecode": "2",
-        "status_prev": "등록",
-        "status_now": "사퇴"
+        "sdName": "인천광역시",
+        "sggName": "옹진군다선거구",
+        "sgTypecode": "6"
       },
       {
-        "name": "이강산",
-        "jdName": "자유통일당",
+        "name": "허식",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "제물포구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김정우",
+        "jdName": "더불어민주당",
         "sdName": "서울특별시",
-        "sggName": "서울특별시",
-        "sgTypecode": "3",
-        "status_prev": "등록",
-        "status_now": "사퇴"
+        "sggName": "관악구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "박상혁",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "서초구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김미애",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "구례군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이동매",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구제6선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이향숙",
+        "jdName": "무소속",
+        "sdName": "서울특별시",
+        "sggName": "강남구자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "황순남",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "신동섭",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "배신정",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조용근",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임춘원",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "남동구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최현석",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "구로구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "한정민",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "마포구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최상진",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "고은진",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "문종익",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "여수시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "송영광",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이의환",
+        "jdName": "조국혁신당",
+        "sdName": "전라남도",
+        "sggName": "신안군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "조유란",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "윤정식",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구아선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이명섭",
+        "jdName": "무소속",
+        "sdName": "서울특별시",
+        "sggName": "송파구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "안형순",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김관영",
+        "jdName": "무소속",
+        "sdName": "전북특별자치도",
+        "sggName": "전북특별자치도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "강신욱",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "신영국",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "영암군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김재원",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이동호",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박순례",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정영균",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "순천시가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "서지영",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김원진",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "명경백",
+        "jdName": "무소속",
+        "sdName": "서울특별시",
+        "sggName": "강남구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김동익",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "서구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "양희정",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "남동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김태흠",
+        "jdName": "국민의힘",
+        "sdName": "충청남도",
+        "sggName": "충청남도",
+        "sgTypecode": "3"
+      },
+      {
+        "name": "유옥분",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "제물포구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이하식",
+        "jdName": "무소속",
+        "sdName": "서울특별시",
+        "sggName": "송파구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박동민",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "나주시나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "정태완",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이순학",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "검단구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "이상애",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강남구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백동현",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "옹진군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이재란",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "성인",
+        "jdName": "기본소득당",
+        "sdName": "전라남도",
+        "sggName": "나주시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "장현수",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "관악구제5선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김광진",
+        "jdName": "진보당",
+        "sdName": "인천광역시",
+        "sggName": "남동구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "강득형",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "강남구제4선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "양진석",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김정일",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강동구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "오진희",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "남동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박찬양",
+        "jdName": "조국혁신당",
+        "sdName": "인천광역시",
+        "sggName": "남동구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신지수",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "계양구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김상남",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "고령군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "곽희은",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경산시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이성자",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "창녕군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "정세연",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "창녕군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박성희",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임수아",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이종호",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "제물포구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이영미",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "함양군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김미옥",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "영덕군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "임진희",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "함양군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "나성주",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이선옥",
+        "jdName": "진보당",
+        "sdName": "광주광역시",
+        "sggName": "남구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "윤정애",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "고성군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "한채민",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "고성군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "유주숙",
+        "jdName": "조국혁신당",
+        "sdName": "광주광역시",
+        "sggName": "서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "윤지원",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "함안군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박미라",
+        "jdName": "진보당",
+        "sdName": "광주광역시",
+        "sggName": "서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김춘수",
+        "jdName": "더불어민주당",
+        "sdName": "인천광역시",
+        "sggName": "서구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김미경",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "안동시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "권해숙",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "안동시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김홍기",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "안동시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "정운갑",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "영암군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "백종숙",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "거창군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김미영",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "거창군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "배은미",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "거창군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이영자",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "밀양시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "문찬우",
+        "jdName": "국민의힘",
+        "sdName": "세종특별자치시",
+        "sggName": "세종특별자치시제9선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "최민경",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "영양군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이은주",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "상주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "석옥선",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경산시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이성덕",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경산시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "조재옥",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "밀양시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박미경",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "밀양시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이진아",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "창녕군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "최현숙",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "남구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "최미숙",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "밀양시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이미경",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "남구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박은희",
+        "jdName": "더불어민주당",
+        "sdName": "대구광역시",
+        "sggName": "서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "정민우",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "강동구바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "민정화",
+        "jdName": "진보당",
+        "sdName": "경상남도",
+        "sggName": "밀양시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김옥련",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이성희",
+        "jdName": "진보당",
+        "sdName": "경상남도",
+        "sggName": "함안군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이순천",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "양산시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "윤진숙",
+        "jdName": "진보당",
+        "sdName": "경상남도",
+        "sggName": "창녕군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "손주형",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "황성경",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "청송군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "정성미",
+        "jdName": "진보당",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김은주",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "군위군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박연정",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김재현",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "완도군가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "윤현숙",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "검단구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "심선엽",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "신수정",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "거제시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "조상임",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "영천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "정은미",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "하미옥",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "함안군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "변보미",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "안현정",
+        "jdName": "개혁신당",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김수민",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이재순",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "거제시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "노인선",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김광중",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "거제시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "감규상",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이성희",
+        "jdName": "조국혁신당",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "서하나",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "의성군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "윤형호",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "의성군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이귀애",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "의성군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "유영임",
+        "jdName": "진보당",
+        "sdName": "경상남도",
+        "sggName": "의령군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김은희",
+        "jdName": "진보당",
+        "sdName": "광주광역시",
+        "sggName": "광산구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "최연우",
+        "jdName": "더불어민주당",
+        "sdName": "경기도",
+        "sggName": "연천군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "양애정",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "고성군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이윤이",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "고성군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "오우동",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "의령군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "강길선",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "진주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김영희",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "봉화군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "류정단",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "봉화군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이순일",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "진주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "권은희",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "산청군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "안명애",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김은하",
+        "jdName": "더불어민주당",
+        "sdName": "대구광역시",
+        "sggName": "남구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "정진영",
+        "jdName": "국민의힘",
+        "sdName": "전라남도",
+        "sggName": "여수시자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "노숙자",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "사천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이솔",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "홍승희",
+        "jdName": "개혁신당",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "구영순",
+        "jdName": "진보당",
+        "sdName": "경상남도",
+        "sggName": "양산시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김성화",
+        "jdName": "더불어민주당",
+        "sdName": "대구광역시",
+        "sggName": "달성군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박정숙",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "전정",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김경녀",
+        "jdName": "진보당",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "민병욱",
+        "jdName": "진보당",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김승리",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김보람",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박영심",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "하동군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "장창한",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "포항시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "윤정혜",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "남구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "심은진",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "남구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박은화",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "칠곡군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김희선",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "동구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "유향",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "하동군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "전순애",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "달성군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "최옥주",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김연화",
+        "jdName": "진보당",
+        "sdName": "경상남도",
+        "sggName": "사천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박명숙",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "울진군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "최연화",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "양산시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "양순정",
+        "jdName": "더불어민주당",
+        "sdName": "대구광역시",
+        "sggName": "중구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김영규",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시바선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김혜경",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "남해군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이도겸",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "중구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "최윤정",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "울릉군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "유성자",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "중구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "유정자",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "성주군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "오경주",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "의령군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "강인수",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "강남구제1선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "신상애",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "문경시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "구진경",
+        "jdName": "더불어민주당",
+        "sdName": "대구광역시",
+        "sggName": "북구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이정윤",
+        "jdName": "조국혁신당",
+        "sdName": "광주광역시",
+        "sggName": "북구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "배경순",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "남해군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "정승희",
+        "jdName": "진보당",
+        "sdName": "광주광역시",
+        "sggName": "북구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이정숙",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "사천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박윤경",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "구미시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김미선",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "사천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "임명섭",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "구미시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김서정",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "구미시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박은정",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "북구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "유영근",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "북구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "여재만",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "신단비",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "김해시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "유정심",
+        "jdName": "조국혁신당",
+        "sdName": "광주광역시",
+        "sggName": "남구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "변희영",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "북구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "백소영",
+        "jdName": "더불어민주당",
+        "sdName": "대구광역시",
+        "sggName": "동구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "강승연",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "김해시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박근량",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "통영시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "백경해",
+        "jdName": "더불어민주당",
+        "sdName": "대구광역시",
+        "sggName": "달서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "배무연",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "달서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김철희",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "달서구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "조아라",
+        "jdName": "조국혁신당",
+        "sdName": "경상남도",
+        "sggName": "김해시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이상호",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "계양구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "최윤희",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "통영시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "정유정",
+        "jdName": "진보당",
+        "sdName": "경상남도",
+        "sggName": "김해시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "심미영",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "연천군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김동근",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "신안군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이선임",
+        "jdName": "진보당",
+        "sdName": "경상남도",
+        "sggName": "진주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김명정",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "영주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김경희",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "통영시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김세희",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "김해시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "변소영",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "청도군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김은영",
+        "jdName": "진보당",
+        "sdName": "경상북도",
+        "sggName": "경주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김솔샘",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "강동구나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "권진희",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "김해시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "전은애",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "김천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "곽은하",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "진주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "홍정애",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "김천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "전희정",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "구미시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "주선미",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "진주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "조명숙",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "김천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이원희",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "구미시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "오경숙",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "구미시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "배정희",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "김천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이혜경",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "광산구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이영숙",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "김해시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이성자",
+        "jdName": "더불어민주당",
+        "sdName": "서울특별시",
+        "sggName": "송파구마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "민영혜",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "동구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "임인승",
+        "jdName": "더불어민주당",
+        "sdName": "광주광역시",
+        "sggName": "광산구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "권현구",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "동구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "최치환",
+        "jdName": "무소속",
+        "sdName": "울산광역시",
+        "sggName": "울주군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이소정",
+        "jdName": "정의당",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박인섭",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구사선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "허은선",
+        "jdName": "국민의힘",
+        "sdName": "경기도",
+        "sggName": "가평군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이지영",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "수성구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김순덕",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "수성구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "배영희",
+        "jdName": "개혁신당",
+        "sdName": "대구광역시",
+        "sggName": "수성구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박대용",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "강남구라선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "송현주",
+        "jdName": "더불어민주당",
+        "sdName": "대구광역시",
+        "sggName": "수성구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "박지우",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "서범룡",
+        "jdName": "더불어민주당",
+        "sdName": "전라남도",
+        "sggName": "여수시마선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박종우",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김명희",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "영천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김상운",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "영천시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "봉맹구",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "장성군다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "박미란",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "합천군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "정순옥",
+        "jdName": "국민의힘",
+        "sdName": "경상남도",
+        "sggName": "합천군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이지연",
+        "jdName": "개혁신당",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "고정애",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "북구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "서효림",
+        "jdName": "국민의힘",
+        "sdName": "대구광역시",
+        "sggName": "북구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "고연선",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "상주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김장환",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "상주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "조은희",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "상주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "김성호",
+        "jdName": "국민의힘",
+        "sdName": "서울특별시",
+        "sggName": "송파구자선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "전선희",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "예천군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "한범수",
+        "jdName": "개혁신당",
+        "sdName": "서울특별시",
+        "sggName": "영등포구제2선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "권영주",
+        "jdName": "더불어민주당",
+        "sdName": "경상남도",
+        "sggName": "합천군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "최훈희",
+        "jdName": "더불어민주당",
+        "sdName": "경기도",
+        "sggName": "가평군",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "원태근",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "제물포구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "김미라",
+        "jdName": "조국혁신당",
+        "sdName": "광주광역시",
+        "sggName": "광산구",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "변재민",
+        "jdName": "개혁신당",
+        "sdName": "인천광역시",
+        "sggName": "연수구다선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "주미",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "조현숙",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "영주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "허지연",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "오자금",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "영주시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "강여정",
+        "jdName": "무소속",
+        "sdName": "서울특별시",
+        "sggName": "서초구제3선거구",
+        "sgTypecode": "5"
+      },
+      {
+        "name": "김미나",
+        "jdName": "자유와혁신",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "윤태영",
+        "jdName": "자유와혁신",
+        "sdName": "경상남도",
+        "sggName": "창원시",
+        "sgTypecode": "9"
+      },
+      {
+        "name": "이지용",
+        "jdName": "국민의힘",
+        "sdName": "인천광역시",
+        "sggName": "미추홀구가선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "이원옥",
+        "jdName": "무소속",
+        "sdName": "울산광역시",
+        "sggName": "울주군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "임성훈",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "화순군나선거구",
+        "sgTypecode": "6"
+      },
+      {
+        "name": "나영민",
+        "jdName": "무소속",
+        "sdName": "전라남도",
+        "sggName": "목포시바선거구",
+        "sgTypecode": "6"
       }
-    ]
+    ],
+    "party": [],
+    "status": []
   },
-  "generated_at": "2026-06-03T06:34:55+09:00"
+  "generated_at": "2026-06-04T06:52:58+09:00"
 }
