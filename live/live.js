@@ -850,10 +850,13 @@ function renderExitPoll(exitPoll) {
     const tag = margin == null ? ''
       : (margin < 3 ? `<span class="ep-tag close">경합 ${fmt1(margin)}%p</span>`
         : `<span class="ep-tag">${esc(cands[0].party || '무소속')} 우세</span>`);
+    // 후보 사진 룩업용 가상 race (시도지사 type 3, 시도명=region)
+    const pr = { sg_type_code: race.sgType || '3', sd_name: race.region || '', sgg_name: null };
     const rows = cands.map((c, i) => {
       const color = partyColor(LATEST_PARTIES, c.party);
       const w = Math.max(0, Math.min(100, c.pct));
       return `<div class="ep-cand${i === 0 ? ' ep-lead' : ''}">` +
+        candPhotoImg(pr, { name: c.name }, 'ep-photo') +
         `<span class="ep-dot" style="background:${color}"></span>` +
         `<span class="ep-name">${esc(c.name)}</span>` +
         `<span class="ep-party" style="color:${color}">${esc(c.party || '무소속')}</span>` +
@@ -865,7 +868,7 @@ function renderExitPoll(exitPoll) {
   root.innerHTML = gov.map(card).join('');
   if (asmRoot) {
     const asm = (exitPoll.assembly) || [];
-    asmRoot.innerHTML = asm.map(r => card({ label: r.region, candidates: r.candidates })).join('');
+    asmRoot.innerHTML = asm.map(r => card({ label: r.region, region: r.region, sgType: '2', candidates: r.candidates })).join('');
   }
 }
 
@@ -1112,6 +1115,7 @@ async function render() {
     loadJSON(PATHS.earlyVoting), loadJSON(PATHS.histHourly), loadJSON(PATHS.exitPoll),
   ]);
   LATEST_PARTIES = parties || LATEST_PARTIES;
+  if (exitPoll && exitPoll.governor && exitPoll.governor.length) await ensurePhotos();
   renderExitPoll(exitPoll);
   loadJSON(PATHS.exitCompare).then(renderExitPollCompare);
   // 투표 시간대(개표 전): 실제 투표율이 있으면 투표율만 표시, 개표 섹션은 대기.
