@@ -286,7 +286,16 @@ function renderTurnoutTrend(cur, histHourly) {
   const svg = document.getElementById('trend-svg');
   const legend = document.getElementById('trend-legend');
   if (!block || !svg) return;
-  const today = (cur && cur.turnout && cur.turnout.hourly || []).filter(h => h.turnout_pct != null);
+  const today = (cur && cur.turnout && cur.turnout.hourly || []).filter(h => h.turnout_pct != null).slice();
+  // 정시점(HH:00) 외에 '현재 최신 누계'(박스값)를 끝점으로 추가 → 차트 선이 박스와 같은 값까지 뻗음
+  const _natNow = cur && cur.turnout && cur.turnout.national;
+  if (_natNow && _natNow.turnout_pct != null && typeof cur.polled_at === 'string' && cur.polled_at.length >= 16) {
+    const _hhmm = cur.polled_at.slice(11, 16);
+    const _last = today[today.length - 1];
+    if (!_last || (_hhmm > _last.time && _natNow.turnout_pct >= _last.turnout_pct - 0.05)) {
+      today.push({ time: _hhmm, turnout_pct: _natNow.turnout_pct });
+    }
+  }
   const rounds = (histHourly && histHourly.rounds) || [];
   const r2022 = rounds.find(r => r.year === 2022);
   const r2018 = rounds.find(r => r.year === 2018);
