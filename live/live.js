@@ -845,6 +845,11 @@ async function render() {
   if (_pc) _pc.hidden = beforeCount;
   const _heroEl = document.getElementById('hero');
   if (_heroEl) _heroEl.classList.toggle('hero-voting', beforeCount);
+  // 투표 중엔 개표 전용 섹션(시도지사·기초단체장·검색) 통째 숨김 → 18시부터 노출
+  ['chief-block', 'bh-block', 'search-block'].forEach(id => {
+    const s = document.getElementById(id);
+    if (s) s.hidden = beforeCount;
+  });
   if (_ts) _ts.textContent = beforeCount
     ? '2026-06-03(수) 투표 진행 중 · 시도별 투표율 자동 갱신 · 18시 마감 후 개표로 전환'
     : '2026-06-03(수) 개표 진행 · 자동 갱신 · 뉴탐사 자체 시뮬레이션 예측과 비교';
