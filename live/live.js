@@ -225,6 +225,16 @@ function computeProjection(cur, histHourly) {
   return { x0, T, n, proj, lo: Math.min(proj, ...ratios), hi: Math.max(proj, ...ratios) };
 }
 
+// 예상 최종 투표율의 역대 맥락 한 줄. 불확실성(범위) 명시, '역대 최고' 단정 금지(1995년 68.4%가 역대 1위).
+function projectionContext(pj) {
+  const record = Math.max(...ZIBANG_HISTORY.map(h => h.rate));  // 1995년 68.4%
+  const rank = ZIBANG_HISTORY.filter(h => h.rate > pj.proj).length + 1;
+  const ctx = (pj.proj >= record)
+    ? `1995년 ${fmt1(record)}% 상회 수준(추정)`
+    : `역대 ${rank}위권 · 1995년 ${fmt1(record)}% 이후 높은 수준`;
+  return `회귀 추정 · 범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}% · ${ctx}`;
+}
+
 function renderProjection(cur, histHourly) {
   const e = document.getElementById('hero-early');
   const meta = document.getElementById('hero-early-meta');
@@ -232,37 +242,7 @@ function renderProjection(cur, histHourly) {
   const pj = computeProjection(cur, histHourly);
   if (!pj) return;
   e.innerHTML = `${fmt1(pj.proj)}<span class="pct">%</span>`;
-  if (meta) meta.textContent = `현재 ${fmt1(pj.x0)}% · 회귀 추정 · 범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}%`;
-}
-
-// ── 역대 지선 투표율 vs 오늘 예상 ──────────────────────────────────
-function renderHistoryCompare(cur, histHourly) {
-  const block = document.getElementById('histcmp-block');
-  const wrap = document.getElementById('histcmp-table');
-  const note = document.getElementById('histcmp-note');
-  if (!block || !wrap) return;
-  const pj = computeProjection(cur, histHourly);
-  const rows = ZIBANG_HISTORY.map(h => ({ label: `${h.round}회 ${h.year}`, rate: h.rate, est: false }));
-  if (pj) rows.push({ label: '2026 예상', rate: pj.proj, est: true, lo: pj.lo, hi: pj.hi });
-  block.hidden = false;
-  const maxR = Math.max(...rows.map(r => r.rate), 1);
-  const recordRate = Math.max(...ZIBANG_HISTORY.map(h => h.rate));  // 68.4 (1995)
-  // 연도순 정렬(예상은 맨 끝)
-  wrap.innerHTML = rows.map(r => {
-    const isRecord = !r.est && r.rate === recordRate;
-    return `<div class="hc-row${r.est ? ' hc-est' : ''}">` +
-      `<div class="hc-name">${r.label}${isRecord ? ' <span class="hc-tag">역대1위</span>' : ''}</div>` +
-      `<div class="hc-bar-wrap"><div class="hc-bar" style="width:${(r.rate / maxR * 100).toFixed(1)}%"></div></div>` +
-      `<div class="hc-rate">${fmt1(r.rate)}%</div></div>`;
-  }).join('');
-  if (note && pj) {
-    const higher = ZIBANG_HISTORY.filter(h => h.rate > pj.proj).sort((a, b) => a.rate - b.rate);
-    let verdict;
-    if (pj.proj >= recordRate) verdict = `예상 ${fmt1(pj.proj)}%는 <b>역대 지선 최고</b>(기존 1위 1995년 ${recordRate}%)를 넘는 수준`;
-    else if (higher.length) verdict = `예상 ${fmt1(pj.proj)}%는 <b>역대 ${higher.length + 1}위권</b> · 1995년(${recordRate}%) 이후 ${pj.proj > 60.2 ? '최고' : '최고권'}`;
-    else verdict = `예상 ${fmt1(pj.proj)}%`;
-    note.innerHTML = `${verdict}. <span class="corr-warn">⚠️ 회귀 추정(범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}%)이며 개표 전까지 변동. 1회 1995년이 역대 최고입니다.</span>`;
-  }
+  if (meta) meta.textContent = projectionContext(pj);
 }
 
 // ── 시도별 실시간 투표율 표 ────────────────────────────────────────
@@ -875,7 +855,6 @@ async function render() {
       renderHero(cur, earlyVoting);
       renderProjection(cur, histHourly);
       renderTurnoutTrend(cur, histHourly);
-      renderHistoryCompare(cur, histHourly);
       renderTurnoutTable(cur, histHourly);
       renderEarlyVsDay(cur, earlyVoting);
       renderTurnoutCorr(cur);
@@ -907,7 +886,6 @@ async function render() {
   renderHero(cur, earlyVoting);
   renderProjection(cur, histHourly);
   renderTurnoutTrend(cur, histHourly);
-  renderHistoryCompare(cur, histHourly);
   renderTurnoutTable(cur, histHourly);
   renderEarlyVsDay(cur, earlyVoting);
   renderWatchlist(watchlist);
