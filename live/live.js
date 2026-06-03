@@ -186,17 +186,25 @@ function renderHero(cur, earlyVoting) {
   document.getElementById('updated-at').textContent = fmtKST(cur?.polled_at) + ' (KST)';
 }
 
+// 역대 전국동시지방선거 최종 투표율(%) — 중앙선관위 공식 확정치.
+const ZIBANG_HISTORY = [
+  { round: 1, year: 1995, rate: 68.4 },
+  { round: 2, year: 1998, rate: 52.7 },
+  { round: 3, year: 2002, rate: 48.9 },
+  { round: 4, year: 2006, rate: 51.6 },
+  { round: 5, year: 2010, rate: 54.5 },
+  { round: 6, year: 2014, rate: 56.8 },
+  { round: 7, year: 2018, rate: 60.2 },
+  { round: 8, year: 2022, rate: 50.9 },
+];
+
 // ── 예상 최종 투표율 (과거선거 같은시각→최종 회귀) ─────────────────
-function renderProjection(cur, histHourly) {
-  const e = document.getElementById('hero-early');
-  const meta = document.getElementById('hero-early-meta');
-  if (!e) return;
+function computeProjection(cur, histHourly) {
   const today = (cur && cur.turnout && cur.turnout.hourly) || [];
-  if (!today.length) return;
+  if (!today.length) return null;
   const cp = today[today.length - 1];
   const x0 = cp.turnout_pct, T = cp.time;
-  if (x0 == null) return;
-  // (같은시각 투표율 x, 최종 투표율 y) 점들 — 과거선거별
+  if (x0 == null) return null;
   const pts = [];
   for (const r of ((histHourly && histHourly.rounds) || [])) {
     const arr = r.national || [];
@@ -204,19 +212,57 @@ function renderProjection(cur, histHourly) {
     const fin = arr.length ? arr[arr.length - 1].turnout_pct : null;
     if (at && at.turnout_pct != null && fin != null) pts.push({ x: at.turnout_pct, y: fin });
   }
-  if (pts.length < 2) return;
-  // 선형회귀 y = a + b·x
+  if (pts.length < 2) return null;
   const n = pts.length;
   const sx = pts.reduce((s, p) => s + p.x, 0), sy = pts.reduce((s, p) => s + p.y, 0);
   const sxx = pts.reduce((s, p) => s + p.x * p.x, 0), sxy = pts.reduce((s, p) => s + p.x * p.y, 0);
   const denom = n * sxx - sx * sx;
-  let proj = denom ? ((sy - (n * sxy - sx * sy) / denom * sx) / n) + (n * sxy - sx * sy) / denom * x0 : null;
-  if (proj == null || !isFinite(proj)) return;
-  // 비율법 범위(과거선거별 최종/현재 × 오늘)로 불확실성 표시
+  if (!denom) return null;
+  const b = (n * sxy - sx * sy) / denom, a = (sy - b * sx) / n;
+  const proj = a + b * x0;
+  if (!isFinite(proj)) return null;
   const ratios = pts.map(p => p.y / p.x * x0).filter(v => isFinite(v));
-  const lo = Math.min(proj, ...ratios), hi = Math.max(proj, ...ratios);
-  e.innerHTML = `${fmt1(proj)}<span class="pct">%</span>`;
-  if (meta) meta.textContent = `현재 ${fmt1(x0)}% · 과거 ${n}개 선거 회귀 · 범위 ${fmt1(lo)}~${fmt1(hi)}%`;
+  return { x0, T, n, proj, lo: Math.min(proj, ...ratios), hi: Math.max(proj, ...ratios) };
+}
+
+function renderProjection(cur, histHourly) {
+  const e = document.getElementById('hero-early');
+  const meta = document.getElementById('hero-early-meta');
+  if (!e) return;
+  const pj = computeProjection(cur, histHourly);
+  if (!pj) return;
+  e.innerHTML = `${fmt1(pj.proj)}<span class="pct">%</span>`;
+  if (meta) meta.textContent = `현재 ${fmt1(pj.x0)}% · 회귀 추정 · 범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}%`;
+}
+
+// ── 역대 지선 투표율 vs 오늘 예상 ──────────────────────────────────
+function renderHistoryCompare(cur, histHourly) {
+  const block = document.getElementById('histcmp-block');
+  const wrap = document.getElementById('histcmp-table');
+  const note = document.getElementById('histcmp-note');
+  if (!block || !wrap) return;
+  const pj = computeProjection(cur, histHourly);
+  const rows = ZIBANG_HISTORY.map(h => ({ label: `${h.round}회 ${h.year}`, rate: h.rate, est: false }));
+  if (pj) rows.push({ label: '2026 예상', rate: pj.proj, est: true, lo: pj.lo, hi: pj.hi });
+  block.hidden = false;
+  const maxR = Math.max(...rows.map(r => r.rate), 1);
+  const recordRate = Math.max(...ZIBANG_HISTORY.map(h => h.rate));  // 68.4 (1995)
+  // 연도순 정렬(예상은 맨 끝)
+  wrap.innerHTML = rows.map(r => {
+    const isRecord = !r.est && r.rate === recordRate;
+    return `<div class="hc-row${r.est ? ' hc-est' : ''}">` +
+      `<div class="hc-name">${r.label}${isRecord ? ' <span class="hc-tag">역대1위</span>' : ''}</div>` +
+      `<div class="hc-bar-wrap"><div class="hc-bar" style="width:${(r.rate / maxR * 100).toFixed(1)}%"></div></div>` +
+      `<div class="hc-rate">${fmt1(r.rate)}%</div></div>`;
+  }).join('');
+  if (note && pj) {
+    const higher = ZIBANG_HISTORY.filter(h => h.rate > pj.proj).sort((a, b) => a.rate - b.rate);
+    let verdict;
+    if (pj.proj >= recordRate) verdict = `예상 ${fmt1(pj.proj)}%는 <b>역대 지선 최고</b>(기존 1위 1995년 ${recordRate}%)를 넘는 수준`;
+    else if (higher.length) verdict = `예상 ${fmt1(pj.proj)}%는 <b>역대 ${higher.length + 1}위권</b> · 1995년(${recordRate}%) 이후 ${pj.proj > 60.2 ? '최고' : '최고권'}`;
+    else verdict = `예상 ${fmt1(pj.proj)}%`;
+    note.innerHTML = `${verdict}. <span class="corr-warn">⚠️ 회귀 추정(범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}%)이며 개표 전까지 변동. 1회 1995년이 역대 최고입니다.</span>`;
+  }
 }
 
 // ── 시도별 실시간 투표율 표 ────────────────────────────────────────
@@ -816,6 +862,7 @@ async function render() {
       renderHero(cur, earlyVoting);
       renderProjection(cur, histHourly);
       renderTurnoutTrend(cur, histHourly);
+      renderHistoryCompare(cur, histHourly);
       renderTurnoutTable(cur, histHourly);
       renderEarlyVsDay(cur, earlyVoting);
       renderTurnoutCorr(cur);
@@ -847,6 +894,7 @@ async function render() {
   renderHero(cur, earlyVoting);
   renderProjection(cur, histHourly);
   renderTurnoutTrend(cur, histHourly);
+  renderHistoryCompare(cur, histHourly);
   renderTurnoutTable(cur, histHourly);
   renderEarlyVsDay(cur, earlyVoting);
   renderWatchlist(watchlist);

@@ -143,6 +143,17 @@
   .tr-delta.up { color: #c0392b; }
   .tr-delta.down { color: #2b6cb0; }
   .tr-natline { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1.5px dashed #c41e3a; pointer-events: none; z-index: 1; }
+
+  /* 역대 지선 비교 */
+  .histcmp-table { display: grid; gap: 5px; font-variant-numeric: tabular-nums; }
+  .hc-row { display: grid; grid-template-columns: 84px 1fr 52px; align-items: center; gap: 10px; padding: 4px 2px; }
+  .hc-name { font-size: 0.84rem; font-weight: 700; }
+  .hc-tag { font-size: 0.62rem; font-weight: 800; color: #fff; background: #777; padding: 1px 5px; border-radius: 4px; }
+  .hc-bar-wrap { height: 16px; background: #f2f2f2; border-radius: 4px; overflow: hidden; }
+  .hc-bar { height: 100%; background: #9aa6b2; border-radius: 4px; }
+  .hc-rate { text-align: right; font-weight: 800; font-size: 0.88rem; }
+  .hc-row.hc-est .hc-name, .hc-row.hc-est .hc-rate { color: #c41e3a; }
+  .hc-row.hc-est .hc-bar { background: #c41e3a; }
   .tr-row.tr-nat { font-weight: 800; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 4px; }
   .tr-name { font-size: 0.9rem; font-weight: 700; }
   .tr-bar-wrap { position: relative; height: 18px; background: #f2f2f2; border-radius: 4px; overflow: hidden; }
@@ -270,6 +281,13 @@
     </div>
   </section>
 
+  <section class="block" id="histcmp-block" hidden>
+    <h2>역대 지방선거 투표율 vs 오늘 예상</h2>
+    <p class="block-sub">1회(1995)~8회(2022) 최종 투표율(중앙선관위 확정)과 오늘 <b>회귀 추정치</b>를 비교. 빨간 막대가 오늘 예상.</p>
+    <div id="histcmp-table" class="histcmp-table"></div>
+    <div id="histcmp-note" class="corr-note"></div>
+  </section>
+
   <section class="block" id="turnout-block" hidden>
     <h2>시도별 실시간 투표율</h2>
     <p class="block-sub">중앙선관위 집계(<span id="turnout-time">—</span> 기준) · 5분 갱신. <b style="color:#c41e3a">빨간 파선=전국 평균</b>, <b>▲▼</b>=2022 지선 같은 시각 대비 증감. 당일 투표분이며 사전투표 접수분은 시간대별로 합산됩니다.</p>
@@ -354,6 +372,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603m"></script>
+<script src="live.js?v=20260603n"></script>
 </body>
 </html>
