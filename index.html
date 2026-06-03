@@ -145,6 +145,35 @@
   }
 })();
 </script>
+<a id="live-bar" href="/live/" hidden style="display:none;text-decoration:none;background:linear-gradient(90deg,#c41e3a,#a31628);color:#fff;font-weight:700;">
+  <div style="max-width:1100px;margin:0 auto;padding:9px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:0.88rem;">
+    <span style="background:rgba(255,255,255,0.18);padding:2px 9px;border-radius:999px;font-size:0.72rem;letter-spacing:0.04em;">🔴 6·3 실시간</span>
+    <strong id="live-bar-text">실시간 투표율 보기</strong>
+    <span style="margin-left:auto;font-size:0.82rem;opacity:0.9;">투표율·개표 →</span>
+  </div>
+</a>
+<script>
+(function () {
+  // 선거일(6/3 06:00~익일 06:00) 라이브 투표율 띠배너 — current.json 전국 투표율 표시, /live/로 유도.
+  var bar = document.getElementById('live-bar'), txt = document.getElementById('live-bar-text');
+  if (!bar || !txt) return;
+  var DAY_START = new Date('2026-06-03T06:00:00+09:00').getTime();
+  var DAY_END = new Date('2026-06-04T06:00:00+09:00').getTime();
+  function inDay() { var n = Date.now(); return n >= DAY_START && n <= DAY_END; }
+  function refresh() {
+    fetch('data/live_counting/current.json?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        var nt = d && d.turnout && d.turnout.national;
+        if (nt && nt.turnout_pct != null) {
+          var ph = (d.phase === 'live' || d.phase === 'final') ? '개표' : '투표율';
+          txt.textContent = '전국 ' + ph + ' ' + Number(nt.turnout_pct).toFixed(1) + '%';
+        } else { txt.textContent = '실시간 투표율 보기'; }
+      }).catch(function () {});
+  }
+  if (inDay()) { bar.hidden = false; bar.style.display = 'block'; refresh(); setInterval(refresh, 5 * 60 * 1000); }
+})();
+</script>
 <div id="schedule-bar" class="schedule-bar" hidden>
   <div class="schedule-bar-inner">
     <span class="schedule-label" id="schedule-label">다음 일정</span>
