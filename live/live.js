@@ -13,7 +13,7 @@ const PATHS = {
   prevWinner:  '../data/live_counting/prev_winner.json',
   prevResult:  '../data/live_counting/prev_result.json',
   prediction:  '../data/prediction_sido_v2.json',
-  predBasicHead: '../data/prediction_basic_head.json',
+  predBasicHead: '../data/prediction_basic_head_v2.json',
   parties:     '../data/parties.json',
   earlyVoting: '../data/early_voting/20260603/latest.json',
   histHourly:  '../data/history_turnout_hourly.json',
@@ -1045,8 +1045,9 @@ function renderBasicHead(cur, predBH) {
     }
   }
   const ci = sm.dem_80_ci || [];
+  const etcMode = (sm.con_mode || 0) + (sm.ind_mode || 0);   // 그외 = 국힘 + 무소속·기타
   const predLine = (sm.dem_mode != null)
-    ? `<b style="color:var(--dem)">민주 ${sm.dem_mode}곳</b> · 그외 ${sm.con_mode}곳 <span class="bh-sub">(민주 예상범위 ${ci[0]}~${ci[1]}곳)</span>`
+    ? `<b style="color:var(--dem)">민주 ${sm.dem_mode}곳</b> · 그외 ${etcMode}곳 <span class="bh-sub">(민주 예상범위 ${ci[0]}~${ci[1]}곳)</span>`
     : '—';
   const acc = withPred ? Math.round(matched / withPred * 100) : null;
   const verdict = acc != null ? `예측 방향 적중 ${matched}/${withPred}곳 (${acc}%)` : '개표 20%+ 선거구부터 적중 집계';
