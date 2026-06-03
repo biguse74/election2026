@@ -83,6 +83,12 @@
 
   section.block { margin: 36px 0 0; }
   section.block h2 { font-family: 'Noto Serif KR', serif; font-size: 1.15rem; font-weight: 900; margin: 0 0 4px; letter-spacing: -0.01em; }
+  /* 접기 가능한 투표율 섹션 */
+  section.block.collapsible > h2 { cursor: pointer; user-select: none; }
+  section.block.collapsible > h2::after { content: '  ▾'; font-size: 0.7em; color: var(--muted); }
+  section.block.collapsed > h2::after { content: '  ▸'; }
+  section.block.collapsed > :not(h2) { display: none !important; }
+  section.block.collapsed { margin-bottom: 0; }
   section.block .block-sub { color: var(--muted); font-size: 0.86rem; margin: 0 0 14px; }
 
   /* 시도지사 예측비교 카드 */
@@ -101,13 +107,14 @@
   .race-progress { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
   .race-progress b { color: var(--ink); }
 
-  .cand-row { display: flex; align-items: center; gap: 8px; margin: 5px 0; }
+  /* 고정폭 그리드 → 후보별 막대 시작점이 항상 같은 위치(당이름 길이 무관) */
+  .cand-row { display: grid; grid-template-columns: 34px 11px 56px 66px 1fr 48px; align-items: center; gap: 7px; margin: 5px 0; }
   .cand-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
-  .cand-name { font-weight: 700; font-size: 0.9rem; flex: 0 0 auto; }
-  .cand-party { font-size: 0.74rem; color: var(--muted); font-weight: 600; }
-  .cand-bar-wrap { flex: 1 1 auto; height: 9px; background: #f0f0f0; border-radius: 5px; overflow: hidden; min-width: 40px; }
+  .cand-name { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cand-party { font-size: 0.74rem; color: var(--muted); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cand-bar-wrap { height: 9px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
   .cand-bar { display: block; height: 100%; border-radius: 5px; transition: width 0.5s; }
-  .cand-share { font-weight: 800; font-size: 0.92rem; flex: 0 0 auto; width: 54px; text-align: right; }
+  .cand-share { font-weight: 800; font-size: 0.92rem; text-align: right; font-variant-numeric: tabular-nums; }
   .cand-rank1 .cand-name::after { content: ' ▲'; color: var(--accent); font-size: 0.7em; }
 
   /* 출구조사 */
@@ -486,6 +493,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603N"></script>
+<script src="live.js?v=20260603O"></script>
 </body>
 </html>

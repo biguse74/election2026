@@ -1149,6 +1149,22 @@ function showWaiting(msg) {
   document.getElementById('updated-at').textContent = '—';
 }
 
+// 투표율 섹션 접기/펴기 — 개표 모드에선 기본 접어 개표까지 스크롤 단축.
+let _collapsibleInit = false;
+function initCollapsible(beforeCount) {
+  const ids = ['trend-block', 'evd-block', 'sigungu-block', 'histcmp-block'];
+  ids.forEach(id => { const s = document.getElementById(id); if (s) s.classList.add('collapsible'); });
+  if (_collapsibleInit) return;
+  _collapsibleInit = true;
+  document.addEventListener('click', ev => {
+    const h2 = ev.target.closest && ev.target.closest('h2');
+    if (h2 && h2.parentElement && h2.parentElement.classList.contains('collapsible')) {
+      h2.parentElement.classList.toggle('collapsed');
+    }
+  });
+  if (!beforeCount) ids.forEach(id => { const s = document.getElementById(id); if (s) s.classList.add('collapsed'); });
+}
+
 // ── main ──────────────────────────────────────────────────────────
 async function render() {
   const preview = location.search.includes('preview');
@@ -1185,6 +1201,7 @@ async function render() {
     const nat = cur && cur.turnout && cur.turnout.national;
     if (nat && nat.turnout_pct != null) {
       renderHero(cur, earlyVoting);
+      initCollapsible(beforeCount);
       renderProjection(cur, histHourly);
       renderCompare2022(cur, histHourly);
       renderTurnoutTrend(cur, histHourly);
@@ -1221,6 +1238,7 @@ async function render() {
   if ((cur.races || []).length) { await ensurePhotos(); }
 
   renderHero(cur, earlyVoting);
+  initCollapsible(beforeCount);
   renderProjection(cur, histHourly);
   renderTurnoutTrend(cur, histHourly);
   renderEarlyVsDay(cur, earlyVoting);
