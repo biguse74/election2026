@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-03T17:39:04+09:00",
+  "polled_at": "2026-06-03T17:54:53+09:00",
   "source": "openapi",
   "phase": "pre",
   "races": [],
@@ -217,11 +217,6 @@
         "time": "12:00",
         "turnout_pct": 19.0,
         "voters_so_far": 8490980
-      },
-      {
-        "time": "13:00",
-        "turnout_pct": 46.0,
-        "voters_so_far": 20518822
       },
       {
         "time": "14:00",
