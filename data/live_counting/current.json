@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-03T12:29:14+09:00",
+  "polled_at": "2026-06-03T12:32:38+09:00",
   "source": "openapi",
   "phase": "pre",
   "races": [],
@@ -8,10 +8,10 @@
     "national": {
       "sd_name": "전국",
       "eligible_voters": 44649908,
-      "voters_so_far": 8490711,
-      "turnout_pct": 19.0,
-      "day_voters_so_far": 8490711,
-      "early_voters_so_far": 0,
+      "voters_so_far": 8561976,
+      "turnout_pct": 19.2,
+      "day_voters_so_far": 8499754,
+      "early_voters_so_far": 62222,
       "day_eligible_voters": 34079860,
       "early_eligible_voters": 10570048
     },
@@ -99,10 +99,10 @@
       {
         "sd_name": "경기도",
         "eligible_voters": 11878997,
-        "voters_so_far": 2190168,
-        "turnout_pct": 18.4,
-        "day_voters_so_far": 2190168,
-        "early_voters_so_far": 0,
+        "voters_so_far": 2213363,
+        "turnout_pct": 18.6,
+        "day_voters_so_far": 2193927,
+        "early_voters_so_far": 19436,
         "day_eligible_voters": 9374125,
         "early_eligible_voters": 2504872
       },
@@ -119,10 +119,10 @@
       {
         "sd_name": "충청북도",
         "eligible_voters": 1396588,
-        "voters_so_far": 275669,
-        "turnout_pct": 19.7,
-        "day_voters_so_far": 275669,
-        "early_voters_so_far": 0,
+        "voters_so_far": 323739,
+        "turnout_pct": 23.2,
+        "day_voters_so_far": 280953,
+        "early_voters_so_far": 42786,
         "day_eligible_voters": 1065298,
         "early_eligible_voters": 331290
       },
