@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "updated_at": "2026-06-03T11:30:00+09:00",
+  "updated_at": "2026-06-03T11:36:55+09:00",
   "national": [
     {
       "polled_at": "2026-06-03T07:00:00+09:00",
@@ -96,6 +96,11 @@
       "polled_at": "2026-06-03T11:30:00+09:00",
       "turnout_pct": 15.0,
       "voters_so_far": 6713794
+    },
+    {
+      "polled_at": "2026-06-03T11:36:55+09:00",
+      "turnout_pct": 15.3,
+      "voters_so_far": 6830845
     }
   ],
   "by_sido": {
@@ -194,6 +199,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 14.3,
         "voters_so_far": 1190615
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 14.7,
+        "voters_so_far": 1224451
       }
     ],
     "부산광역시": [
@@ -289,6 +299,11 @@
       },
       {
         "polled_at": "2026-06-03T11:30:00+09:00",
+        "turnout_pct": 15.5,
+        "voters_so_far": 443294
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
         "turnout_pct": 15.5,
         "voters_so_far": 443294
       }
@@ -388,6 +403,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 18.9,
         "voters_so_far": 387050
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 18.9,
+        "voters_so_far": 387050
       }
     ],
     "인천광역시": [
@@ -485,6 +505,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 14.2,
         "voters_so_far": 378255
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 14.3,
+        "voters_so_far": 380978
       }
     ],
     "광주광역시": [
@@ -580,6 +605,11 @@
       },
       {
         "polled_at": "2026-06-03T11:30:00+09:00",
+        "turnout_pct": 10.3,
+        "voters_so_far": 122195
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
         "turnout_pct": 10.3,
         "voters_so_far": 122195
       }
@@ -679,6 +709,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 16.0,
         "voters_so_far": 200308
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 16.0,
+        "voters_so_far": 200308
       }
     ],
     "울산광역시": [
@@ -774,6 +809,11 @@
       },
       {
         "polled_at": "2026-06-03T11:30:00+09:00",
+        "turnout_pct": 16.0,
+        "voters_so_far": 150137
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
         "turnout_pct": 16.0,
         "voters_so_far": 150137
       }
@@ -873,6 +913,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 12.9,
         "voters_so_far": 39951
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 12.9,
+        "voters_so_far": 39951
       }
     ],
     "경기도": [
@@ -970,6 +1015,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 14.5,
         "voters_so_far": 1719929
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 14.9,
+        "voters_so_far": 1771017
       }
     ],
     "강원특별자치도": [
@@ -1067,6 +1117,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 17.7,
         "voters_so_far": 235524
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 17.9,
+        "voters_so_far": 238223
       }
     ],
     "충청북도": [
@@ -1164,6 +1219,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 16.2,
         "voters_so_far": 225819
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 17.1,
+        "voters_so_far": 238161
       }
     ],
     "충청남도": [
@@ -1261,6 +1321,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 16.4,
         "voters_so_far": 304461
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 16.7,
+        "voters_so_far": 309644
       }
     ],
     "전북특별자치도": [
@@ -1358,6 +1423,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 12.0,
         "voters_so_far": 180596
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 12.6,
+        "voters_so_far": 189776
       }
     ],
     "전라남도": [
@@ -1453,6 +1523,11 @@
       },
       {
         "polled_at": "2026-06-03T11:30:00+09:00",
+        "turnout_pct": 12.3,
+        "voters_so_far": 191468
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
         "turnout_pct": 12.3,
         "voters_so_far": 191468
       }
@@ -1552,6 +1627,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 17.6,
         "voters_so_far": 388049
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 17.6,
+        "voters_so_far": 388049
       }
     ],
     "경상남도": [
@@ -1649,6 +1729,11 @@
         "polled_at": "2026-06-03T11:30:00+09:00",
         "turnout_pct": 17.0,
         "voters_so_far": 472510
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
+        "turnout_pct": 17.0,
+        "voters_so_far": 472510
       }
     ],
     "제주특별자치도": [
@@ -1744,6 +1829,11 @@
       },
       {
         "polled_at": "2026-06-03T11:30:00+09:00",
+        "turnout_pct": 14.8,
+        "voters_so_far": 83633
+      },
+      {
+        "polled_at": "2026-06-03T11:36:55+09:00",
         "turnout_pct": 14.8,
         "voters_so_far": 83633
       }
