@@ -239,15 +239,19 @@ function renderTurnoutTrend(cur, histHourly) {
   const r2018 = rounds.find(r => r.year === 2018);
   if (today.length < 1 || !r2022) { block.hidden = true; return; }
   block.hidden = false;
-  const series = [
-    { label: '2018 (7회)', color: '#c9c9c9', data: (r2018 && r2018.national) || [], dash: '4 3' },
-    { label: '2022 (8회)', color: '#7a7a7a', data: (r2022 && r2022.national) || [], dash: '' },
-    { label: '2026 (오늘)', color: '#c41e3a', data: today, width: 3 },
-  ];
+  const COLORS = { 2018: '#cbd5e1', 2022: '#9aa6b2', 2024: '#5b8def', 2025: '#e8a33d' };
+  const TYPE = { '지방선거': '지선', '국회의원선거': '총선', '대통령선거': '대선' };
+  const series = rounds.slice().sort((a, b) => a.year - b.year).map(r => ({
+    label: `${r.year} ${TYPE[r.election_type] || ''}`.trim(),
+    color: COLORS[r.year] || '#aaa',
+    data: r.national || [],
+    dash: r.election_type === '지방선거' ? '' : '5 3',
+  }));
+  series.push({ label: '2026 오늘', color: '#c41e3a', data: today, width: 2.8 });
   const t2x = t => { const [h, m] = t.split(':').map(Number); return (h * 60 + m) - 7 * 60; };
-  const W = 640, H = 300, padL = 34, padR = 12, padT = 12, padB = 26;
-  const xMax = 18 * 60 + 30 - 7 * 60;
-  const yMax = Math.max(62, ...series.flatMap(s => s.data.map(d => d.turnout_pct || 0))) + 2;
+  const W = 640, H = 320, padL = 34, padR = 12, padT = 12, padB = 26;
+  const xMax = Math.max(13 * 60, ...series.flatMap(s => s.data.map(d => t2x(d.time))));
+  const yMax = Math.max(...series.flatMap(s => s.data.map(d => d.turnout_pct || 0)), 50) + 4;
   const px = x => padL + x / xMax * (W - padL - padR);
   const py = y => H - padB - (y / yMax) * (H - padT - padB);
   const g = [];
@@ -255,16 +259,17 @@ function renderTurnoutTrend(cur, histHourly) {
     g.push(`<line x1="${padL}" y1="${py(y).toFixed(1)}" x2="${W - padR}" y2="${py(y).toFixed(1)}" stroke="#eee"/>`);
     g.push(`<text x="${padL - 4}" y="${(py(y) + 3).toFixed(1)}" font-size="9" fill="#999" text-anchor="end">${y}</text>`);
   }
-  for (const t of ['07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '18:00']) {
-    g.push(`<text x="${px(t2x(t)).toFixed(1)}" y="${H - padB + 13}" font-size="9" fill="#999" text-anchor="middle">${t.slice(0, 5)}</text>`);
+  for (const t of ['07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '19:00']) {
+    const xx = t2x(t); if (xx > xMax) continue;
+    g.push(`<text x="${px(xx).toFixed(1)}" y="${H - padB + 13}" font-size="9" fill="#999" text-anchor="middle">${t.slice(0, 5)}</text>`);
   }
   g.push(`<line x1="${px(t2x('13:00')).toFixed(1)}" y1="${padT}" x2="${px(t2x('13:00')).toFixed(1)}" y2="${H - padB}" stroke="#e3c4c4" stroke-dasharray="2 2"/>`);
   g.push(`<text x="${(px(t2x('13:00')) + 3).toFixed(1)}" y="${padT + 8}" font-size="8" fill="#b06">13시 사전투표 합산</text>`);
   for (const s of series) {
     const dd = s.data.filter(d => d.turnout_pct != null);
     if (!dd.length) continue;
-    const pts = dd.map(d => `${px(t2x(d.time)).toFixed(1)},${py(d.turnout_pct).toFixed(1)}`).join(' ');
-    g.push(`<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="${s.width || 1.5}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ''} stroke-linejoin="round"/>`);
+    const path = dd.map((d, i) => (i === 0 ? 'M' : 'L') + px(t2x(d.time)).toFixed(1) + ',' + py(d.turnout_pct).toFixed(1)).join(' ');
+    g.push(`<path d="${path}" fill="none" stroke="${s.color}" stroke-width="${s.width || 1.5}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ''} stroke-linecap="round" stroke-linejoin="round"/>`);
     if (s.label.includes('오늘')) {
       const last = dd[dd.length - 1];
       g.push(`<circle cx="${px(t2x(last.time)).toFixed(1)}" cy="${py(last.turnout_pct).toFixed(1)}" r="3.6" fill="${s.color}"/>`);

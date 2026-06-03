@@ -30,6 +30,7 @@ zipfile + ElementTree로 직접 sheetData를 파싱한다.
 
 from __future__ import annotations
 
+import sys
 import json
 import re
 import xml.etree.ElementTree as ET
@@ -60,6 +61,20 @@ INPUT_FILES: list[dict] = [
         "year": 2018,
         "election_type": "지방선거",
         "sgId": "20180613",
+    },
+    {
+        "filename": "투표현황[제22대][국회의원선거].xlsx",
+        "round": 22,
+        "year": 2024,
+        "election_type": "국회의원선거",
+        "sgId": "20240410",
+    },
+    {
+        "filename": "[제21대_대통령선거]_투표진행상황.xlsx",
+        "round": 21,
+        "year": 2025,
+        "election_type": "대통령선거",
+        "sgId": "20250603",
     },
 ]
 
@@ -245,8 +260,12 @@ def main() -> None:
         if not path.exists():
             skipped.append(meta["filename"])
             continue
-        rows = read_sheet_rows(path)
-        rounds_out.append(extract_round(meta, rows))
+        try:
+            rows = read_sheet_rows(path)
+            rounds_out.append(extract_round(meta, rows))
+        except Exception as e:
+            print(f"  ! 스킵(파싱 실패) {meta['filename']}: {e}", file=sys.stderr)
+            skipped.append(meta["filename"])
 
     if not rounds_out:
         raise SystemExit(
