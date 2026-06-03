@@ -101,13 +101,21 @@ const predText = p => p == null ? '—' : (p >= 50 ? `민주 ${Math.round(p)}%` 
 const marginText = m => { if (m == null) return '—'; return `${m > 0 ? '민주' : '국힘'} +${Math.abs(m).toFixed(1)}pp`; };
 
 function candRow(c, isLead) {
-  const color = partyColor(c.jd_name);
+  let color = partyColor(c.jd_name);
+  let partyHTML = esc(c.jd_name || '');
+  // 교육감(정당 없음) → 정당명 자리에 성향(진보/보수) 표시 + 색
+  if (c._race && String(c._race.sg_type_code) === '11') {
+    const o = EDU_ORIENT[c.name];
+    if (o === '보수') { color = '#c0392b'; partyHTML = '<b style="color:#c0392b">보수</b>'; }
+    else if (o === '진보') { color = '#2b6cb0'; partyHTML = '<b style="color:#2b6cb0">진보</b>'; }
+    else { color = '#8a8a96'; partyHTML = '<span style="color:var(--muted)">무소속</span>'; }
+  }
   const w = Math.max(0, Math.min(100, c.share_pct || 0));
   return `<div class="cand-row ${isLead ? 'cand-rank1' : ''}">
     ${candPhotoImg(c._race, c, 'cand-photo')}
     <span class="cand-dot" style="background:${color}"></span>
     ${nameLink(c._race, c, 'cand-name')}
-    <span class="cand-party">${esc(c.jd_name || '')}</span>
+    <span class="cand-party">${partyHTML}</span>
     <span class="cand-bar-wrap"><span class="cand-bar" style="width:${w}%;background:${color}"></span></span>
     <span class="cand-share">${fmt1(c.share_pct)}%</span>
   </div>`;
