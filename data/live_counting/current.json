@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-04T06:40:04+09:00",
+  "polled_at": "2026-06-04T06:45:03+09:00",
   "source": "web(VCCP09)",
   "phase": "live",
   "races": [
@@ -83,38 +83,38 @@
       "sd_name": "경상남도",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 2355638,
-      "valid_votes": 1483249,
-      "invalid_votes": 62384,
-      "progress_pct": 86.42,
-      "rank1_minus_rank2_pp": 0.28,
+      "eligible_voters": 2371672,
+      "valid_votes": 1492192,
+      "invalid_votes": 62663,
+      "progress_pct": 86.93,
+      "rank1_minus_rank2_pp": 0.23,
       "candidates": [
         {
           "name": "송영기",
           "jd_name": "",
-          "votes": 572379,
-          "share_pct": 38.59,
+          "votes": 575528,
+          "share_pct": 38.57,
           "current_rank": 1
         },
         {
           "name": "권순기",
           "jd_name": "",
-          "votes": 568180,
-          "share_pct": 38.31,
+          "votes": 572161,
+          "share_pct": 38.34,
           "current_rank": 2
         },
         {
           "name": "김준식",
           "jd_name": "",
-          "votes": 186271,
+          "votes": 187465,
           "share_pct": 12.56,
           "current_rank": 3
         },
         {
           "name": "오인태",
           "jd_name": "",
-          "votes": 156419,
-          "share_pct": 10.55,
+          "votes": 157038,
+          "share_pct": 10.52,
           "current_rank": 4
         }
       ]
@@ -248,30 +248,30 @@
       "sd_name": "부산광역시",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 2834956,
-      "valid_votes": 1700293,
-      "invalid_votes": 62526,
-      "progress_pct": 99.28,
-      "rank1_minus_rank2_pp": 17.39,
+      "eligible_voters": 2839096,
+      "valid_votes": 1704305,
+      "invalid_votes": 62654,
+      "progress_pct": 99.51,
+      "rank1_minus_rank2_pp": 17.47,
       "candidates": [
         {
           "name": "김석준",
           "jd_name": "",
-          "votes": 860210,
-          "share_pct": 50.59,
+          "votes": 862912,
+          "share_pct": 50.63,
           "current_rank": 1
         },
         {
           "name": "정승윤",
           "jd_name": "",
-          "votes": 564455,
-          "share_pct": 33.2,
+          "votes": 565087,
+          "share_pct": 33.16,
           "current_rank": 2
         },
         {
           "name": "최윤홍",
           "jd_name": "",
-          "votes": 275628,
+          "votes": 276306,
           "share_pct": 16.21,
           "current_rank": 3
         }
@@ -284,66 +284,66 @@
       "sd_name": "서울특별시",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 6994554,
-      "valid_votes": 4255422,
-      "invalid_votes": 255993,
-      "progress_pct": 85.3,
-      "rank1_minus_rank2_pp": 8.45,
+      "eligible_voters": 7054035,
+      "valid_votes": 4286326,
+      "invalid_votes": 257985,
+      "progress_pct": 85.92,
+      "rank1_minus_rank2_pp": 8.34,
       "candidates": [
         {
           "name": "정근식",
           "jd_name": "",
-          "votes": 1327484,
-          "share_pct": 31.2,
+          "votes": 1334816,
+          "share_pct": 31.14,
           "current_rank": 1
         },
         {
           "name": "조전혁",
           "jd_name": "",
-          "votes": 968072,
-          "share_pct": 22.75,
+          "votes": 977112,
+          "share_pct": 22.8,
           "current_rank": 2
         },
         {
           "name": "윤호상",
           "jd_name": "",
-          "votes": 611742,
-          "share_pct": 14.38,
+          "votes": 615320,
+          "share_pct": 14.36,
           "current_rank": 3
         },
         {
           "name": "한만중",
           "jd_name": "",
-          "votes": 405092,
-          "share_pct": 9.52,
+          "votes": 408678,
+          "share_pct": 9.53,
           "current_rank": 4
         },
         {
           "name": "김영배",
           "jd_name": "",
-          "votes": 312609,
-          "share_pct": 7.35,
+          "votes": 315966,
+          "share_pct": 7.37,
           "current_rank": 5
         },
         {
           "name": "홍제남",
           "jd_name": "",
-          "votes": 250069,
-          "share_pct": 5.88,
+          "votes": 251812,
+          "share_pct": 5.87,
           "current_rank": 6
         },
         {
           "name": "이학인",
           "jd_name": "",
-          "votes": 196309,
-          "share_pct": 4.61,
+          "votes": 196968,
+          "share_pct": 4.6,
           "current_rank": 7
         },
         {
           "name": "류수노",
           "jd_name": "",
-          "votes": 184045,
-          "share_pct": 4.32,
+          "votes": 185654,
+          "share_pct": 4.33,
           "current_rank": 8
         }
       ]
@@ -513,23 +513,23 @@
       "sd_name": "전북특별자치도",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 1507597,
-      "valid_votes": 892732,
-      "invalid_votes": 52671,
-      "progress_pct": 99.87,
+      "eligible_voters": 1509847,
+      "valid_votes": 893685,
+      "invalid_votes": 52712,
+      "progress_pct": 99.97,
       "rank1_minus_rank2_pp": 13.28,
       "candidates": [
         {
           "name": "천호성",
           "jd_name": "",
-          "votes": 505611,
+          "votes": 506165,
           "share_pct": 56.64,
           "current_rank": 1
         },
         {
           "name": "이남호",
           "jd_name": "",
-          "votes": 387121,
+          "votes": 387520,
           "share_pct": 43.36,
           "current_rank": 2
         }
@@ -1189,24 +1189,24 @@
       "sd_name": "강원특별자치도",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 1320854,
-      "valid_votes": 835754,
-      "invalid_votes": 13616,
-      "progress_pct": 98.99,
-      "rank1_minus_rank2_pp": 3.24,
+      "eligible_voters": 1322994,
+      "valid_votes": 837868,
+      "invalid_votes": 13642,
+      "progress_pct": 99.24,
+      "rank1_minus_rank2_pp": 3.36,
       "candidates": [
         {
           "name": "우상호",
           "jd_name": "더불어민주당",
-          "votes": 431404,
-          "share_pct": 51.62,
+          "votes": 432971,
+          "share_pct": 51.68,
           "current_rank": 1
         },
         {
           "name": "김진태",
           "jd_name": "국민의힘",
-          "votes": 404350,
-          "share_pct": 48.38,
+          "votes": 404897,
+          "share_pct": 48.32,
           "current_rank": 2
         }
       ]
@@ -1218,44 +1218,44 @@
       "sd_name": "경기도",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 11784224,
-      "valid_votes": 6772551,
-      "invalid_votes": 99890,
-      "progress_pct": 99.13,
-      "rank1_minus_rank2_pp": 15.64,
+      "eligible_voters": 11822363,
+      "valid_votes": 6790966,
+      "invalid_votes": 100220,
+      "progress_pct": 99.4,
+      "rank1_minus_rank2_pp": 15.6,
       "candidates": [
         {
           "name": "추미애",
           "jd_name": "더불어민주당",
-          "votes": 3726935,
-          "share_pct": 55.03,
+          "votes": 3735757,
+          "share_pct": 55.01,
           "current_rank": 1
         },
         {
           "name": "양향자",
           "jd_name": "국민의힘",
-          "votes": 2667567,
-          "share_pct": 39.39,
+          "votes": 2676233,
+          "share_pct": 39.41,
           "current_rank": 2
         },
         {
           "name": "조응천",
           "jd_name": "개혁신당",
-          "votes": 292760,
+          "votes": 293451,
           "share_pct": 4.32,
           "current_rank": 3
         },
         {
           "name": "홍성규",
           "jd_name": "진보당",
-          "votes": 46251,
+          "votes": 46381,
           "share_pct": 0.68,
           "current_rank": 4
         },
         {
           "name": "국민연합김현욱",
           "jd_name": "무소속",
-          "votes": 39038,
+          "votes": 39144,
           "share_pct": 0.58,
           "current_rank": 5
         }
@@ -1268,24 +1268,24 @@
       "sd_name": "경상남도",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 2425678,
-      "valid_votes": 1553993,
-      "invalid_votes": 38057,
-      "progress_pct": 89.01,
-      "rank1_minus_rank2_pp": 3.1,
+      "eligible_voters": 2433068,
+      "valid_votes": 1558875,
+      "invalid_votes": 38140,
+      "progress_pct": 89.29,
+      "rank1_minus_rank2_pp": 3.08,
       "candidates": [
         {
           "name": "박완수",
           "jd_name": "국민의힘",
-          "votes": 801096,
-          "share_pct": 51.55,
+          "votes": 803378,
+          "share_pct": 51.54,
           "current_rank": 1
         },
         {
           "name": "김경수",
           "jd_name": "더불어민주당",
-          "votes": 752897,
-          "share_pct": 48.45,
+          "votes": 755497,
+          "share_pct": 48.46,
           "current_rank": 2
         }
       ]
@@ -1434,44 +1434,44 @@
       "sd_name": "서울특별시",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 7566010,
-      "valid_votes": 4797267,
-      "invalid_votes": 52046,
-      "progress_pct": 91.69,
-      "rank1_minus_rank2_pp": 0.59,
+      "eligible_voters": 7593826,
+      "valid_votes": 4811579,
+      "invalid_votes": 52233,
+      "progress_pct": 91.96,
+      "rank1_minus_rank2_pp": 0.54,
       "candidates": [
         {
           "name": "정원오",
           "jd_name": "더불어민주당",
-          "votes": 2347619,
-          "share_pct": 48.94,
+          "votes": 2353386,
+          "share_pct": 48.91,
           "current_rank": 1
         },
         {
           "name": "오세훈",
           "jd_name": "국민의힘",
-          "votes": 2319303,
-          "share_pct": 48.35,
+          "votes": 2327474,
+          "share_pct": 48.37,
           "current_rank": 2
         },
         {
           "name": "권영국",
           "jd_name": "정의당",
-          "votes": 50391,
+          "votes": 50540,
           "share_pct": 1.05,
           "current_rank": 3
         },
         {
           "name": "유지혜",
           "jd_name": "여성의당",
-          "votes": 40332,
+          "votes": 40454,
           "share_pct": 0.84,
           "current_rank": 4
         },
         {
           "name": "김정철",
           "jd_name": "개혁신당",
-          "votes": 39622,
+          "votes": 39725,
           "share_pct": 0.83,
           "current_rank": 5
         }
@@ -1854,7 +1854,7 @@
       "eligible_voters": 74929,
       "valid_votes": 46387,
       "invalid_votes": 720,
-      "progress_pct": 99.99,
+      "progress_pct": 100.0,
       "rank1_minus_rank2_pp": 6.72,
       "candidates": [
         {
@@ -2200,7 +2200,7 @@
       "eligible_voters": 247875,
       "valid_votes": 155063,
       "invalid_votes": 2379,
-      "progress_pct": 99.98,
+      "progress_pct": 100.0,
       "rank1_minus_rank2_pp": 11.64,
       "candidates": [
         {
@@ -2428,37 +2428,37 @@
       "sd_name": "경기도",
       "sgg_name": "고양시",
       "wiw_name": null,
-      "eligible_voters": 914769,
-      "valid_votes": 533329,
-      "invalid_votes": 5843,
-      "progress_pct": 98.76,
-      "rank1_minus_rank2_pp": 24.42,
+      "eligible_voters": 915195,
+      "valid_votes": 533685,
+      "invalid_votes": 5892,
+      "progress_pct": 98.84,
+      "rank1_minus_rank2_pp": 24.4,
       "candidates": [
         {
           "name": "민경선",
           "jd_name": "더불어민주당",
-          "votes": 323238,
-          "share_pct": 60.61,
+          "votes": 323397,
+          "share_pct": 60.6,
           "current_rank": 1
         },
         {
           "name": "이동환",
           "jd_name": "국민의힘",
-          "votes": 193022,
-          "share_pct": 36.19,
+          "votes": 193193,
+          "share_pct": 36.2,
           "current_rank": 2
         },
         {
           "name": "신현철",
           "jd_name": "개혁신당",
-          "votes": 10232,
+          "votes": 10250,
           "share_pct": 1.92,
           "current_rank": 3
         },
         {
           "name": "송영주",
           "jd_name": "진보당",
-          "votes": 6837,
+          "votes": 6845,
           "share_pct": 1.28,
           "current_rank": 4
         }
@@ -2776,22 +2776,22 @@
       "sgg_name": "수원시",
       "wiw_name": null,
       "eligible_voters": 1035663,
-      "valid_votes": 597516,
-      "invalid_votes": 7466,
+      "valid_votes": 597562,
+      "invalid_votes": 7468,
       "progress_pct": 99.94,
       "rank1_minus_rank2_pp": 22.02,
       "candidates": [
         {
           "name": "이재준",
           "jd_name": "더불어민주당",
-          "votes": 355539,
+          "votes": 355572,
           "share_pct": 59.5,
           "current_rank": 1
         },
         {
           "name": "안교재",
           "jd_name": "국민의힘",
-          "votes": 223965,
+          "votes": 223978,
           "share_pct": 37.48,
           "current_rank": 2
         },
@@ -3461,24 +3461,24 @@
       "sd_name": "경상남도",
       "sgg_name": "김해시",
       "wiw_name": null,
-      "eligible_voters": 321715,
-      "valid_votes": 195463,
-      "invalid_votes": 3566,
-      "progress_pct": 72.69,
-      "rank1_minus_rank2_pp": 8.12,
+      "eligible_voters": 325044,
+      "valid_votes": 197265,
+      "invalid_votes": 3595,
+      "progress_pct": 73.36,
+      "rank1_minus_rank2_pp": 8.04,
       "candidates": [
         {
           "name": "정영두",
           "jd_name": "더불어민주당",
-          "votes": 105671,
-          "share_pct": 54.06,
+          "votes": 106554,
+          "share_pct": 54.02,
           "current_rank": 1
         },
         {
           "name": "홍태용",
           "jd_name": "국민의힘",
-          "votes": 89792,
-          "share_pct": 45.94,
+          "votes": 90711,
+          "share_pct": 45.98,
           "current_rank": 2
         }
       ]
@@ -5758,22 +5758,22 @@
       "sgg_name": "강남구",
       "wiw_name": null,
       "eligible_voters": 470870,
-      "valid_votes": 291304,
-      "invalid_votes": 3117,
-      "progress_pct": 99.99,
+      "valid_votes": 291423,
+      "invalid_votes": 3122,
+      "progress_pct": 99.98,
       "rank1_minus_rank2_pp": 31.8,
       "candidates": [
         {
           "name": "김현기",
           "jd_name": "국민의힘",
-          "votes": 191969,
+          "votes": 192046,
           "share_pct": 65.9,
           "current_rank": 1
         },
         {
           "name": "김형곤",
           "jd_name": "더불어민주당",
-          "votes": 99335,
+          "votes": 99377,
           "share_pct": 34.1,
           "current_rank": 2
         }
@@ -5786,31 +5786,31 @@
       "sd_name": "서울특별시",
       "sgg_name": "강동구",
       "wiw_name": null,
-      "eligible_voters": 341773,
-      "valid_votes": 234197,
-      "invalid_votes": 2539,
-      "progress_pct": 83.09,
-      "rank1_minus_rank2_pp": 2.07,
+      "eligible_voters": 357392,
+      "valid_votes": 243115,
+      "invalid_votes": 2607,
+      "progress_pct": 86.25,
+      "rank1_minus_rank2_pp": 3.29,
       "candidates": [
         {
           "name": "이수희",
           "jd_name": "국민의힘",
-          "votes": 117391,
-          "share_pct": 50.12,
+          "votes": 123350,
+          "share_pct": 50.74,
           "current_rank": 1
         },
         {
           "name": "김종무",
           "jd_name": "더불어민주당",
-          "votes": 112539,
-          "share_pct": 48.05,
+          "votes": 115358,
+          "share_pct": 47.45,
           "current_rank": 2
         },
         {
           "name": "이용우",
           "jd_name": "개혁신당",
-          "votes": 4267,
-          "share_pct": 1.82,
+          "votes": 4407,
+          "share_pct": 1.81,
           "current_rank": 3
         }
       ]
@@ -6063,7 +6063,7 @@
       "eligible_voters": 271153,
       "valid_votes": 170935,
       "invalid_votes": 1989,
-      "progress_pct": 99.98,
+      "progress_pct": 100.0,
       "rank1_minus_rank2_pp": 4.28,
       "candidates": [
         {
@@ -6844,7 +6844,7 @@
       "eligible_voters": 371521,
       "valid_votes": 200404,
       "invalid_votes": 3332,
-      "progress_pct": 99.99,
+      "progress_pct": 100.0,
       "rank1_minus_rank2_pp": 6.92,
       "candidates": [
         {
@@ -8659,31 +8659,31 @@
       "sd_name": "충청남도",
       "sgg_name": "천안시",
       "wiw_name": null,
-      "eligible_voters": 530620,
-      "valid_votes": 279583,
-      "invalid_votes": 3668,
-      "progress_pct": 93.97,
-      "rank1_minus_rank2_pp": 10.37,
+      "eligible_voters": 570530,
+      "valid_votes": 297810,
+      "invalid_votes": 3813,
+      "progress_pct": 99.98,
+      "rank1_minus_rank2_pp": 9.57,
       "candidates": [
         {
           "name": "장기수",
           "jd_name": "더불어민주당",
-          "votes": 150597,
-          "share_pct": 53.86,
+          "votes": 159243,
+          "share_pct": 53.47,
           "current_rank": 1
         },
         {
           "name": "박찬우",
           "jd_name": "국민의힘",
-          "votes": 121583,
-          "share_pct": 43.49,
+          "votes": 130750,
+          "share_pct": 43.9,
           "current_rank": 2
         },
         {
           "name": "이성진",
           "jd_name": "개혁신당",
-          "votes": 7403,
-          "share_pct": 2.65,
+          "votes": 7817,
+          "share_pct": 2.62,
           "current_rank": 3
         }
       ]
