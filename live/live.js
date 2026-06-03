@@ -1032,8 +1032,8 @@ function renderExitPollCompare(data) {
       const hv = hit(r[k], act);
       if (hv) { denom[k]++; if (hv === 'hit') score[k]++; }
     }
-    return `<div class="epc-row${r.disagree ? ' epc-diff' : ''}">` +
-      `<div class="epc-rg">${esc(r.label)}${r.disagree ? '<span class="epc-flag">엇갈림</span>' : ''}</div>` +
+    return `<div class="epc-row">` +
+      `<div class="epc-rg">${esc(r.label)}</div>` +
       `<div>${predCell(r.b3, act, 'm')}</div><div>${predCell(r.jtbc, act, 'm')}</div>` +
       `<div>${predCell(r.ours, act, 'ours')}</div><div class="epc-act">${actCell(act)}</div></div>`;
   }).join('');
