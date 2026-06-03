@@ -1013,9 +1013,30 @@ function marginText(m) {
   return `${who} +${Math.abs(m).toFixed(1)}pp`;
 }
 
+// 정당별 우세(현재 1위) 집계 바 — 시도지사·국회의원 재보궐 공용
+function partyTallyHTML(races, totalCount) {
+  const counted = races.filter(r => (r.progress_pct || 0) > 0 && (r.candidates || []).length);
+  if (!counted.length) return '';
+  let dem = 0, con = 0, etc = 0, sure = 0;
+  for (const r of counted) {
+    const p = (r.candidates[0] || {}).jd_name;
+    if (p === DEM) dem++; else if (p === CON) con++; else etc++;
+    const call = electionCall(r);
+    if (call && call.cls === 'call-win') sure++;
+  }
+  return `<div class="party-tally">
+    <span class="pt-item pt-dem">민주 <b>${dem}</b></span>
+    <span class="pt-item pt-con">국힘 <b>${con}</b></span>
+    <span class="pt-item pt-etc">그외 <b>${etc}</b></span>
+    <span class="pt-meta">현재 1위 기준 · 개표 ${counted.length}/${totalCount}곳${sure ? ` · 당선확실 ${sure}` : ''}</span>
+  </div>`;
+}
+
 function renderChiefRaces(cur, predMap, parties) {
   const root = document.getElementById('chief-races');
   const chiefs = (cur?.races || []).filter(r => String(r.sg_type_code) === '3');
+  const tallyEl = document.getElementById('chief-tally');
+  if (tallyEl) tallyEl.innerHTML = partyTallyHTML(chiefs, 17);
   if (!chiefs.length) {
     root.innerHTML = `<div class="state-empty">시도지사 개표 데이터가 아직 없습니다. 18시 마감 후 표시됩니다.</div>`;
     return;
@@ -1114,6 +1135,8 @@ function renderRepoll(cur) {
     (b.progress_pct || 0) - (a.progress_pct || 0) ||
     (a.rank1_minus_rank2_pp ?? 999) - (b.rank1_minus_rank2_pp ?? 999));
   block.hidden = false;
+  const tallyEl = document.getElementById('repoll-tally');
+  if (tallyEl) tallyEl.innerHTML = partyTallyHTML(races, races.length);
   root.innerHTML = raceTable(races.map(raceTableRow).join(''));
 }
 
