@@ -68,8 +68,6 @@
 
   /* Hero */
   .hero { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 20px 0 28px; }
-  /* 투표 중(18시 전): 개표 진행률 카드 숨김 → 2칸 */
-  @media (min-width: 721px) { .hero.hero-voting { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 720px) { .hero { grid-template-columns: 1fr; } }
   .hero-card { border: 1px solid var(--line); border-radius: 8px; padding: 20px 22px; background: #fafafa; }
   .hero-card-main { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
@@ -274,6 +272,11 @@
       <div class="hero-big" id="hero-progress">—<span class="pct">%</span></div>
       <div class="hero-meta" id="hero-progress-meta">—</div>
     </div>
+    <div class="hero-card" id="hero-cmp-card" hidden>
+      <div class="hero-label">4년 전(2022) 동시각</div>
+      <div class="hero-big" id="hero-cmp" style="color:var(--ink)">—<span class="pct">%</span></div>
+      <div class="hero-meta" id="hero-cmp-meta">직전 지선 같은 시각 투표율</div>
+    </div>
     <div class="hero-card">
       <div class="hero-label">예상 최종 투표율 <span style="font-weight:600;opacity:0.7">· 추정</span></div>
       <div class="hero-big" id="hero-early" style="color:var(--ink)">—<span class="pct">%</span></div>
@@ -374,6 +377,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603t"></script>
+<script src="live.js?v=20260603u"></script>
 </body>
 </html>

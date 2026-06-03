@@ -245,6 +245,26 @@ function renderProjection(cur, histHourly) {
   if (meta) meta.textContent = projectionContext(pj);
 }
 
+// ── 4년 전(2022) 동시각 투표율 카드 (투표 중 표시) ─────────────────
+function renderCompare2022(cur, histHourly) {
+  const big = document.getElementById('hero-cmp');
+  const meta = document.getElementById('hero-cmp-meta');
+  if (!big) return;
+  const hourly = (cur && cur.turnout && cur.turnout.hourly) || [];
+  if (!hourly.length) return;
+  const cp = hourly[hourly.length - 1];              // 마지막 정시점(HH:00) — 사과 대 사과 비교
+  const T = cp.time, todayV = cp.turnout_pct;
+  const r2022 = ((histHourly && histHourly.rounds) || []).find(r => r.year === 2022);
+  const at = r2022 && (r2022.national || []).find(d => d.time === T);
+  if (!at || at.turnout_pct == null || todayV == null) return;
+  big.innerHTML = `${fmt1(at.turnout_pct)}<span class="pct">%</span>`;
+  if (meta) {
+    const dv = todayV - at.turnout_pct;
+    const word = dv > 0.05 ? `${fmt1(dv)}%p 빠름` : (dv < -0.05 ? `${fmt1(Math.abs(dv))}%p 느림` : '비슷');
+    meta.textContent = `${parseInt(T)}시 기준 · 오늘이 4년 전보다 ${word}`;
+  }
+}
+
 // ── 시도별 실시간 투표율 표 ────────────────────────────────────────
 function renderTurnoutTable(cur, histHourly) {
   const block = document.getElementById('turnout-block');
@@ -849,11 +869,11 @@ async function render() {
   var _tt = document.getElementById('page-title-text');
   var _ts = document.getElementById('page-sub');
   if (_tt) _tt.textContent = beforeCount ? '실시간 투표율' : '실시간 개표';
-  // 투표 중(개표 전)엔 '개표 진행률' 카드 숨김 → 히어로 2칸. 18시 후 노출.
+  // 히어로 가운데 카드: 투표 중엔 '4년 전 동시각', 18시 후엔 '개표 진행률' (항상 3칸).
   const _pc = document.getElementById('hero-progress-card');
   if (_pc) _pc.hidden = beforeCount;
-  const _heroEl = document.getElementById('hero');
-  if (_heroEl) _heroEl.classList.toggle('hero-voting', beforeCount);
+  const _cc = document.getElementById('hero-cmp-card');
+  if (_cc) _cc.hidden = !beforeCount;
   // 투표 중엔 개표 전용 섹션(시도지사·기초단체장·검색) 통째 숨김 → 18시부터 노출
   ['chief-block', 'bh-block', 'search-block'].forEach(id => {
     const s = document.getElementById(id);
@@ -873,6 +893,7 @@ async function render() {
     if (nat && nat.turnout_pct != null) {
       renderHero(cur, earlyVoting);
       renderProjection(cur, histHourly);
+      renderCompare2022(cur, histHourly);
       renderTurnoutTrend(cur, histHourly);
       renderTurnoutTable(cur, histHourly);
       renderEarlyVsDay(cur, earlyVoting);
