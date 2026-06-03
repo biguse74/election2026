@@ -1005,7 +1005,16 @@ function renderExitPollCompare(data) {
     if (!e) return '<span class="epc-na">–</span>';
     const h = hit(e, act);
     const mark = h === 'hit' ? '<span class="epc-ok">✓</span>' : (h === 'miss' ? '<span class="epc-x">✗</span>' : '');
-    if (kind === 'ours') return `<b>${esc(e.name)}</b>${mark}`;  // 뉴탐사: 이름만(확률은 척도 달라 제외)
+    if (kind === 'ours') {  // 뉴탐사: 이름만(확률은 척도 달라 제외) + 예측 날짜
+      let dt = '';
+      if (e.date) {
+        const d = e.date.slice(5).replace('-', '.');
+        dt = e.url
+          ? ` <a class="epc-date" href="${esc(e.url)}" target="_blank" rel="noopener">${d} 예측 ↗</a>`
+          : ` <span class="epc-date">${d} 예측</span>`;
+      }
+      return `<b>${esc(e.name)}</b>${mark}${dt}`;
+    }
     const color = partyColor(LATEST_PARTIES, e.party);
     return `<span class="epc-dot" style="background:${color}"></span><b>${esc(e.name)}</b> <span class="epc-v">${fmt1(e.pct)}%</span>${mark}`;
   };
