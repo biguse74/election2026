@@ -227,18 +227,20 @@ function renderGrid(id, races, opts) {
   el.innerHTML = races.map(r => resultCard(r, opts)).join('');
 }
 
-// 정당별 실제 당선자 수 라벨이 달린 가로 막대(민주·국힘·그외)
+// 정당별 실제 당선자 수 — 큰 숫자(방송 가독성) + 가로 막대
 function labeledSeatBar(t) {
   const tot = t.total || 1;
-  const seg = (cls, n, lab) => n ? `<i class="${cls}" style="width:${n / tot * 100}%">${n >= 2 ? `${lab} ${n}` : n}</i>` : '';
-  return `<div class="seat-bar labeled">
-    ${seg('s-dem', t.dem, '민주')}${seg('s-etc', t.etc, '그외')}${seg('s-con', t.con, '국힘')}</div>
-    <div class="bar-legend">
-      <span><i style="background:var(--dem)"></i>더불어민주당 <b>${t.dem}</b>명</span>
-      <span><i style="background:var(--con)"></i>국민의힘 <b>${t.con}</b>명</span>
-      ${t.etc ? `<span><i style="background:#8a8a96"></i>그 외 <b>${t.etc}</b>명</span>` : ''}
-      <span style="margin-left:auto">당선자 ${t.total}명</span>
-    </div>`;
+  return `<div class="bar-counts">
+      <div class="bc dem"><b>${t.dem}</b><span>더불어민주당</span></div>
+      ${t.etc ? `<div class="bc etc"><b>${t.etc}</b><span>그 외</span></div>` : ''}
+      <div class="bc con"><b>${t.con}</b><span>국민의힘</span></div>
+    </div>
+    <div class="seat-bar labeled">
+      <i class="s-dem" style="width:${t.dem / tot * 100}%"></i>
+      <i class="s-etc" style="width:${t.etc / tot * 100}%"></i>
+      <i class="s-con" style="width:${t.con / tot * 100}%"></i>
+    </div>
+    <div class="bar-sub">당선자 <b>${t.total}</b>명 · 정당별 실제 당선자 수</div>`;
 }
 
 function renderBH(bh) {

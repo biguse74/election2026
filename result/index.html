@@ -147,11 +147,18 @@
   .wchip .wc-photo.cand-noimg { display: inline-flex; align-items: center; justify-content: center; color: var(--muted); font-weight: 800; font-size: 0.72rem; }
   .chip-grid { grid-template-columns: repeat(auto-fill, minmax(204px, 1fr)); }
 
-  /* 정당별 당선자 수 라벨 막대 */
-  .seat-bar.labeled i { font-size: 0.78rem; white-space: nowrap; }
-  .bar-legend { display: flex; gap: 16px; flex-wrap: wrap; margin: 8px 0 16px; font-size: 0.84rem; color: var(--muted); font-weight: 600; }
-  .bar-legend i { display: inline-block; width: 11px; height: 11px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
-  .bar-legend b { color: var(--ink); font-weight: 800; }
+  /* 정당별 당선자 수 — 큰 숫자(방송 가독성) + 막대 */
+  .bar-counts { display: flex; align-items: flex-end; gap: 22px; margin-bottom: 9px; }
+  .bar-counts .bc { display: flex; flex-direction: column; line-height: 1; }
+  .bar-counts .bc.con { margin-left: auto; align-items: flex-end; }
+  .bar-counts .bc b { font-family: 'Noto Serif KR', serif; font-size: 2.5rem; font-weight: 900; letter-spacing: -0.02em; }
+  .bar-counts .bc span { font-size: 0.84rem; font-weight: 800; color: var(--ink); margin-top: 4px; }
+  .bar-counts .dem b { color: var(--dem); } .bar-counts .con b { color: var(--con); } .bar-counts .etc b { color: #6b6b78; }
+  .bar-counts .etc span { color: var(--muted); }
+  .seat-bar.labeled { height: 30px; }
+  .seat-bar.labeled i { font-size: 0; }
+  .bar-sub { font-size: 0.86rem; color: var(--muted); font-weight: 600; margin: 9px 0 18px; }
+  .bar-sub b { color: var(--ink); font-weight: 800; }
 
   /* 후보자 카드 모달 */
   #card-modal { position: fixed; inset: 0; z-index: 100; display: none; }
@@ -266,6 +273,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604d"></script>
+  <script src="./result.js?v=20260604e"></script>
 </body>
 </html>
