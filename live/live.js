@@ -17,6 +17,7 @@ const PATHS = {
   parties:     '../data/parties.json',
   earlyVoting: '../data/early_voting/20260603/latest.json',
   histHourly:  '../data/history_turnout_hourly.json',
+  photos:      './candidate_photos.json',
 };
 
 const DEM = '더불어민주당';
@@ -46,6 +47,31 @@ let filtersBound = false;
 let filtersPopulated = false;
 let expandBound = false;
 const expandedKeys = new Set();  // 펼쳐진 선거구 race_key (갱신에도 유지)
+
+// 후보 사진 조회맵(중앙선관위 후보 사진). 개표 단계에서만 1회 lazy-load.
+let PHOTO_MAP = null;
+let _photoPromise = null;
+function ensurePhotos() {
+  if (PHOTO_MAP) return Promise.resolve(PHOTO_MAP);
+  if (!_photoPromise) {
+    _photoPromise = loadJSON(PATHS.photos).then(m => { PHOTO_MAP = m || { by_full: {}, by_sd: {} }; return PHOTO_MAP; });
+  }
+  return _photoPromise;
+}
+// race + candidate → https 사진 URL (없으면 null). 미세키→통합키→거친키 순.
+function candPhoto(r, c) {
+  if (!PHOTO_MAP || !c) return null;
+  const t = r.sg_type_code || '', sd = r.sd_name || '', sgg = r.sgg_name || sd, nm = (c.name || '').trim();
+  if (!nm) return null;
+  const f = PHOTO_MAP.by_full || {}, s = PHOTO_MAP.by_sd || {};
+  return f[`${t}|${sd}|${sgg}|${nm}`] || f[`${t}|${sd}|${sd}|${nm}`] || s[`${t}|${sd}|${nm}`] || null;
+}
+function candPhotoImg(r, c, cls) {
+  const u = candPhoto(r, c);
+  return u
+    ? `<img class="${cls}" src="${esc(u)}" alt="${esc(c.name || '')}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`
+    : `<span class="${cls} cand-noimg">${esc((c.name || ' ').slice(0, 1))}</span>`;
+}
 
 async function loadJSON(path) {
   try {
@@ -98,6 +124,7 @@ function candDetailHTML(r) {
     const w = Math.max(0, Math.min(100, c.share_pct || 0));
     return `<div class="rd-cand">
       <span class="rd-rank">${c.current_rank}</span>
+      ${candPhotoImg(r, c, 'rd-photo')}
       <span class="cand-dot" style="background:${color}"></span>
       <span class="rd-name">${c.name || '—'}</span>
       <span class="rd-party">${c.jd_name || ''}</span>
@@ -114,7 +141,8 @@ function raceTableRow(r) {
   const c1 = (r.candidates || [])[0];
   const c2 = (r.candidates || [])[1];
   const dot = c1 ? `<span class="cand-dot" style="background:${partyColor(LATEST_PARTIES, c1.jd_name)}"></span>` : '';
-  const lead = c1 ? `${dot}<b>${c1.name}</b> <span class="cand-party">${c1.jd_name || ''}</span> ${fmt1(c1.share_pct)}%` : '—';
+  const lphoto = c1 ? candPhotoImg(r, c1, 'lead-photo') : '';
+  const lead = c1 ? `${lphoto}${dot}<b>${c1.name}</b> <span class="cand-party">${c1.jd_name || ''}</span> ${fmt1(c1.share_pct)}%` : '—';
   const second = c2 ? `${c2.name} ${fmt1(c2.share_pct)}%` : '—';
   const open = expandedKeys.has(rk);
   const summary = `<tr class="race-sum" data-rk="${esc(rk)}">
@@ -698,10 +726,11 @@ function predText(demProb) {
   return demProb >= 50 ? `민주 ${Math.round(demProb)}%` : `국힘 ${Math.round(100 - demProb)}%`;
 }
 
-function candRowHTML(parties, c, isLead) {
+function candRowHTML(parties, c, isLead, race) {
   const color = partyColor(parties, c.jd_name);
   const w = Math.max(0, Math.min(100, c.share_pct || 0));
   return `<div class="cand-row ${isLead ? 'cand-rank1' : ''}">
+    ${race ? candPhotoImg(race, c, 'cand-photo') : ''}
     <span class="cand-dot" style="background:${color}"></span>
     <span class="cand-name">${c.name || '—'}</span>
     <span class="cand-party">${c.jd_name || ''}</span>
@@ -729,7 +758,7 @@ function renderChiefRaces(cur, predMap, parties) {
     const demProb = (predMap[race.sd_name] != null) ? predMap[race.sd_name] : null;
     const cls = classifyRace(race, demProb);
     const cands = (race.candidates || []).slice(0, 2);
-    const candHTML = cands.map((c, i) => candRowHTML(parties, c, i === 0)).join('');
+    const candHTML = cands.map((c, i) => candRowHTML(parties, c, i === 0, race)).join('');
 
     let compareHTML = '';
     if (cls.actualMargin != null) {
@@ -964,6 +993,9 @@ async function render() {
   LATEST_PARTIES = parties || {};
   LATEST_PREVWIN = (prevWinner && prevWinner.winner_party) || {};
   LATEST_PREVRESULT = (prevResult && prevResult.results) || {};
+
+  // 개표 후보 사진맵 1회 로드(없어도 이니셜로 폴백). 개표 렌더 전에 확보.
+  if ((cur.races || []).length) { await ensurePhotos(); }
 
   renderHero(cur, earlyVoting);
   renderProjection(cur, histHourly);
