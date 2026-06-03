@@ -423,15 +423,31 @@ def scrape_turnout_web(sg_id: str) -> dict | None:
     hourly = []
     cur_hour = min(max(datetime.now(KST).hour, 7), 18)
     for h in range(7, cur_hour + 1):
-        try:
-            hb = dict(body); hb["timeCode"] = str(h); hb["sggTime"] = f"{h}시"
-            ht = requests.post(_VCVP_URL, data=hb, headers=headers, timeout=20).text
-            nat_h, _sd = _parse(ht)
-            if nat_h and nat_h.get("turnout_pct") is not None:
-                hourly.append({"time": f"{h:02d}:00", "turnout_pct": nat_h["turnout_pct"],
-                               "voters_so_far": nat_h.get("voters_so_far")})
-        except Exception:
-            pass
+        for _attempt in range(2):  # 정시 스냅샷은 차트에 빠지면 안 되므로 1회 재시도
+            try:
+                hb = dict(body); hb["timeCode"] = str(h); hb["sggTime"] = f"{h}시"
+                ht = requests.post(_VCVP_URL, data=hb, headers=headers, timeout=20).text
+                nat_h, _sd = _parse(ht)
+                if nat_h and nat_h.get("turnout_pct") is not None:
+                    hourly.append({"time": f"{h:02d}:00", "turnout_pct": nat_h["turnout_pct"],
+                                   "voters_so_far": nat_h.get("voters_so_far")})
+                    break
+            except Exception:
+                pass
+    # 이전 current.json의 hourly와 병합 — 정시 스냅샷은 고정값이므로 한 번 잡으면 유실 금지.
+    # (특정 시각 POST가 간헐 실패해도 차트에서 그 점이 사라지지 않도록 시간대별 max 유지)
+    try:
+        prev = json.loads((OUT_DIR / "current.json").read_text(encoding="utf-8"))
+        by_t = {x["time"]: x for x in hourly if x.get("turnout_pct") is not None}
+        for ph in ((prev.get("turnout") or {}).get("hourly") or []):
+            t, pv = ph.get("time"), ph.get("turnout_pct")
+            if not t or pv is None:
+                continue
+            if t not in by_t or by_t[t].get("turnout_pct") is None or pv > by_t[t]["turnout_pct"]:
+                by_t[t] = {"time": t, "turnout_pct": pv, "voters_so_far": ph.get("voters_so_far")}
+        hourly = [by_t[t] for t in sorted(by_t)]
+    except Exception:
+        pass
     # 전국 시군구별 누계 투표율 — 17개 시도 cityCode 드릴다운(셀 구조는 시도별과 동일 8칸).
     # by_sigungu = {시도명: {"total": {합계}, "sigungu": [{name,rate,...}, ...]}}
     by_sigungu = {}
