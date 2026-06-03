@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-03T16:53:12+09:00",
+  "polled_at": "2026-06-03T16:58:29+09:00",
   "source": "openapi",
   "phase": "pre",
   "races": [],
@@ -8,10 +8,10 @@
     "national": {
       "sd_name": "전국",
       "eligible_voters": 44649908,
-      "voters_so_far": 25503793,
-      "turnout_pct": 57.1,
-      "day_voters_so_far": 14939231,
-      "early_voters_so_far": 10564562,
+      "voters_so_far": 25597125,
+      "turnout_pct": 57.3,
+      "day_voters_so_far": 15032554,
+      "early_voters_so_far": 10564571,
       "day_eligible_voters": 34079860,
       "early_eligible_voters": 10570048
     },
@@ -19,9 +19,9 @@
       {
         "sd_name": "서울특별시",
         "eligible_voters": 8319134,
-        "voters_so_far": 4898536,
-        "turnout_pct": 58.9,
-        "day_voters_so_far": 2907164,
+        "voters_so_far": 4909815,
+        "turnout_pct": 59.0,
+        "day_voters_so_far": 2918443,
         "early_voters_so_far": 1991372,
         "day_eligible_voters": 6327113,
         "early_eligible_voters": 1992021
@@ -29,10 +29,10 @@
       {
         "sd_name": "부산광역시",
         "eligible_voters": 2857335,
-        "voters_so_far": 1657066,
-        "turnout_pct": 58.0,
-        "day_voters_so_far": 1044697,
-        "early_voters_so_far": 612369,
+        "voters_so_far": 1659164,
+        "turnout_pct": 58.1,
+        "day_voters_so_far": 1046792,
+        "early_voters_so_far": 612372,
         "day_eligible_voters": 2244639,
         "early_eligible_voters": 612696
       },
@@ -49,9 +49,9 @@
       {
         "sd_name": "인천광역시",
         "eligible_voters": 2663459,
-        "voters_so_far": 1430341,
-        "turnout_pct": 53.7,
-        "day_voters_so_far": 851447,
+        "voters_so_far": 1455504,
+        "turnout_pct": 54.6,
+        "day_voters_so_far": 876610,
         "early_voters_so_far": 578894,
         "day_eligible_voters": 2084317,
         "early_eligible_voters": 579142
@@ -59,9 +59,9 @@
       {
         "sd_name": "광주광역시",
         "eligible_voters": 1189519,
-        "voters_so_far": 606357,
-        "turnout_pct": 51.0,
-        "day_voters_so_far": 273575,
+        "voters_so_far": 613096,
+        "turnout_pct": 51.5,
+        "day_voters_so_far": 280314,
         "early_voters_so_far": 332782,
         "day_eligible_voters": 856587,
         "early_eligible_voters": 332932
@@ -69,9 +69,9 @@
       {
         "sd_name": "대전광역시",
         "eligible_voters": 1250891,
-        "voters_so_far": 700304,
-        "turnout_pct": 56.0,
-        "day_voters_so_far": 417040,
+        "voters_so_far": 704771,
+        "turnout_pct": 56.3,
+        "day_voters_so_far": 421507,
         "early_voters_so_far": 283264,
         "day_eligible_voters": 967500,
         "early_eligible_voters": 283391
@@ -79,9 +79,9 @@
       {
         "sd_name": "울산광역시",
         "eligible_voters": 936171,
-        "voters_so_far": 551954,
-        "turnout_pct": 59.0,
-        "day_voters_so_far": 340647,
+        "voters_so_far": 560944,
+        "turnout_pct": 59.9,
+        "day_voters_so_far": 349637,
         "early_voters_so_far": 211307,
         "day_eligible_voters": 724764,
         "early_eligible_voters": 211407
@@ -109,9 +109,9 @@
       {
         "sd_name": "강원특별자치도",
         "eligible_voters": 1329742,
-        "voters_so_far": 808873,
-        "turnout_pct": 60.8,
-        "day_voters_so_far": 445591,
+        "voters_so_far": 822756,
+        "turnout_pct": 61.9,
+        "day_voters_so_far": 459474,
         "early_voters_so_far": 363282,
         "day_eligible_voters": 966209,
         "early_eligible_voters": 363533
@@ -119,9 +119,9 @@
       {
         "sd_name": "충청북도",
         "eligible_voters": 1396588,
-        "voters_so_far": 782747,
-        "turnout_pct": 56.0,
-        "day_voters_so_far": 451640,
+        "voters_so_far": 786995,
+        "turnout_pct": 56.4,
+        "day_voters_so_far": 455888,
         "early_voters_so_far": 331107,
         "day_eligible_voters": 1065298,
         "early_eligible_voters": 331290
@@ -129,19 +129,19 @@
       {
         "sd_name": "충청남도",
         "eligible_voters": 1857239,
-        "voters_so_far": 1028457,
-        "turnout_pct": 55.4,
-        "day_voters_so_far": 608307,
-        "early_voters_so_far": 420150,
+        "voters_so_far": 1035730,
+        "turnout_pct": 55.8,
+        "day_voters_so_far": 615574,
+        "early_voters_so_far": 420156,
         "day_eligible_voters": 1436868,
         "early_eligible_voters": 420371
       },
       {
         "sd_name": "전북특별자치도",
         "eligible_voters": 1509854,
-        "voters_so_far": 900457,
-        "turnout_pct": 59.6,
-        "day_voters_so_far": 367041,
+        "voters_so_far": 908338,
+        "turnout_pct": 60.2,
+        "day_voters_so_far": 374922,
         "early_voters_so_far": 533416,
         "day_eligible_voters": 976004,
         "early_eligible_voters": 533850
@@ -169,9 +169,9 @@
       {
         "sd_name": "경상남도",
         "eligible_voters": 2775745,
-        "voters_so_far": 1689890,
+        "voters_so_far": 1691201,
         "turnout_pct": 60.9,
-        "day_voters_so_far": 998821,
+        "day_voters_so_far": 1000132,
         "early_voters_so_far": 691069,
         "day_eligible_voters": 2084131,
         "early_eligible_voters": 691614
@@ -299,9 +299,9 @@
       {
         "gu_name": "성북구",
         "eligible_voters": 376276,
-        "voters_so_far": 211660,
-        "turnout_pct": 56.3,
-        "day_voters_so_far": 117424,
+        "voters_so_far": 222939,
+        "turnout_pct": 59.2,
+        "day_voters_so_far": 128703,
         "early_voters_so_far": 94236
       },
       {
@@ -446,9 +446,9 @@
         "total": {
           "name": "합계",
           "eligible_voters": 8319134,
-          "voters_so_far": 4898536,
-          "turnout_pct": 58.9,
-          "day_voters_so_far": 2907164,
+          "voters_so_far": 4909815,
+          "turnout_pct": 59.0,
+          "day_voters_so_far": 2918443,
           "early_voters_so_far": 1991372
         },
         "sigungu": [
@@ -511,9 +511,9 @@
           {
             "name": "성북구",
             "eligible_voters": 376276,
-            "voters_so_far": 211660,
-            "turnout_pct": 56.3,
-            "day_voters_so_far": 117424,
+            "voters_so_far": 222939,
+            "turnout_pct": 59.2,
+            "day_voters_so_far": 128703,
             "early_voters_so_far": 94236
           },
           {
@@ -658,10 +658,10 @@
         "total": {
           "name": "합계",
           "eligible_voters": 2857335,
-          "voters_so_far": 1657066,
-          "turnout_pct": 58.0,
-          "day_voters_so_far": 1044697,
-          "early_voters_so_far": 612369
+          "voters_so_far": 1659164,
+          "turnout_pct": 58.1,
+          "day_voters_so_far": 1046792,
+          "early_voters_so_far": 612372
         },
         "sigungu": [
           {
@@ -691,10 +691,10 @@
           {
             "name": "영도구",
             "eligible_voters": 92438,
-            "voters_so_far": 51242,
-            "turnout_pct": 55.4,
-            "day_voters_so_far": 28431,
-            "early_voters_so_far": 22811
+            "voters_so_far": 53340,
+            "turnout_pct": 57.7,
+            "day_voters_so_far": 30526,
+            "early_voters_so_far": 22814
           },
           {
             "name": "부산진구",
@@ -882,9 +882,9 @@
         "total": {
           "name": "합계",
           "eligible_voters": 2663459,
-          "voters_so_far": 1430341,
-          "turnout_pct": 53.7,
-          "day_voters_so_far": 851447,
+          "voters_so_far": 1455504,
+          "turnout_pct": 54.6,
+          "day_voters_so_far": 876610,
           "early_voters_so_far": 578894
         },
         "sigungu": [
@@ -907,17 +907,17 @@
           {
             "name": "미추홀구",
             "eligible_voters": 371521,
-            "voters_so_far": 182377,
-            "turnout_pct": 49.1,
-            "day_voters_so_far": 106698,
+            "voters_so_far": 191604,
+            "turnout_pct": 51.6,
+            "day_voters_so_far": 115925,
             "early_voters_so_far": 75679
           },
           {
             "name": "연수구",
             "eligible_voters": 340276,
-            "voters_so_far": 190857,
-            "turnout_pct": 56.1,
-            "day_voters_so_far": 115878,
+            "voters_so_far": 201111,
+            "turnout_pct": 59.1,
+            "day_voters_so_far": 126132,
             "early_voters_so_far": 74979
           },
           {
@@ -955,9 +955,9 @@
           {
             "name": "검단구",
             "eligible_voters": 218404,
-            "voters_so_far": 108899,
-            "turnout_pct": 49.9,
-            "day_voters_so_far": 61276,
+            "voters_so_far": 114581,
+            "turnout_pct": 52.5,
+            "day_voters_so_far": 66958,
             "early_voters_so_far": 47623
           },
           {
@@ -982,9 +982,9 @@
         "total": {
           "name": "합계",
           "eligible_voters": 1189519,
-          "voters_so_far": 606357,
-          "turnout_pct": 51.0,
-          "day_voters_so_far": 273575,
+          "voters_so_far": 613096,
+          "turnout_pct": 51.5,
+          "day_voters_so_far": 280314,
           "early_voters_so_far": 332782
         },
         "sigungu": [
@@ -1023,9 +1023,9 @@
           {
             "name": "광산구",
             "eligible_voters": 322549,
-            "voters_so_far": 154513,
-            "turnout_pct": 47.9,
-            "day_voters_so_far": 74633,
+            "voters_so_far": 161252,
+            "turnout_pct": 50.0,
+            "day_voters_so_far": 81372,
             "early_voters_so_far": 79880
           }
         ]
@@ -1034,18 +1034,18 @@
         "total": {
           "name": "합계",
           "eligible_voters": 1250891,
-          "voters_so_far": 700304,
-          "turnout_pct": 56.0,
-          "day_voters_so_far": 417040,
+          "voters_so_far": 704771,
+          "turnout_pct": 56.3,
+          "day_voters_so_far": 421507,
           "early_voters_so_far": 283264
         },
         "sigungu": [
           {
             "name": "동구",
             "eligible_voters": 194024,
-            "voters_so_far": 102762,
-            "turnout_pct": 53.0,
-            "day_voters_so_far": 58349,
+            "voters_so_far": 107229,
+            "turnout_pct": 55.3,
+            "day_voters_so_far": 62816,
             "early_voters_so_far": 44413
           },
           {
@@ -1086,9 +1086,9 @@
         "total": {
           "name": "합계",
           "eligible_voters": 936171,
-          "voters_so_far": 551954,
-          "turnout_pct": 59.0,
-          "day_voters_so_far": 340647,
+          "voters_so_far": 560944,
+          "turnout_pct": 59.9,
+          "day_voters_so_far": 349637,
           "early_voters_so_far": 211307
         },
         "sigungu": [
@@ -1103,9 +1103,9 @@
           {
             "name": "남구",
             "eligible_voters": 264860,
-            "voters_so_far": 147937,
-            "turnout_pct": 55.9,
-            "day_voters_so_far": 92027,
+            "voters_so_far": 156927,
+            "turnout_pct": 59.2,
+            "day_voters_so_far": 101017,
             "early_voters_so_far": 55910
           },
           {
@@ -1546,18 +1546,18 @@
         "total": {
           "name": "합계",
           "eligible_voters": 1329742,
-          "voters_so_far": 816561,
-          "turnout_pct": 61.4,
-          "day_voters_so_far": 453279,
+          "voters_so_far": 822756,
+          "turnout_pct": 61.9,
+          "day_voters_so_far": 459474,
           "early_voters_so_far": 363282
         },
         "sigungu": [
           {
             "name": "춘천시",
             "eligible_voters": 247875,
-            "voters_so_far": 143474,
-            "turnout_pct": 57.9,
-            "day_voters_so_far": 80666,
+            "voters_so_far": 149669,
+            "turnout_pct": 60.4,
+            "day_voters_so_far": 86861,
             "early_voters_so_far": 62808
           },
           {
@@ -1702,18 +1702,18 @@
         "total": {
           "name": "합계",
           "eligible_voters": 1396588,
-          "voters_so_far": 782747,
-          "turnout_pct": 56.0,
-          "day_voters_so_far": 451640,
+          "voters_so_far": 786995,
+          "turnout_pct": 56.4,
+          "day_voters_so_far": 455888,
           "early_voters_so_far": 331107
         },
         "sigungu": [
           {
             "name": "청주시상당구",
             "eligible_voters": 165308,
-            "voters_so_far": 87037,
-            "turnout_pct": 52.7,
-            "day_voters_so_far": 51833,
+            "voters_so_far": 91285,
+            "turnout_pct": 55.2,
+            "day_voters_so_far": 56081,
             "early_voters_so_far": 35204
           },
           {
@@ -1966,18 +1966,18 @@
         "total": {
           "name": "합계",
           "eligible_voters": 1509854,
-          "voters_so_far": 900457,
-          "turnout_pct": 59.6,
-          "day_voters_so_far": 367041,
+          "voters_so_far": 908338,
+          "turnout_pct": 60.2,
+          "day_voters_so_far": 374922,
           "early_voters_so_far": 533416
         },
         "sigungu": [
           {
             "name": "전주시완산구",
             "eligible_voters": 322928,
-            "voters_so_far": 174284,
-            "turnout_pct": 54.0,
-            "day_voters_so_far": 78451,
+            "voters_so_far": 181266,
+            "turnout_pct": 56.1,
+            "day_voters_so_far": 85433,
             "early_voters_so_far": 95833
           },
           {
@@ -2015,9 +2015,9 @@
           {
             "name": "남원시",
             "eligible_voters": 66274,
-            "voters_so_far": 43183,
-            "turnout_pct": 65.2,
-            "day_voters_so_far": 13681,
+            "voters_so_far": 44082,
+            "turnout_pct": 66.5,
+            "day_voters_so_far": 14580,
             "early_voters_so_far": 29502
           },
           {
@@ -2482,9 +2482,9 @@
         "total": {
           "name": "합계",
           "eligible_voters": 2775745,
-          "voters_so_far": 1689890,
+          "voters_so_far": 1691201,
           "turnout_pct": 60.9,
-          "day_voters_so_far": 998821,
+          "day_voters_so_far": 1000132,
           "early_voters_so_far": 691069
         },
         "sigungu": [
@@ -2595,9 +2595,9 @@
           {
             "name": "함안군",
             "eligible_voters": 51085,
-            "voters_so_far": 32277,
-            "turnout_pct": 63.2,
-            "day_voters_so_far": 17648,
+            "voters_so_far": 33588,
+            "turnout_pct": 65.7,
+            "day_voters_so_far": 18959,
             "early_voters_so_far": 14629
           },
           {
