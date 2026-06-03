@@ -423,8 +423,28 @@ def scrape_turnout_web(sg_id: str) -> dict | None:
                                "voters_so_far": nat_h.get("voters_so_far")})
         except Exception:
             pass
+    # 서울 자치구별 누계 투표율(cityCode=1100) — 25개 자치구. 셀 구조는 시도별과 동일(8칸).
+    seoul_gu = []
+    try:
+        gb = dict(body); gb["cityCode"] = "1100"
+        gt = requests.post(_VCVP_URL, data=gb, headers=headers, timeout=20).text
+        for tr in re.findall(r"<tr[^>]*>(.*?)</tr>", gt, re.S):
+            cells = [re.sub(r"<[^>]+>", "", c).strip() for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)]
+            if len(cells) != 8:
+                continue
+            nm = cells[0]
+            if not nm.endswith("구"):  # 합계 등 제외, 자치구만
+                continue
+            seoul_gu.append({
+                "gu_name": nm,
+                "eligible_voters": _num(cells[3]), "voters_so_far": _num(cells[6]),
+                "turnout_pct": _num(cells[7]), "day_voters_so_far": _num(cells[4]),
+                "early_voters_so_far": _num(cells[5]),
+            })
+    except Exception as e:
+        print(f"  ! 서울 구별 스크랩 실패: {e}", file=sys.stderr)
     return {"national": national, "by_sido": by_sido, "hourly": hourly,
-            "source": "info.nec.go.kr VCVP01 (웹)"}
+            "seoul_gu": seoul_gu, "source": "info.nec.go.kr VCVP01 (웹)"}
 
 
 # ============ 가공 / 저장 ============
