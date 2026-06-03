@@ -5,6 +5,7 @@ const PATHS = {
   prediction:'../data/prediction_sido_v2.json',
   parties:   '../data/parties.json',
   photos:    '../live/candidate_photos.json',
+  cards:     '../data/candidate_cards.json',
 };
 const DEM = '더불어민주당';
 const CON = '국민의힘';
@@ -42,6 +43,63 @@ function candPhotoImg(r, c, cls) {
     ? `<img class="${cls}" src="${esc(u)}" alt="${esc(c.name || '')}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`
     : `<span class="${cls} cand-noimg">${esc((c.name || ' ').slice(0, 1))}</span>`;
 }
+
+// 후보자 카드(이름 클릭 → 프로필 모달). 키 = 'type|sd|sgg|name' (사진맵과 동일).
+let CARD_MAP = null, _cardPromise = null;
+function ensureCards() {
+  if (CARD_MAP) return Promise.resolve(CARD_MAP);
+  if (!_cardPromise) _cardPromise = loadJSON(PATHS.cards).then(m => (CARD_MAP = m || { by_full: {}, by_sd: {} }));
+  return _cardPromise;
+}
+const ckey = (r, c) => `${r.sg_type_code || ''}|${r.sd_name || ''}|${r.sgg_name || r.sd_name || ''}|${(c.name || '').trim()}`;
+function nameLink(r, c, cls) {
+  return `<a class="${cls} cand-link" data-cf="${esc(ckey(r, c))}" role="button" tabindex="0">${esc(c.name) || '—'}</a>`;
+}
+
+function openCardModal(cf) {
+  const parts = String(cf).split('|');
+  const [t, sd, sgg, nm] = parts;
+  const card = (CARD_MAP.by_full[cf]) || (CARD_MAP.by_sd[`${t}|${sd}|${nm}`]) || { name: nm, office: '', party: '' };
+  const photo = candPhoto({ sg_type_code: t, sd_name: sd, sgg_name: sgg }, { name: nm });
+  const color = partyColor(card.party);
+  const where = [sd, card.district].filter(Boolean).join(' ');
+  const row = (lab, val) => val ? `<div class="cm-row"><span class="cm-k">${lab}</span><span class="cm-v">${esc(val)}</span></div>` : '';
+  const body = `
+    <div class="cm-head">
+      ${photo ? `<img class="cm-photo" src="${esc(photo)}" referrerpolicy="no-referrer" onerror="this.style.visibility='hidden'">` : `<span class="cm-photo cm-noimg">${esc((nm || ' ').slice(0, 1))}</span>`}
+      <div>
+        <div class="cm-name">${esc(card.name || nm)}</div>
+        <div class="cm-party" style="color:${color}">● ${esc(card.party || '')}</div>
+        <div class="cm-office">${esc(card.office || '')}${where ? ` · ${esc(where)}` : ''}</div>
+      </div>
+    </div>
+    <div class="cm-body">
+      ${row('나이', card.age ? `${card.age}세` : '')}
+      ${row('직업', card.job)}
+      ${row('학력', card.edu)}
+      ${row('경력', [card.career1, card.career2].filter(Boolean).join(' / '))}
+      ${card.status && card.status !== '등록' ? `<div class="cm-row"><span class="cm-k">상태</span><span class="cm-v" style="color:var(--con)">${esc(card.status)}</span></div>` : ''}
+    </div>
+    <div class="cm-foot">중앙선거관리위원회 후보자 등록 정보 · 공개 선거정보만 표기</div>`;
+  let m = document.getElementById('card-modal');
+  if (!m) {
+    m = document.createElement('div');
+    m.id = 'card-modal';
+    m.innerHTML = `<div class="cm-backdrop"></div><div class="cm-box" role="dialog" aria-modal="true"><button class="cm-close" aria-label="닫기">✕</button><div class="cm-content"></div></div>`;
+    document.body.appendChild(m);
+    m.querySelector('.cm-backdrop').addEventListener('click', () => m.classList.remove('on'));
+    m.querySelector('.cm-close').addEventListener('click', () => m.classList.remove('on'));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') m.classList.remove('on'); });
+  }
+  m.querySelector('.cm-content').innerHTML = body;
+  m.classList.add('on');
+}
+document.addEventListener('click', e => {
+  const a = e.target.closest('.cand-link');
+  if (!a) return;
+  e.preventDefault();
+  ensureCards().then(() => openCardModal(a.getAttribute('data-cf')));
+});
 
 // 표차·박빙
 const marginVotes = r => { const c = r.candidates || []; return c.length < 2 ? null : Math.abs((c[0].votes || 0) - (c[1].votes || 0)); };
@@ -86,7 +144,7 @@ function candRow(c, isLead) {
   return `<div class="cand-row ${isLead ? 'cand-rank1' : ''}">
     ${candPhotoImg(c._race, c, 'cand-photo')}
     <span class="cand-dot" style="background:${color}"></span>
-    <span class="cand-name">${esc(c.name) || '—'}</span>
+    ${nameLink(c._race, c, 'cand-name')}
     <span class="cand-party">${esc(c.jd_name || '')}</span>
     <span class="cand-bar-wrap"><span class="cand-bar" style="width:${w}%;background:${color}"></span></span>
     <span class="cand-share">${fmt1(c.share_pct)}%</span>
@@ -211,12 +269,22 @@ function renderGrid(id, races, opts) {
   el.innerHTML = races.map(r => resultCard(r, opts)).join('');
 }
 
+// 정당별 실제 당선자 수 라벨이 달린 가로 막대(민주·국힘·그외)
+function labeledSeatBar(t) {
+  const tot = t.total || 1;
+  const seg = (cls, n, lab) => n ? `<i class="${cls}" style="width:${n / tot * 100}%">${n >= 2 ? `${lab} ${n}` : n}</i>` : '';
+  return `<div class="seat-bar labeled">
+    ${seg('s-dem', t.dem, '민주')}${seg('s-etc', t.etc, '그외')}${seg('s-con', t.con, '국힘')}</div>
+    <div class="bar-legend">
+      <span><i style="background:var(--dem)"></i>더불어민주당 <b>${t.dem}</b>명</span>
+      <span><i style="background:var(--con)"></i>국민의힘 <b>${t.con}</b>명</span>
+      ${t.etc ? `<span><i style="background:#8a8a96"></i>그 외 <b>${t.etc}</b>명</span>` : ''}
+      <span style="margin-left:auto">당선자 ${t.total}명</span>
+    </div>`;
+}
+
 function renderBH(bh) {
-  const tally = tallyByLeader(bh);
-  document.getElementById('bh-tally').innerHTML = `<div class="seat-bar" style="margin:4px 0 18px">
-    <i class="s-dem" style="width:${tally.dem / (tally.total || 1) * 100}%"></i>
-    <i class="s-etc" style="width:${tally.etc / (tally.total || 1) * 100}%"></i>
-    <i class="s-con" style="width:${tally.con / (tally.total || 1) * 100}%"></i></div>`;
+  document.getElementById('bh-tally').innerHTML = labeledSeatBar(tallyByLeader(bh));
   const byS = {};
   for (const r of bh) (byS[r.sd_name] = byS[r.sd_name] || []).push(r);
   const order = Object.keys(byS).sort((a, b) => sidoIdx(a) - sidoIdx(b));
@@ -228,8 +296,9 @@ function renderBH(bh) {
       const call = callResult(r);
       const fix = call && call.cls === 'call-fix' ? '<span class="wc-fix">당선</span>' : '';
       return `<div class="wchip ${isClose(r) ? 'close' : ''}" style="border-left-color:${partyColor(c1.jd_name)}">
+        ${candPhotoImg(r, c1, 'wc-photo')}
         <span class="wc-place">${esc(r.sgg_name || '')}</span>
-        <span class="wc-name">${esc(c1.name)}</span>${fix}
+        ${nameLink(r, c1, 'wc-name')}${fix}
         <span class="wc-share">${fmt1(c1.share_pct)}%</span></div>`;
     }).join('');
     return `<div class="bh-sido"><div class="bh-sido-h">${esc(sd)}
