@@ -699,6 +699,12 @@ function watchStatus(race, cand) {
   const prog = race.progress_pct || 0;
   const cands = race.candidates || [];
   const rank = cand.current_rank;
+  // 기초의원(구시군의회)은 중선거구제(여러 명 당선) → 단독 1위 판정 대신 순위만 중립 표기
+  if (String(race.sg_type_code) === '6') {
+    const cls = rank === 1 ? 'wc-lead' : (rank <= 3 ? 'wc-close' : 'wc-behind');
+    const tail = prog >= 95 ? ' · 개표 거의 마감' : '';
+    return { cls, label: `현재 ${rank}위 (중선거구)${tail}` };
+  }
   if (rank === 1) {
     const lead = (cand.share_pct ?? 0) - (cands[1]?.share_pct ?? 0);
     if (prog >= 80 && lead >= 5) return { cls: 'wc-win', label: '당선 유력' };

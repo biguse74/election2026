@@ -543,11 +543,12 @@ def _vccp_rows(eid: str, sg_type: str, city_code: str, statement_id: str) -> lis
 
 
 def _parse_vccp_blocks(rows: list[list[str]], sg_type: str, sd_override: str | None = None,
-                       sd_lookup: dict | None = None) -> list[dict]:
+                       sd_lookup: dict | None = None, sgg_col: str | None = None) -> list[dict]:
     """VCCP09 3행 블록(이름헤더/득표/득표율)을 races 리스트로 변환.
     - sd_override: a[0]=선거구(sgg), sd_name=인자값 (기초단체장: 시도 cityCode로 순회 시).
     - sd_lookup: a[0]=선거구(sgg), sd_name=lookup[a[0]] (국회의원 재보궐: 전국 1콜·선거구명→시도).
-    - 둘 다 없으면 a[0]=sd_name (시도지사)."""
+    - sgg_col='b1': a[0]=구시군(wiw), 선거구명은 득표행 b[1] (기초의원·시도의원 #6/#5).
+    - 모두 없으면 a[0]=sd_name (시도지사)."""
     import re as _re
 
     def _i(s):
@@ -561,7 +562,12 @@ def _parse_vccp_blocks(rows: list[list[str]], sg_type: str, sd_override: str | N
         if len(a) >= 6 and a[0] and a[0] not in ("선거구명", "합계") and "계" in a:
             b = rows[i + 1] if i + 1 < len(rows) else []
             gi = a.index("계")
-            if sd_lookup is not None:
+            wiw_name = None
+            if sgg_col == "b1":
+                sd_name = sd_override
+                sgg_name = (b[1].strip() if len(b) > 1 and b[1].strip() else a[0])
+                wiw_name = a[0]
+            elif sd_lookup is not None:
                 sd_name, sgg_name = sd_lookup.get(a[0]), a[0]
             elif sd_override:
                 sd_name, sgg_name = sd_override, a[0]
@@ -595,7 +601,7 @@ def _parse_vccp_blocks(rows: list[list[str]], sg_type: str, sd_override: str | N
                 rank_diff = round(cands[0]["share_pct"] - cands[1]["share_pct"], 2)
             races.append({
                 "race_key": f"{sg_type}|{sd_name}|{sgg_name or ''}", "sg_type_code": sg_type, "sg_type_label": label,
-                "sd_name": sd_name, "sgg_name": sgg_name, "wiw_name": None,
+                "sd_name": sd_name, "sgg_name": sgg_name, "wiw_name": wiw_name,
                 "eligible_voters": eligible, "valid_votes": valid, "invalid_votes": invalid,
                 "progress_pct": progress, "rank1_minus_rank2_pp": rank_diff, "candidates": cands,
             })
@@ -657,6 +663,46 @@ def scrape_counting_assembly(sg_id: str) -> list[dict] | None:
     if not rows:
         return None
     return _parse_vccp_blocks(rows, "2", sd_lookup=_assembly_sd_lookup(sg_id)) or None
+
+
+def scrape_counting_muni_council_watch(sg_id: str) -> list[dict] | None:
+    """기초의원(구시군의회의원, sgTypecode=6) — 워치리스트에 등록된 기초의원 후보의
+    선거구만 콕 집어 수집(전체 기초의원 수천 선거구는 받지 않는다).
+    워치리스트 후보를 등록자료로 조회해 sgTypecode=6이면 해당 시도만 VCCP09_#6 스크랩,
+    그 후보가 포함된 선거구만 보존. 이름이 표에 직접 들어와 안전."""
+    if sg_id != "20260603":
+        return None
+    try:
+        wl = json.loads((ROOT / "data" / "live_counting" / "watchlist.json").read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    try:
+        fs = sorted((ROOT / "data" / "candidates" / sg_id).glob("snapshot_*.json"))
+        cands = json.loads(fs[-1].read_text(encoding="utf-8")) if fs else []
+        cands = cands if isinstance(cands, list) else cands.get("candidates", [])
+    except Exception:
+        cands = []
+    reg6 = {(c.get("name"), c.get("sdName")) for c in cands if str(c.get("sgTypecode")) == "6"}
+    targets: dict[str, set] = {}
+    for w in wl.get("candidates", []):
+        if (w.get("name"), w.get("sido")) in reg6:
+            targets.setdefault(w["sido"], set()).add(w["name"])
+    if not targets:
+        return None
+    eid = "00" + sg_id
+    out: list[dict] = []
+    for sd_name, names in targets.items():
+        code = _SIDO_CITYCODE.get(sd_name)
+        if not code:
+            continue
+        rows = _vccp_rows(eid, "6", code, "VCCP09_#6")
+        if not rows:
+            continue
+        for r in _parse_vccp_blocks(rows, "6", sd_override=sd_name, sgg_col="b1"):
+            if any(c["name"] in names for c in r["candidates"]):
+                out.append(r)
+        time.sleep(0.15)
+    return out or None
 
 
 # ============ 가공 / 저장 ============
@@ -894,7 +940,11 @@ def main() -> None:
         na = scrape_counting_assembly(args.sg_id) or []
         if na:
             print(f"  · 개표 웹(VCCP09 #2) 폴백: 국회의원 재보궐 {len(na)}곳")
-        web_races = (gov + bh + na) or None
+        # 기초의원 — 워치리스트에 등록된 기초의원 후보의 선거구만(목포 손혜원·남원 이숙자 등).
+        kc = scrape_counting_muni_council_watch(args.sg_id) or []
+        if kc:
+            print(f"  · 개표 웹(VCCP09 #6) 폴백: 기초의원 주목 {len(kc)}곳")
+        web_races = (gov + bh + na + kc) or None
 
     current, meta = build_current(args.sg_id, polled_at, counting_calls, turnout, web_races)
     meta["counting_calls_total"] = len(counting_calls) + failed
