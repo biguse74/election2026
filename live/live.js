@@ -488,7 +488,7 @@ function renderTurnoutTrend(cur, histHourly) {
   }));
   series.push({ label: '2026 오늘', color: '#c41e3a', data: today, width: 2.8 });
   const t2x = t => { const [h, m] = t.split(':').map(Number); return (h * 60 + m) - 7 * 60; };
-  const W = 640, H = 320, padL = 34, padR = 30, padT = 12, padB = 26;
+  const W = 640, H = 320, padL = 34, padR = 50, padT = 12, padB = 26;
   const xMax = Math.max(13 * 60, ...series.flatMap(s => s.data.map(d => t2x(d.time))));
   const yMax = Math.max(...series.flatMap(s => s.data.map(d => d.turnout_pct || 0)), 50) + 4;
   const px = x => padL + x / xMax * (W - padL - padR);
@@ -510,11 +510,19 @@ function renderTurnoutTrend(cur, histHourly) {
     const path = dd.map((d, i) => (i === 0 ? 'M' : 'L') + px(t2x(d.time)).toFixed(1) + ',' + py(d.turnout_pct).toFixed(1)).join(' ');
     g.push(`<path d="${path}" fill="none" stroke="${s.color}" stroke-width="${s.width || 1.5}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ''} stroke-linecap="round" stroke-linejoin="round"/>`);
     if (s.label.includes('오늘')) {
-      // 오늘 선: 각 점에 수치 라벨
-      dd.forEach(d => {
+      // 오늘 선: 점마다 원, 라벨은 겹치지 않게. 오른쪽(현재값)부터 채우고 30px 이내면 생략
+      // → 박스(현재) 점이 직전 정시 점과 가까워도 끝 숫자가 겹치지 않음.
+      const showLabel = new Set();
+      let keptX = Infinity;
+      for (let i = dd.length - 1; i >= 0; i--) {
+        const X = px(t2x(dd[i].time));
+        if (i === dd.length - 1 || keptX - X >= 30) { showLabel.add(i); keptX = X; }
+      }
+      dd.forEach((d, i) => {
         const X = px(t2x(d.time)), Y = py(d.turnout_pct);
         g.push(`<circle cx="${X.toFixed(1)}" cy="${Y.toFixed(1)}" r="3" fill="${s.color}"/>`);
-        g.push(`<text x="${X.toFixed(1)}" y="${(Y - 7).toFixed(1)}" font-size="10.5" font-weight="800" fill="${s.color}" text-anchor="middle">${fmt1(d.turnout_pct)}</text>`);
+        if (showLabel.has(i))
+          g.push(`<text x="${X.toFixed(1)}" y="${(Y - 7).toFixed(1)}" font-size="10.5" font-weight="800" fill="${s.color}" text-anchor="middle">${fmt1(d.turnout_pct)}</text>`);
       });
     } else {
       // 과거 선: 끝점(최종값) 라벨
@@ -1048,10 +1056,9 @@ async function render() {
       renderProjection(cur, histHourly);
       renderCompare2022(cur, histHourly);
       renderTurnoutTrend(cur, histHourly);
-      renderTurnoutTable(cur, histHourly);
+      renderEarlyVsDay(cur, earlyVoting);
       renderSeoulGu(cur);
       renderSigunguAll(cur);
-      renderEarlyVsDay(cur, earlyVoting);
       renderHistoryCompare(cur, histHourly);
       renderTurnoutCorr(cur);
       const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
@@ -1085,10 +1092,9 @@ async function render() {
   renderHero(cur, earlyVoting);
   renderProjection(cur, histHourly);
   renderTurnoutTrend(cur, histHourly);
-  renderTurnoutTable(cur, histHourly);
+  renderEarlyVsDay(cur, earlyVoting);
   renderSeoulGu(cur);
   renderSigunguAll(cur);
-  renderEarlyVsDay(cur, earlyVoting);
   renderHistoryCompare(cur, histHourly);
   renderWatchlist(watchlist);
   renderGroups(groups);
