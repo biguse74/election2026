@@ -384,21 +384,34 @@ function renderEarlyVsDay(cur, earlyVoting) {
   block.hidden = false;
   rows.sort((a, b) => b.total - a.total);
   const maxTotal = Math.max(...rows.map(r => r.total), 1);
+  // 전국 평균 누적(사전+당일) — 세로 파선 기준선 (위 시도별 표의 평균 파선과 동일 형식)
+  const evN = earlyVoting && earlyVoting.national;
+  const cN = cur && cur.turnout && cur.turnout.national;
+  let natTotal = null;
+  if (evN && cN) {
+    const elig = evN.voters || cN.eligible_voters || 0;
+    if (elig) natTotal = ((evN.voted || 0) + (cN.day_voters_so_far || 0)) / elig * 100;
+  }
+  const avgMark = (natTotal != null) ? (natTotal / maxTotal * 100).toFixed(1) : null;
   wrap.className = 'evd-table';
   wrap.innerHTML = rows.map(r => {
     const ew = r.earlyPct / maxTotal * 100, dw = r.dayPct / maxTotal * 100;
-    return `<div class="evd-row" title="${r.sd} · 사전 ${fmt1(r.earlyPct)}% + 당일 ${fmt1(r.dayPct)}% = ${fmt1(r.total)}%">` +
+    const above = (natTotal != null && r.total >= natTotal);
+    const cls = natTotal != null ? (above ? ' evd-above' : ' evd-below') : '';
+    return `<div class="evd-row${cls}" title="${r.sd} · 사전 ${fmt1(r.earlyPct)}% + 당일 ${fmt1(r.dayPct)}% = ${fmt1(r.total)}%${natTotal != null ? ` · 전국평균 ${fmt1(natTotal)}% ${above ? '이상' : '이하'}` : ''}">` +
       `<div class="evd-name">${r.sd}</div>` +
       `<div class="evd-stack">` +
         `<span class="evd-seg e" style="width:${ew.toFixed(1)}%">${ew >= 9 ? fmt1(r.earlyPct) : ''}</span>` +
         `<span class="evd-seg d" style="width:${dw.toFixed(1)}%">${dw >= 9 ? fmt1(r.dayPct) : ''}</span>` +
+        `${avgMark != null ? `<span class="evd-avgline" style="left:${avgMark}%"></span>` : ''}` +
       `</div>` +
       `<div class="evd-total">${fmt1(r.total)}%</div></div>`;
   }).join('');
   if (note) note.innerHTML =
-    `<span class="tl-item"><span class="tl-dot" style="background:#2b6cb0"></span>사전투표 (5/29~30 최종)</span>` +
-    `<span class="tl-item"><span class="tl-dot" style="background:#c0392b"></span>당일 본투표 (실시간)</span>` +
-    `<span class="evd-legend-note">막대 길이 = 누적 투표율 · 당일 진행에 따라 빨강이 늘어납니다</span>`;
+    `<span class="tl-item"><span class="tl-dot" style="background:#2b6cb0"></span>사전투표</span>` +
+    `<span class="tl-item"><span class="tl-dot" style="background:#c0392b"></span>당일 본투표</span>` +
+    `<span class="tl-item"><span class="tl-dot tl-dash"></span>전국 평균${natTotal != null ? ` (${fmt1(natTotal)}%)` : ''}</span>` +
+    `<span class="evd-legend-note">막대가 파선보다 길면 평균 이상</span>`;
 }
 
 // ── 투표율과 표심 (상관 산점도) ────────────────────────────────────

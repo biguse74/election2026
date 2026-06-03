@@ -135,6 +135,7 @@
   .trend-legend { display: flex; gap: 16px; justify-content: center; margin-top: 8px; flex-wrap: wrap; }
   .tl-item { font-size: 0.78rem; color: var(--muted); display: inline-flex; align-items: center; gap: 5px; }
   .tl-dot { width: 12px; height: 3px; border-radius: 2px; display: inline-block; }
+  .tl-dash { background: none !important; height: 0; border-top: 1.5px dashed #1a1a1a; border-radius: 0; }
 
   /* 시도별 투표율 표 */
   .turnout-table { display: grid; gap: 5px; }
@@ -168,7 +169,9 @@
   .evd-table { display: grid; gap: 4px; font-variant-numeric: tabular-nums; }
   .evd-row { display: grid; grid-template-columns: 92px 1fr 56px; align-items: center; gap: 10px; padding: 4px 2px; }
   .evd-name { font-size: 0.88rem; font-weight: 700; }
-  .evd-stack { display: flex; height: 18px; background: #f4f4f4; border-radius: 4px; overflow: hidden; }
+  .evd-stack { position: relative; display: flex; height: 18px; background: #f4f4f4; border-radius: 4px; overflow: hidden; }
+  .evd-avgline { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1.5px dashed #1a1a1a; z-index: 3; pointer-events: none; }
+  .evd-below .evd-total { color: var(--muted); }
   .evd-seg { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.68rem; font-weight: 700; white-space: nowrap; overflow: hidden; }
   .evd-seg.e { background: #2b6cb0; }
   .evd-seg.d { background: #c0392b; }
@@ -372,6 +375,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603o"></script>
+<script src="live.js?v=20260603p"></script>
 </body>
 </html>
