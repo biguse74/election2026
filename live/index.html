@@ -200,16 +200,21 @@
 
   /* 출구조사 3종 비교표 */
   .epc-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  #epc-table { min-width: 480px; }
-  .epc-row { display: grid; grid-template-columns: 96px 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 7px 6px; border-bottom: 1px solid #f1f1f1; font-size: 0.82rem; }
+  #epc-table { min-width: 640px; }
+  .epc-row { display: grid; grid-template-columns: 80px 1fr 1fr 1fr 1.15fr; gap: 8px; align-items: center; padding: 7px 6px; border-bottom: 1px solid #f1f1f1; font-size: 0.82rem; }
   .epc-head { font-weight: 800; color: var(--muted); font-size: 0.72rem; border-bottom: 2px solid #1a1a1a; align-items: start; }
+  .epc-head > div:last-child { color: #127a3e; }
   .epc-h-sub { display: block; font-weight: 600; font-size: 0.92em; color: #b06; }
   .epc-rg { font-weight: 800; white-space: nowrap; }
   .epc-diff { background: #fff5f5; border-left: 3px solid var(--accent); }
   .epc-flag { display: inline-block; font-size: 0.62rem; font-weight: 800; color: #fff; background: var(--accent); border-radius: 3px; padding: 1px 5px; margin-left: 5px; }
   .epc-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; vertical-align: middle; margin-right: 3px; }
   .epc-v { color: var(--muted); font-weight: 700; font-variant-numeric: tabular-nums; }
-  .epc-na { color: #ccc; }
+  .epc-na { color: #bbb; }
+  .epc-act { background: #f3f8f4; border-radius: 4px; padding: 3px 6px; }
+  .epc-ok { color: #127a3e; font-weight: 900; margin-left: 4px; }
+  .epc-x { color: var(--con); font-weight: 900; margin-left: 4px; }
+  .epc-prog { color: var(--muted); font-size: 0.72em; font-weight: 700; }
 
   /* 후보 사진 (개표) */
   .cand-photo { width: 34px; height: 42px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background: #eee; border: 1px solid var(--line); }
@@ -492,8 +497,8 @@
     <div id="exitpoll-asm" class="ep-grid"></div>
   </section>
   <section class="block" id="epc-block" hidden>
-    <h2>출구조사·예측조사·시뮬레이션 비교 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">방송3사 · JTBC · 뉴탐사</span></h2>
-    <p class="block-sub"><b style="color:#c41e3a;">엇갈림</b> 표시는 방송3사와 JTBC가 1위를 다르게 본 선거. 세 지표는 성격이 다릅니다 — <b>방송3사·JTBC=출구/예측조사 1위 후보·득표율(%)</b>, <b>뉴탐사=몬테카를로 시뮬레이션 예측 1위</b>(당선확률은 득표율과 척도가 달라 이름만 표기). <span id="epc-summary" style="font-weight:700;"></span></p>
+    <h2>예측 vs 실제 — 누가 맞혔나 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">방송3사·JTBC·뉴탐사 vs 개표</span></h2>
+    <p class="block-sub">방송3사 출구조사·JTBC 예측조사·뉴탐사 시뮬레이션의 예측 1위를 <b>실제 개표 1위(당선)</b>와 비교합니다. 실제와 맞으면 <b style="color:#127a3e">✓</b>, 빗나가면 <b style="color:#c41e3a">✗</b>. <b style="color:#c41e3a;">엇갈림</b>은 방송3사·JTBC가 1위를 다르게 본 선거. (방송3사·JTBC=후보·득표율%, 뉴탐사=시뮬레이션 예측 1위 이름.) <span id="epc-summary" style="font-weight:700;"></span></p>
     <div class="epc-wrap"><div id="epc-table"></div></div>
   </section>
   <section class="block" id="panse-block" hidden>
@@ -568,6 +573,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260604d"></script>
+<script src="live.js?v=20260604e"></script>
 </body>
 </html>

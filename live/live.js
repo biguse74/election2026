@@ -974,6 +974,21 @@ function renderExitPoll(exitPoll) {
 }
 
 // ── 출구조사·예측 3종 비교표 (방송3사 / JTBC / 뉴탐사) ──────────────
+// 비교표 한 줄의 실제 개표 1위(당선) 후보를 현재 개표 데이터에서 찾는다.
+function epcActual(row) {
+  const races = LATEST_RACES || [];
+  let r = null;
+  if (row.type === 'gov') {
+    r = races.find(x => String(x.sg_type_code) === '3' && x.sd_name === row.region);
+  } else {  // 재보궐(asm) — 예측 후보 이름으로 해당 선거구를 찾음
+    const names = [row.b3, row.jtbc, row.ours].filter(Boolean).map(p => p.name);
+    r = races.find(x => String(x.sg_type_code) === '2' && (x.candidates || []).some(c => names.includes(c.name)));
+  }
+  if (!r || !(r.candidates || []).length) return null;
+  const w = r.candidates[0];
+  return { name: w.name, party: w.jd_name, pct: w.share_pct, prog: r.progress_pct || 0 };
+}
+
 function renderExitPollCompare(data) {
   const block = document.getElementById('epc-block');
   const root = document.getElementById('epc-table');
@@ -981,20 +996,53 @@ function renderExitPollCompare(data) {
   const rows = (data && data.rows) || [];
   if (!rows.length) { block.hidden = true; return; }
   block.hidden = false;
-  const sumEl = document.getElementById('epc-summary');
-  if (sumEl) sumEl.textContent = data.jtbc_summary || '';
-  const cell = (e, kind) => {
+
+  // 출처별 적중 집계(실제 1위와 예측 1위 이름 일치). 개표 80%↑인 선거만 채점.
+  const score = { b3: 0, jtbc: 0, ours: 0 }, denom = { b3: 0, jtbc: 0, ours: 0 };
+  const hit = (pred, act) => pred && act && act.prog >= 80 ? (pred.name === act.name ? 'hit' : 'miss') : '';
+
+  const predCell = (e, act, kind) => {
     if (!e) return '<span class="epc-na">–</span>';
-    if (kind === 'ours') return `<b>${esc(e.name)}</b>`;  // 뉴탐사: 예측 1위 이름만(확률은 척도가 달라 제외)
+    const h = hit(e, act);
+    const mark = h === 'hit' ? '<span class="epc-ok">✓</span>' : (h === 'miss' ? '<span class="epc-x">✗</span>' : '');
+    if (kind === 'ours') return `<b>${esc(e.name)}</b>${mark}`;  // 뉴탐사: 이름만(확률은 척도 달라 제외)
     const color = partyColor(LATEST_PARTIES, e.party);
-    return `<span class="epc-dot" style="background:${color}"></span><b>${esc(e.name)}</b> <span class="epc-v">${fmt1(e.pct)}%</span>`;
+    return `<span class="epc-dot" style="background:${color}"></span><b>${esc(e.name)}</b> <span class="epc-v">${fmt1(e.pct)}%</span>${mark}`;
   };
-  const head = `<div class="epc-row epc-head"><div>선거</div><div>방송3사 출구조사</div><div>JTBC 예측조사</div><div>뉴탐사 시뮬레이션<span class="epc-h-sub">예측 1위</span></div></div>`;
-  const body = rows.map(r =>
-    `<div class="epc-row${r.disagree ? ' epc-diff' : ''}">` +
-    `<div class="epc-rg">${esc(r.label)}${r.disagree ? '<span class="epc-flag">엇갈림</span>' : ''}</div>` +
-    `<div>${cell(r.b3, 'm')}</div><div>${cell(r.jtbc, 'm')}</div><div>${cell(r.ours, 'ours')}</div></div>`).join('');
+  const actCell = (act) => {
+    if (!act) return '<span class="epc-na">개표 대기</span>';
+    const color = partyColor(LATEST_PARTIES, act.party);
+    const tag = act.prog >= 80 ? '' : ` <span class="epc-prog">개표 ${fmt1(act.prog)}%</span>`;
+    return `<span class="epc-dot" style="background:${color}"></span><b>${esc(act.name)}</b> <span class="epc-v">${fmt1(act.pct)}%</span>${tag}`;
+  };
+
+  const head = `<div class="epc-row epc-head"><div>선거</div><div>방송3사 출구조사</div><div>JTBC 예측조사</div><div>뉴탐사 시뮬레이션<span class="epc-h-sub">예측 1위</span></div><div>실제 결과<span class="epc-h-sub">개표 1위</span></div></div>`;
+  const body = rows.map(r => {
+    const act = epcActual(r);
+    for (const k of ['b3', 'jtbc', 'ours']) {
+      const hv = hit(r[k], act);
+      if (hv) { denom[k]++; if (hv === 'hit') score[k]++; }
+    }
+    return `<div class="epc-row${r.disagree ? ' epc-diff' : ''}">` +
+      `<div class="epc-rg">${esc(r.label)}${r.disagree ? '<span class="epc-flag">엇갈림</span>' : ''}</div>` +
+      `<div>${predCell(r.b3, act, 'm')}</div><div>${predCell(r.jtbc, act, 'm')}</div>` +
+      `<div>${predCell(r.ours, act, 'ours')}</div><div class="epc-act">${actCell(act)}</div></div>`;
+  }).join('');
   root.innerHTML = head + body;
+
+  // 적중률 요약 + 가장 정확한 출처
+  const sumEl = document.getElementById('epc-summary');
+  if (sumEl) {
+    const NAME = { b3: '방송3사', jtbc: 'JTBC', ours: '뉴탐사' };
+    const parts = ['b3', 'jtbc', 'ours'].filter(k => denom[k]).map(k => `${NAME[k]} ${score[k]}/${denom[k]}`);
+    if (parts.length) {
+      const best = ['b3', 'jtbc', 'ours'].filter(k => denom[k])
+        .sort((a, b) => (score[b] / denom[b]) - (score[a] / denom[a]) || denom[b] - denom[a])[0];
+      sumEl.innerHTML = `적중 — ${parts.join(' · ')} <b style="color:#127a3e">· 가장 정확: ${NAME[best]}</b>`;
+    } else {
+      sumEl.textContent = '개표가 충분히 진행되면 적중 여부를 표시합니다.';
+    }
+  }
 }
 
 // ── 판세 그래픽 (뉴탐사 자체 제작 타일 지도) ────────────────────────
@@ -1278,6 +1326,12 @@ function renderSearch() {
   const countEl = document.getElementById('f-count');
   if (!root) return;
   const f = currentFilters();
+  // 검색·필터를 적용하기 전에는 결과를 쏟아내지 않고 검색창만 보여 준다.
+  if (!f.type && !f.sido && !f.party && !f.q) {
+    countEl.textContent = '';
+    root.innerHTML = `<div class="state-empty">후보·지역을 검색하거나 위 필터(선거 종류·시도·정당)를 선택하면 개표 결과가 나옵니다.</div>`;
+    return;
+  }
   const matched = LATEST_RACES.filter(r => raceMatches(r, f));
   countEl.textContent = `${matched.length.toLocaleString('ko-KR')}개 선거구`;
 
