@@ -226,31 +226,33 @@ const ZIBANG_HISTORY = [
   { round: 8, year: 2022, rate: 50.9 },
 ];
 
-// ── 예상 최종 투표율 (과거선거 같은시각→최종 회귀) ─────────────────
+// ── 예상 최종 투표율 (전국) — '도달 수준' 매칭 가산법 ─────────────────
+// 시도별 표와 동일한 방식. 현재 누계값(사전 포함)과 같은 수준에 도달했던 과거선거
+// 시점을 찾아 거기서 최종까지의 증가분(평균)을 더한다. 시각 배율법은 사전 합산
+// 타이밍 차이로 과대추정되므로 쓰지 않는다(상단 박스 = 시도별 표 전국값 일치).
 function computeProjection(cur, histHourly) {
-  const today = (cur && cur.turnout && cur.turnout.hourly) || [];
-  if (!today.length) return null;
-  const cp = today[today.length - 1];
-  const x0 = cp.turnout_pct, T = cp.time;
-  if (x0 == null) return null;
-  const pts = [];
+  const nat = cur && cur.turnout && cur.turnout.national;
+  let level = nat && nat.turnout_pct;
+  if (level == null) {  // 박스 누계값 없으면 정시 최신값으로 폴백
+    const today = (cur && cur.turnout && cur.turnout.hourly) || [];
+    level = today.length ? today[today.length - 1].turnout_pct : null;
+  }
+  if (level == null) return null;
+  const incs = [];
   for (const r of ((histHourly && histHourly.rounds) || [])) {
     const arr = r.national || [];
-    const at = arr.find(d => d.time === T);
-    const fin = arr.length ? arr[arr.length - 1].turnout_pct : null;
-    if (at && at.turnout_pct != null && fin != null) pts.push({ x: at.turnout_pct, y: fin });
+    if (!arr.length) continue;
+    const fin = arr[arr.length - 1].turnout_pct;
+    if (fin == null) continue;
+    let base = null;
+    for (const d of arr) { if (d.turnout_pct != null && d.turnout_pct >= level) { base = d.turnout_pct; break; } }
+    if (base == null) base = fin;  // 과거 최종보다 이미 높으면 잔여 0
+    incs.push(Math.max(0, fin - base));
   }
-  if (pts.length < 2) return null;
-  const n = pts.length;
-  const sx = pts.reduce((s, p) => s + p.x, 0), sy = pts.reduce((s, p) => s + p.y, 0);
-  const sxx = pts.reduce((s, p) => s + p.x * p.x, 0), sxy = pts.reduce((s, p) => s + p.x * p.y, 0);
-  const denom = n * sxx - sx * sx;
-  if (!denom) return null;
-  const b = (n * sxy - sx * sy) / denom, a = (sy - b * sx) / n;
-  const proj = a + b * x0;
-  if (!isFinite(proj)) return null;
-  const ratios = pts.map(p => p.y / p.x * x0).filter(v => isFinite(v));
-  return { x0, T, n, proj, lo: Math.min(proj, ...ratios), hi: Math.max(proj, ...ratios) };
+  if (!incs.length) return null;
+  const mean = incs.reduce((s, v) => s + v, 0) / incs.length;
+  const cap = v => Math.min(99, v);
+  return { x0: level, n: incs.length, proj: cap(level + mean), lo: cap(level + Math.min(...incs)), hi: cap(level + Math.max(...incs)) };
 }
 
 // 예상 최종 투표율의 역대 맥락 한 줄. 불확실성(범위) 명시, '역대 최고' 단정 금지(1995년 68.4%가 역대 1위).
@@ -260,7 +262,7 @@ function projectionContext(pj) {
   const ctx = (pj.proj >= record)
     ? `1995년 ${fmt1(record)}% 상회 수준(추정)`
     : `역대 ${rank}위권 · 1995년 ${fmt1(record)}% 이후 높은 수준`;
-  return `회귀 추정 · 범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}% · ${ctx}`;
+  return `도달수준 추정 · 범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}% · ${ctx}`;
 }
 
 function renderProjection(cur, histHourly) {
@@ -321,7 +323,7 @@ function renderHistoryCompare(cur, histHourly) {
   wrap.innerHTML = rows.join('');
   if (note) {
     note.textContent = pj
-      ? `오늘 예상은 같은 시각 과거선거→최종 회귀 추정(범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}%). 확정 아님.`
+      ? `오늘 예상은 같은 누계 도달 시점→최종 증가분 추정(범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}%). 확정 아님.`
       : `역대 지방선거 최종 투표율(중앙선거관리위원회 확정). 1995년 1회가 ${fmt1(Math.max(...ZIBANG_HISTORY.map(h=>h.rate)))}%로 역대 최고.`;
   }
   block.hidden = false;
