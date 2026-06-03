@@ -133,7 +133,8 @@
   .epc-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   #epc-table { min-width: 480px; }
   .epc-row { display: grid; grid-template-columns: 96px 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 7px 6px; border-bottom: 1px solid #f1f1f1; font-size: 0.82rem; }
-  .epc-head { font-weight: 800; color: var(--muted); font-size: 0.72rem; border-bottom: 2px solid #1a1a1a; }
+  .epc-head { font-weight: 800; color: var(--muted); font-size: 0.72rem; border-bottom: 2px solid #1a1a1a; align-items: start; }
+  .epc-h-sub { display: block; font-weight: 600; font-size: 0.92em; color: #b06; }
   .epc-rg { font-weight: 800; white-space: nowrap; }
   .epc-diff { background: #fff5f5; border-left: 3px solid var(--accent); }
   .epc-flag { display: inline-block; font-size: 0.62rem; font-weight: 800; color: #fff; background: var(--accent); border-radius: 3px; padding: 1px 5px; margin-left: 5px; }
@@ -360,8 +361,8 @@
   </section>
 
   <section class="block" id="epc-block" hidden>
-    <h2>출구조사·예측 3종 비교 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">방송3사 · JTBC · 뉴탐사</span></h2>
-    <p class="block-sub"><b style="color:#c41e3a;">엇갈림</b> 표시는 방송3사와 JTBC가 1위를 다르게 예측한 선거. 방송3사·JTBC=출구조사 득표율(1위 격차%p), 뉴탐사=자체 시뮬 당선확률(%). <span id="epc-summary" style="font-weight:700;"></span></p>
+    <h2>출구조사 vs 뉴탐사 시뮬 비교 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">방송3사 · JTBC · 뉴탐사</span></h2>
+    <p class="block-sub"><b style="color:#c41e3a;">엇갈림</b> 표시는 방송3사와 JTBC가 1위를 다르게 본 선거. <b>방송3사·JTBC는 출구조사</b>(실제 투표자 면접) 1위 득표율 격차(%p), <b>뉴탐사는 출구조사·여론조사가 아니라 과거 개표결과 기반 몬테카를로 시뮬레이션</b> 당선확률(%)입니다 — 성격이 다른 지표. <span id="epc-summary" style="font-weight:700;"></span></p>
     <div class="epc-wrap"><div id="epc-table"></div></div>
   </section>
 
@@ -465,6 +466,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603G"></script>
+<script src="live.js?v=20260603H"></script>
 </body>
 </html>

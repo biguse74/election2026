@@ -885,7 +885,7 @@ function renderExitPollCompare(data) {
     const val = kind === 'ours' ? `${fmt1(e.prob)}%` : `+${fmt1(e.margin)}`;
     return `<span class="epc-dot" style="background:${color}"></span><b>${esc(e.name)}</b> <span class="epc-v">${val}</span>`;
   };
-  const head = `<div class="epc-row epc-head"><div>선거</div><div>방송3사</div><div>JTBC</div><div>뉴탐사 예측</div></div>`;
+  const head = `<div class="epc-row epc-head"><div>선거</div><div>방송3사 출구조사</div><div>JTBC 출구조사</div><div>뉴탐사 시뮬<span class="epc-h-sub">당선확률</span></div></div>`;
   const body = rows.map(r =>
     `<div class="epc-row${r.disagree ? ' epc-diff' : ''}">` +
     `<div class="epc-rg">${esc(r.label)}${r.disagree ? '<span class="epc-flag">엇갈림</span>' : ''}</div>` +
