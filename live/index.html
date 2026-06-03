@@ -125,6 +125,17 @@
   .pt-etc { background: #555; }
   .pt-meta { font-size: 0.76rem; color: rgba(255,255,255,0.72); font-weight: 600; margin-left: auto; }
 
+  /* 표차 — 박빙(근소)이면 빨강 강조 */
+  .margin-close { color: var(--con); font-weight: 900; }
+  .margin-pp { color: var(--muted); font-weight: 600; margin-left: 5px; font-size: 0.82em; }
+  table.other td.margin-cell { white-space: nowrap; line-height: 1.25; }
+  .watch-margin-row { margin-top: 3px; }
+  .watch-margin { font-size: 0.8rem; color: var(--muted); font-weight: 700; }
+  .watch-margin b { color: var(--ink); }
+  .watch-margin.margin-close, .watch-margin.margin-close b { color: var(--con); }
+  .rc-margin { font-weight: 700; color: var(--muted); }
+  .rc-margin.margin-close { color: var(--con); font-weight: 900; }
+
   /* 고정폭 그리드 → 후보별 막대 시작점이 항상 같은 위치(당이름 길이 무관) */
   .cand-row { display: grid; grid-template-columns: 34px 11px 56px 66px 1fr 48px; align-items: center; gap: 7px; margin: 5px 0; }
   .cand-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
@@ -531,6 +542,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603W"></script>
+<script src="live.js?v=20260603X"></script>
 </body>
 </html>

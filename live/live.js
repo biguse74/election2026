@@ -140,6 +140,27 @@ function candDetailHTML(r) {
 }
 
 // 표 한 행(요약, 클릭 시 펼침) + 상세 행 — 검색·그룹 공용
+// 1·2위 득표수 차이(표차). 후보 2명 미만이면 null.
+function marginVotes(r) {
+  const c = r.candidates || [];
+  if (c.length < 2) return null;
+  return Math.abs((c[0].votes || 0) - (c[1].votes || 0));
+}
+// 근소한 표차(박빙) 여부 — 격차 3%p 미만. 중선거구(기초의원)는 제외.
+function isCloseRace(r) {
+  const pp = r.rank1_minus_rank2_pp;
+  return pp != null && pp < 3.0 && (r.progress_pct || 0) >= 1 && String(r.sg_type_code) !== '6';
+}
+// 격차 셀 — 표차(표)를 크게, %p를 작게. 박빙이면 빨강 강조.
+function marginCellHTML(r) {
+  const mv = marginVotes(r);
+  const pp = r.rank1_minus_rank2_pp;
+  if (mv == null) return pp != null ? `${fmt1(pp)}pp` : '—';
+  const close = isCloseRace(r);
+  return `<b class="${close ? 'margin-close' : ''}">${intComma(mv)}표</b>` +
+    `<small class="margin-pp">${fmt1(pp)}pp</small>`;
+}
+
 function raceTableRow(r) {
   const rk = r.race_key || '';
   const c1 = (r.candidates || [])[0];
@@ -156,7 +177,7 @@ function raceTableRow(r) {
     <td>${racePlace(r)}</td>
     <td class="lead-cell">${lead}</td>
     <td>${second}</td>
-    <td class="num">${fmt1(r.rank1_minus_rank2_pp)}pp</td>
+    <td class="num margin-cell">${marginCellHTML(r)}</td>
     <td class="num">${fmt1(r.progress_pct)}%<span class="rd-caret">${open ? '▴' : '▾'}</span></td>
   </tr>`;
   const detail = `<tr class="rd-row" data-rk="${esc(rk)}"${open ? '' : ' hidden'}>
@@ -764,6 +785,16 @@ function renderWatchlist(watchlist) {
     const { race, cand } = m;
     const st = watchStatus(race, cand);
     const color = partyColor(LATEST_PARTIES, cand.jd_name);
+    const cs = race.candidates || [];
+    let marginHTML = '';
+    if (String(race.sg_type_code) !== '6' && cs.length >= 2) {
+      const close = isCloseRace(race);
+      const d = cand.current_rank === 1
+        ? (cand.votes || 0) - (cs[1].votes || 0)
+        : (cs[0].votes || 0) - (cand.votes || 0);
+      const who = cand.current_rank === 1 ? '2위와' : '1위와';
+      marginHTML = `<div class="watch-margin-row"><span class="watch-margin ${close ? 'margin-close' : ''}">${who} <b>${intComma(d)}표</b> 차${close ? ' · 박빙' : ''}</span></div>`;
+    }
     return `<div class="watch-card">
       <div class="watch-head">
         <span class="watch-name">${cand.name}<span class="watch-party">${cand.jd_name || ''}</span></span>
@@ -774,6 +805,7 @@ function renderWatchlist(watchlist) {
         <span class="watch-share" style="color:${color}">${fmt1(cand.share_pct)}<span style="font-size:0.5em">%</span></span>
         <span class="watch-rank">${cand.current_rank}위 / ${(race.candidates || []).length}명</span>
       </div>
+      ${marginHTML}
       <span class="watch-chip ${st.cls}">${st.label}</span>
     </div>`;
   }).join('');
@@ -1054,8 +1086,12 @@ function renderChiefRaces(cur, predMap, parties) {
       const predPart = (demProb != null)
         ? `<span class="rc-item">뉴탐사 예측 <b>${predText(demProb)}</b> 당선확률</span>`
         : `<span class="rc-item">예측 <b>—</b></span>`;
+      const mv = marginVotes(race);
+      const mvText = mv != null
+        ? ` <span class="rc-margin ${isCloseRace(race) ? 'margin-close' : ''}">${intComma(mv)}표차${isCloseRace(race) ? ' · 박빙' : ''}</span>`
+        : '';
       compareHTML = `
-        <span class="rc-item">실제 <b>${marginText(cls.actualMargin)}</b></span>
+        <span class="rc-item">실제 <b>${marginText(cls.actualMargin)}</b>${mvText}</span>
         ${predPart}
         <span class="rc-verdict v-${cls.verdict}">${cls.label}</span>`;
     } else {
