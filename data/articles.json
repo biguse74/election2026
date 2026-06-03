@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-06-03T01:37:06+09:00",
+  "updated_at": "2026-06-03T13:21:12+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 341,
+  "count": 342,
   "articles": [
+    {
+      "date": "2026-06-03",
+      "title": "민주 압승론에 경고등...서울이 경남보다 위태",
+      "url": "https://newtamsa.org/news/u97SII",
+      "category": "특별기획",
+      "tags": [
+        "민주당",
+        "지방선거",
+        "경남",
+        "서울",
+        "몬테카를로",
+        "시뮬레이션",
+        "정원오",
+        "오세훈"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-06-02",
       "title": "청담동 첼리스트폰 조작 정황 무더기…한동훈 행적 4년째 침묵",
