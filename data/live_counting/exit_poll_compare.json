@@ -1,344 +1,351 @@
 {
- "note": "방송3사 출구조사·JTBC 예측조사=1위 후보·득표율(%). 뉴탐사=자체 몬테카를로 시뮬레이션(2026-06-02) 예측 1위(이름만).",
- "jtbc_summary": "JTBC 총괄: 민주 10 · 국힘 1(경북) · 경합 5(대구·충북·충남·전북·경남)",
- "rows": [
-  {
-   "label": "서울시장",
-   "region": "서울특별시",
-   "type": "gov",
-   "b3": {
-    "name": "정원오",
-    "party": "더불어민주당",
-    "pct": 51.4
-   },
-   "jtbc": {
-    "name": "정원오",
-    "party": "더불어민주당",
-    "pct": 53.5
-   },
-   "ours": {
-    "name": "오세훈"
-   },
-   "disagree": false
-  },
-  {
-   "label": "경기지사",
-   "region": "경기도",
-   "type": "gov",
-   "b3": {
-    "name": "추미애",
-    "party": "더불어민주당",
-    "pct": 60.4
-   },
-   "jtbc": {
-    "name": "추미애",
-    "party": "더불어민주당",
-    "pct": 56.4
-   },
-   "ours": {
-    "name": "추미애"
-   },
-   "disagree": false
-  },
-  {
-   "label": "인천시장",
-   "region": "인천광역시",
-   "type": "gov",
-   "b3": {
-    "name": "박찬대",
-    "party": "더불어민주당",
-    "pct": 53.7
-   },
-   "jtbc": {
-    "name": "박찬대",
-    "party": "더불어민주당",
-    "pct": 56.6
-   },
-   "ours": {
-    "name": "박찬대"
-   },
-   "disagree": false
-  },
-  {
-   "label": "부산시장",
-   "region": "부산광역시",
-   "type": "gov",
-   "b3": {
-    "name": "전재수",
-    "party": "더불어민주당",
-    "pct": 50.2
-   },
-   "jtbc": {
-    "name": "전재수",
-    "party": "더불어민주당",
-    "pct": 53.9
-   },
-   "ours": {
-    "name": "전재수"
-   },
-   "disagree": false
-  },
-  {
-   "label": "울산시장",
-   "region": "울산광역시",
-   "type": "gov",
-   "b3": {
-    "name": "김상욱",
-    "party": "더불어민주당",
-    "pct": 52.8
-   },
-   "jtbc": {
-    "name": "김상욱",
-    "party": "더불어민주당",
-    "pct": 51.6
-   },
-   "ours": {
-    "name": "김상욱"
-   },
-   "disagree": false
-  },
-  {
-   "label": "경남지사",
-   "region": "경상남도",
-   "type": "gov",
-   "b3": {
-    "name": "김경수",
-    "party": "더불어민주당",
-    "pct": 54.3
-   },
-   "jtbc": {
-    "name": "김경수",
-    "party": "더불어민주당",
-    "pct": 52.3
-   },
-   "ours": {
-    "name": "박완수"
-   },
-   "disagree": false
-  },
-  {
-   "label": "대전시장",
-   "region": "대전광역시",
-   "type": "gov",
-   "b3": {
-    "name": "허태정",
-    "party": "더불어민주당",
-    "pct": 55.9
-   },
-   "jtbc": {
-    "name": "허태정",
-    "party": "더불어민주당",
-    "pct": 59.7
-   },
-   "ours": {
-    "name": "허태정"
-   },
-   "disagree": false
-  },
-  {
-   "label": "세종시장",
-   "region": "세종특별자치시",
-   "type": "gov",
-   "b3": {
-    "name": "조상호",
-    "party": "더불어민주당",
-    "pct": 64.3
-   },
-   "jtbc": {
-    "name": "조상호",
-    "party": "더불어민주당",
-    "pct": 60.7
-   },
-   "ours": {
-    "name": "조상호"
-   },
-   "disagree": false
-  },
-  {
-   "label": "충남지사",
-   "region": "충청남도",
-   "type": "gov",
-   "b3": {
-    "name": "박수현",
-    "party": "더불어민주당",
-    "pct": 52.1
-   },
-   "jtbc": {
-    "name": "박수현",
-    "party": "더불어민주당",
-    "pct": 52.8
-   },
-   "ours": {
-    "name": "박수현"
-   },
-   "disagree": false
-  },
-  {
-   "label": "충북지사",
-   "region": "충청북도",
-   "type": "gov",
-   "b3": {
-    "name": "신용한",
-    "party": "더불어민주당",
-    "pct": 56.2
-   },
-   "jtbc": {
-    "name": "신용한",
-    "party": "더불어민주당",
-    "pct": 52.2
-   },
-   "ours": {
-    "name": "신용한"
-   },
-   "disagree": false
-  },
-  {
-   "label": "대구시장",
-   "region": "대구광역시",
-   "type": "gov",
-   "b3": {
-    "name": "추경호",
-    "party": "국민의힘",
-    "pct": 49.9
-   },
-   "jtbc": {
-    "name": "김부겸",
-    "party": "더불어민주당",
-    "pct": 49.7
-   },
-   "ours": {
-    "name": "추경호"
-   },
-   "disagree": true
-  },
-  {
-   "label": "경북지사",
-   "region": "경상북도",
-   "type": "gov",
-   "b3": {
-    "name": "이철우",
-    "party": "국민의힘",
-    "pct": 69.7
-   },
-   "jtbc": {
-    "name": "이철우",
-    "party": "국민의힘",
-    "pct": 63.6
-   },
-   "ours": {
-    "name": "이철우"
-   },
-   "disagree": false
-  },
-  {
-   "label": "전남광주시장",
-   "region": "전남광주통합특별시",
-   "type": "gov",
-   "b3": {
-    "name": "민형배",
-    "party": "더불어민주당",
-    "pct": 78.6
-   },
-   "jtbc": {
-    "name": "민형배",
-    "party": "더불어민주당",
-    "pct": 79.3
-   },
-   "ours": {
-    "name": "민형배"
-   },
-   "disagree": false
-  },
-  {
-   "label": "전북지사",
-   "region": "전북특별자치도",
-   "type": "gov",
-   "b3": {
-    "name": "이원택",
-    "party": "더불어민주당",
-    "pct": 48.5
-   },
-   "jtbc": {
-    "name": "이원택",
-    "party": "더불어민주당",
-    "pct": 50.9
-   },
-   "ours": {
-    "name": "김관영"
-   },
-   "disagree": false
-  },
-  {
-   "label": "강원지사",
-   "region": "강원특별자치도",
-   "type": "gov",
-   "b3": {
-    "name": "우상호",
-    "party": "더불어민주당",
-    "pct": 51.3
-   },
-   "jtbc": {
-    "name": "우상호",
-    "party": "더불어민주당",
-    "pct": 56.9
-   },
-   "ours": {
-    "name": "우상호"
-   },
-   "disagree": false
-  },
-  {
-   "label": "제주지사",
-   "region": "제주특별자치도",
-   "type": "gov",
-   "b3": {
-    "name": "위성곤",
-    "party": "더불어민주당",
-    "pct": 62.2
-   },
-   "jtbc": {
-    "name": "위성곤",
-    "party": "더불어민주당",
-    "pct": 63.9
-   },
-   "ours": {
-    "name": "위성곤"
-   },
-   "disagree": false
-  },
-  {
-   "label": "경기 평택을",
-   "region": "경기 평택을",
-   "type": "asm",
-   "b3": {
-    "name": "조국",
-    "party": "조국혁신당",
-    "pct": 31.1
-   },
-   "jtbc": {
-    "name": "김용남",
-    "party": "더불어민주당",
-    "pct": 34.2
-   },
-   "ours": null,
-   "disagree": true
-  },
-  {
-   "label": "부산 북구갑",
-   "region": "부산 북구갑",
-   "type": "asm",
-   "b3": {
-    "name": "하정우",
-    "party": "더불어민주당",
-    "pct": 42.6
-   },
-   "jtbc": {
-    "name": "한동훈",
-    "party": "무소속",
-    "pct": 48.1
-   },
-   "ours": null,
-   "disagree": true
-  }
- ]
+  "note": "방송3사 출구조사·JTBC 예측조사=1위 후보·득표율(%). 뉴탐사=자체 몬테카를로 시뮬레이션(2026-06-02) 예측 1위(이름만).",
+  "jtbc_summary": "JTBC 총괄: 민주 10 · 국힘 1(경북) · 경합 5(대구·충북·충남·전북·경남)",
+  "rows": [
+    {
+      "label": "서울시장",
+      "region": "서울특별시",
+      "type": "gov",
+      "b3": {
+        "name": "정원오",
+        "party": "더불어민주당",
+        "pct": 51.4
+      },
+      "jtbc": {
+        "name": "정원오",
+        "party": "더불어민주당",
+        "pct": 53.5
+      },
+      "ours": {
+        "name": "오세훈"
+      },
+      "disagree": false
+    },
+    {
+      "label": "경기지사",
+      "region": "경기도",
+      "type": "gov",
+      "b3": {
+        "name": "추미애",
+        "party": "더불어민주당",
+        "pct": 60.4
+      },
+      "jtbc": {
+        "name": "추미애",
+        "party": "더불어민주당",
+        "pct": 56.4
+      },
+      "ours": {
+        "name": "추미애"
+      },
+      "disagree": false
+    },
+    {
+      "label": "인천시장",
+      "region": "인천광역시",
+      "type": "gov",
+      "b3": {
+        "name": "박찬대",
+        "party": "더불어민주당",
+        "pct": 53.7
+      },
+      "jtbc": {
+        "name": "박찬대",
+        "party": "더불어민주당",
+        "pct": 56.6
+      },
+      "ours": {
+        "name": "박찬대"
+      },
+      "disagree": false
+    },
+    {
+      "label": "부산시장",
+      "region": "부산광역시",
+      "type": "gov",
+      "b3": {
+        "name": "전재수",
+        "party": "더불어민주당",
+        "pct": 50.2
+      },
+      "jtbc": {
+        "name": "전재수",
+        "party": "더불어민주당",
+        "pct": 53.9
+      },
+      "ours": {
+        "name": "전재수"
+      },
+      "disagree": false
+    },
+    {
+      "label": "울산시장",
+      "region": "울산광역시",
+      "type": "gov",
+      "b3": {
+        "name": "김상욱",
+        "party": "더불어민주당",
+        "pct": 52.8
+      },
+      "jtbc": {
+        "name": "김상욱",
+        "party": "더불어민주당",
+        "pct": 51.6
+      },
+      "ours": {
+        "name": "김상욱"
+      },
+      "disagree": false
+    },
+    {
+      "label": "경남지사",
+      "region": "경상남도",
+      "type": "gov",
+      "b3": {
+        "name": "김경수",
+        "party": "더불어민주당",
+        "pct": 54.3
+      },
+      "jtbc": {
+        "name": "김경수",
+        "party": "더불어민주당",
+        "pct": 52.3
+      },
+      "ours": {
+        "name": "박완수"
+      },
+      "disagree": false
+    },
+    {
+      "label": "대전시장",
+      "region": "대전광역시",
+      "type": "gov",
+      "b3": {
+        "name": "허태정",
+        "party": "더불어민주당",
+        "pct": 55.9
+      },
+      "jtbc": {
+        "name": "허태정",
+        "party": "더불어민주당",
+        "pct": 59.7
+      },
+      "ours": {
+        "name": "허태정"
+      },
+      "disagree": false
+    },
+    {
+      "label": "세종시장",
+      "region": "세종특별자치시",
+      "type": "gov",
+      "b3": {
+        "name": "조상호",
+        "party": "더불어민주당",
+        "pct": 64.3
+      },
+      "jtbc": {
+        "name": "조상호",
+        "party": "더불어민주당",
+        "pct": 60.7
+      },
+      "ours": {
+        "name": "조상호"
+      },
+      "disagree": false
+    },
+    {
+      "label": "충남지사",
+      "region": "충청남도",
+      "type": "gov",
+      "b3": {
+        "name": "박수현",
+        "party": "더불어민주당",
+        "pct": 52.1
+      },
+      "jtbc": {
+        "name": "박수현",
+        "party": "더불어민주당",
+        "pct": 52.8
+      },
+      "ours": {
+        "name": "박수현"
+      },
+      "disagree": false
+    },
+    {
+      "label": "충북지사",
+      "region": "충청북도",
+      "type": "gov",
+      "b3": {
+        "name": "신용한",
+        "party": "더불어민주당",
+        "pct": 56.2
+      },
+      "jtbc": {
+        "name": "신용한",
+        "party": "더불어민주당",
+        "pct": 52.2
+      },
+      "ours": {
+        "name": "신용한"
+      },
+      "disagree": false
+    },
+    {
+      "label": "대구시장",
+      "region": "대구광역시",
+      "type": "gov",
+      "b3": {
+        "name": "추경호",
+        "party": "국민의힘",
+        "pct": 49.9
+      },
+      "jtbc": {
+        "name": "김부겸",
+        "party": "더불어민주당",
+        "pct": 49.7
+      },
+      "ours": {
+        "name": "추경호"
+      },
+      "disagree": true
+    },
+    {
+      "label": "경북지사",
+      "region": "경상북도",
+      "type": "gov",
+      "b3": {
+        "name": "이철우",
+        "party": "국민의힘",
+        "pct": 69.7
+      },
+      "jtbc": {
+        "name": "이철우",
+        "party": "국민의힘",
+        "pct": 63.6
+      },
+      "ours": {
+        "name": "이철우"
+      },
+      "disagree": false
+    },
+    {
+      "label": "전남광주시장",
+      "region": "전남광주통합특별시",
+      "type": "gov",
+      "b3": {
+        "name": "민형배",
+        "party": "더불어민주당",
+        "pct": 78.6
+      },
+      "jtbc": {
+        "name": "민형배",
+        "party": "더불어민주당",
+        "pct": 79.3
+      },
+      "ours": {
+        "name": "민형배"
+      },
+      "disagree": false
+    },
+    {
+      "label": "전북지사",
+      "region": "전북특별자치도",
+      "type": "gov",
+      "b3": {
+        "name": "이원택",
+        "party": "더불어민주당",
+        "pct": 48.5
+      },
+      "jtbc": {
+        "name": "이원택",
+        "party": "더불어민주당",
+        "pct": 50.9
+      },
+      "ours": {
+        "name": "김관영"
+      },
+      "disagree": false
+    },
+    {
+      "label": "강원지사",
+      "region": "강원특별자치도",
+      "type": "gov",
+      "b3": {
+        "name": "우상호",
+        "party": "더불어민주당",
+        "pct": 51.3
+      },
+      "jtbc": {
+        "name": "우상호",
+        "party": "더불어민주당",
+        "pct": 56.9
+      },
+      "ours": {
+        "name": "우상호"
+      },
+      "disagree": false
+    },
+    {
+      "label": "제주지사",
+      "region": "제주특별자치도",
+      "type": "gov",
+      "b3": {
+        "name": "위성곤",
+        "party": "더불어민주당",
+        "pct": 62.2
+      },
+      "jtbc": {
+        "name": "위성곤",
+        "party": "더불어민주당",
+        "pct": 63.9
+      },
+      "ours": {
+        "name": "위성곤"
+      },
+      "disagree": false
+    },
+    {
+      "label": "경기 평택을",
+      "region": "경기 평택을",
+      "type": "asm",
+      "b3": {
+        "name": "조국",
+        "party": "조국혁신당",
+        "pct": 31.1
+      },
+      "jtbc": {
+        "name": "김용남",
+        "party": "더불어민주당",
+        "pct": 34.2
+      },
+      "ours": {
+        "name": "유의동",
+        "date": "2026-05-11",
+        "url": "https://newtamsa.org/news/znLiNK"
+      },
+      "disagree": true
+    },
+    {
+      "label": "부산 북구갑",
+      "region": "부산 북구갑",
+      "type": "asm",
+      "b3": {
+        "name": "하정우",
+        "party": "더불어민주당",
+        "pct": 42.6
+      },
+      "jtbc": {
+        "name": "한동훈",
+        "party": "무소속",
+        "pct": 48.1
+      },
+      "ours": {
+        "name": "한동훈",
+        "date": "2026-05-27"
+      },
+      "disagree": true
+    }
+  ]
 }
