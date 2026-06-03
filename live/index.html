@@ -142,6 +142,7 @@
   .tr-delta { text-align: right; font-size: 0.74rem; font-weight: 700; }
   .tr-delta.up { color: #c0392b; }
   .tr-delta.down { color: #2b6cb0; }
+  .tr-natline { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1.5px dashed #c41e3a; pointer-events: none; z-index: 1; }
   .tr-row.tr-nat { font-weight: 800; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; margin-bottom: 4px; }
   .tr-name { font-size: 0.9rem; font-weight: 700; }
   .tr-bar-wrap { position: relative; height: 18px; background: #f2f2f2; border-radius: 4px; overflow: hidden; }
@@ -271,7 +272,7 @@
 
   <section class="block" id="turnout-block" hidden>
     <h2>시도별 실시간 투표율</h2>
-    <p class="block-sub">중앙선관위 집계(<span id="turnout-time">—</span> 기준) · 5분 갱신. <b>▲▼</b>는 2022 지선 같은 시각 대비 증감. 당일 투표분이며 사전투표 접수분은 시간대별로 합산됩니다.</p>
+    <p class="block-sub">중앙선관위 집계(<span id="turnout-time">—</span> 기준) · 5분 갱신. <b style="color:#c41e3a">빨간 파선=전국 평균</b>, <b>▲▼</b>=2022 지선 같은 시각 대비 증감. 당일 투표분이며 사전투표 접수분은 시간대별로 합산됩니다.</p>
     <div id="turnout-table" class="turnout-table"></div>
   </section>
 
@@ -353,6 +354,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603l"></script>
+<script src="live.js?v=20260603m"></script>
 </body>
 </html>

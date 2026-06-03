@@ -240,6 +240,7 @@ function renderTurnoutTable(cur, histHourly) {
   };
   const sidos = (cur.turnout.by_sido || []).slice().sort((a, b) => (b.turnout_pct || 0) - (a.turnout_pct || 0));
   const maxPct = Math.max(nat.turnout_pct || 0, ...sidos.map(s => s.turnout_pct || 0), 1);
+  const natMark = ((nat.turnout_pct || 0) / maxPct * 100).toFixed(1);  // 전국 평균 파선 위치
   const row = (s, isNat) => {
     const pv = past2022(s.sd_name);
     const dv = (pv == null || s.turnout_pct == null) ? null : s.turnout_pct - pv;
@@ -247,7 +248,7 @@ function renderTurnoutTable(cur, histHourly) {
       : `<div class="tr-delta ${dv >= 0 ? 'up' : 'down'}">${dv >= 0 ? '▲' : '▼'}${fmt1(Math.abs(dv))}</div>`;
     return `<div class="tr-row${isNat ? ' tr-nat' : ''}" title="투표 ${intComma(s.voters_so_far)} / 선거인 ${intComma(s.eligible_voters)}${pv != null ? ` · 2022 ${curT} 같은시각 ${fmt1(pv)}%` : ''}">` +
       `<div class="tr-name">${s.sd_name}</div>` +
-      `<div class="tr-bar-wrap"><div class="tr-bar" style="width:${((s.turnout_pct || 0) / maxPct * 100).toFixed(1)}%"></div></div>` +
+      `<div class="tr-bar-wrap"><div class="tr-bar" style="width:${((s.turnout_pct || 0) / maxPct * 100).toFixed(1)}%"></div>${isNat ? '' : `<span class="tr-natline" style="left:${natMark}%"></span>`}</div>` +
       `<div class="tr-pct">${fmt1(s.turnout_pct)}%</div>${deltaCell}</div>`;
   };
   wrap.innerHTML = row(nat, true) + sidos.map(s => row(s, false)).join('');
@@ -275,7 +276,7 @@ function renderTurnoutTrend(cur, histHourly) {
   }));
   series.push({ label: '2026 오늘', color: '#c41e3a', data: today, width: 2.8 });
   const t2x = t => { const [h, m] = t.split(':').map(Number); return (h * 60 + m) - 7 * 60; };
-  const W = 640, H = 320, padL = 34, padR = 12, padT = 12, padB = 26;
+  const W = 640, H = 320, padL = 34, padR = 30, padT = 12, padB = 26;
   const xMax = Math.max(13 * 60, ...series.flatMap(s => s.data.map(d => t2x(d.time))));
   const yMax = Math.max(...series.flatMap(s => s.data.map(d => d.turnout_pct || 0)), 50) + 4;
   const px = x => padL + x / xMax * (W - padL - padR);
@@ -297,9 +298,16 @@ function renderTurnoutTrend(cur, histHourly) {
     const path = dd.map((d, i) => (i === 0 ? 'M' : 'L') + px(t2x(d.time)).toFixed(1) + ',' + py(d.turnout_pct).toFixed(1)).join(' ');
     g.push(`<path d="${path}" fill="none" stroke="${s.color}" stroke-width="${s.width || 1.5}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ''} stroke-linecap="round" stroke-linejoin="round"/>`);
     if (s.label.includes('오늘')) {
+      // 오늘 선: 각 점에 수치 라벨
+      dd.forEach(d => {
+        const X = px(t2x(d.time)), Y = py(d.turnout_pct);
+        g.push(`<circle cx="${X.toFixed(1)}" cy="${Y.toFixed(1)}" r="3" fill="${s.color}"/>`);
+        g.push(`<text x="${X.toFixed(1)}" y="${(Y - 7).toFixed(1)}" font-size="10.5" font-weight="800" fill="${s.color}" text-anchor="middle">${fmt1(d.turnout_pct)}</text>`);
+      });
+    } else {
+      // 과거 선: 끝점(최종값) 라벨
       const last = dd[dd.length - 1];
-      g.push(`<circle cx="${px(t2x(last.time)).toFixed(1)}" cy="${py(last.turnout_pct).toFixed(1)}" r="3.6" fill="${s.color}"/>`);
-      g.push(`<text x="${px(t2x(last.time)).toFixed(1)}" y="${(py(last.turnout_pct) - 7).toFixed(1)}" font-size="11" font-weight="800" fill="${s.color}" text-anchor="middle">${fmt1(last.turnout_pct)}%</text>`);
+      g.push(`<text x="${(px(t2x(last.time)) + 3).toFixed(1)}" y="${(py(last.turnout_pct) + 3).toFixed(1)}" font-size="9.5" font-weight="700" fill="${s.color}" text-anchor="start">${fmt1(last.turnout_pct)}</text>`);
     }
   }
   svg.innerHTML = g.join('');
