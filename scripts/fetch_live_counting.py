@@ -428,7 +428,8 @@ def scrape_turnout_web(sg_id: str) -> dict | None:
                 hb = dict(body); hb["timeCode"] = str(h); hb["sggTime"] = f"{h}시"
                 ht = requests.post(_VCVP_URL, data=hb, headers=headers, timeout=20).text
                 nat_h, _sd = _parse(ht)
-                if nat_h and nat_h.get("turnout_pct") is not None:
+                # 0 이하는 미확정 스냅샷(마감 직후 18시 등) → 기록 안 함
+                if nat_h and (nat_h.get("turnout_pct") or 0) > 0:
                     hourly.append({"time": f"{h:02d}:00", "turnout_pct": nat_h["turnout_pct"],
                                    "voters_so_far": nat_h.get("voters_so_far")})
                     break
@@ -441,7 +442,7 @@ def scrape_turnout_web(sg_id: str) -> dict | None:
         by_t = {x["time"]: x for x in hourly if x.get("turnout_pct") is not None}
         for ph in ((prev.get("turnout") or {}).get("hourly") or []):
             t, pv = ph.get("time"), ph.get("turnout_pct")
-            if not t or pv is None:
+            if not t or not pv or pv <= 0:
                 continue
             if t not in by_t or by_t[t].get("turnout_pct") is None or pv > by_t[t]["turnout_pct"]:
                 by_t[t] = {"time": t, "turnout_pct": pv, "voters_so_far": ph.get("voters_so_far")}
