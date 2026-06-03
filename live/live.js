@@ -466,10 +466,12 @@ function renderTurnoutTrend(cur, histHourly) {
     .sort((a, b) => (a.time < b.time ? -1 : a.time > b.time ? 1 : 0));
   let _mx = -1;
   today = today.filter(h => (h.turnout_pct > _mx + 0.01) ? ((_mx = h.turnout_pct), true) : false);
-  // 정시점(HH:00) 외에 '현재 최신 누계'(박스값)를 끝점으로 추가 → 박스값보다 시간·값 모두 엄격히 클 때만
+  // 정시점(HH:00) 외에 '현재 최신 누계'(박스값)를 끝점으로 추가 → 박스값보다 시간·값 모두 엄격히 클 때만.
+  // 투표는 18시 마감이므로 끝점 시각은 18:00을 넘기지 않는다(마감 후 박스값=최종 투표율).
   const _natNow = cur && cur.turnout && cur.turnout.national;
   if (_natNow && _natNow.turnout_pct != null && typeof cur.polled_at === 'string' && cur.polled_at.length >= 16) {
-    const _hhmm = cur.polled_at.slice(11, 16);
+    let _hhmm = cur.polled_at.slice(11, 16);
+    if (_hhmm > '18:00') _hhmm = '18:00';
     const _last = today[today.length - 1];
     if (!_last || (_hhmm > _last.time && _natNow.turnout_pct > _last.turnout_pct + 0.15)) {
       today.push({ time: _hhmm, turnout_pct: _natNow.turnout_pct });
