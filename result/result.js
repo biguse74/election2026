@@ -180,6 +180,31 @@ function renderHero(cur, chiefs, edu, repoll, bh) {
     `<div class="ot"><div class="ot-name">교육감</div><div class="ot-fig"><span class="e">${edu.length}곳</span></div><div class="ot-sub">정당 없는 단독 선출</div></div>`;
 }
 
+// 역대 광역단체장(시도지사) 정당 계열별 의석 — 중앙선관위 개표결과 기반(계열 통합).
+//   민주 계열=새천년민주당·민주당·열린우리당·새정치민주연합·더불어민주당
+//   보수 계열=한나라당·새누리당·자유한국당·국민의힘 / 그 외=자민련·자유선진당·무소속 등
+const HIST_CHIEF = [
+  { year: 2002, round: 3, total: 16, dem: 4, con: 11, etc: 1 },
+  { year: 2006, round: 4, total: 16, dem: 3, con: 12, etc: 1 },
+  { year: 2010, round: 5, total: 16, dem: 7, con: 6, etc: 3 },
+  { year: 2014, round: 6, total: 17, dem: 9, con: 8, etc: 0 },
+  { year: 2018, round: 7, total: 17, dem: 14, con: 2, etc: 1 },
+  { year: 2022, round: 8, total: 17, dem: 5, con: 12, etc: 0 },
+];
+
+function renderHistory(chiefs) {
+  const cur = tallyByLeader(chiefs);
+  const rows = HIST_CHIEF.concat([{ year: 2026, round: 9, total: cur.total, dem: cur.dem, con: cur.con, etc: cur.etc, now: true }]);
+  const maxTotal = Math.max(...rows.map(r => r.total)) || 17;
+  document.getElementById('hist-rows').innerHTML = rows.map(r => {
+    const seg = (cls, n) => n ? `<i class="${cls}" style="width:${n / maxTotal * 100}%">${n}</i>` : '';
+    return `<div class="hist-row ${r.now ? 'now' : ''}">
+      <div class="hist-yr"><b>${r.year}</b><small>${r.round}회 · ${r.total}곳</small></div>
+      <div class="hist-bar">${seg('h-dem', r.dem)}${seg('h-etc', r.etc)}${seg('h-con', r.con)}</div>
+    </div>`;
+  }).join('');
+}
+
 function renderGrid(id, races, opts) {
   const el = document.getElementById(id);
   if (!races.length) { el.innerHTML = '<div class="state-empty">아직 개표 데이터가 없습니다.</div>'; return; }
@@ -229,6 +254,7 @@ async function render() {
   const bh = byType('4');
 
   renderHero(cur, chiefs, edu, repoll, bh);
+  renderHistory(chiefs);
   renderGrid('grid-chief', chiefs, { predMap });
   renderGrid('grid-edu', edu, {});
   renderGrid('grid-repoll', repoll, {});

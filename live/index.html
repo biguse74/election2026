@@ -412,62 +412,18 @@
       <div class="hero-big" id="hero-cmp" style="color:var(--ink)">—<span class="pct">%</span></div>
       <div class="hero-meta" id="hero-cmp-meta">직전 지선 같은 시각 투표율</div>
     </div>
-    <div class="hero-card">
-      <div class="hero-label" id="hero-early-label">예상 최종 투표율 <span style="font-weight:600;opacity:0.7">· 추정</span></div>
-      <div class="hero-big" id="hero-early" style="color:var(--ink)">—<span class="pct">%</span></div>
-      <div class="hero-meta" id="hero-early-meta">과거선거 같은 시각→최종 회귀 추정</div>
+    <div class="hero-card hero-card-main">
+      <div class="hero-label" id="hero-early-label">광역단체장 당선</div>
+      <div class="hero-big" id="hero-early">—</div>
+      <div class="hero-meta" id="hero-early-meta">17개 시·도</div>
     </div>
   </section>
 
-  <section class="block" id="exitpoll-block" hidden>
-    <h2>출구조사 — 시도지사 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(투표 마감 직후 예측)</span></h2>
-    <p class="block-sub" id="exitpoll-sub">출구조사</p>
-    <div id="exitpoll-grid" class="ep-grid"></div>
-    <h3 class="ep-subh">재·보궐 국회의원</h3>
-    <div id="exitpoll-asm" class="ep-grid"></div>
+  <section class="block" id="watch-block" hidden>
+    <h2>주목 후보 개표</h2>
+    <p class="block-sub">지켜보는 후보의 개표 실황을 고정 표시합니다. 이름·지역으로 선관위 개표 데이터와 매칭하며, 마감(18시) 전에는 '대기'로 보입니다.</p>
+    <div id="watchlist" class="watch-grid"></div>
   </section>
-
-  <section class="block" id="panse-block" hidden>
-    <h2>시도지사 판세 한눈에 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">뉴탐사 자체 제작</span></h2>
-    <p class="block-sub">방송3사 <b>출구조사</b>와 JTBC <b>예측조사</b>의 시도지사 우열을 시도별로. <span style="color:#2b6cb0;font-weight:700;">■민주</span> <span style="color:#e74c3c;font-weight:700;">■국힘</span> <span style="color:#8e7cc3;font-weight:700;">■경합</span>(방송사 판정 기준). 칸 안은 1위 후보.</p>
-    <div id="panse-boards"></div>
-  </section>
-
-  <section class="block" id="epc-block" hidden>
-    <h2>출구조사·예측조사·시뮬레이션 비교 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">방송3사 · JTBC · 뉴탐사</span></h2>
-    <p class="block-sub"><b style="color:#c41e3a;">엇갈림</b> 표시는 방송3사와 JTBC가 1위를 다르게 본 선거. 세 지표는 성격이 다릅니다 — <b>방송3사·JTBC=출구/예측조사 1위 후보·득표율(%)</b>, <b>뉴탐사=몬테카를로 시뮬레이션 예측 1위</b>(당선확률은 득표율과 척도가 달라 이름만 표기). <span id="epc-summary" style="font-weight:700;"></span></p>
-    <div class="epc-wrap"><div id="epc-table"></div></div>
-  </section>
-
-  <section class="block" id="trend-block" hidden>
-    <h2>시간대별 투표율 추이 — 과거 선거 비교</h2>
-    <p class="block-sub">오늘(2026 지선)의 시간대별 누계 투표율을 <b>2025 대선·2024 총선·2022·2018 지선</b>과 같은 시각끼리 비교(중앙선관위 실측 그대로). 13시 전후 급등은 사전투표 합산 시점입니다.</p>
-    <div class="trend-wrap">
-      <svg id="trend-svg" viewBox="0 0 640 320" preserveAspectRatio="xMidYMid meet"></svg>
-      <div id="trend-legend" class="trend-legend"></div>
-    </div>
-  </section>
-
-  <section class="block" id="evd-block" hidden>
-    <h2>시도별 실시간 투표율 — 사전 + 당일</h2>
-    <p class="block-sub">중앙선관위 집계 · 5분 갱신. 막대는 <span style="color:#2b6cb0;font-weight:700;">■사전투표</span> + <span style="color:#c0392b;font-weight:700;">■당일 본투표</span> 누적(합=누계 투표율, 높은 순). <b style="color:#1a1a1a;">검정 파선=전국 평균</b>.</p>
-    <div id="evd-note" class="evd-legend"></div>
-    <div id="evd-table" class="evd-table"></div>
-  </section>
-
-  <section class="block" id="sigungu-block" hidden>
-    <h2>전국 시군구별 종합 투표율 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(사전+당일 누계)</span></h2>
-    <p class="block-sub">중앙선관위 집계 · 5분 갱신. 시도별로 묶어 시군구 누계 투표율을 높은 순으로. 막대는 <span style="color:#2b6cb0;font-weight:700;">■사전투표</span> + <span style="color:#c0392b;font-weight:700;">■당일 본투표</span> 누적(합=누계). 보통 농촌 <b>군</b>이 도시 <b>시·구</b>보다 높습니다.</p>
-    <div id="sigungu-groups"></div>
-  </section>
-
-  <section class="block" id="histcmp-block" hidden>
-    <h2>역대 지방선거 투표율 — 오늘 예상과 비교</h2>
-    <p class="block-sub">1회(1995)~8회(2022) 최종 투표율(중앙선거관리위원회 확정)과 오늘의 <b>회귀 추정치</b>. 빨간 막대가 오늘 예상입니다.</p>
-    <div id="histcmp-table" class="histcmp-table"></div>
-    <div id="histcmp-note" class="corr-note"></div>
-  </section>
-
   <section class="block" id="called-block" hidden>
     <h2>당선 확실 · 유력 종합 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">단독 1인 선출</span></h2>
     <p class="block-sub">시도지사·기초단체장·국회의원 재보궐 중 <b style="color:#127a3e">당선 확실</b>(남은 표를 모두 2위가 가져가도 1위 못 넘음)·<b style="color:#a15c00">당선 유력</b>(역전 가능성 매우 낮음)으로 판정된 곳만 모았습니다. 행을 누르면 후보별 상세가 펼쳐집니다.</p>
@@ -477,14 +433,6 @@
     <h3 class="called-sub">당선 유력 <span id="called-lead-n"></span></h3>
     <div id="called-lead"></div>
   </section>
-
-  <section class="block" id="repoll-block" hidden>
-    <h2>국회의원 재·보궐 개표 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">실시간</span></h2>
-    <p class="block-sub">이번 지선과 함께 치러진 국회의원 재·보궐선거 개표 실황(중앙선관위 실측). 행을 누르면 후보별 상세가 펼쳐집니다.</p>
-    <div id="repoll-tally"></div>
-    <div id="repoll-races"></div>
-  </section>
-
   <section class="block" id="chief-block">
     <h2>시도지사 개표 — 예측 vs 실제</h2>
     <p class="block-sub">각 시도지사 개표 현황(실측)을 <b>뉴탐사 자체 시뮬레이션</b>(과거 개표결과 기반 10000회 몬테카를로)의 민주 당선확률과 같은 화면에서 비교. <b>예측 적중</b>=우세 예측 진영이 실제 우세, <b>접전 예측 적중</b>=박빙으로 본 곳이 실제 박빙, <b>이변</b>=예측과 1·2위 진영 뒤바뀜.</p>
@@ -493,40 +441,22 @@
       <div class="state-loading">개표 데이터 로딩 중…</div>
     </div>
   </section>
-
   <section class="block" id="edu-block" hidden>
     <h2>교육감 개표 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">정당 없는 단독 선출</span></h2>
     <p class="block-sub">시도별 교육감 개표 실황(중앙선관위 실측). 교육감은 정당을 표방하지 않습니다. 행을 누르면 후보별 상세가 펼쳐집니다.</p>
     <div id="edu-races"></div>
   </section>
-
   <section class="block" id="bh-block">
     <h2>기초단체장 226 — 예측 vs 실제</h2>
     <p class="block-sub"><b>뉴탐사 자체 시뮬레이션 v2</b>(여심위 등록 본선 여론조사 반영 + 무소속 3진영, 1만 회 몬테카를로)이 예측한 민주당 진영 당선 의석을 실제 개표 집계와 비교. 시군구는 후보·현직 효과가 커 시도지사보다 정확도가 낮습니다. <a href="/sim/basic-head/" style="color:var(--dem)">시뮬레이션 전체 보기 →</a></p>
     <div id="bh-compare"><div class="state-loading">개표 데이터 로딩 중…</div></div>
   </section>
-
-  <section class="block" id="corr-block" hidden>
-    <h2>투표율과 표심</h2>
-    <p class="block-sub">시도별 <b>투표율</b>과 <b>시도지사 민주−국힘 격차</b>의 관계. 점=시도, 빨간 점선=추세선. 마감(18시) 후 표시.</p>
-    <div class="corr-wrap">
-      <svg id="corr-svg" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg>
-      <div id="corr-note" class="corr-note"></div>
-    </div>
+  <section class="block" id="repoll-block" hidden>
+    <h2>국회의원 재·보궐 개표 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">실시간</span></h2>
+    <p class="block-sub">이번 지선과 함께 치러진 국회의원 재·보궐선거 개표 실황(중앙선관위 실측). 행을 누르면 후보별 상세가 펼쳐집니다.</p>
+    <div id="repoll-tally"></div>
+    <div id="repoll-races"></div>
   </section>
-
-  <section class="block" id="watch-block" hidden>
-    <h2>주목 후보 개표</h2>
-    <p class="block-sub">지켜보는 후보의 개표 실황을 고정 표시합니다. 이름·지역으로 선관위 개표 데이터와 매칭하며, 마감(18시) 전에는 '대기'로 보입니다.</p>
-    <div id="watchlist" class="watch-grid"></div>
-  </section>
-
-  <section class="block" id="groups-block" hidden>
-    <h2>관심 지역 그룹</h2>
-    <p class="block-sub">주제별로 묶은 지역의 개표를 한눈에. 마감(18시) 전에는 '대기'로 보입니다.</p>
-    <div id="groups"></div>
-  </section>
-
   <section class="block" id="search-block">
     <h2>개표 검색 — 전체 선거구</h2>
     <p class="block-sub">선거 종류·시도·정당으로 좁히거나, 후보명·지역으로 검색해 원하는 선거구의 개표 실황을 봅니다. (시도지사·기초단체장·교육감 + 6/3엔 시도의원·기초의원까지)</p>
@@ -538,6 +468,61 @@
       <span id="f-count" class="filter-count"></span>
     </div>
     <div id="search-results" class="other-wrap"></div>
+  </section>
+  <section class="block" id="exitpoll-block" hidden>
+    <h2>출구조사 — 시도지사 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(투표 마감 직후 예측)</span></h2>
+    <p class="block-sub" id="exitpoll-sub">출구조사</p>
+    <div id="exitpoll-grid" class="ep-grid"></div>
+    <h3 class="ep-subh">재·보궐 국회의원</h3>
+    <div id="exitpoll-asm" class="ep-grid"></div>
+  </section>
+  <section class="block" id="epc-block" hidden>
+    <h2>출구조사·예측조사·시뮬레이션 비교 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">방송3사 · JTBC · 뉴탐사</span></h2>
+    <p class="block-sub"><b style="color:#c41e3a;">엇갈림</b> 표시는 방송3사와 JTBC가 1위를 다르게 본 선거. 세 지표는 성격이 다릅니다 — <b>방송3사·JTBC=출구/예측조사 1위 후보·득표율(%)</b>, <b>뉴탐사=몬테카를로 시뮬레이션 예측 1위</b>(당선확률은 득표율과 척도가 달라 이름만 표기). <span id="epc-summary" style="font-weight:700;"></span></p>
+    <div class="epc-wrap"><div id="epc-table"></div></div>
+  </section>
+  <section class="block" id="panse-block" hidden>
+    <h2>시도지사 판세 한눈에 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">뉴탐사 자체 제작</span></h2>
+    <p class="block-sub">방송3사 <b>출구조사</b>와 JTBC <b>예측조사</b>의 시도지사 우열을 시도별로. <span style="color:#2b6cb0;font-weight:700;">■민주</span> <span style="color:#e74c3c;font-weight:700;">■국힘</span> <span style="color:#8e7cc3;font-weight:700;">■경합</span>(방송사 판정 기준). 칸 안은 1위 후보.</p>
+    <div id="panse-boards"></div>
+  </section>
+  <section class="block" id="trend-block" hidden>
+    <h2>시간대별 투표율 추이 — 과거 선거 비교</h2>
+    <p class="block-sub">오늘(2026 지선)의 시간대별 누계 투표율을 <b>2025 대선·2024 총선·2022·2018 지선</b>과 같은 시각끼리 비교(중앙선관위 실측 그대로). 13시 전후 급등은 사전투표 합산 시점입니다.</p>
+    <div class="trend-wrap">
+      <svg id="trend-svg" viewBox="0 0 640 320" preserveAspectRatio="xMidYMid meet"></svg>
+      <div id="trend-legend" class="trend-legend"></div>
+    </div>
+  </section>
+  <section class="block" id="evd-block" hidden>
+    <h2>시도별 실시간 투표율 — 사전 + 당일</h2>
+    <p class="block-sub">중앙선관위 집계 · 5분 갱신. 막대는 <span style="color:#2b6cb0;font-weight:700;">■사전투표</span> + <span style="color:#c0392b;font-weight:700;">■당일 본투표</span> 누적(합=누계 투표율, 높은 순). <b style="color:#1a1a1a;">검정 파선=전국 평균</b>.</p>
+    <div id="evd-note" class="evd-legend"></div>
+    <div id="evd-table" class="evd-table"></div>
+  </section>
+  <section class="block" id="sigungu-block" hidden>
+    <h2>전국 시군구별 종합 투표율 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(사전+당일 누계)</span></h2>
+    <p class="block-sub">중앙선관위 집계 · 5분 갱신. 시도별로 묶어 시군구 누계 투표율을 높은 순으로. 막대는 <span style="color:#2b6cb0;font-weight:700;">■사전투표</span> + <span style="color:#c0392b;font-weight:700;">■당일 본투표</span> 누적(합=누계). 보통 농촌 <b>군</b>이 도시 <b>시·구</b>보다 높습니다.</p>
+    <div id="sigungu-groups"></div>
+  </section>
+  <section class="block" id="histcmp-block" hidden>
+    <h2>역대 지방선거 투표율 — 오늘 예상과 비교</h2>
+    <p class="block-sub">1회(1995)~8회(2022) 최종 투표율(중앙선거관리위원회 확정)과 오늘의 <b>회귀 추정치</b>. 빨간 막대가 오늘 예상입니다.</p>
+    <div id="histcmp-table" class="histcmp-table"></div>
+    <div id="histcmp-note" class="corr-note"></div>
+  </section>
+  <section class="block" id="corr-block" hidden>
+    <h2>투표율과 표심</h2>
+    <p class="block-sub">시도별 <b>투표율</b>과 <b>시도지사 민주−국힘 격차</b>의 관계. 점=시도, 빨간 점선=추세선. 마감(18시) 후 표시.</p>
+    <div class="corr-wrap">
+      <svg id="corr-svg" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg>
+      <div id="corr-note" class="corr-note"></div>
+    </div>
+  </section>
+  <section class="block" id="groups-block" hidden>
+    <h2>관심 지역 그룹</h2>
+    <p class="block-sub">주제별로 묶은 지역의 개표를 한눈에. 마감(18시) 전에는 '대기'로 보입니다.</p>
+    <div id="groups"></div>
   </section>
 
   <aside class="disclosure">
@@ -563,6 +548,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603Z"></script>
+<script src="live.js?v=20260604a"></script>
 </body>
 </html>

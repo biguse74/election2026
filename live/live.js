@@ -292,34 +292,26 @@ function projectionContext(pj) {
   return `도달수준 추정 · 범위 ${fmt1(pj.lo)}~${fmt1(pj.hi)}% · ${ctx}`;
 }
 
-function renderProjection(cur, histHourly) {
+// 히어로 4번째 카드 — 상징적 헤드라인: 광역단체장 정당별 당선 의석(현재 1위 기준).
+// (과거 '예상 최종 투표율'은 투표 종료 후 무의미 + 자정 넘어 살아나는 버그가 있어 대체)
+function renderProjection(cur, _histHourly) {
   const e = document.getElementById('hero-early');
   const meta = document.getElementById('hero-early-meta');
   const label = document.getElementById('hero-early-label');
   if (!e) return;
-  // 투표 마감(18시) 후엔 '예상'이 아니라 확정 최종 투표율 + 역대 맥락을 표시.
-  const nat = cur && cur.turnout && cur.turnout.national;
-  const ended = cur && typeof cur.polled_at === 'string' && cur.polled_at.slice(11, 16) >= '18:00';
-  if (ended && nat && nat.turnout_pct != null) {
-    // 전국 투표율 카드와 같은 숫자 중복 방지 → 4년 전(2022) 대비를 헤드라인으로.
-    const fin = nat.turnout_pct;
-    const rank = ZIBANG_HISTORY.filter(h => h.rate > fin).length + 1;
-    const prev22 = ZIBANG_HISTORY.find(h => h.year === 2022);
-    const dv = prev22 ? fin - prev22.rate : null;
-    if (label) label.innerHTML = '4년 전(2022) 대비';
-    if (dv != null) {
-      e.innerHTML = `${dv >= 0 ? '+' : ''}${fmt1(dv)}<span class="pct">%p</span>`;
-      if (meta) meta.textContent = `2022년 ${fmt1(prev22.rate)}% → 올해 ${fmt1(fin)}% · 역대 ${rank}위`;
-    } else {
-      e.innerHTML = `${fmt1(fin)}<span class="pct">%</span>`;
-      if (meta) meta.textContent = `최종 투표율 · 역대 ${rank}위`;
-    }
+  const chiefs = (cur?.races || []).filter(r => String(r.sg_type_code) === '3' && (r.candidates || []).length);
+  if (!chiefs.length) {
+    if (label) label.textContent = '광역단체장';
+    e.innerHTML = `<span class="pct" style="font-size:1.1rem">개표 대기</span>`;
+    if (meta) meta.textContent = '18시 마감 후 집계';
     return;
   }
-  const pj = computeProjection(cur, histHourly);
-  if (!pj) return;
-  e.innerHTML = `${fmt1(pj.proj)}<span class="pct">%</span>`;
-  if (meta) meta.textContent = projectionContext(pj);
+  let dem = 0, con = 0, etc = 0;
+  for (const r of chiefs) { const p = r.candidates[0].jd_name; if (p === DEM) dem++; else if (p === CON) con++; else etc++; }
+  const win = dem >= con ? { n: '민주', c: '#8aa0ff', v: dem } : { n: '국힘', c: '#ff9aa6', v: con };
+  if (label) label.textContent = '광역단체장 당선';
+  e.innerHTML = `<span style="color:${win.c}">${win.n} ${win.v}</span>`;
+  if (meta) meta.textContent = `민주 ${dem} · 국힘 ${con}${etc ? ` · 그외 ${etc}` : ''} · ${chiefs.length}/17곳`;
 }
 
 // ── 4년 전(2022) 동시각 투표율 카드 (투표 중 표시) ─────────────────

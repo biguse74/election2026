@@ -138,6 +138,19 @@
   .wchip.close { box-shadow: inset 0 0 0 1px rgba(230,30,43,0.25); }
   .wchip .wc-fix { color: #127a3e; font-weight: 900; font-size: 0.7rem; }
 
+  /* 역대 의석 추이 */
+  .hist-row { display: grid; grid-template-columns: 92px 1fr; align-items: center; gap: 12px; margin: 7px 0; }
+  .hist-row.now .hist-yr { color: var(--accent); }
+  .hist-yr { font-weight: 800; font-size: 0.9rem; }
+  .hist-yr b { font-family: 'Noto Serif KR', serif; font-size: 1.05rem; }
+  .hist-yr small { display: block; font-size: 0.68rem; color: var(--muted); font-weight: 600; }
+  .hist-bar { display: flex; height: 26px; border-radius: 6px; overflow: hidden; background: #ececf0; box-shadow: inset 0 1px 2px rgba(0,0,0,0.08); }
+  .hist-bar i { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; font-weight: 800; min-width: 0; overflow: hidden; }
+  .hist-bar .h-dem { background: var(--dem); } .hist-bar .h-con { background: var(--con); } .hist-bar .h-etc { background: #8a8a96; }
+  .hist-row.now .hist-bar { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .hist-foot { font-size: 0.74rem; color: var(--muted); line-height: 1.6; margin-top: 14px; }
+  .hist-foot b { color: #444; }
+
   .state-empty { padding: 30px 0; text-align: center; color: var(--muted); }
   .rs-foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; line-height: 1.7; }
   .rs-foot b { color: #444; }
@@ -186,6 +199,13 @@
       <div class="result-grid" id="grid-chief"></div>
     </section>
 
+    <section class="rs-block" id="sec-history">
+      <h2 class="rs-h2">역대 광역단체장 의석 추이 <span class="rs-count">2002 → 2026</span></h2>
+      <p class="rs-desc">지방선거 광역단체장(시·도지사) 정당 계열별 의석. 민주 계열·보수(국민의힘) 계열·그 외로 묶었습니다. 막대를 보면 이번 결과가 역대 어디에 위치하는지 한눈에 보입니다.</p>
+      <div id="hist-rows"></div>
+      <p class="hist-foot">계열 분류 — <b>민주 계열</b>: 새천년민주당·민주당·열린우리당·새정치민주연합·더불어민주당 · <b>보수 계열</b>: 한나라당·새누리당·자유한국당·국민의힘 · <b>그 외</b>: 자민련·자유선진당·무소속 등. 광역단체장 수는 2002~2010년 16곳, 2014~2022년 17곳, 2026년은 광주·전남 통합으로 16곳. 자료: 중앙선관위.</p>
+    </section>
+
     <section class="rs-block" id="sec-edu">
       <h2 class="rs-h2">교육감 <span class="rs-count" id="cnt-edu"></span></h2>
       <p class="rs-desc">정당을 표방하지 않는 단독 선출. 광주·전남은 전남광주통합특별시 통합 교육감입니다.</p>
@@ -212,6 +232,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604a"></script>
+  <script src="./result.js?v=20260604b"></script>
 </body>
 </html>
