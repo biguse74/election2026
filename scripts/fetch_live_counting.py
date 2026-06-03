@@ -510,43 +510,55 @@ def _split_party(s: str) -> tuple[str, str]:
     return "무소속", s
 
 
-def scrape_counting_web(sg_id: str, sg_type: str = "3") -> list[dict] | None:
-    """OpenAPI 개표가 비었을 때 NEC 웹 개표상황(VCCP09)을 스크랩.
-    현재 시도지사(sg_type=3)만. normalize_row와 동일 스키마의 races 리스트 반환. 실패 시 None."""
+# statementId: 선거종류별로 다르다. #3=시도지사, #4=기초단체장(시장·군수·구청장).
+# 둘 다 '선거구명+후보이름(정당+성명)' 헤더행 → 득표행 → 득표율행' 3행 블록 구조라
+# 이름이 표에 직접 들어와 기호 추정·사퇴 매핑이 전혀 필요 없다(엉뚱한 당선자 위험 없음).
+_VCCP_STMT = {"3": "VCCP09_#3", "4": "VCCP09_#4"}
+
+
+def _vccp_rows(eid: str, sg_type: str, city_code: str, statement_id: str) -> list[list[str]] | None:
+    """VCCP09 리포트 POST → '개표율·득표' 테이블 셀 2차원 리스트. 실패/없음 시 None."""
     import re as _re
-    if sg_id != "20260603":
-        return None
-    eid = "00" + sg_id
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0",
                "Accept-Language": "ko-KR,ko;q=0.9",
                "Referer": f"https://info.nec.go.kr/main/showDocument.xhtml?electionId={eid}&topMenuId=VC&secondMenuId=VCCP09"}
     body = {"electionId": eid, "requestURI": f"/electioninfo/{eid}/vc/vccp09.jsp",
             "topMenuId": "VC", "secondMenuId": "VCCP09", "menuId": "VCCP09",
-            "statementId": "VCCP09_#3", "electionCode": sg_type, "cityCode": "0",
+            "statementId": statement_id, "electionCode": sg_type, "cityCode": city_code,
             "sggCityCode": "0", "townCode": "-1", "sgTypecode": sg_type}
-
-    def _i(s):
-        s = _re.sub(r"[^\d]", "", s or "")
-        return int(s) if s else 0
     try:
         html = requests.post(_VCVP_URL, data=body, headers=headers, timeout=25).text
     except Exception as e:
-        print(f"  ! 개표 웹 스크랩 실패: {e}", file=sys.stderr)
+        print(f"  ! 개표 웹 스크랩 실패(sg_type={sg_type} city={city_code}): {e}", file=sys.stderr)
         return None
     tbls = [t for t in _re.findall(r"<table[^>]*>(.*?)</table>", html, _re.S) if "개표율" in t and "득표" in t]
     if not tbls:
         return None
-    rows = [[_re.sub(r"\s+", " ", _re.sub(r"<[^>]+>", "", c)).replace("\xa0", " ").strip()
+    return [[_re.sub(r"\s+", " ", _re.sub(r"<[^>]+>", "", c)).replace("\xa0", " ").strip()
              for c in _re.findall(r"<t[dh][^>]*>(.*?)</t[dh]>", tr, _re.S)]
             for tr in _re.findall(r"<tr[^>]*>(.*?)</tr>", tbls[0], _re.S)]
+
+
+def _parse_vccp_blocks(rows: list[list[str]], sg_type: str, sd_override: str | None = None) -> list[dict]:
+    """VCCP09 3행 블록(이름헤더/득표/득표율)을 races 리스트로 변환.
+    sd_override가 있으면(기초단체장) a[0]은 선거구(sgg), sd_name은 인자값. 없으면 a[0]=sd_name."""
+    import re as _re
+
+    def _i(s):
+        s = _re.sub(r"[^\d]", "", s or "")
+        return int(s) if s else 0
+
     label = SG_LABELS.get(sg_type, sg_type)
     races, i = [], 0
     while i < len(rows):
         a = rows[i]
-        if len(a) >= 6 and a[0] and a[0] not in ("선거구명",) and "계" in a:
+        if len(a) >= 6 and a[0] and a[0] not in ("선거구명", "합계") and "계" in a:
             b = rows[i + 1] if i + 1 < len(rows) else []
             gi = a.index("계")
-            sd_name = a[0]
+            if sd_override:
+                sd_name, sgg_name = sd_override, a[0]
+            else:
+                sd_name, sgg_name = a[0], None
             cand_strs = a[4:gi]
             votes = b[4:gi] if len(b) > gi else []
             valid = _i(b[gi]) if len(b) > gi else 0
@@ -558,7 +570,12 @@ def scrape_counting_web(sg_id: str, sg_type: str = "3") -> list[dict] | None:
                 progress = round(float(pr), 2) if pr else None
             cands = []
             for cs, vv in zip(cand_strs, votes):
+                cs = (cs or "").strip()
+                if not cs:        # 고정폭 표의 빈 후보 칼럼(기초단체장 #4) 스킵
+                    continue
                 pty, nm = _split_party(cs)
+                if not nm:
+                    continue
                 v = _i(vv)
                 cands.append({"name": nm, "jd_name": pty, "votes": v,
                               "share_pct": round(v / valid * 100, 2) if valid else None})
@@ -569,15 +586,44 @@ def scrape_counting_web(sg_id: str, sg_type: str = "3") -> list[dict] | None:
             if len(cands) >= 2 and cands[0]["share_pct"] is not None and cands[1]["share_pct"] is not None:
                 rank_diff = round(cands[0]["share_pct"] - cands[1]["share_pct"], 2)
             races.append({
-                "race_key": f"{sg_type}|{sd_name}|", "sg_type_code": sg_type, "sg_type_label": label,
-                "sd_name": sd_name, "sgg_name": None, "wiw_name": None,
+                "race_key": f"{sg_type}|{sd_name}|{sgg_name or ''}", "sg_type_code": sg_type, "sg_type_label": label,
+                "sd_name": sd_name, "sgg_name": sgg_name, "wiw_name": None,
                 "eligible_voters": eligible, "valid_votes": valid, "invalid_votes": invalid,
                 "progress_pct": progress, "rank1_minus_rank2_pp": rank_diff, "candidates": cands,
             })
             i += 3
         else:
             i += 1
-    return races or None
+    return races
+
+
+def scrape_counting_web(sg_id: str, sg_type: str = "3") -> list[dict] | None:
+    """OpenAPI 개표가 비었을 때 NEC 웹 개표상황(VCCP09)을 스크랩(시도지사 등 전국 1콜).
+    normalize_row와 동일 스키마의 races 리스트 반환. 실패 시 None."""
+    if sg_id != "20260603":
+        return None
+    rows = _vccp_rows("00" + sg_id, sg_type, "0", _VCCP_STMT.get(sg_type, "VCCP09_#3"))
+    if not rows:
+        return None
+    return _parse_vccp_blocks(rows, sg_type, sd_override=None) or None
+
+
+def scrape_counting_basic_head(sg_id: str) -> list[dict] | None:
+    """기초단체장(시장·군수·구청장) 개표 — VCCP09_#4를 17개 시도 cityCode로 순회.
+    이름이 표 헤더에 직접 들어와(시도지사와 동일 구조) 기호 추정·사퇴 매핑이 불필요해 안전하다.
+    세종·제주 등 기초단체장 미실시 시도는 결과 없음 → 자동 스킵."""
+    if sg_id != "20260603":
+        return None
+    eid = "00" + sg_id
+    all_races: list[dict] = []
+    for sd_name, code in _SIDO_CITYCODE.items():
+        rows = _vccp_rows(eid, "4", code, "VCCP09_#4")
+        if not rows:
+            continue
+        rr = _parse_vccp_blocks(rows, "4", sd_override=sd_name)
+        all_races += rr
+        time.sleep(0.15)
+    return all_races or None
 
 
 # ============ 가공 / 저장 ============
@@ -804,9 +850,14 @@ def main() -> None:
     _oa_empty = (all(c["result_code"] in ("INFO-03", "ERROR-03") for c in counting_calls)
                  if counting_calls else True)
     if _oa_empty and polled_at >= ELECTION_DAY_KST:
-        web_races = scrape_counting_web(args.sg_id, "3")
-        if web_races:
-            print(f"  · 개표 웹(VCCP09) 폴백: 시도지사 {len(web_races)}곳")
+        gov = scrape_counting_web(args.sg_id, "3") or []
+        if gov:
+            print(f"  · 개표 웹(VCCP09 #3) 폴백: 시도지사 {len(gov)}곳")
+        # 기초단체장(시장·군수·구청장) — VCCP09_#4, 17개 시도 순회. 이름 직접 포함.
+        bh = scrape_counting_basic_head(args.sg_id) or []
+        if bh:
+            print(f"  · 개표 웹(VCCP09 #4) 폴백: 기초단체장 {len(bh)}곳")
+        web_races = (gov + bh) or None
 
     current, meta = build_current(args.sg_id, polled_at, counting_calls, turnout, web_races)
     meta["counting_calls_total"] = len(counting_calls) + failed

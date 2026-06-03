@@ -615,6 +615,17 @@ function renderTurnoutCorr(cur) {
   const note = document.getElementById('corr-note');
   if (!block || !svg || !note) return;
 
+  // 개표 초반에는 시도지사 격차가 순전히 개표소 순서 노이즈 → 표심 상관은 무의미.
+  // 시도지사 개표율(선거인 가중)이 충분히 쌓였을 때만 표시한다.
+  const CORR_MIN_PROGRESS = 50;
+  let _pw = 0, _pe = 0;
+  for (const r of (cur?.races || [])) {
+    if (String(r.sg_type_code) !== '3') continue;
+    const e = r.eligible_voters || 0; _pw += (r.progress_pct || 0) * e; _pe += e;
+  }
+  const govProgress = _pe ? _pw / _pe : 0;
+  if (govProgress < CORR_MIN_PROGRESS) { block.hidden = true; return; }
+
   const tmap = {};
   for (const s of (cur?.turnout?.by_sido || [])) tmap[s.sd_name] = s.turnout_pct;
   const pts = [];

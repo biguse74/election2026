@@ -126,12 +126,13 @@
   .ep-head b { font-family: 'Noto Serif KR', serif; font-size: 1rem; font-weight: 900; }
   .ep-tag { font-size: 0.72rem; font-weight: 800; color: var(--muted); background: #f2f2f2; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
   .ep-tag.close { color: #a15c00; background: #fdf0d5; }
-  .ep-cand { display: grid; grid-template-columns: 26px 11px auto auto 1fr 54px; align-items: center; gap: 6px; margin: 3px 0; }
+  /* 고정폭 그리드 → 출구조사 막대 시작점도 항상 같은 위치(이름·당이름 길이 무관) */
+  .ep-cand { display: grid; grid-template-columns: 26px 11px 48px 66px 1fr 50px; align-items: center; gap: 6px; margin: 3px 0; }
   .ep-photo { width: 26px; height: 33px; border-radius: 3px; object-fit: cover; background: #eee; border: 1px solid var(--line); }
   .ep-photo.cand-noimg { display: inline-flex; align-items: center; justify-content: center; color: var(--muted); font-weight: 800; font-size: 0.72rem; }
   .ep-dot { width: 10px; height: 10px; border-radius: 2px; }
-  .ep-name { font-weight: 800; font-size: 0.9rem; white-space: nowrap; }
-  .ep-party { font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
+  .ep-name { font-weight: 800; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ep-party { font-size: 0.72rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .ep-bar-wrap { height: 9px; background: #f0f0f0; border-radius: 5px; overflow: hidden; min-width: 30px; }
   .ep-bar { display: block; height: 100%; border-radius: 5px; }
   .ep-pct { text-align: right; font-weight: 800; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
@@ -493,6 +494,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260603P"></script>
+<script src="live.js?v=20260603Q"></script>
 </body>
 </html>
