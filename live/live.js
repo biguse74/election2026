@@ -183,20 +183,40 @@ function renderHero(cur, earlyVoting) {
     pm.textContent = '18시 마감 후 개표 시작';
   }
 
-  // 사전투표 비중 = 사전투표자(확정) / (사전 + 당일). NEC가 오전엔 사전 접수=0으로 줘서
-  // early_voting 최종 사전투표자 수로 직접 계산한다.
-  const e = document.getElementById('hero-early');
-  const evNat = earlyVoting && earlyVoting.national;
-  const earlyVoted = (evNat && evNat.voted) || (nat && nat.early_voters_so_far) || 0;
-  const dayVoted = (nat && nat.day_voters_so_far) || 0;
-  if (earlyVoted && (earlyVoted + dayVoted) > 0) {
-    const share = earlyVoted / (earlyVoted + dayVoted) * 100;
-    e.innerHTML = `${fmt1(share)}<span class="pct">%</span>`;
-    document.getElementById('hero-early-meta').textContent =
-      `사전 ${intComma(earlyVoted)} · 당일 ${intComma(dayVoted)}`;
-  }
-
   document.getElementById('updated-at').textContent = fmtKST(cur?.polled_at) + ' (KST)';
+}
+
+// ── 예상 최종 투표율 (과거선거 같은시각→최종 회귀) ─────────────────
+function renderProjection(cur, histHourly) {
+  const e = document.getElementById('hero-early');
+  const meta = document.getElementById('hero-early-meta');
+  if (!e) return;
+  const today = (cur && cur.turnout && cur.turnout.hourly) || [];
+  if (!today.length) return;
+  const cp = today[today.length - 1];
+  const x0 = cp.turnout_pct, T = cp.time;
+  if (x0 == null) return;
+  // (같은시각 투표율 x, 최종 투표율 y) 점들 — 과거선거별
+  const pts = [];
+  for (const r of ((histHourly && histHourly.rounds) || [])) {
+    const arr = r.national || [];
+    const at = arr.find(d => d.time === T);
+    const fin = arr.length ? arr[arr.length - 1].turnout_pct : null;
+    if (at && at.turnout_pct != null && fin != null) pts.push({ x: at.turnout_pct, y: fin });
+  }
+  if (pts.length < 2) return;
+  // 선형회귀 y = a + b·x
+  const n = pts.length;
+  const sx = pts.reduce((s, p) => s + p.x, 0), sy = pts.reduce((s, p) => s + p.y, 0);
+  const sxx = pts.reduce((s, p) => s + p.x * p.x, 0), sxy = pts.reduce((s, p) => s + p.x * p.y, 0);
+  const denom = n * sxx - sx * sx;
+  let proj = denom ? ((sy - (n * sxy - sx * sy) / denom * sx) / n) + (n * sxy - sx * sy) / denom * x0 : null;
+  if (proj == null || !isFinite(proj)) return;
+  // 비율법 범위(과거선거별 최종/현재 × 오늘)로 불확실성 표시
+  const ratios = pts.map(p => p.y / p.x * x0).filter(v => isFinite(v));
+  const lo = Math.min(proj, ...ratios), hi = Math.max(proj, ...ratios);
+  e.innerHTML = `${fmt1(proj)}<span class="pct">%</span>`;
+  if (meta) meta.textContent = `현재 ${fmt1(x0)}% · 과거 ${n}개 선거 회귀 · 범위 ${fmt1(lo)}~${fmt1(hi)}%`;
 }
 
 // ── 시도별 실시간 투표율 표 ────────────────────────────────────────
@@ -786,6 +806,7 @@ async function render() {
     const nat = cur && cur.turnout && cur.turnout.national;
     if (nat && nat.turnout_pct != null) {
       renderHero(cur, earlyVoting);
+      renderProjection(cur, histHourly);
       renderTurnoutTrend(cur, histHourly);
       renderTurnoutTable(cur, histHourly);
       renderEarlyVsDay(cur, earlyVoting);
@@ -816,6 +837,7 @@ async function render() {
   LATEST_PREVRESULT = (prevResult && prevResult.results) || {};
 
   renderHero(cur, earlyVoting);
+  renderProjection(cur, histHourly);
   renderTurnoutTrend(cur, histHourly);
   renderTurnoutTable(cur, histHourly);
   renderEarlyVsDay(cur, earlyVoting);
