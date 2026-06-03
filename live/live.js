@@ -157,7 +157,7 @@ function bindRaceExpand() {
 }
 
 // ── Hero ──────────────────────────────────────────────────────────
-function renderHero(cur) {
+function renderHero(cur, earlyVoting) {
   const nat = cur?.turnout?.national;
   const badge = document.getElementById('live-badge');
   if (cur?.phase === 'live') badge.hidden = false;
@@ -183,11 +183,17 @@ function renderHero(cur) {
     pm.textContent = '18시 마감 후 개표 시작';
   }
 
+  // 사전투표 비중 = 사전투표자(확정) / (사전 + 당일). NEC가 오전엔 사전 접수=0으로 줘서
+  // early_voting 최종 사전투표자 수로 직접 계산한다.
   const e = document.getElementById('hero-early');
-  if (nat?.early_share_of_total_pct != null) {
-    e.innerHTML = `${fmt1(nat.early_share_of_total_pct)}<span class="pct">%</span>`;
+  const evNat = earlyVoting && earlyVoting.national;
+  const earlyVoted = (evNat && evNat.voted) || (nat && nat.early_voters_so_far) || 0;
+  const dayVoted = (nat && nat.day_voters_so_far) || 0;
+  if (earlyVoted && (earlyVoted + dayVoted) > 0) {
+    const share = earlyVoted / (earlyVoted + dayVoted) * 100;
+    e.innerHTML = `${fmt1(share)}<span class="pct">%</span>`;
     document.getElementById('hero-early-meta').textContent =
-      `사전 ${intComma(nat.early_voters_so_far)} · 당일 ${intComma(nat.day_voters_so_far)}`;
+      `사전 ${intComma(earlyVoted)} · 당일 ${intComma(dayVoted)}`;
   }
 
   document.getElementById('updated-at').textContent = fmtKST(cur?.polled_at) + ' (KST)';
@@ -763,6 +769,13 @@ async function render() {
   const preview = location.search.includes('preview');
   const COUNT_START = Date.parse('2026-06-03T18:00:00+09:00');
   const beforeCount = !preview && Date.now() < COUNT_START;
+  // 투표 중엔 '실시간 투표율', 마감(18시) 후엔 '실시간 개표'로 타이틀 전환
+  var _tt = document.getElementById('page-title-text');
+  var _ts = document.getElementById('page-sub');
+  if (_tt) _tt.textContent = beforeCount ? '실시간 투표율' : '실시간 개표';
+  if (_ts) _ts.textContent = beforeCount
+    ? '2026-06-03(수) 투표 진행 중 · 시도별 투표율 자동 갱신 · 18시 마감 후 개표로 전환'
+    : '2026-06-03(수) 개표 진행 · 자동 갱신 · 뉴탐사 자체 시뮬레이션 예측과 비교';
   const [cur, watchlist, groups, prevWinner, prevResult, prediction, predBasicHead, parties, earlyVoting, histHourly] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.watchlist), loadJSON(PATHS.groups),
     loadJSON(PATHS.prevWinner), loadJSON(PATHS.prevResult), loadJSON(PATHS.prediction), loadJSON(PATHS.predBasicHead), loadJSON(PATHS.parties),
@@ -772,7 +785,7 @@ async function render() {
   if (beforeCount) {
     const nat = cur && cur.turnout && cur.turnout.national;
     if (nat && nat.turnout_pct != null) {
-      renderHero(cur);
+      renderHero(cur, earlyVoting);
       renderTurnoutTrend(cur, histHourly);
       renderTurnoutTable(cur, histHourly);
       renderEarlyVsDay(cur, earlyVoting);
@@ -802,7 +815,7 @@ async function render() {
   LATEST_PREVWIN = (prevWinner && prevWinner.winner_party) || {};
   LATEST_PREVRESULT = (prevResult && prevResult.results) || {};
 
-  renderHero(cur);
+  renderHero(cur, earlyVoting);
   renderTurnoutTrend(cur, histHourly);
   renderTurnoutTable(cur, histHourly);
   renderEarlyVsDay(cur, earlyVoting);
