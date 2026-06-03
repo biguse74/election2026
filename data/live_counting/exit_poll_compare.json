@@ -1,6 +1,6 @@
 {
  "generated_note": "출구조사·예측 3종 비교. 방송3사·JTBC=출구조사 득표율(1위 격차%p), 뉴탐사=자체 시뮬 당선확률(%).",
- "jtbc_summary": "JTBC 총괄: 민주 10 · 국힘 1 · 경합 5",
+ "jtbc_summary": "JTBC 총괄: 민주 10 · 국힘 1(경북) · 경합 5(대구·충북·충남·전북·경남)",
  "rows": [
   {
    "label": "서울시장",
@@ -131,7 +131,11 @@
     "party": "더불어민주당",
     "margin": 13.0
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "허태정",
+    "party": "더불어민주당",
+    "margin": 22.9
+   },
    "ours": {
     "name": "허태정",
     "prob": 82.0
@@ -147,7 +151,11 @@
     "party": "더불어민주당",
     "margin": 31.4
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "조상호",
+    "party": "더불어민주당",
+    "margin": 24.9
+   },
    "ours": {
     "name": "조상호",
     "prob": 96.0
@@ -163,7 +171,11 @@
     "party": "더불어민주당",
     "margin": 4.2
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "박수현",
+    "party": "더불어민주당",
+    "margin": 5.6
+   },
    "ours": {
     "name": "박수현",
     "prob": 63.0
@@ -179,7 +191,11 @@
     "party": "더불어민주당",
     "margin": 12.4
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "신용한",
+    "party": "더불어민주당",
+    "margin": 4.4
+   },
    "ours": {
     "name": "신용한",
     "prob": 86.0
@@ -215,7 +231,11 @@
     "party": "국민의힘",
     "margin": 39.4
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "이철우",
+    "party": "국민의힘",
+    "margin": 27.2
+   },
    "ours": {
     "name": "이철우",
     "prob": 91.0
@@ -231,7 +251,11 @@
     "party": "더불어민주당",
     "margin": 65.8
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "민형배",
+    "party": "더불어민주당",
+    "margin": 67.5
+   },
    "ours": {
     "name": "민형배",
     "prob": 100.0
@@ -248,15 +272,15 @@
     "margin": 2.2
    },
    "jtbc": {
-    "name": "김관영",
-    "party": "무소속",
+    "name": "이원택",
+    "party": "더불어민주당",
     "margin": 6.3
    },
    "ours": {
     "name": "김관영",
     "prob": 75.0
    },
-   "disagree": true
+   "disagree": false
   },
   {
    "label": "강원지사",
@@ -267,7 +291,11 @@
     "party": "더불어민주당",
     "margin": 2.6
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "우상호",
+    "party": "더불어민주당",
+    "margin": 13.8
+   },
    "ours": {
     "name": "우상호",
     "prob": 68.0
@@ -283,7 +311,11 @@
     "party": "더불어민주당",
     "margin": 27.3
    },
-   "jtbc": null,
+   "jtbc": {
+    "name": "위성곤",
+    "party": "더불어민주당",
+    "margin": 30.9
+   },
    "ours": {
     "name": "위성곤",
     "prob": 100.0
@@ -324,5 +356,6 @@
    "ours": null,
    "disagree": true
   }
- ]
+ ],
+ "note": "방송3사·JTBC=출구조사 득표율(1위 격차%p). 뉴탐사=과거 개표결과 기반 몬테카를로 시뮬레이션 당선확률(%). JTBC 시도지사는 JTBC 홈페이지 공식 수치."
 }
