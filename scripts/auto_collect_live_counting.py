@@ -2,9 +2,10 @@
 """라이브 투표율·개표 자동 수집 — 윈도우 작업 스케줄러용 1회 실행 래퍼.
 
 GitHub Actions 크론이 6/3 당일 발화를 누락해, 로컬 작업 스케줄러로 이중화한다.
-사전투표 래퍼(auto_collect_early_voting.py)와 동일한 rebase-free 전략:
-    매 실행마다 reset --hard origin/main → 스크립트 재생성 → 변경 시 commit/push,
-    push reject 시 ①부터 재시도. 우리 커밋은 항상 fast-forward 자식이라 충돌 불가.
+rebase-free 전략(코드 보존형):
+    매 실행마다 origin/main 정렬(HEAD만 이동, 작업트리 유지) → data/live_counting만
+    origin으로 정리 → 데이터 재생성 → data/live_counting만 스테이징·commit/push,
+    push reject 시 재시도. 커밋은 data만 담으므로 편집 중인 코드는 절대 건드리지 않는다.
 
 시간대(KST):
     06:00~17:59  투표율만 (--skip-counting)   웹 스크랩으로 투표율 생성
@@ -50,10 +51,15 @@ def load_key() -> str:
 
 
 def align_to_remote() -> None:
+    """origin/main에 정렬하되 코드 등 미커밋 작업은 보존한다.
+    --hard는 모든 작업트리를 날려 편집 중인 코드까지 지우므로,
+    HEAD만 origin/main으로 옮기고(--mixed, 작업트리 유지) 데이터 디렉터리만 origin 상태로 되돌린다."""
     run("git", "rebase", "--abort")
     run("git", "merge", "--abort")
     run("git", "fetch", "origin", "main")
-    run("git", "reset", "--hard", "origin/main")
+    run("git", "reset", "--mixed", "origin/main")
+    # 데이터 디렉터리(추적 파일)만 origin 기준으로 정리 — 어차피 새로 생성해 덮어쓴다.
+    run("git", "checkout", "origin/main", "--", "data/live_counting")
 
 
 def collect_and_stage(env) -> bool:
