@@ -111,6 +111,9 @@
   a.ws-name:hover { color: var(--accent); border-color: var(--accent); }
   .ws-office { font-size: 0.74rem; color: #fff; background: #555; border-radius: 5px; padding: 2px 8px; font-weight: 700; white-space: nowrap; }
   .ws-party { font-weight: 800; font-size: 0.84rem; margin-left: auto; white-space: nowrap; }
+  .ws-badge { font-size: 0.72rem; font-weight: 800; border-radius: 5px; padding: 2px 7px; white-space: nowrap; flex-shrink: 0; }
+  .ws-badge.won { background: #e6f4ea; color: #127a3e; }
+  .ws-badge.lost { background: #f0f0f2; color: #888; }
 
   /* 섹션 */
   section.rs-block { margin: 38px 0 0; }
@@ -292,7 +295,7 @@
 
     <section class="winner-search" id="sec-search" aria-label="당선자 검색">
       <h2 class="ws-h2">🔎 당선자 검색</h2>
-      <p class="ws-sub">시도지사 · 광역의원 · 기초단체장 · 기초의원 · 교육감 · 국회의원 재보궐 — 이름이나 지역으로 찾기</p>
+      <p class="ws-sub">시도지사 · 광역의원 · 기초단체장 · 기초의원 · 교육감 · 국회의원 재보궐 — 이름·지역으로 검색 (주요 선거는 낙선 후보도)</p>
       <input id="ws-input" class="ws-input" type="search" placeholder="당선자 이름 또는 지역 (예: 오세훈, 강남구, 손혜원, 전남)" autocomplete="off" aria-label="당선자 이름 또는 지역 검색">
       <div id="ws-results" class="ws-results"></div>
     </section>
@@ -359,6 +362,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604u"></script>
+  <script src="./result.js?v=20260604v"></script>
 </body>
 </html>

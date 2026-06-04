@@ -450,30 +450,38 @@ const _eduColor = o => o === '보수' ? '#c0392b' : o === '진보' ? '#2b6cb0' :
 function buildSearchIndex(cur, councilWinners) {
   const CUR_OFFICE = { '3': '시도지사', '4': '기초단체장', '11': '교육감', '2': '국회의원 재보궐' };
   const idx = [];
+  // 단독 1인 선출(3·4·11·2)은 전 후보 색인 — 낙선 주요 후보도 검색되게(예: 하정우).
   for (const r of (cur.races || [])) {
     const t = String(r.sg_type_code);
     if (!CUR_OFFICE[t]) continue;
     const cs = r.candidates || [];
-    const c1 = cs[0], c2 = cs[1] || null;
-    if (!c1 || !c1.name) continue;
-    let jd = c1.jd_name || '';
-    if (t === '11') jd = EDU_ORIENT[c1.name] || '';  // 교육감: 진보/보수
-    let runner = null;
-    if (c2 && c2.name) {
-      let rjd = c2.jd_name || '';
-      if (t === '11') rjd = EDU_ORIENT[c2.name] || '';
-      runner = { name: c2.name, jd: rjd, share: c2.share_pct, votes: c2.votes };
-    }
-    const mode = (cs.length < 2 && c1.votes == null) ? '무투표' : null;
-    idx.push({ name: c1.name, jd, sd: r.sd_name || '', sgg: r.sgg_name || '', office: CUR_OFFICE[t], t,
-               hb: candHuboid(r, c1), r: { sg_type_code: t, sd_name: r.sd_name, sgg_name: r.sgg_name },
-               votes: c1.votes, share: c1.share_pct, mode, runnerUp: runner });
+    if (!cs.length) continue;
+    const winner = cs[0], runner = cs[1] || null;
+    const oppOf = (c, won) => {
+      const o = won ? runner : winner;
+      if (!o || !o.name || o.name === c.name) return null;
+      let ojd = o.jd_name || '';
+      if (t === '11') ojd = EDU_ORIENT[o.name] || '';
+      return { name: o.name, jd: ojd, share: o.share_pct };
+    };
+    cs.forEach((c, i) => {
+      if (!c.name) return;
+      const won = c.current_rank ? c.current_rank === 1 : i === 0;
+      let jd = c.jd_name || '';
+      if (t === '11') jd = EDU_ORIENT[c.name] || '';
+      const mode = (cs.length < 2 && c.votes == null) ? '무투표' : null;
+      idx.push({ name: c.name, jd, sd: r.sd_name || '', sgg: r.sgg_name || '', office: CUR_OFFICE[t], t,
+                 hb: candHuboid(r, c), r: { sg_type_code: t, sd_name: r.sd_name, sgg_name: r.sgg_name },
+                 votes: c.votes, share: c.share_pct, rank: c.current_rank || (i + 1), won, mode, opp: oppOf(c, won) });
+    });
   }
+  // 광역·기초의원은 당선자만(낙선 데이터 미보유)
   for (const w of ((councilWinners && councilWinners.winners) || [])) {
     idx.push({ name: w.name, jd: w.jd, sd: w.sd, sgg: w.sgg, office: w.office, t: w.sg_type_code,
                hb: candHuboid({ sg_type_code: w.sg_type_code, sd_name: w.sd, sgg_name: w.sgg }, { name: w.name }),
                r: { sg_type_code: w.sg_type_code, sd_name: w.sd, sgg_name: w.sgg },
-               votes: w.votes, share: w.share, mode: w.mode === '무투표' ? '무투표' : null, runnerUp: w.runner_up });
+               votes: w.votes, share: w.share, rank: w.rank, won: true, mode: w.mode === '무투표' ? '무투표' : null,
+               opp: w.runner_up });
   }
   SEARCH_IDX = idx;
 }
@@ -487,7 +495,7 @@ function runWinnerSearch(q) {
     return;
   }
   const hits = SEARCH_IDX.filter(e => e.name.includes(q) || e.sgg.includes(q) || e.sd.includes(q));
-  hits.sort((a, b) => (_WS_ORANK[a.office] - _WS_ORANK[b.office]) || a.name.localeCompare(b.name, 'ko'));
+  hits.sort((a, b) => (_WS_ORANK[a.office] - _WS_ORANK[b.office]) || ((a.won ? 0 : 1) - (b.won ? 0 : 1)) || a.name.localeCompare(b.name, 'ko'));
   const total = hits.length, shown = hits.slice(0, 60);
   if (!total) { box.innerHTML = `<div class="ws-hint">‘${esc(q)}’ 검색 결과가 없습니다.</div>`; return; }
   box.innerHTML = `<div class="ws-count">${total}명 검색됨${total > 60 ? ' · 상위 60명' : ''}</div>` +
@@ -499,19 +507,23 @@ function runWinnerSearch(q) {
         : `<span class="ws-name">${esc(e.name)}</span>`;
       const party = e.jd ? `<span class="ws-party" style="color:${color}">${esc(e.jd)}</span>` : '';
       const photo = candPhotoImg(e.r, { name: e.name }, 'ws-photo');
+      const badge = e.won
+        ? `<span class="ws-badge won">당선</span>`
+        : `<span class="ws-badge lost">낙선${e.rank ? ` ${e.rank}위` : ''}</span>`;
       let vt;
       if (e.mode === '무투표') vt = `<b class="ws-vt">무투표 당선</b>`;
       else if (e.votes != null) vt = `<b class="ws-vt">${intComma(e.votes)}표</b> (${fmt1(e.share)}%)`;
       else vt = '';
-      let rn = '';
-      const ru = e.runnerUp;
-      if (ru && ru.name) {
-        const rc = e.t === '11' ? _eduColor(ru.jd) : partyColor(ru.jd);
-        rn = `2위 ${esc(ru.name)}${ru.jd ? `<i style="color:${rc};font-style:normal;font-weight:700"> ${esc(ru.jd)}</i>` : ''}${ru.share != null ? ` ${fmt1(ru.share)}%` : ''}`;
+      let oppTxt = '';
+      const op = e.opp;
+      if (op && op.name) {
+        const oc = e.t === '11' ? _eduColor(op.jd) : partyColor(op.jd);
+        const lbl = e.won ? '2위' : '당선';
+        oppTxt = `${lbl} ${esc(op.name)}${op.jd ? `<i style="color:${oc};font-style:normal;font-weight:700"> ${esc(op.jd)}</i>` : ''}${op.share != null ? ` ${fmt1(op.share)}%` : ''}`;
       }
-      const l2 = [esc(region), vt, rn].filter(Boolean).join('  ·  ');
+      const l2 = [esc(region), vt, oppTxt].filter(Boolean).join('  ·  ');
       return `<div class="ws-row">${photo}<div class="ws-main">
-        <div class="ws-l1"><span class="ws-dot" style="background:${color}"></span>${nm}<span class="ws-office">${esc(e.office)}</span>${party}</div>
+        <div class="ws-l1">${badge}<span class="ws-dot" style="background:${color}"></span>${nm}<span class="ws-office">${esc(e.office)}</span>${party}</div>
         <div class="ws-l2">${l2}</div>
       </div></div>`;
     }).join('');
