@@ -186,8 +186,14 @@ function renderHero(cur, chiefs, edu, repoll, bh) {
   const polled = (cur.polled_at || '').replace('T', ' ').slice(0, 16);
   const ld = document.getElementById('rs-livedot');
   if (ld) ld.hidden = (cur.phase === 'final');
+  // '최종 집계'는 단독 1인 선출이 모두 사실상 확정(99.5%↑)일 때만. 일부 미확정이면 '개표 집계'.
+  const singles = (cur.races || []).filter(r => ['2', '3', '4', '11'].includes(String(r.sg_type_code)));
+  const allFinal = singles.length > 0 && singles.every(r => (r.progress_pct || 0) >= 99.5);
+  const phaseLabel = cur.phase === 'final'
+    ? (allFinal ? '최종 집계' : '개표 집계 (일부 선거구 진행)')
+    : '개표 진행 중';
   document.getElementById('rs-sub').innerHTML =
-    `${cur.phase === 'final' ? '<b>최종 집계</b>' : '<b>개표 진행 중</b>'} · 전국 투표율 <b>${nat ? fmt1(nat.turnout_pct) : '—'}%</b> · 갱신 ${esc(polled)} (1분마다 자동)`;
+    `<b>${phaseLabel}</b> · 전국 투표율 <b>${nat ? fmt1(nat.turnout_pct) : '—'}%</b> · 갱신 ${esc(polled)} (1분마다 자동)`;
 
   const ct = tallyByLeader(chiefs);
   document.getElementById('sb-dem').textContent = ct.dem;

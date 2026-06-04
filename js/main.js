@@ -423,7 +423,7 @@ function applyElectionDayBrand(diffDays) {
   if (diffDays <= -1) {
     // 6/4 이후 — 결과 단계
     titleHtml = '6·3 지방선거 결과 <span class="title-year">2026</span>';
-    subText = '개표 결과 · 당선인 · 정당별 의석';
+    subText = '개표 결과 · 당선인 · 정당별 당선 현황';
     docTitle = '6·3 지방선거 결과 2026 — 뉴탐사';
   } else if (diffDays === 0) {
     // 6/3 본투표·개표 당일
@@ -5849,7 +5849,11 @@ async function main() {
     state.timeseries = timeseries;
     state.history = history;
     state.historyTurnout = historyTurnout;
-    const sourceLabel = SOURCE_LABEL[source] || source;
+    // 선거 후엔 후보 데이터가 고정 아카이브이므로 '갱신' 오해가 없도록 라벨을 명확히.
+    const postElection = Date.now() >= Date.parse('2026-06-04T00:00:00+09:00');
+    const sourceLabel = (postElection && source === 'candidates')
+      ? '후보 등록 자료(확정)'
+      : (SOURCE_LABEL[source] || source);
     document.getElementById('last-updated').textContent =
       `${dateStr.slice(0,4)}.${dateStr.slice(4,6)}.${dateStr.slice(6,8)} · ${sourceLabel}`;
     // 클릭 위임: 보도 배지 / collapsible 일괄 토글 / 후보 상세 모달 / 모달 닫기

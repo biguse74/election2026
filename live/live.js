@@ -215,7 +215,6 @@ function bindRaceExpand() {
 function renderHero(cur, earlyVoting) {
   const nat = cur?.turnout?.national;
   const badge = document.getElementById('live-badge');
-  if (cur?.phase === 'live') badge.hidden = false;
 
   const t = document.getElementById('hero-turnout');
   const tm = document.getElementById('hero-turnout-meta');
@@ -227,15 +226,29 @@ function renderHero(cur, earlyVoting) {
   const races = cur?.races || [];
   const p = document.getElementById('hero-progress');
   const pm = document.getElementById('hero-progress-meta');
+  let avg = 0;
   if (races.length) {
     let wsum = 0, w = 0;
     for (const r of races) { const e = r.eligible_voters || 0; wsum += (r.progress_pct || 0) * e; w += e; }
-    const avg = w ? wsum / w : 0;
+    avg = w ? wsum / w : 0;
     p.innerHTML = `${fmt1(avg)}<span class="pct">%</span>`;
     pm.textContent = `수집된 선거구 ${races.length}곳 기준 (선거인 가중)`;
   } else {
     p.innerHTML = `대기<span class="pct"></span>`;
     pm.textContent = '18시 마감 후 개표 시작';
+  }
+
+  // 개표 국면 전환: 개표가 사실상 끝나면(가중 진행률 99.5%↑) LIVE 배지를 내리고
+  //   '실시간/진행 중' 문구를 '기록(아카이브)'으로 전환한다. 역사 보존용 페이지.
+  const ended = races.length > 0 && avg >= 99.5;
+  if (ended) {
+    badge.hidden = true;
+    const _tt = document.getElementById('page-title-text');
+    const _ts = document.getElementById('page-sub');
+    if (_tt) _tt.textContent = '투표·개표 기록';
+    if (_ts) _ts.textContent = '2026-06-03(수) 제9회 지방선거 · 개표 완료 · 투표율과 개표 과정 기록(아카이브)';
+  } else if (cur?.phase === 'live') {
+    badge.hidden = false;
   }
 
   document.getElementById('updated-at').textContent = fmtKST(cur?.polled_at) + ' (KST)';
@@ -1399,7 +1412,8 @@ function initCollapsible(beforeCount) {
     'trend-block', 'evd-block', 'histcmp-block', 'sigungu-block', 'corr-block',
     'search-block', 'exitpoll-block', 'epc-block', 'panse-block',
   ];
-  const openByDefault = new Set(['trend-block', 'evd-block', 'histcmp-block']);
+  // epc-block(예측 vs 실제 — 누가 맞혔나)은 뉴탐사 정확도를 보여주는 핵심이라 기본 펼침.
+  const openByDefault = new Set(['trend-block', 'evd-block', 'histcmp-block', 'epc-block']);
   ids.forEach(id => { const s = document.getElementById(id); if (s) s.classList.add('collapsible'); });
   if (_collapsibleInit) return;
   _collapsibleInit = true;
