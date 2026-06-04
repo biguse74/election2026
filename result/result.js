@@ -11,6 +11,7 @@ const PATHS = {
 };
 let EDU_ORIENT = {};
 let COVERED = null;
+let PRED_OPP = {};  // 시도지사 예측 상대후보(이름·정당) — 예: 전북 김관영(국힘)
 const DEM = '더불어민주당';
 const CON = '국민의힘';
 const REFRESH_MS = 60 * 1000;
@@ -141,8 +142,12 @@ function resultCard(race, opts = {}) {
     const demProb = opts.predMap[race.sd_name] != null ? opts.predMap[race.sd_name] : null;
     const cls = classifyRace(race, demProb);
     if (cls.actualMargin != null) {
+      const opp = PRED_OPP[race.sd_name];
+      const predLabel = (demProb != null && demProb < 50 && opp)
+        ? `${esc(opp.name)}(${esc(opp.party)}) ${Math.round(100 - demProb)}%`
+        : predText(demProb);
       const predPart = demProb != null
-        ? `<span class="rc-item">뉴탐사 예측 <b>${predText(demProb)}</b> 당선확률</span>`
+        ? `<span class="rc-item">뉴탐사 예측 <b>${predLabel}</b> 당선확률</span>`
         : `<span class="rc-item">예측 <b>—</b></span>`;
       cmp = `<span class="rc-item">실제 <b>${marginText(cls.actualMargin)}</b>${mvText}</span>${predPart}
         <span class="rc-verdict v-${cls.verdict}">${cls.label}</span>`;
@@ -372,6 +377,7 @@ async function render() {
   PARTIES = parties || {};
   PHOTO_MAP = photos || { by_full: {}, by_sd: {} };
   const predMap = (prediction && prediction.sido_dem_win_prob) || {};
+  PRED_OPP = (prediction && prediction.pred_opponent) || {};
 
   const byType = t => cur.races.filter(r => String(r.sg_type_code) === t);
   const chiefs = byType('3').sort((a, b) => sidoIdx(a.sd_name) - sidoIdx(b.sd_name));

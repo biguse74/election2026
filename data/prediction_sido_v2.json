@@ -12,6 +12,9 @@
   "con_mode": 5,
   "ind_mode": 1
  },
+ "pred_opponent": {
+  "전북특별자치도": { "name": "김관영", "party": "국힘" }
+ },
  "sido_dem_win_prob": {
   "강원특별자치도": 69.3,
   "경기도": 95.1,
