@@ -85,6 +85,28 @@
   .ot-fig .d { color: #8aa0ff; } .ot-fig .c { color: #ff9aa6; } .ot-fig .e { color: #c9c9d4; }
   .ot-sub { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 3px; }
 
+  /* 당선자 검색 — 히어로 바로 아래, 중앙 배치 */
+  .winner-search { max-width: 780px; margin: -10px auto 30px; background: #fff; border: 1px solid var(--line);
+    border-radius: 16px; padding: 24px 26px; box-shadow: 0 4px 18px rgba(0,0,0,0.07); position: relative; z-index: 2; }
+  .ws-h2 { font-family: 'Noto Serif KR', serif; font-size: 1.42rem; font-weight: 900; margin: 0 0 3px; text-align: center; letter-spacing: -0.02em; }
+  .ws-sub { text-align: center; color: var(--muted); font-size: 0.82rem; margin: 0 0 16px; }
+  .ws-input { width: 100%; font-size: 1.06rem; font-weight: 600; padding: 14px 18px; border: 2px solid var(--ink);
+    border-radius: 11px; outline: none; background: #fafafa; transition: border-color .12s, background .12s; }
+  .ws-input::placeholder { color: #aaa; font-weight: 500; }
+  .ws-input:focus { border-color: var(--accent); background: #fff; }
+  .ws-results { margin-top: 12px; max-height: 440px; overflow-y: auto; }
+  .ws-hint { color: var(--muted); font-size: 0.88rem; text-align: center; padding: 16px 0 6px; }
+  .ws-hint b { color: var(--ink); }
+  .ws-count { font-size: 0.78rem; color: var(--muted); font-weight: 800; margin: 2px 2px 8px; }
+  .ws-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; padding: 9px 4px; border-bottom: 1px solid #f0f0f2; }
+  .ws-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .ws-name { font-weight: 800; font-size: 0.98rem; color: var(--ink); text-decoration: none; }
+  a.ws-name { border-bottom: 1px solid rgba(0,0,0,0.18); }
+  a.ws-name:hover { color: var(--accent); border-color: var(--accent); }
+  .ws-office { font-size: 0.74rem; color: #fff; background: #555; border-radius: 5px; padding: 2px 8px; font-weight: 700; white-space: nowrap; }
+  .ws-region { color: var(--muted); font-size: 0.84rem; }
+  .ws-party { font-weight: 800; font-size: 0.84rem; margin-left: auto; white-space: nowrap; }
+
   /* 섹션 */
   section.rs-block { margin: 38px 0 0; }
   .rs-h2 { font-family: 'Noto Serif KR', serif; font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; margin: 0 0 3px; display: flex; align-items: baseline; gap: 10px; }
@@ -263,6 +285,13 @@
       <div class="office-tiles" id="office-tiles"></div>
     </section>
 
+    <section class="winner-search" id="sec-search" aria-label="당선자 검색">
+      <h2 class="ws-h2">🔎 당선자 검색</h2>
+      <p class="ws-sub">시도지사 · 광역의원 · 기초단체장 · 기초의원 · 교육감 · 국회의원 재보궐 — 이름이나 지역으로 찾기</p>
+      <input id="ws-input" class="ws-input" type="search" placeholder="당선자 이름 또는 지역 (예: 오세훈, 강남구, 손혜원, 전남)" autocomplete="off" aria-label="당선자 이름 또는 지역 검색">
+      <div id="ws-results" class="ws-results"></div>
+    </section>
+
     <section class="rs-block" id="sec-covered" style="display:none">
       <h2 class="rs-h2">뉴탐사 보도 지역 <span class="rs-count" id="cnt-covered"></span></h2>
       <p class="rs-desc">뉴탐사가 보도·시뮬레이션으로 주목했던 선거구의 당선 결과만 모았습니다. 시도지사·국회의원 재보궐·기초단체장·기초의원 순.</p>
@@ -325,6 +354,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604s"></script>
+  <script src="./result.js?v=20260604t"></script>
 </body>
 </html>

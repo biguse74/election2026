@@ -9,6 +9,7 @@ const PATHS = {
   eduOrient: '../data/edu_orientation.json',
   covered:   '../data/newtamsa_covered.json',
   council:   '../data/live_counting/council_seats.json',
+  councilWinners: '../data/live_counting/council_winners.json',
 };
 let EDU_ORIENT = {};
 let COVERED = null;
@@ -441,13 +442,72 @@ function renderCouncil(council) {
   if (fm) fm.textContent = `지역구 한정(비례 제외) · 경합은 개표 상위 당선, 무투표는 등록후보 당선 · 중앙선관위 · 집계 ${when}`;
 }
 
+// ── 당선자 검색 (전 직책: 시도지사·단체장·광역/기초의원·교육감·재보궐) ──
+let SEARCH_IDX = [];
+let _searchWired = false;
+const _WS_ORANK = { '시도지사': 0, '국회의원 재보궐': 1, '기초단체장': 2, '교육감': 3, '시도의원': 4, '기초의원': 5 };
+function buildSearchIndex(cur, councilWinners) {
+  const CUR_OFFICE = { '3': '시도지사', '4': '기초단체장', '11': '교육감', '2': '국회의원 재보궐' };
+  const idx = [];
+  for (const r of (cur.races || [])) {
+    const t = String(r.sg_type_code);
+    if (!CUR_OFFICE[t]) continue;
+    const c1 = (r.candidates || [])[0];
+    if (!c1 || !c1.name) continue;
+    let jd = c1.jd_name || '';
+    if (t === '11') jd = EDU_ORIENT[c1.name] || '';  // 교육감: 진보/보수
+    idx.push({ name: c1.name, jd, sd: r.sd_name || '', sgg: r.sgg_name || '', office: CUR_OFFICE[t], t, hb: candHuboid(r, c1) });
+  }
+  for (const w of ((councilWinners && councilWinners.winners) || [])) {
+    idx.push({ name: w.name, jd: w.jd, sd: w.sd, sgg: w.sgg, office: w.office, t: w.sg_type_code,
+               hb: candHuboid({ sg_type_code: w.sg_type_code, sd_name: w.sd, sgg_name: w.sgg }, { name: w.name }) });
+  }
+  SEARCH_IDX = idx;
+}
+function _wsColor(e) {
+  if (e.t === '11') return e.jd === '보수' ? '#c0392b' : e.jd === '진보' ? '#2b6cb0' : '#8a8a96';
+  return partyColor(e.jd);
+}
+function runWinnerSearch(q) {
+  const box = document.getElementById('ws-results');
+  if (!box) return;
+  q = (q || '').trim();
+  if (q.length < 1) {
+    box.innerHTML = `<div class="ws-hint">당선자 이름이나 지역을 입력하세요. 예: <b>오세훈</b>, <b>강남구</b>, <b>손혜원</b>, <b>전남</b></div>`;
+    return;
+  }
+  const hits = SEARCH_IDX.filter(e => e.name.includes(q) || e.sgg.includes(q) || e.sd.includes(q));
+  hits.sort((a, b) => (_WS_ORANK[a.office] - _WS_ORANK[b.office]) || a.name.localeCompare(b.name, 'ko'));
+  const total = hits.length, shown = hits.slice(0, 80);
+  if (!total) { box.innerHTML = `<div class="ws-hint">‘${esc(q)}’ 검색 결과가 없습니다.</div>`; return; }
+  box.innerHTML = `<div class="ws-count">${total}명 검색됨${total > 80 ? ' · 상위 80명' : ''}</div>` +
+    shown.map(e => {
+      const color = _wsColor(e);
+      const region = [e.sd, (e.sgg && e.sgg !== e.sd) ? e.sgg : ''].filter(Boolean).join(' ');
+      const nm = e.hb
+        ? `<a href="/#cand/${esc(e.hb)}" target="_blank" rel="noopener" class="ws-name cand-link">${esc(e.name)}</a>`
+        : `<span class="ws-name">${esc(e.name)}</span>`;
+      const party = e.jd ? `<span class="ws-party" style="color:${color}">${esc(e.jd)}</span>` : '';
+      return `<div class="ws-row"><span class="ws-dot" style="background:${color}"></span>${nm}<span class="ws-office">${esc(e.office)}</span><span class="ws-region">${esc(region)}</span>${party}</div>`;
+    }).join('');
+}
+function renderSearchUI() {
+  if (_searchWired) return;
+  const inp = document.getElementById('ws-input');
+  if (!inp) return;
+  _searchWired = true;
+  inp.addEventListener('input', () => runWinnerSearch(inp.value));
+  runWinnerSearch('');
+}
+
 async function render() {
-  const [cur, prediction, parties, photos, huboids, eduOri, covered, council] = await Promise.all([
+  const [cur, prediction, parties, photos, huboids, eduOri, covered, council, councilWinners] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.prediction), loadJSON(PATHS.parties), loadJSON(PATHS.photos),
     _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.cards),
     _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.eduOrient),
     _huboidLoaded ? Promise.resolve(COVERED) : loadJSON(PATHS.covered),
     loadJSON(PATHS.council),
+    loadJSON(PATHS.councilWinners),
   ]);
   if (!cur || !cur.races) { document.getElementById('rs-sub').textContent = '데이터를 불러오지 못했습니다.'; return; }
   if (huboids) { HUBOID = huboids; _huboidLoaded = true; }
@@ -465,6 +525,8 @@ async function render() {
   const bh = byType('4');
 
   renderHero(cur, chiefs, edu, repoll, bh, council);
+  buildSearchIndex(cur, councilWinners);
+  renderSearchUI();
   renderCovered(cur, COVERED, predMap);
   renderHistory(chiefs);
   renderGrid('grid-chief', chiefs, { predMap });
