@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-04T14:14:26+09:00",
+  "polled_at": "2026-06-04T14:59:21+09:00",
   "source": "web(VCCP09)",
   "phase": "final",
   "races": [
@@ -284,66 +284,66 @@
       "sd_name": "서울특별시",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 8256361,
-      "valid_votes": 4952776,
-      "invalid_votes": 298778,
-      "progress_pct": 99.29,
-      "rank1_minus_rank2_pp": 6.89,
+      "eligible_voters": 8277397,
+      "valid_votes": 4964891,
+      "invalid_votes": 299472,
+      "progress_pct": 99.53,
+      "rank1_minus_rank2_pp": 6.83,
       "candidates": [
         {
           "name": "정근식",
           "jd_name": "",
-          "votes": 1503256,
-          "share_pct": 30.35,
+          "votes": 1505509,
+          "share_pct": 30.32,
           "current_rank": 1
         },
         {
           "name": "조전혁",
           "jd_name": "",
-          "votes": 1161940,
-          "share_pct": 23.46,
+          "votes": 1166086,
+          "share_pct": 23.49,
           "current_rank": 2
         },
         {
           "name": "윤호상",
           "jd_name": "",
-          "votes": 721366,
-          "share_pct": 14.56,
+          "votes": 723954,
+          "share_pct": 14.58,
           "current_rank": 3
         },
         {
           "name": "한만중",
           "jd_name": "",
-          "votes": 467712,
-          "share_pct": 9.44,
+          "votes": 468177,
+          "share_pct": 9.43,
           "current_rank": 4
         },
         {
           "name": "김영배",
           "jd_name": "",
-          "votes": 364610,
+          "votes": 365169,
           "share_pct": 7.36,
           "current_rank": 5
         },
         {
           "name": "홍제남",
           "jd_name": "",
-          "votes": 286799,
-          "share_pct": 5.79,
+          "votes": 287733,
+          "share_pct": 5.8,
           "current_rank": 6
         },
         {
           "name": "이학인",
           "jd_name": "",
-          "votes": 232524,
+          "votes": 232627,
           "share_pct": 4.69,
           "current_rank": 7
         },
         {
           "name": "류수노",
           "jd_name": "",
-          "votes": 214569,
-          "share_pct": 4.33,
+          "votes": 215636,
+          "share_pct": 4.34,
           "current_rank": 8
         }
       ]
@@ -6121,7 +6121,7 @@
       "eligible_voters": 337561,
       "valid_votes": 216154,
       "invalid_votes": 4060,
-      "progress_pct": 99.98,
+      "progress_pct": 100.0,
       "rank1_minus_rank2_pp": 10.91,
       "candidates": [
         {
