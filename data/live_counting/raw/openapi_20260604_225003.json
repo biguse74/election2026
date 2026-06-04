@@ -1,0 +1,859 @@
+{
+  "polled_at": "2026-06-04T22:50:03+09:00",
+  "counting_calls": [
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "서울특별시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "부산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "대구광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "인천광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "광주광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "대전광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "울산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "세종특별자치시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "경기도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "강원특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "충청북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "충청남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "전북특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "전라남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "경상북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "경상남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "3",
+        "sd_name": "제주특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "서울특별시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "부산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "대구광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "인천광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "광주광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "대전광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "울산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "세종특별자치시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "경기도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "강원특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "충청북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "충청남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "전북특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "전라남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "경상북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "경상남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "4",
+        "sd_name": "제주특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "서울특별시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "부산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "대구광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "인천광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "광주광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "대전광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "울산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "세종특별자치시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "경기도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "강원특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "충청북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "충청남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "전북특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "전라남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "경상북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "경상남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "5",
+        "sd_name": "제주특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "서울특별시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "부산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "대구광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "인천광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "광주광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "대전광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "울산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "세종특별자치시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "경기도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "강원특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "충청북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "충청남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "전북특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "전라남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "경상북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "경상남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "6",
+        "sd_name": "제주특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "서울특별시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "부산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "대구광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "인천광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "광주광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "대전광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "울산광역시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "세종특별자치시"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "경기도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "강원특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "충청북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "충청남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "전북특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "전라남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "경상북도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "경상남도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    },
+    {
+      "request": {
+        "sg_id": "20260603",
+        "sg_type": "11",
+        "sd_name": "제주특별자치도"
+      },
+      "result_code": "INFO-03",
+      "total_count": 0,
+      "items": []
+    }
+  ],
+  "turnout_call": {
+    "result_code": "WEB-SCRAPE",
+    "items": []
+  }
+}
