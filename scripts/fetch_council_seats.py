@@ -104,14 +104,24 @@ def collect_office(sg_type: str) -> dict:
     n_contested = n_uncontested = n_missing = 0
     seats = 0
 
-    def add(sd, sgg, name, jd, mode):
+    def add(sd, sgg, name, jd, mode, votes=None, share=None, rank=None, runner=None):
         nonlocal seats
         p = jd or "무소속"
         party[p] += 1
         by_sido[sd][p] += 1
         seats += 1
         winners.append({"name": name, "jd": p, "sd": sd, "sgg": sgg,
-                        "office": OFFICES[sg_type], "sg_type_code": sg_type, "mode": mode})
+                        "office": OFFICES[sg_type], "sg_type_code": sg_type, "mode": mode,
+                        "votes": votes, "share": share, "rank": rank, "runner_up": runner})
+
+    def add_from_scrape(sd, sgg, M, r):
+        cs = r["candidates"]
+        runner = None
+        if len(cs) > M:
+            rc = cs[M]
+            runner = {"name": rc["name"], "jd": rc["jd_name"] or "무소속", "share": rc.get("share_pct"), "votes": rc.get("votes")}
+        for rank, c in enumerate(cs[:M], 1):
+            add(sd, sgg, c["name"], c["jd_name"], "개표", votes=c.get("votes"), share=c.get("share_pct"), rank=rank, runner=runner)
 
     for (sd, sgg), M in mag.items():
         valid = cands.get((sd, sgg), [])
@@ -120,8 +130,7 @@ def collect_office(sg_type: str) -> dict:
             r = scraped.get((sd, sgg))
             if r:
                 n_contested += 1
-                for c in r["candidates"][:M]:
-                    add(sd, sgg, c["name"], c["jd_name"], "개표")
+                add_from_scrape(sd, sgg, M, r)
             else:
                 n_missing += 1
             continue
@@ -135,8 +144,7 @@ def collect_office(sg_type: str) -> dict:
             r = scraped.get((sd, sgg))
             if r:
                 n_contested += 1
-                for c in r["candidates"][:M]:
-                    add(sd, sgg, c["name"], c["jd_name"], "개표")
+                add_from_scrape(sd, sgg, M, r)
             else:
                 n_missing += 1
 

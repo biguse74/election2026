@@ -98,13 +98,18 @@
   .ws-hint { color: var(--muted); font-size: 0.88rem; text-align: center; padding: 16px 0 6px; }
   .ws-hint b { color: var(--ink); }
   .ws-count { font-size: 0.78rem; color: var(--muted); font-weight: 800; margin: 2px 2px 8px; }
-  .ws-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; padding: 9px 4px; border-bottom: 1px solid #f0f0f2; }
+  .ws-row { display: flex; align-items: center; gap: 11px; padding: 10px 4px; border-bottom: 1px solid #f0f0f2; }
+  .ws-photo { width: 38px; height: 47px; border-radius: 5px; object-fit: cover; background: #eee; border: 1px solid var(--line); flex-shrink: 0; }
+  span.ws-photo.cand-noimg { display: flex; align-items: center; justify-content: center; font-weight: 800; color: #aaa; font-size: 1.05rem; }
+  .ws-main { flex: 1; min-width: 0; }
+  .ws-l1 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .ws-l2 { font-size: 0.82rem; color: var(--muted); margin-top: 3px; }
+  .ws-l2 .ws-vt { color: var(--ink); }
   .ws-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
   .ws-name { font-weight: 800; font-size: 0.98rem; color: var(--ink); text-decoration: none; }
   a.ws-name { border-bottom: 1px solid rgba(0,0,0,0.18); }
   a.ws-name:hover { color: var(--accent); border-color: var(--accent); }
   .ws-office { font-size: 0.74rem; color: #fff; background: #555; border-radius: 5px; padding: 2px 8px; font-weight: 700; white-space: nowrap; }
-  .ws-region { color: var(--muted); font-size: 0.84rem; }
   .ws-party { font-weight: 800; font-size: 0.84rem; margin-left: auto; white-space: nowrap; }
 
   /* 섹션 */
@@ -354,6 +359,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604t"></script>
+  <script src="./result.js?v=20260604u"></script>
 </body>
 </html>

@@ -226,7 +226,7 @@ function renderHero(cur, chiefs, edu, repoll, bh, council) {
     `<span><i style="background:var(--dem)"></i>민주 ${intComma(grand.dem)} (${pc(grand.dem)}%)</span>` +
     `<span><i style="background:#6b6b78"></i>그외 ${intComma(grand.etc)} (${pc(grand.etc)}%)</span>` +
     `<span><i style="background:var(--con)"></i>국힘 ${intComma(grand.con)} (${pc(grand.con)}%)</span>` +
-    `<span style="margin-left:auto">시도지사·단체장·지방의원·재보궐 합산</span>`;
+    `<span style="margin-left:auto">시도지사·단체장·지방의원·재보궐 합산 · 교육감(비정당) 제외</span>`;
 
   const tile = (name, t, sub) => {
     const tt = t.total || 1;
@@ -446,28 +446,38 @@ function renderCouncil(council) {
 let SEARCH_IDX = [];
 let _searchWired = false;
 const _WS_ORANK = { '시도지사': 0, '국회의원 재보궐': 1, '기초단체장': 2, '교육감': 3, '시도의원': 4, '기초의원': 5 };
+const _eduColor = o => o === '보수' ? '#c0392b' : o === '진보' ? '#2b6cb0' : '#8a8a96';
 function buildSearchIndex(cur, councilWinners) {
   const CUR_OFFICE = { '3': '시도지사', '4': '기초단체장', '11': '교육감', '2': '국회의원 재보궐' };
   const idx = [];
   for (const r of (cur.races || [])) {
     const t = String(r.sg_type_code);
     if (!CUR_OFFICE[t]) continue;
-    const c1 = (r.candidates || [])[0];
+    const cs = r.candidates || [];
+    const c1 = cs[0], c2 = cs[1] || null;
     if (!c1 || !c1.name) continue;
     let jd = c1.jd_name || '';
     if (t === '11') jd = EDU_ORIENT[c1.name] || '';  // 교육감: 진보/보수
-    idx.push({ name: c1.name, jd, sd: r.sd_name || '', sgg: r.sgg_name || '', office: CUR_OFFICE[t], t, hb: candHuboid(r, c1) });
+    let runner = null;
+    if (c2 && c2.name) {
+      let rjd = c2.jd_name || '';
+      if (t === '11') rjd = EDU_ORIENT[c2.name] || '';
+      runner = { name: c2.name, jd: rjd, share: c2.share_pct, votes: c2.votes };
+    }
+    const mode = (cs.length < 2 && c1.votes == null) ? '무투표' : null;
+    idx.push({ name: c1.name, jd, sd: r.sd_name || '', sgg: r.sgg_name || '', office: CUR_OFFICE[t], t,
+               hb: candHuboid(r, c1), r: { sg_type_code: t, sd_name: r.sd_name, sgg_name: r.sgg_name },
+               votes: c1.votes, share: c1.share_pct, mode, runnerUp: runner });
   }
   for (const w of ((councilWinners && councilWinners.winners) || [])) {
     idx.push({ name: w.name, jd: w.jd, sd: w.sd, sgg: w.sgg, office: w.office, t: w.sg_type_code,
-               hb: candHuboid({ sg_type_code: w.sg_type_code, sd_name: w.sd, sgg_name: w.sgg }, { name: w.name }) });
+               hb: candHuboid({ sg_type_code: w.sg_type_code, sd_name: w.sd, sgg_name: w.sgg }, { name: w.name }),
+               r: { sg_type_code: w.sg_type_code, sd_name: w.sd, sgg_name: w.sgg },
+               votes: w.votes, share: w.share, mode: w.mode === '무투표' ? '무투표' : null, runnerUp: w.runner_up });
   }
   SEARCH_IDX = idx;
 }
-function _wsColor(e) {
-  if (e.t === '11') return e.jd === '보수' ? '#c0392b' : e.jd === '진보' ? '#2b6cb0' : '#8a8a96';
-  return partyColor(e.jd);
-}
+function _wsColor(e) { return e.t === '11' ? _eduColor(e.jd) : partyColor(e.jd); }
 function runWinnerSearch(q) {
   const box = document.getElementById('ws-results');
   if (!box) return;
@@ -478,9 +488,9 @@ function runWinnerSearch(q) {
   }
   const hits = SEARCH_IDX.filter(e => e.name.includes(q) || e.sgg.includes(q) || e.sd.includes(q));
   hits.sort((a, b) => (_WS_ORANK[a.office] - _WS_ORANK[b.office]) || a.name.localeCompare(b.name, 'ko'));
-  const total = hits.length, shown = hits.slice(0, 80);
+  const total = hits.length, shown = hits.slice(0, 60);
   if (!total) { box.innerHTML = `<div class="ws-hint">‘${esc(q)}’ 검색 결과가 없습니다.</div>`; return; }
-  box.innerHTML = `<div class="ws-count">${total}명 검색됨${total > 80 ? ' · 상위 80명' : ''}</div>` +
+  box.innerHTML = `<div class="ws-count">${total}명 검색됨${total > 60 ? ' · 상위 60명' : ''}</div>` +
     shown.map(e => {
       const color = _wsColor(e);
       const region = [e.sd, (e.sgg && e.sgg !== e.sd) ? e.sgg : ''].filter(Boolean).join(' ');
@@ -488,7 +498,22 @@ function runWinnerSearch(q) {
         ? `<a href="/#cand/${esc(e.hb)}" target="_blank" rel="noopener" class="ws-name cand-link">${esc(e.name)}</a>`
         : `<span class="ws-name">${esc(e.name)}</span>`;
       const party = e.jd ? `<span class="ws-party" style="color:${color}">${esc(e.jd)}</span>` : '';
-      return `<div class="ws-row"><span class="ws-dot" style="background:${color}"></span>${nm}<span class="ws-office">${esc(e.office)}</span><span class="ws-region">${esc(region)}</span>${party}</div>`;
+      const photo = candPhotoImg(e.r, { name: e.name }, 'ws-photo');
+      let vt;
+      if (e.mode === '무투표') vt = `<b class="ws-vt">무투표 당선</b>`;
+      else if (e.votes != null) vt = `<b class="ws-vt">${intComma(e.votes)}표</b> (${fmt1(e.share)}%)`;
+      else vt = '';
+      let rn = '';
+      const ru = e.runnerUp;
+      if (ru && ru.name) {
+        const rc = e.t === '11' ? _eduColor(ru.jd) : partyColor(ru.jd);
+        rn = `2위 ${esc(ru.name)}${ru.jd ? `<i style="color:${rc};font-style:normal;font-weight:700"> ${esc(ru.jd)}</i>` : ''}${ru.share != null ? ` ${fmt1(ru.share)}%` : ''}`;
+      }
+      const l2 = [esc(region), vt, rn].filter(Boolean).join('  ·  ');
+      return `<div class="ws-row">${photo}<div class="ws-main">
+        <div class="ws-l1"><span class="ws-dot" style="background:${color}"></span>${nm}<span class="ws-office">${esc(e.office)}</span>${party}</div>
+        <div class="ws-l2">${l2}</div>
+      </div></div>`;
     }).join('');
 }
 function renderSearchUI() {
