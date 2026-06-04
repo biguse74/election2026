@@ -8,6 +8,7 @@ const PATHS = {
   cards:     '../data/candidate_cards.json',
   eduOrient: '../data/edu_orientation.json',
   covered:   '../data/newtamsa_covered.json',
+  council:   '../data/live_counting/council_seats.json',
 };
 let EDU_ORIENT = {};
 let COVERED = null;
@@ -373,12 +374,57 @@ function renderBH(bh) {
 }
 
 let _huboidLoaded = false;
+// 광역의원·기초의원 정당별 의석(지역구) — council_seats.json 기반
+const _PARTY_ORDER = ['더불어민주당', '국민의힘', '조국혁신당', '진보당', '정의당', '개혁신당', '녹색당', '무소속'];
+function _partyTally(party) {
+  // 큰 바용: 민주/국힘/그외
+  const dem = party['더불어민주당'] || 0, con = party['국민의힘'] || 0;
+  const total = Object.values(party).reduce((a, b) => a + b, 0);
+  return { dem, con, etc: total - dem - con, total };
+}
+function renderCouncilOffice(elId, office) {
+  const el = document.getElementById(elId);
+  if (!el || !office) return;
+  const t = _partyTally(office.party);
+  // 상세 정당 칩(0이 아닌 정당만, 정해진 순서)
+  const chips = _PARTY_ORDER.filter(p => office.party[p]).map(p =>
+    `<span class="pchip" style="border-color:${partyColor(p)}"><i style="background:${partyColor(p)}"></i>${esc(p)} <b>${office.party[p]}</b></span>`).join('');
+  // 시도별 미니바(의석 많은 순)
+  const sidos = Object.keys(office.by_sido).sort((a, b) => sidoIdx(a) - sidoIdx(b));
+  const rows = sidos.map(sd => {
+    const p = office.by_sido[sd];
+    const st = _partyTally(p);
+    const tot = st.total || 1;
+    return `<div class="cs-row"><span class="cs-sd">${esc(sd)}</span>
+      <span class="cs-bar"><i class="s-dem" style="width:${st.dem / tot * 100}%"></i><i class="s-etc" style="width:${st.etc / tot * 100}%"></i><i class="s-con" style="width:${st.con / tot * 100}%"></i></span>
+      <span class="cs-num"><b class="d">${st.dem}</b>·<b class="c">${st.con}</b>${st.etc ? `·<b class="e">${st.etc}</b>` : ''}</span></div>`;
+  }).join('');
+  el.innerHTML = `${labeledSeatBar(t)}
+    <div class="pchips">${chips}</div>
+    <div class="cs-sido"><div class="cs-sido-h">시도별 (민주·국힘·그외)</div>${rows}</div>`;
+}
+function renderCouncil(council) {
+  const sec = document.getElementById('sec-council');
+  if (!sec) return;
+  if (!council || !council.offices) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  renderCouncilOffice('council-sido', council.offices['5']);
+  renderCouncilOffice('council-basic', council.offices['6']);
+  const o5 = council.offices['5'], o6 = council.offices['6'];
+  if (o5) document.getElementById('cnt-council-sido').textContent = `${o5.total_seats}석`;
+  if (o6) document.getElementById('cnt-council-basic').textContent = `${o6.total_seats}석`;
+  const when = (council.generated_at || '').replace('T', ' ').slice(0, 16);
+  const fm = document.getElementById('council-foot');
+  if (fm) fm.textContent = `지역구 한정(비례 제외) · 경합은 개표 상위 당선, 무투표는 등록후보 당선 · 중앙선관위 · 집계 ${when}`;
+}
+
 async function render() {
-  const [cur, prediction, parties, photos, huboids, eduOri, covered] = await Promise.all([
+  const [cur, prediction, parties, photos, huboids, eduOri, covered, council] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.prediction), loadJSON(PATHS.parties), loadJSON(PATHS.photos),
     _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.cards),
     _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.eduOrient),
     _huboidLoaded ? Promise.resolve(COVERED) : loadJSON(PATHS.covered),
+    loadJSON(PATHS.council),
   ]);
   if (!cur || !cur.races) { document.getElementById('rs-sub').textContent = '데이터를 불러오지 못했습니다.'; return; }
   if (huboids) { HUBOID = huboids; _huboidLoaded = true; }
@@ -403,6 +449,7 @@ async function render() {
   renderGrid('grid-edu', edu, {});
   renderGrid('grid-repoll', repoll, {});
   renderBH(bh);
+  renderCouncil(council);
 
   document.getElementById('cnt-chief').textContent = `${chiefs.length}곳`;
   document.getElementById('cnt-edu').textContent = `${edu.length}곳`;
