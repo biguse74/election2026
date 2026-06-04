@@ -9,7 +9,7 @@ const PATHS = {
   eduOrient: '../data/edu_orientation.json',
   covered:   '../data/newtamsa_covered.json',
   council:   '../data/live_counting/council_seats.json',
-  councilWinners: '../data/live_counting/council_winners.json',
+  councilCands: '../data/live_counting/council_candidates.json',
 };
 let EDU_ORIENT = {};
 let COVERED = null;
@@ -443,14 +443,16 @@ function renderCouncil(council) {
 }
 
 // ── 당선자 검색 (전 직책: 시도지사·단체장·광역/기초의원·교육감·재보궐) ──
-let SEARCH_IDX = [];
+// SINGLE_IDX(단독선출, 60초마다 재생성) + COUNCIL_IDX(의원, 1회 지연 로드) → SEARCH_IDX
+let SEARCH_IDX = [], SINGLE_IDX = [], COUNCIL_IDX = [];
 let _searchWired = false;
 const _WS_ORANK = { '시도지사': 0, '국회의원 재보궐': 1, '기초단체장': 2, '교육감': 3, '시도의원': 4, '기초의원': 5 };
 const _eduColor = o => o === '보수' ? '#c0392b' : o === '진보' ? '#2b6cb0' : '#8a8a96';
-function buildSearchIndex(cur, councilWinners) {
+function buildSearchIndex(cur) {
   const CUR_OFFICE = { '3': '시도지사', '4': '기초단체장', '11': '교육감', '2': '국회의원 재보궐' };
   const idx = [];
   // 단독 1인 선출(3·4·11·2)은 전 후보 색인 — 낙선 주요 후보도 검색되게(예: 하정우).
+  // 광역·기초의원(5·6)은 양이 많아 검색창 첫 사용 시 지연 로드(ensureCouncilLoaded).
   for (const r of (cur.races || [])) {
     const t = String(r.sg_type_code);
     if (!CUR_OFFICE[t]) continue;
@@ -475,15 +477,28 @@ function buildSearchIndex(cur, councilWinners) {
                  votes: c.votes, share: c.share_pct, rank: c.current_rank || (i + 1), won, mode, opp: oppOf(c, won) });
     });
   }
-  // 광역·기초의원은 당선자만(낙선 데이터 미보유)
-  for (const w of ((councilWinners && councilWinners.winners) || [])) {
-    idx.push({ name: w.name, jd: w.jd, sd: w.sd, sgg: w.sgg, office: w.office, t: w.sg_type_code,
-               hb: candHuboid({ sg_type_code: w.sg_type_code, sd_name: w.sd, sgg_name: w.sgg }, { name: w.name }),
-               r: { sg_type_code: w.sg_type_code, sd_name: w.sd, sgg_name: w.sgg },
-               votes: w.votes, share: w.share, rank: w.rank, won: true, mode: w.mode === '무투표' ? '무투표' : null,
-               opp: w.runner_up });
-  }
-  SEARCH_IDX = idx;
+  SINGLE_IDX = idx;
+  SEARCH_IDX = SINGLE_IDX.concat(COUNCIL_IDX);
+}
+// 광역·기초의원 전 후보(당락 포함)를 검색 인덱스에 합침 — 검색창 첫 사용 시 1회 지연 로드.
+let _councilLoading = null, _councilReady = false;
+const _OFFICE_BY_T = { '5': '시도의원', '6': '기초의원' };
+function ensureCouncilLoaded() {
+  if (_councilLoading) return _councilLoading;
+  _councilLoading = loadJSON(PATHS.councilCands).then(data => {
+    const list = (data && data.cands) || [];
+    COUNCIL_IDX = list.map(c => ({
+      name: c.n, jd: c.j, sd: c.sd, sgg: c.sg, office: _OFFICE_BY_T[c.t] || '지방의원', t: c.t,
+      hb: candHuboid({ sg_type_code: c.t, sd_name: c.sd, sgg_name: c.sg }, { name: c.n }),
+      r: { sg_type_code: c.t, sd_name: c.sd, sgg_name: c.sg },
+      votes: c.v, share: c.s, rank: c.r, won: !!c.w,
+      mode: (c.v == null && c.w) ? '무투표' : null, seats: c.m, opp: null,
+    }));
+    SEARCH_IDX = SINGLE_IDX.concat(COUNCIL_IDX);
+    _councilReady = true;
+    return true;
+  }).catch(() => { _councilReady = true; return false; });
+  return _councilLoading;
 }
 function _wsColor(e) { return e.t === '11' ? _eduColor(e.jd) : partyColor(e.jd); }
 function runWinnerSearch(q) {
@@ -491,14 +506,18 @@ function runWinnerSearch(q) {
   if (!box) return;
   q = (q || '').trim();
   if (q.length < 1) {
-    box.innerHTML = `<div class="ws-hint">당선자 이름이나 지역을 입력하세요. 예: <b>오세훈</b>, <b>강남구</b>, <b>손혜원</b>, <b>전남</b></div>`;
+    box.innerHTML = `<div class="ws-hint">이름이나 지역을 입력하세요. 당선·낙선 모두 검색됩니다. 예: <b>오세훈</b>, <b>하정우</b>, <b>강남구</b>, <b>전남</b></div>`;
     return;
   }
   const hits = SEARCH_IDX.filter(e => e.name.includes(q) || e.sgg.includes(q) || e.sd.includes(q));
-  hits.sort((a, b) => (_WS_ORANK[a.office] - _WS_ORANK[b.office]) || ((a.won ? 0 : 1) - (b.won ? 0 : 1)) || a.name.localeCompare(b.name, 'ko'));
+  hits.sort((a, b) => (_WS_ORANK[a.office] - _WS_ORANK[b.office]) || ((a.won ? 0 : 1) - (b.won ? 0 : 1))
+    || ((a.rank || 99) - (b.rank || 99)) || a.name.localeCompare(b.name, 'ko'));
   const total = hits.length, shown = hits.slice(0, 60);
-  if (!total) { box.innerHTML = `<div class="ws-hint">‘${esc(q)}’ 검색 결과가 없습니다.</div>`; return; }
-  box.innerHTML = `<div class="ws-count">${total}명 검색됨${total > 60 ? ' · 상위 60명' : ''}</div>` +
+  if (!total) {
+    if (!_councilReady) { box.innerHTML = `<div class="ws-hint">의원 후보 명단 불러오는 중…</div>`; ensureCouncilLoaded().then(() => runWinnerSearch(q)); return; }
+    box.innerHTML = `<div class="ws-hint">‘${esc(q)}’ 검색 결과가 없습니다.</div>`; return;
+  }
+  box.innerHTML = `<div class="ws-count">${total}명 검색됨${total > 60 ? ' · 상위 60명' : ''}${!_councilReady ? ' · 의원 명단 불러오는 중…' : ''}</div>` +
     shown.map(e => {
       const color = _wsColor(e);
       const region = [e.sd, (e.sgg && e.sgg !== e.sd) ? e.sgg : ''].filter(Boolean).join(' ');
@@ -516,12 +535,14 @@ function runWinnerSearch(q) {
       else vt = '';
       let oppTxt = '';
       const op = e.opp;
-      if (op && op.name) {
+      if (op && op.name) {  // 단독 1인 선출(시도지사·단체장·교육감·재보궐)만 상대후보 표시
         const oc = e.t === '11' ? _eduColor(op.jd) : partyColor(op.jd);
         const lbl = e.won ? '2위' : '당선';
         oppTxt = `${lbl} ${esc(op.name)}${op.jd ? `<i style="color:${oc};font-style:normal;font-weight:700"> ${esc(op.jd)}</i>` : ''}${op.share != null ? ` ${fmt1(op.share)}%` : ''}`;
       }
-      const l2 = [esc(region), vt, oppTxt].filter(Boolean).join('  ·  ');
+      // 중선거구(의원 정수 2명 이상)는 정수 표기
+      const seatTxt = (e.seats && e.seats > 1) ? `정수 ${e.seats}명 선출` : '';
+      const l2 = [esc(region), vt, oppTxt, seatTxt].filter(Boolean).join('  ·  ');
       return `<div class="ws-row">${photo}<div class="ws-main">
         <div class="ws-l1">${badge}<span class="ws-dot" style="background:${color}"></span>${nm}<span class="ws-office">${esc(e.office)}</span>${party}</div>
         <div class="ws-l2">${l2}</div>
@@ -533,18 +554,20 @@ function renderSearchUI() {
   const inp = document.getElementById('ws-input');
   if (!inp) return;
   _searchWired = true;
-  inp.addEventListener('input', () => runWinnerSearch(inp.value));
+  // 의원 전 후보는 검색창에 처음 접근할 때 지연 로드 → 페이지 첫 로딩 가볍게.
+  const kick = () => ensureCouncilLoaded().then(() => { if (inp.value.trim()) runWinnerSearch(inp.value); });
+  inp.addEventListener('focus', kick);
+  inp.addEventListener('input', () => { runWinnerSearch(inp.value); kick(); });
   runWinnerSearch('');
 }
 
 async function render() {
-  const [cur, prediction, parties, photos, huboids, eduOri, covered, council, councilWinners] = await Promise.all([
+  const [cur, prediction, parties, photos, huboids, eduOri, covered, council] = await Promise.all([
     loadJSON(PATHS.current), loadJSON(PATHS.prediction), loadJSON(PATHS.parties), loadJSON(PATHS.photos),
     _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.cards),
     _huboidLoaded ? Promise.resolve(null) : loadJSON(PATHS.eduOrient),
     _huboidLoaded ? Promise.resolve(COVERED) : loadJSON(PATHS.covered),
     loadJSON(PATHS.council),
-    loadJSON(PATHS.councilWinners),
   ]);
   if (!cur || !cur.races) { document.getElementById('rs-sub').textContent = '데이터를 불러오지 못했습니다.'; return; }
   if (huboids) { HUBOID = huboids; _huboidLoaded = true; }
@@ -562,7 +585,7 @@ async function render() {
   const bh = byType('4');
 
   renderHero(cur, chiefs, edu, repoll, bh, council);
-  buildSearchIndex(cur, councilWinners);
+  buildSearchIndex(cur);
   renderSearchUI();
   renderCovered(cur, COVERED, predMap);
   renderHistory(chiefs);

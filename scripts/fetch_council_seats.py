@@ -31,7 +31,8 @@ KST = timezone(timedelta(hours=9))
 ROOT = Path(__file__).resolve().parent.parent
 CODES = ROOT / "data" / "codes" / "20260603" / "constituencies"
 OUT = ROOT / "data" / "live_counting" / "council_seats.json"
-WIN_OUT = ROOT / "data" / "live_counting" / "council_winners.json"
+CAND_OUT = ROOT / "data" / "live_counting" / "council_candidates.json"
+WIN_OUT = ROOT / "data" / "live_counting" / "council_winners.json"  # 구 파일(자동 정리)
 
 OFFICES = {"5": "시도의원", "6": "기초의원"}
 VALID_STATUS = {"등록"}  # 사퇴·등록무효·사망 제외
@@ -98,30 +99,30 @@ def collect_office(sg_type: str) -> dict:
     cands = load_candidates_by_sgg(sg_type, sgg2sd)
     scraped = scrape_contested(sg_type)
 
-    party = defaultdict(int)        # 정당 -> 의석
+    party = defaultdict(int)        # 정당 -> 의석(당선자만)
     by_sido = defaultdict(lambda: defaultdict(int))
-    winners = []                    # 개별 당선자(검색용)
+    cand_list = []                  # 전 후보(당선+낙선) — 검색용. 짧은 키로 압축.
     n_contested = n_uncontested = n_missing = 0
     seats = 0
 
-    def add(sd, sgg, name, jd, mode, votes=None, share=None, rank=None, runner=None):
+    def tally(sd, jd):
         nonlocal seats
         p = jd or "무소속"
         party[p] += 1
         by_sido[sd][p] += 1
         seats += 1
-        winners.append({"name": name, "jd": p, "sd": sd, "sgg": sgg,
-                        "office": OFFICES[sg_type], "sg_type_code": sg_type, "mode": mode,
-                        "votes": votes, "share": share, "rank": rank, "runner_up": runner})
 
-    def add_from_scrape(sd, sgg, M, r):
-        cs = r["candidates"]
-        runner = None
-        if len(cs) > M:
-            rc = cs[M]
-            runner = {"name": rc["name"], "jd": rc["jd_name"] or "무소속", "share": rc.get("share_pct"), "votes": rc.get("votes")}
-        for rank, c in enumerate(cs[:M], 1):
-            add(sd, sgg, c["name"], c["jd_name"], "개표", votes=c.get("votes"), share=c.get("share_pct"), rank=rank, runner=runner)
+    def emit(sd, sgg, name, jd, won, rank, votes, share, M):
+        # 압축 키: n=이름 j=정당 sd sg=선거구 t=종류 w=당선(1/0) r=순위 v=득표 s=득표율 m=정수
+        cand_list.append({"n": name, "j": jd or "무소속", "sd": sd, "sg": sgg, "t": sg_type,
+                          "w": 1 if won else 0, "r": rank, "v": votes, "s": share, "m": M})
+
+    def from_scrape(sd, sgg, M, r):
+        for rank, c in enumerate(r["candidates"], 1):
+            won = rank <= M
+            if won:
+                tally(sd, c["jd_name"])
+            emit(sd, sgg, c["name"], c["jd_name"], won, rank, c.get("votes"), c.get("share_pct"), M)
 
     for (sd, sgg), M in mag.items():
         valid = cands.get((sd, sgg), [])
@@ -130,21 +131,22 @@ def collect_office(sg_type: str) -> dict:
             r = scraped.get((sd, sgg))
             if r:
                 n_contested += 1
-                add_from_scrape(sd, sgg, M, r)
+                from_scrape(sd, sgg, M, r)
             else:
                 n_missing += 1
             continue
         if n <= M:
-            # 무투표 당선 — 등록후보 전원
+            # 무투표 — 등록후보 전원 당선(낙선 없음)
             n_uncontested += 1
             for c in valid:
-                add(sd, sgg, c.get("name"), c.get("jdName"), "무투표")
+                tally(sd, c.get("jdName"))
+                emit(sd, sgg, c.get("name"), c.get("jdName"), True, None, None, None, M)
         else:
-            # 경합 — 개표 상위 M명
+            # 경합 — 개표 상위 M명 당선, 전 후보 색인
             r = scraped.get((sd, sgg))
             if r:
                 n_contested += 1
-                add_from_scrape(sd, sgg, M, r)
+                from_scrape(sd, sgg, M, r)
             else:
                 n_missing += 1
 
@@ -160,7 +162,7 @@ def collect_office(sg_type: str) -> dict:
         "party": dict(sorted(party.items(), key=lambda kv: -kv[1])),
         "by_sido": {sd: dict(sorted(d.items(), key=lambda kv: -kv[1])) for sd, d in by_sido.items()},
     }
-    return office, winners
+    return office, cand_list
 
 
 def main():
@@ -170,28 +172,32 @@ def main():
                    "무투표 선거구는 후보 등록자료 전원 당선. 지역구 한정(비례 제외)."),
         "offices": {},
     }
-    all_winners = []
+    all_cands = []
     for sg_type in OFFICES:
         print(f"[type {sg_type}] {OFFICES[sg_type]} 수집…", file=sys.stderr)
-        office, winners = collect_office(sg_type)
+        office, cand_list = collect_office(sg_type)
         result["offices"][sg_type] = office
-        all_winners += winners
+        all_cands += cand_list
         print(f"  → 의석 {office['total_seats']}/{office['expected_seats']} · "
-              f"경합 {office['contested']} · 무투표 {office['uncontested']} · 누락 {office['missing_districts']}",
+              f"경합 {office['contested']} · 무투표 {office['uncontested']} · 누락 {office['missing_districts']} · 후보 {len(cand_list)}",
               file=sys.stderr)
         for p, n in list(office["party"].items())[:6]:
             print(f"     {p}: {n}", file=sys.stderr)
     OUT.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"저장: {OUT}", file=sys.stderr)
-    # 개별 당선자 명단(검색용) — 광역의원·기초의원
-    win_out = {
+    # 전 후보 명단(검색용·당락 포함) — 압축(짧은 키·무들여쓰기). 검색창 첫 사용 시 지연 로드.
+    cand_out = {
         "generated_at": datetime.now(KST).isoformat(timespec="seconds"),
-        "source": "광역의원·기초의원 지역구 당선자(경합=개표 상위 M명, 무투표=등록후보 전원).",
-        "count": len(all_winners),
-        "winners": all_winners,
+        "source": "광역의원·기초의원 지역구 전 후보(당선/낙선). 경합=개표 득표, 무투표=등록후보.",
+        "keys": "n=이름 j=정당 sd=시도 sg=선거구 t=종류(5/6) w=당선 r=순위 v=득표 s=득표율 m=의원정수",
+        "count": len(all_cands),
+        "cands": all_cands,
     }
-    WIN_OUT.write_text(json.dumps(win_out, ensure_ascii=False), encoding="utf-8")
-    print(f"저장: {WIN_OUT} ({len(all_winners)}명)", file=sys.stderr)
+    CAND_OUT.write_text(json.dumps(cand_out, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"저장: {CAND_OUT} ({len(all_cands)}명, {CAND_OUT.stat().st_size // 1024}KB)", file=sys.stderr)
+    # 구 파일 정리(있으면)
+    if WIN_OUT.exists():
+        WIN_OUT.unlink()
 
 
 if __name__ == "__main__":
