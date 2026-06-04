@@ -94,6 +94,10 @@
     border-radius: 11px; outline: none; background: #fafafa; transition: border-color .12s, background .12s; }
   .ws-input::placeholder { color: #aaa; font-weight: 500; }
   .ws-input:focus { border-color: var(--accent); background: #fff; }
+  .ws-detail { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 10px; }
+  .ws-detail-label { font-size: 0.76rem; font-weight: 800; color: var(--accent); background: #fbe9ec; border-radius: 5px; padding: 3px 9px; white-space: nowrap; }
+  .ws-sel { font-size: 0.86rem; font-weight: 600; color: var(--ink); padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; min-width: 0; flex: 1 1 auto; }
+  .ws-sel:focus { outline: none; border-color: var(--accent); }
   .ws-results { margin-top: 12px; max-height: 440px; overflow-y: auto; }
   .ws-hint { color: var(--muted); font-size: 0.88rem; text-align: center; padding: 16px 0 6px; }
   .ws-hint b { color: var(--ink); }
@@ -295,8 +299,15 @@
 
     <section class="winner-search" id="sec-search" aria-label="당선자 검색">
       <h2 class="ws-h2">🔎 당선자 검색</h2>
-      <p class="ws-sub">시도지사 · 광역의원 · 기초단체장 · 기초의원 · 교육감 · 국회의원 재보궐 — 이름·지역으로 검색 (당선·낙선 후보 모두)</p>
+      <p class="ws-sub">이름·지역 검색 또는 <b>분류 검색</b>(선거 종류·시·도·정당·당락) — 시도지사·광역의원·기초단체장·기초의원·교육감·재보궐, 당선·낙선 모두</p>
       <input id="ws-input" class="ws-input" type="search" placeholder="당선자 이름 또는 지역 (예: 오세훈, 강남구, 손혜원, 전남)" autocomplete="off" aria-label="당선자 이름 또는 지역 검색">
+      <div class="ws-detail">
+        <span class="ws-detail-label">분류 검색</span>
+        <select id="ws-type" class="ws-sel" aria-label="선거 종류"><option value="">선거 종류</option></select>
+        <select id="ws-sido" class="ws-sel" aria-label="시도"><option value="">시·도</option></select>
+        <select id="ws-party" class="ws-sel" aria-label="정당"><option value="">정당</option></select>
+        <select id="ws-won" class="ws-sel" aria-label="당락"><option value="">당락</option><option value="win">당선</option><option value="lose">낙선</option></select>
+      </div>
       <div id="ws-results" class="ws-results"></div>
     </section>
 
@@ -362,6 +373,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604w"></script>
+  <script src="./result.js?v=20260604x"></script>
 </body>
 </html>
