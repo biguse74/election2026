@@ -182,7 +182,7 @@ function tallyByLeader(races) {
   return { dem, con, etc, total: dem + con + etc };
 }
 
-function renderHero(cur, chiefs, edu, repoll, bh) {
+function renderHero(cur, chiefs, edu, repoll, bh, council) {
   const nat = cur.turnout && cur.turnout.national;
   const polled = (cur.polled_at || '').replace('T', ' ').slice(0, 16);
   const ld = document.getElementById('rs-livedot');
@@ -196,33 +196,54 @@ function renderHero(cur, chiefs, edu, repoll, bh) {
   document.getElementById('rs-sub').innerHTML =
     `<b>${phaseLabel}</b> · 전국 투표율 <b>${nat ? fmt1(nat.turnout_pct) : '—'}%</b> · 갱신 ${esc(polled)} (1분마다 자동)`;
 
-  const ct = tallyByLeader(chiefs);
-  document.getElementById('sb-dem').textContent = ct.dem;
-  document.getElementById('sb-con').textContent = ct.con;
-  const tot = ct.total || 1;
+  const ct = tallyByLeader(chiefs);        // 시도지사
+  const bt = tallyByLeader(bh);            // 기초단체장
+  const rt = tallyByLeader(repoll);        // 국회의원 재보궐
+  const c5 = council?.offices?.['5'] ? _partyTally(council.offices['5'].party) : { dem: 0, con: 0, etc: 0, total: 0 };
+  const c6 = council?.offices?.['6'] ? _partyTally(council.offices['6'].party) : { dem: 0, con: 0, etc: 0, total: 0 };
+  // 헤드라인 = 전체 선출직 당선자 합산(교육감은 비정당이라 제외). 국민의 총선택.
+  const grand = {
+    dem: ct.dem + bt.dem + rt.dem + c5.dem + c6.dem,
+    con: ct.con + bt.con + rt.con + c5.con + c6.con,
+    etc: ct.etc + bt.etc + rt.etc + c5.etc + c6.etc,
+  };
+  grand.total = grand.dem + grand.con + grand.etc;
+  const tot = grand.total || 1;
+  const pc = n => (n / tot * 100).toFixed(1);
+  document.getElementById('sb-dem').textContent = intComma(grand.dem);
+  document.getElementById('sb-con').textContent = intComma(grand.con);
+  const dpct = document.getElementById('sb-dem-pct'), cpct = document.getElementById('sb-con-pct');
+  if (dpct) dpct.textContent = `${pc(grand.dem)}%`;
+  if (cpct) cpct.textContent = `${pc(grand.con)}%`;
+  const mid = document.getElementById('sb-mid');
+  if (mid) mid.innerHTML = `전체 당선자<br><b style="color:rgba(255,255,255,0.8)">${intComma(grand.total)}명</b>`;
   document.getElementById('seat-bar').innerHTML =
-    `<i class="s-dem" style="width:${ct.dem / tot * 100}%"></i>` +
-    `<i class="s-etc" style="width:${ct.etc / tot * 100}%"></i>` +
-    `<i class="s-con" style="width:${ct.con / tot * 100}%"></i>`;
+    `<i class="s-dem" style="width:${grand.dem / tot * 100}%"></i>` +
+    `<i class="s-etc" style="width:${grand.etc / tot * 100}%"></i>` +
+    `<i class="s-con" style="width:${grand.con / tot * 100}%"></i>`;
   document.getElementById('seat-legend').innerHTML =
-    `<span><i style="background:var(--dem)"></i>민주 ${ct.dem}</span>` +
-    `<span><i style="background:#6b6b78"></i>그외 ${ct.etc}</span>` +
-    `<span><i style="background:var(--con)"></i>국힘 ${ct.con}</span>` +
-    `<span style="margin-left:auto">집계 ${ct.total}곳</span>`;
+    `<span><i style="background:var(--dem)"></i>민주 ${intComma(grand.dem)} (${pc(grand.dem)}%)</span>` +
+    `<span><i style="background:#6b6b78"></i>그외 ${intComma(grand.etc)} (${pc(grand.etc)}%)</span>` +
+    `<span><i style="background:var(--con)"></i>국힘 ${intComma(grand.con)} (${pc(grand.con)}%)</span>` +
+    `<span style="margin-left:auto">시도지사·단체장·지방의원·재보궐 합산</span>`;
 
-  const bt = tallyByLeader(bh), rt = tallyByLeader(repoll);
-  const tile = (name, t, sub) => `<div class="ot"><div class="ot-name">${name}</div>
-    <div class="ot-fig"><span class="d">민주 ${t.dem}</span> · <span class="c">국힘 ${t.con}</span>${t.etc ? ` · <span class="e">그외 ${t.etc}</span>` : ''}</div>
-    <div class="ot-sub">${sub}</div></div>`;
-  // 교육감 진보/보수 당선 집계(성향 분류 기준) — 히어로 타일에도 노출
+  const tile = (name, t, sub) => {
+    const tt = t.total || 1;
+    return `<div class="ot"><div class="ot-name">${name}</div>
+      <div class="ot-fig"><span class="d">민주 ${intComma(t.dem)}</span> · <span class="c">국힘 ${intComma(t.con)}</span>${t.etc ? ` · <span class="e">그외 ${intComma(t.etc)}</span>` : ''}</div>
+      <div class="ot-sub">${sub} · 민주 ${(t.dem / tt * 100).toFixed(0)}%</div></div>`;
+  };
+  // 교육감 진보/보수 당선 집계(성향 분류 기준)
   let eduProg = 0, eduCons = 0, eduEtc = 0;
   for (const r of edu) { const w = (r.candidates || [])[0]; if (!w) continue; const o = EDU_ORIENT[w.name]; if (o === '진보') eduProg++; else if (o === '보수') eduCons++; else eduEtc++; }
   const eduFig = `<span class="d">진보 ${eduProg}</span> · <span class="c">보수 ${eduCons}</span>${eduEtc ? ` · <span class="e">그외 ${eduEtc}</span>` : ''}`;
   document.getElementById('office-tiles').innerHTML =
-    tile('광역단체장', ct, `집계 ${ct.total}곳`) +
-    tile('기초단체장', bt, `집계 ${bt.total}곳`) +
-    tile('국회의원 재보궐', rt, `집계 ${rt.total}곳`) +
-    `<div class="ot"><div class="ot-name">교육감</div><div class="ot-fig">${eduFig}</div><div class="ot-sub">집계 ${edu.length}곳 · 정당 없는 단독 선출</div></div>`;
+    tile('광역단체장', ct, `${ct.total}곳`) +
+    tile('광역의원', c5, `${c5.total}석`) +
+    tile('기초단체장', bt, `${bt.total}곳`) +
+    tile('기초의원', c6, `${c6.total}석`) +
+    tile('국회의원 재보궐', rt, `${rt.total}곳`) +
+    `<div class="ot"><div class="ot-name">교육감</div><div class="ot-fig">${eduFig}</div><div class="ot-sub">${edu.length}곳 · 비정당(진보/보수)</div></div>`;
 }
 
 // 역대 광역단체장(시도지사) 정당 계열별 당선 — 중앙선관위 개표결과 기반(계열 통합).
@@ -311,17 +332,18 @@ function renderCovered(cur, covered, predMap) {
 // 정당별 실제 당선자 수 — 큰 숫자(방송 가독성) + 가로 막대
 function labeledSeatBar(t) {
   const tot = t.total || 1;
+  const pc = n => (n / tot * 100).toFixed(1);
   return `<div class="bar-counts">
-      <div class="bc dem"><b>${t.dem}</b><span>더불어민주당</span></div>
-      ${t.etc ? `<div class="bc etc"><b>${t.etc}</b><span>그 외</span></div>` : ''}
-      <div class="bc con"><b>${t.con}</b><span>국민의힘</span></div>
+      <div class="bc dem"><b>${t.dem}</b><em class="bc-pct">${pc(t.dem)}%</em><span>더불어민주당</span></div>
+      ${t.etc ? `<div class="bc etc"><b>${t.etc}</b><em class="bc-pct">${pc(t.etc)}%</em><span>그 외</span></div>` : ''}
+      <div class="bc con"><b>${t.con}</b><em class="bc-pct">${pc(t.con)}%</em><span>국민의힘</span></div>
     </div>
     <div class="seat-bar labeled">
       <i class="s-dem" style="width:${t.dem / tot * 100}%"></i>
       <i class="s-etc" style="width:${t.etc / tot * 100}%"></i>
       <i class="s-con" style="width:${t.con / tot * 100}%"></i>
     </div>
-    <div class="bar-sub">당선자 <b>${t.total}</b>명 · 정당별 실제 당선자 수</div>`;
+    <div class="bar-sub">당선자 <b>${t.total}</b>명 · 민주 <b>${pc(t.dem)}%</b> · 국힘 <b>${pc(t.con)}%</b>${t.etc ? ` · 그 외 ${pc(t.etc)}%` : ''}</div>`;
 }
 
 // 교육감 성향(진보/보수) 집계 바 — 당선자 기준
@@ -386,9 +408,10 @@ function renderCouncilOffice(elId, office) {
   const el = document.getElementById(elId);
   if (!el || !office) return;
   const t = _partyTally(office.party);
-  // 상세 정당 칩(0이 아닌 정당만, 정해진 순서)
+  const totSeats = office.total_seats || t.total || 1;
+  // 상세 정당 칩(0이 아닌 정당만, 정해진 순서) — 의석수 + 점유율%
   const chips = _PARTY_ORDER.filter(p => office.party[p]).map(p =>
-    `<span class="pchip" style="border-color:${partyColor(p)}"><i style="background:${partyColor(p)}"></i>${esc(p)} <b>${office.party[p]}</b></span>`).join('');
+    `<span class="pchip" style="border-color:${partyColor(p)}"><i style="background:${partyColor(p)}"></i>${esc(p)} <b>${office.party[p]}</b> <em>${(office.party[p] / totSeats * 100).toFixed(1)}%</em></span>`).join('');
   // 시도별 미니바(의석 많은 순)
   const sidos = Object.keys(office.by_sido).sort((a, b) => sidoIdx(a) - sidoIdx(b));
   const rows = sidos.map(sd => {
@@ -441,7 +464,7 @@ async function render() {
   const repoll = byType('2').sort((a, b) => (b.progress_pct || 0) - (a.progress_pct || 0));
   const bh = byType('4');
 
-  renderHero(cur, chiefs, edu, repoll, bh);
+  renderHero(cur, chiefs, edu, repoll, bh, council);
   renderCovered(cur, COVERED, predMap);
   renderHistory(chiefs);
   renderGrid('grid-chief', chiefs, { predMap });

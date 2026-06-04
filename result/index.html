@@ -62,7 +62,10 @@
   .sb-side.dem { color: #8aa0ff; text-align: left; }
   .sb-side.con { color: #ff9aa6; text-align: right; }
   .sb-side .sb-label { font-size: 0.82rem; font-weight: 700; opacity: 0.9; }
-  .sb-mid { text-align: center; color: rgba(255,255,255,0.55); font-size: 0.78rem; font-weight: 700; align-self: center; }
+  .sb-side .sb-pct { font-size: 1.15rem; font-weight: 900; margin-top: 2px; }
+  .sb-side.dem .sb-pct { color: #8aa0ff; } .sb-side.con .sb-pct { color: #ff9aa6; }
+  .sb-mid { text-align: center; color: rgba(255,255,255,0.55); font-size: 0.78rem; font-weight: 700; align-self: center; line-height: 1.4; }
+  .sb-mid b { font-family: 'Noto Serif KR', serif; font-size: 1.05rem; font-weight: 900; }
   .seat-bar { height: 26px; border-radius: 7px; overflow: hidden; display: flex; background: #2a2a33; box-shadow: inset 0 1px 3px rgba(0,0,0,0.4); }
   .seat-bar i { height: 100%; display: block; }
   .seat-bar .s-dem { background: var(--dem); }
@@ -72,7 +75,7 @@
   .seat-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
 
   /* 직책별 요약 칩 */
-  .office-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
+  .office-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
   @media (max-width: 760px) { .office-tiles { grid-template-columns: 1fr 1fr; } }
   .ot { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; }
   .ot-name { font-size: 0.8rem; color: rgba(255,255,255,0.65); font-weight: 700; }
@@ -155,6 +158,8 @@
   .bar-counts .bc span { font-size: 0.84rem; font-weight: 800; color: var(--ink); margin-top: 4px; }
   .bar-counts .dem b { color: var(--dem); } .bar-counts .con b { color: var(--con); } .bar-counts .etc b { color: #6b6b78; }
   .bar-counts .etc span { color: var(--muted); }
+  .bar-counts .bc-pct { font-size: 1rem; font-weight: 900; font-style: normal; margin-top: 2px; }
+  .bar-counts .dem .bc-pct { color: var(--dem); } .bar-counts .con .bc-pct { color: var(--con); } .bar-counts .etc .bc-pct { color: #6b6b78; }
   .seat-bar.labeled { height: 30px; }
   .seat-bar.labeled i { font-size: 0; }
   .bar-sub { font-size: 0.86rem; color: var(--muted); font-weight: 600; margin: 9px 0 18px; }
@@ -170,6 +175,7 @@
   .pchip { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); border-left-width: 3px; border-radius: 5px; padding: 3px 9px; font-size: 0.8rem; font-weight: 700; color: var(--ink); }
   .pchip i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
   .pchip b { font-weight: 900; }
+  .pchip em { font-style: normal; font-weight: 700; color: var(--muted); }
   .cs-sido { margin-top: 4px; }
   .cs-sido-h { font-size: 0.78rem; font-weight: 800; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.02em; }
   .cs-row { display: grid; grid-template-columns: 64px 1fr 78px; align-items: center; gap: 9px; margin: 4px 0; }
@@ -244,9 +250,9 @@
 
       <div class="seat-battle">
         <div class="seat-battle-head">
-          <div class="sb-side dem"><div class="sb-n" id="sb-dem">—</div><div class="sb-label">더불어민주당</div></div>
-          <div class="sb-mid">광역단체장</div>
-          <div class="sb-side con"><div class="sb-n" id="sb-con">—</div><div class="sb-label">국민의힘</div></div>
+          <div class="sb-side dem"><div class="sb-n" id="sb-dem">—</div><div class="sb-pct" id="sb-dem-pct"></div><div class="sb-label">더불어민주당</div></div>
+          <div class="sb-mid" id="sb-mid">전체 당선자</div>
+          <div class="sb-side con"><div class="sb-n" id="sb-con">—</div><div class="sb-pct" id="sb-con-pct"></div><div class="sb-label">국민의힘</div></div>
         </div>
         <div class="seat-bar" id="seat-bar"></div>
         <div class="seat-legend" id="seat-legend"></div>
@@ -317,6 +323,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604p"></script>
+  <script src="./result.js?v=20260604q"></script>
 </body>
 </html>
