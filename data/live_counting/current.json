@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-04T19:23:14+09:00",
+  "polled_at": "2026-06-04T19:39:47+09:00",
   "source": "web(VCCP09)",
   "phase": "final",
   "races": [
@@ -1434,44 +1434,44 @@
       "sd_name": "서울특별시",
       "sgg_name": null,
       "wiw_name": null,
-      "eligible_voters": 8277409,
-      "valid_votes": 5208798,
-      "invalid_votes": 56076,
-      "progress_pct": 99.54,
-      "rank1_minus_rank2_pp": 1.03,
+      "eligible_voters": 8312716,
+      "valid_votes": 5228803,
+      "invalid_votes": 56368,
+      "progress_pct": 99.93,
+      "rank1_minus_rank2_pp": 1.1,
       "candidates": [
         {
           "name": "오세훈",
           "jd_name": "국민의힘",
-          "votes": 2560590,
-          "share_pct": 49.16,
+          "votes": 2572443,
+          "share_pct": 49.2,
           "current_rank": 1
         },
         {
           "name": "정원오",
           "jd_name": "더불어민주당",
-          "votes": 2507130,
-          "share_pct": 48.13,
+          "votes": 2514832,
+          "share_pct": 48.1,
           "current_rank": 2
         },
         {
           "name": "권영국",
           "jd_name": "정의당",
-          "votes": 54149,
+          "votes": 54296,
           "share_pct": 1.04,
           "current_rank": 3
         },
         {
           "name": "유지혜",
           "jd_name": "여성의당",
-          "votes": 43801,
+          "votes": 43939,
           "share_pct": 0.84,
           "current_rank": 4
         },
         {
           "name": "김정철",
           "jd_name": "개혁신당",
-          "votes": 43128,
+          "votes": 43293,
           "share_pct": 0.83,
           "current_rank": 5
         }
