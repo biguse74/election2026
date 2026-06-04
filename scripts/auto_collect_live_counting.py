@@ -16,7 +16,7 @@ NEC_API_KEY: 환경변수 또는 data/.nec_api_key(gitignored) 파일에서 읽�
 로그: data/live_counting/_scheduler.log
 """
 from __future__ import annotations
-import os, subprocess, sys
+import os, subprocess, sys, json
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -83,6 +83,30 @@ def collect_and_stage(env) -> bool:
     return run("git", "diff", "--staged", "--quiet").returncode != 0
 
 
+TASK_NAME = "election2026_live_collect"
+
+
+def counting_complete() -> bool:
+    """추적 중인 전 선거구가 개표 100%면 True. (NEC는 완료 시 progress 100.00 보고)"""
+    try:
+        data = json.loads((ROOT / "data" / "live_counting" / "current.json").read_text(encoding="utf-8"))
+    except Exception:
+        return False
+    races = data.get("races") or []
+    if not races:
+        return False
+    return all((r.get("progress_pct") or 0) >= 100.0 for r in races)
+
+
+def disable_task() -> None:
+    """개표 완료 시 스케줄러 작업을 비활성화해 자동 수집을 멈춘다."""
+    r = run("schtasks", "/Change", "/TN", TASK_NAME, "/DISABLE")
+    if r.returncode == 0:
+        log(f"개표 100% 완료 — 스케줄러({TASK_NAME}) 자동 비활성화 완료")
+    else:
+        log(f"개표 100% 완료 — 작업 비활성화 실패(rc={r.returncode}): {(r.stderr or '').strip()[:120]}")
+
+
 def main() -> int:
     key = load_key()
     if not key:
@@ -90,19 +114,26 @@ def main() -> int:
         return 2
     env = {**os.environ, "NEC_API_KEY": key}
     msg = "data: 라이브 수집(로컬 스케줄러) KST " + datetime.now(KST).strftime("%H:%M")
+    rc = 1
     for attempt in (1, 2, 3):
         align_to_remote()
         if not collect_and_stage(env):
             log("변경 없음 — 커밋 생략")
-            return 0
+            rc = 0
+            break
         run("git", "commit", "-m", msg)
         p = run("git", "push", "origin", "main")
         if p.returncode == 0:
             log(f"push 성공 (시도 {attempt})")
-            return 0
+            rc = 0
+            break
         log(f"push reject — 재정렬 후 재시도 ({attempt}/3)")
-    log("push 3회 실패 — 다음 주기 재시도")
-    return 1
+    else:
+        log("push 3회 실패 — 다음 주기 재시도")
+    # 개표 100% 완료 시 스케줄러 자동 중단(수집 성공·최신 current.json 기준)
+    if rc == 0 and counting_complete():
+        disable_task()
+    return rc
 
 
 if __name__ == "__main__":
