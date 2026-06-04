@@ -21,8 +21,16 @@ Thumbs.db
 
 # 작업 스케줄러 로컬 로그
 data/early_voting/_scheduler.log
+data/live_counting/_scheduler.log
 data/disclosure_archive/
 data/.assets_ocr_cache/
 data/stock_holdings.*
 data/person_db.*
 data/.nec_api_key
+
+# 로컬 전용 실행 래퍼 (절대경로·환경 의존, 커밋 금지)
+scripts/run_live_collect.bat
+scripts/run_live_collect_hidden.vbs
+
+# 내부 분석 자료 (기사 작성용, 비공개)
+exports/뉴탐사_시뮬레이션_정확도_데이터패키지.md
