@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-04T17:55:04+09:00",
+  "polled_at": "2026-06-04T18:00:03+09:00",
   "source": "web(VCCP09)",
   "phase": "final",
   "races": [
@@ -9407,8 +9407,8 @@
       },
       {
         "time": "18:00",
-        "turnout_pct": 60.2,
-        "voters_so_far": 26877469
+        "turnout_pct": 61.0,
+        "voters_so_far": 27249586
       }
     ],
     "seoul_gu": [
@@ -10199,6 +10199,58 @@
             "turnout_pct": 52.8,
             "day_voters_so_far": 90338,
             "early_voters_so_far": 79883
+          }
+        ]
+      },
+      "대전광역시": {
+        "total": {
+          "name": "합계",
+          "eligible_voters": 1250891,
+          "voters_so_far": 746679,
+          "turnout_pct": 59.7,
+          "day_voters_so_far": 463391,
+          "early_voters_so_far": 283288
+        },
+        "sigungu": [
+          {
+            "name": "동구",
+            "eligible_voters": 194024,
+            "voters_so_far": 113134,
+            "turnout_pct": 58.3,
+            "day_voters_so_far": 68720,
+            "early_voters_so_far": 44414
+          },
+          {
+            "name": "중구",
+            "eligible_voters": 198067,
+            "voters_so_far": 118240,
+            "turnout_pct": 59.7,
+            "day_voters_so_far": 74859,
+            "early_voters_so_far": 43381
+          },
+          {
+            "name": "서구",
+            "eligible_voters": 400057,
+            "voters_so_far": 234546,
+            "turnout_pct": 58.6,
+            "day_voters_so_far": 146785,
+            "early_voters_so_far": 87761
+          },
+          {
+            "name": "유성구",
+            "eligible_voters": 311741,
+            "voters_so_far": 193142,
+            "turnout_pct": 62.0,
+            "day_voters_so_far": 118193,
+            "early_voters_so_far": 74949
+          },
+          {
+            "name": "대덕구",
+            "eligible_voters": 147002,
+            "voters_so_far": 87617,
+            "turnout_pct": 59.6,
+            "day_voters_so_far": 54834,
+            "early_voters_so_far": 32783
           }
         ]
       },
