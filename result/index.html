@@ -77,8 +77,8 @@
   .seat-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: middle; }
 
   /* 직책별 요약 칩 */
-  .office-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 18px; }
-  @media (max-width: 760px) { .office-tiles { grid-template-columns: 1fr 1fr; } }
+  /* 2열 고정 — 광역단체장·광역의원 / 기초단체장·기초의원 / 재보궐·교육감이 같은 행에 짝지어지도록 */
+  .office-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
   .ot { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; }
   .ot-name { font-size: 0.8rem; color: rgba(255,255,255,0.65); font-weight: 700; }
   .ot-fig { margin-top: 4px; font-weight: 800; font-size: 1rem; }
@@ -325,6 +325,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604r"></script>
+  <script src="./result.js?v=20260604s"></script>
 </body>
 </html>
