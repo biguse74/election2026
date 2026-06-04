@@ -56,7 +56,9 @@
 
   /* 광역단체장 당선 대결 바 */
   .seat-battle { margin: 24px 0 6px; }
-  .seat-battle-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; }
+  /* 와이드 PC에서 좌우 숫자가 화면 끝까지 벌어져 휑해 보이지 않도록 헤더를 중앙에 모음.
+     바·범례는 전체 폭(아래 타일과 정렬) 유지. */
+  .seat-battle-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin: 0 auto 10px; max-width: 760px; }
   .sb-side { font-weight: 800; }
   .sb-side .sb-n { font-family: 'Noto Serif KR', serif; font-size: 2.2rem; font-weight: 900; line-height: 1; }
   .sb-side.dem { color: #8aa0ff; text-align: left; }
@@ -323,6 +325,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260604q"></script>
+  <script src="./result.js?v=20260604r"></script>
 </body>
 </html>
