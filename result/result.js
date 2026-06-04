@@ -213,11 +213,15 @@ function renderHero(cur, chiefs, edu, repoll, bh) {
   const tile = (name, t, sub) => `<div class="ot"><div class="ot-name">${name}</div>
     <div class="ot-fig"><span class="d">민주 ${t.dem}</span> · <span class="c">국힘 ${t.con}</span>${t.etc ? ` · <span class="e">그외 ${t.etc}</span>` : ''}</div>
     <div class="ot-sub">${sub}</div></div>`;
+  // 교육감 진보/보수 당선 집계(성향 분류 기준) — 히어로 타일에도 노출
+  let eduProg = 0, eduCons = 0, eduEtc = 0;
+  for (const r of edu) { const w = (r.candidates || [])[0]; if (!w) continue; const o = EDU_ORIENT[w.name]; if (o === '진보') eduProg++; else if (o === '보수') eduCons++; else eduEtc++; }
+  const eduFig = `<span class="d">진보 ${eduProg}</span> · <span class="c">보수 ${eduCons}</span>${eduEtc ? ` · <span class="e">그외 ${eduEtc}</span>` : ''}`;
   document.getElementById('office-tiles').innerHTML =
     tile('광역단체장', ct, `집계 ${ct.total}곳`) +
     tile('기초단체장', bt, `집계 ${bt.total}곳`) +
     tile('국회의원 재보궐', rt, `집계 ${rt.total}곳`) +
-    `<div class="ot"><div class="ot-name">교육감</div><div class="ot-fig"><span class="e">${edu.length}곳</span></div><div class="ot-sub">정당 없는 단독 선출</div></div>`;
+    `<div class="ot"><div class="ot-name">교육감</div><div class="ot-fig">${eduFig}</div><div class="ot-sub">집계 ${edu.length}곳 · 정당 없는 단독 선출</div></div>`;
 }
 
 // 역대 광역단체장(시도지사) 정당 계열별 당선 — 중앙선관위 개표결과 기반(계열 통합).
