@@ -79,8 +79,8 @@ function callResult(r) {
   if (prog < 30) return null;
   const counted = r.valid_votes || c.reduce((s, x) => s + (x.votes || 0), 0);
   const remaining = prog > 0 ? counted * (100 - prog) / prog : Infinity;
-  if (prog >= 50 && margin > remaining) return { cls: 'call-win', label: '당선 확실' };
-  if (margin > remaining * 0.6) return { cls: 'call-lead', label: '당선 유력' };
+  if (prog >= 50 && margin > remaining * 0.7) return { cls: 'call-win', label: '당선 확실' };  // 2위가 남은표 85%↑ 가져가야 역전
+  if (margin > remaining * 0.4) return { cls: 'call-lead', label: '당선 유력' };  // 2위가 남은표 70%↑ 필요
   return null;
 }
 

@@ -717,8 +717,8 @@ function findWatch(races, w) {
 }
 
 // 당선 확실/유력 판정 — 단독 1인 선출(시도지사3·기초단체장4·국회의원2)만. 기자용 보수 기준.
-//   당선 확실 = 남은 표가 전부 2위에게 가도 1위를 못 넘는 경우(수학적 확정).
-//   당선 유력 = 격차가 남은 표의 60%를 초과(역전 가능성 매우 낮음).
+//   당선 확실 = 격차 > 남은표×0.7 → 2위가 남은표의 85%↑를 쓸어담아야 역전(사실상 불가).
+//   당선 유력 = 격차 > 남은표×0.4 → 2위가 남은표의 70%↑ 필요(역전 가능성 매우 낮음).
 function electionCall(r) {
   if (!['2', '3', '4'].includes(String(r.sg_type_code))) return null;  // 중선거구 제외
   const cands = r.candidates || [];
@@ -733,8 +733,8 @@ function electionCall(r) {
   const counted = r.valid_votes || cands.reduce((s, c) => s + (c.votes || 0), 0);
   // 남은 유효표 추정(개표율 기준, NEC 개표율은 투표수 대비라 신뢰 가능). 살짝 과대추정=보수적.
   const remaining = prog > 0 ? counted * (100 - prog) / prog : Infinity;
-  if (prog >= 50 && margin > remaining) return { cls: 'call-win', label: '당선 확실' };
-  if (margin > remaining * 0.6) return { cls: 'call-lead', label: '당선 유력' };
+  if (prog >= 50 && margin > remaining * 0.7) return { cls: 'call-win', label: '당선 확실' };
+  if (margin > remaining * 0.4) return { cls: 'call-lead', label: '당선 유력' };
   return null;
 }
 
