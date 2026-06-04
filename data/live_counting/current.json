@@ -1,6 +1,6 @@
 {
   "sgId": "20260603",
-  "polled_at": "2026-06-04T22:10:03+09:00",
+  "polled_at": "2026-06-04T22:15:03+09:00",
   "source": "web(VCCP09)",
   "phase": "final",
   "races": [
@@ -286,7 +286,7 @@
       "wiw_name": null,
       "eligible_voters": 8312704,
       "valid_votes": 4984129,
-      "invalid_votes": 300530,
+      "invalid_votes": 300531,
       "progress_pct": 99.92,
       "rank1_minus_rank2_pp": 6.75,
       "candidates": [
