@@ -411,15 +411,23 @@ function _partyTally(party) {
   const total = Object.values(party).reduce((a, b) => a + b, 0);
   return { dem, con, etc: total - dem - con, total };
 }
-function renderCouncilOffice(elId, office) {
+function _mergeParty(a, b) {
+  const out = { ...(a || {}) };
+  for (const [k, v] of Object.entries(b || {})) out[k] = (out[k] || 0) + v;
+  return out;
+}
+function renderCouncilOffice(elId, office, prOffice) {
   const el = document.getElementById(elId);
   if (!el || !office) return;
-  const t = _partyTally(office.party);
-  const totSeats = office.total_seats || t.total || 1;
+  // 정당별 의석 = 지역구 + 비례 합산(전체 정당별 통계)
+  const party = _mergeParty(office.party, prOffice?.party);
+  const t = _partyTally(party);
+  const totSeats = t.total || 1;
+  const dSeats = office.total_seats || 0, pSeats = prOffice?.total_seats || 0;
   // 상세 정당 칩(0이 아닌 정당만, 정해진 순서) — 의석수 + 점유율%
-  const chips = _PARTY_ORDER.filter(p => office.party[p]).map(p =>
-    `<span class="pchip" style="border-color:${partyColor(p)}"><i style="background:${partyColor(p)}"></i>${esc(p)} <b>${office.party[p]}</b> <em>${(office.party[p] / totSeats * 100).toFixed(1)}%</em></span>`).join('');
-  // 시도별 미니바(의석 많은 순)
+  const chips = _PARTY_ORDER.filter(p => party[p]).map(p =>
+    `<span class="pchip" style="border-color:${partyColor(p)}"><i style="background:${partyColor(p)}"></i>${esc(p)} <b>${party[p]}</b> <em>${(party[p] / totSeats * 100).toFixed(1)}%</em></span>`).join('');
+  // 시도별 미니바(지역구 기준 — 광역비례는 통합특별시라 시도 분할 불가)
   const sidos = Object.keys(office.by_sido).sort((a, b) => sidoIdx(a) - sidoIdx(b));
   const rows = sidos.map(sd => {
     const p = office.by_sido[sd];
@@ -429,17 +437,18 @@ function renderCouncilOffice(elId, office) {
       <span class="cs-bar"><i class="s-dem" style="width:${st.dem / tot * 100}%"></i><i class="s-etc" style="width:${st.etc / tot * 100}%"></i><i class="s-con" style="width:${st.con / tot * 100}%"></i></span>
       <span class="cs-num"><b class="d">${st.dem}</b>·<b class="c">${st.con}</b>${st.etc ? `·<b class="e">${st.etc}</b>` : ''}</span></div>`;
   }).join('');
-  el.innerHTML = `${labeledSeatBar(t)}
+  const splitNote = prOffice ? `<div class="cs-split" style="font-size:0.78rem;color:var(--muted,#666);margin:6px 0 2px;font-weight:700">정당별 의석 = 지역구 ${dSeats} + 비례 ${pSeats} = <b style="color:var(--ink,#1a1a1a)">${dSeats + pSeats}석</b> 합산</div>` : '';
+  el.innerHTML = `${labeledSeatBar(t)}${splitNote}
     <div class="pchips">${chips}</div>
-    <div class="cs-sido"><div class="cs-sido-h">시도별 (민주·국힘·그외)</div>${rows}</div>`;
+    <div class="cs-sido"><div class="cs-sido-h">시도별 (지역구 기준 · 민주·국힘·그외)</div>${rows}</div>`;
 }
 function renderCouncil(council) {
   const sec = document.getElementById('sec-council');
   if (!sec) return;
   if (!council || !council.offices) { sec.style.display = 'none'; return; }
   sec.style.display = '';
-  renderCouncilOffice('council-sido', council.offices['5']);
-  renderCouncilOffice('council-basic', council.offices['6']);
+  renderCouncilOffice('council-sido', council.offices['5'], council.offices['8']);
+  renderCouncilOffice('council-basic', council.offices['6'], council.offices['9']);
   const o5 = council.offices['5'], o6 = council.offices['6'];
   const o8 = council.offices['8'], o9 = council.offices['9'];
   if (o5) document.getElementById('cnt-council-sido').textContent =
