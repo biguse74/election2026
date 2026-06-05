@@ -491,20 +491,18 @@ function renderMinorParties(chiefs, bh, repoll, council) {
     .sort((a, b) => b.total - a.total || (a.p === '무소속' ? 1 : 0) - (b.p === '무소속' ? 1 : 0));
   if (!minors.length) { sec.style.display = 'none'; return; }
   sec.style.display = '';
-  const maxTotal = minors[0].total || 1;
+  // 박스가 좁으므로 직책 라벨을 축약(광역단체장→광역장 등)
+  const _MINOR_SHORT = { '광역단체장': '광역장', '기초단체장': '기초장', '광역의원': '광역의원', '기초의원': '기초의원', '국회재보궐': '재보궐' };
   document.getElementById('cnt-minor').textContent =
     `${minors.length}개 · ${minors.reduce((s, m) => s + m.total, 0).toLocaleString()}석`;
   document.getElementById('minor-grid').innerHTML = minors.map(m => {
     const col = partyColor(m.p);
-    const rows = _MINOR_OFFICES.filter(o => m.off[o]).map(o => {
-      const n = m.off[o];
-      return `<div class="mp-row"><span class="mp-off">${esc(o)}</span>` +
-        `<span class="mp-bar"><i style="width:${(n / maxTotal * 100).toFixed(1)}%;background:${col}"></i></span>` +
-        `<span class="mp-n">${n}</span></div>`;
-    }).join('');
+    const rows = _MINOR_OFFICES.filter(o => m.off[o]).map(o =>
+      `<div class="mp-row"><span class="mp-off">${esc(_MINOR_SHORT[o] || o)}</span><span class="mp-n">${m.off[o]}</span></div>`
+    ).join('');
     return `<div class="mp-card" style="border-left-color:${col}">` +
-      `<div class="mp-top"><span class="mp-name" style="color:${col}">${esc(m.p)}</span>` +
-      `<span class="mp-total">${m.total}<small>석</small></span></div>` +
+      `<div class="mp-name" style="color:${col}">${esc(m.p)}</div>` +
+      `<div class="mp-total">${m.total}<small>석</small></div>` +
       `<div class="mp-break">${rows}</div></div>`;
   }).join('');
 }
