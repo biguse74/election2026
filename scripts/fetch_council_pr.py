@@ -20,9 +20,43 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
+import requests
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import fetch_live_counting as F
 import fetch_council_seats as CS  # 무투표 보완: 후보 등록자료 로더 재사용
+
+
+def fetch_roster(sg_type, sd_name):
+    """비례 후보 명부(num 순번 포함) 시도별 조회. status='등록'만."""
+    items, page = [], 1
+    while True:
+        q = {"serviceKey": CS.API_KEY, "pageNo": page, "numOfRows": 1000, "resultType": "json",
+             "sgId": "20260603", "sgTypecode": sg_type, "sdName": sd_name}
+        b = requests.get(CS.CAND_API, params=q, timeout=40).json()["response"].get("body") or {}
+        it = b.get("items", {})
+        it = it.get("item", []) if isinstance(it, dict) else it
+        if isinstance(it, dict):
+            it = [it]
+        items += [c for c in (it or []) if c.get("status") == "등록"]
+        tot = int(b.get("totalCount", 0) or 0)
+        if tot == 0 or len(items) >= tot:
+            break
+        page += 1
+        time.sleep(0.1)
+    return items
+
+
+def winners_by_roster(roster, seats_by_party):
+    """정당별 배분 의석만큼 명부 num(순번) 상위를 당선자 huboid로."""
+    byparty = defaultdict(list)
+    for c in sorted(roster, key=lambda x: int(x.get("num") or 0)):
+        byparty[c.get("jdName") or "무소속"].append(c)
+    out = []
+    for p, n in seats_by_party.items():
+        for c in byparty.get(p, [])[:n]:
+            out.append(str(c.get("huboid")))
+    return out
 
 ROOT = Path(__file__).resolve().parent.parent
 CODES = ROOT / "data" / "codes" / "20260603" / "constituencies"
@@ -100,8 +134,9 @@ def collect_metro():
     party = defaultdict(int)
     by_sido = {}
     seats_total = 0
+    winner_h = []
 
-    # 광주+전남 통합 합산
+    # 광주+전남 통합 합산. 명부는 '광주광역시' sdName로 통합 제출(전남 별도 없음).
     gj = parse_rows(F._vccp_rows(EID, "8", F._SIDO_CITYCODE["광주광역시"], "VCCP09_#8") or [])
     time.sleep(0.15)
     jn = parse_rows(F._vccp_rows(EID, "8", F._SIDO_CITYCODE["전라남도"], "VCCP09_#8") or [])
@@ -115,6 +150,7 @@ def collect_metro():
     for p, n in a.items():
         party[p] += n
     seats_total += sum(a.values())
+    winner_h += winners_by_roster(fetch_roster("8", "광주광역시"), a)
 
     for sd, code in F._SIDO_CITYCODE.items():
         if sd in ("광주광역시", "전라남도"):
@@ -129,6 +165,7 @@ def collect_metro():
         for p, n in a.items():
             party[p] += n
         seats_total += sum(a.values())
+        winner_h += winners_by_roster(fetch_roster("8", sd), a)
         time.sleep(0.15)
 
     return {
@@ -138,7 +175,9 @@ def collect_metro():
         "expected_seats": sum(s for _, s in mag.values()),
         "party": dict(sorted(party.items(), key=lambda kv: -kv[1])),
         "by_sido": by_sido,
-        "note": "헤어식 배분(5% 봉쇄·2/3 상한). 광주+전남은 통합특별시로 합산(정수12).",
+        "winner_huboids": sorted(set(winner_h)),
+        "note": "헤어식 배분(5% 봉쇄·2/3 상한). 광주+전남은 통합특별시로 합산(정수12). "
+                "당선자=정당 배분의석만큼 명부 순번(num) 상위.",
     }
 
 
@@ -197,6 +236,7 @@ def collect_basic():
     n_contested = n_uncontested = n_missing = 0
 
     MISSING = object()
+    winner_h = []
     for (sd, sgg), seats in mag.items():
         if not seats:
             continue
@@ -210,17 +250,19 @@ def collect_basic():
                 party[p] += k
                 by_sido[sd][p] += k
                 seats_total += k
+            winner_h += winners_by_roster(cl, a)   # 정당 배분의석만큼 명부 num순 상위
         else:
             # 무투표(VCCP '무투표선거구' 라벨 또는 VCCP 부재) — 등록 명부순 정수까지 당선
             if not cl:
                 n_missing += 1
                 continue
             n_uncontested += 1
-            for c in cl[:seats]:
+            for c in sorted(cl, key=lambda x: int(x.get("num") or 0))[:seats]:
                 p = c.get("jdName") or "무소속"
                 party[p] += 1
                 by_sido[sd][p] += 1
                 seats_total += 1
+                winner_h.append(str(c.get("huboid")))
 
     return {
         "label": "기초의원(비례대표)",
@@ -233,7 +275,9 @@ def collect_basic():
         "missing_districts": n_missing,
         "party": dict(sorted(party.items(), key=lambda kv: -kv[1])),
         "by_sido": {sd: dict(sorted(d.items(), key=lambda kv: -kv[1])) for sd, d in by_sido.items()},
-        "note": "경합=VCCP 헤어식 배분(5%봉쇄·2/3상한), 무투표=등록 정당명부 전원 당선.",
+        "winner_huboids": sorted(set(winner_h)),
+        "note": "경합=VCCP 헤어식 배분(5%봉쇄·2/3상한), 무투표=등록 정당명부 전원 당선. "
+                "당선자=정당 배분의석만큼 명부 순번(num) 상위.",
     }
 
 
@@ -252,6 +296,19 @@ def main():
     data["source"] = data.get("source", "") + " · 비례(8·9)는 VCCP 정당득표 헤어식 배분(5%봉쇄·2/3상한)."
     SEATS.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"저장: {SEATS}", file=sys.stderr)
+
+    # 비례 당선자 huboid를 winner_huboids.json에 병합(검색·익명화 기준).
+    wh_path = ROOT / "data" / "winner_huboids.json"
+    wh = json.loads(wh_path.read_text(encoding="utf-8"))
+    base = set(wh.get("huboids", []))
+    pr = set(m["winner_huboids"]) | set(b["winner_huboids"])
+    merged = base | pr
+    wh["huboids"] = sorted(merged)
+    wh["count"] = len(merged)
+    wh["pr_count"] = len(pr)
+    wh["note"] = wh.get("note", "") + " 비례 당선자 포함(명부 순번 기준)."
+    wh_path.write_text(json.dumps(wh, ensure_ascii=False), encoding="utf-8")
+    print(f"winner_huboids 병합: 기존 {len(base)} + 비례 {len(pr)} → {len(merged)}", file=sys.stderr)
 
 
 if __name__ == "__main__":

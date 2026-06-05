@@ -519,7 +519,7 @@ let winnerHuboidsPromise = null;
 async function ensureWinnerHuboids() {
   if (state.winnerHuboids) return state.winnerHuboids;
   if (!winnerHuboidsPromise) {
-    winnerHuboidsPromise = safeJson('data/winner_huboids.json?v=20260605', null).then(winners => {
+    winnerHuboidsPromise = safeJson('data/winner_huboids.json?v=20260606', null).then(winners => {
       state.winnerHuboids = new Set((winners?.huboids || []).map(String));
       return state.winnerHuboids;
     });
@@ -532,7 +532,7 @@ async function ensureCriminalOcr() {
   if (!criminalOcrPromise) {
     criminalOcrPromise = Promise.all([
       loadCriminalOcr(),
-      safeJson('data/winner_huboids.json?v=20260605', null),  // 당선자 huboid(낙선자 익명화 기준)
+      safeJson('data/winner_huboids.json?v=20260606', null),  // 당선자 huboid(낙선자 익명화 기준)
     ]).then(([payload, winners]) => {
       state.criminalOcr = payload || { records: [], categories: [], meta: {} };
       state.criminalOcrMap = buildCriminalOcrMap(state.criminalOcr);
