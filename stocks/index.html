@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>후보 주식보유 — 6·3 지방선거 2026</title>
-<meta name="description" content="제9회 전국동시지방선거 시도지사·기초단체장·교육감 후보의 재산신고서(중앙선거관리위원회) 상 보유 주식. OCR 자동추출 참고자료.">
+<title>당선 의원 주식·이해충돌 감시 — 6·3 지방선거 2026</title>
+<meta name="description" content="제9회 전국동시지방선거 당선자의 재산신고서(중앙선거관리위원회) 상 보유 주식. 방산·원전·금융·부동산·해외주식 이해충돌 감시. OCR 자동추출 참고자료.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#c41e3a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,12 +35,45 @@
   .hero { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:0 0 26px; }
   @media (max-width:640px){ .hero{ grid-template-columns:1fr 1fr; } }
   .hero-card { border:1px solid var(--line); border-radius:8px; padding:16px 18px; background:#fafafa; }
-  .hero-num { font-family:'Noto Serif KR',serif; font-weight:900; font-size:2rem; line-height:1; }
+  .hero-num { font-family:'Noto Serif KR',serif; font-weight:900; font-size:2rem; line-height:1.05; }
+  .hero-num.txt { font-size:1.3rem; }
   .hero-lbl { font-size:0.78rem; color:var(--muted); font-weight:700; margin-top:5px; }
 
   section.block { margin:30px 0 0; }
   section.block h2 { font-family:'Noto Serif KR',serif; font-size:1.15rem; font-weight:900; margin:0 0 4px; }
   .block-sub { color:var(--muted); font-size:0.84rem; margin:0 0 14px; }
+
+  /* 이해충돌 감시 패널 */
+  .conflict-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+  @media (max-width:760px){ .conflict-grid{ grid-template-columns:repeat(2,1fr); } }
+  .cf-card { border:1px solid var(--line); border-radius:10px; padding:13px 14px; background:#fff; cursor:pointer; transition:border-color .12s, box-shadow .12s, background .12s; text-align:left; font-family:inherit; }
+  .cf-card:hover { border-color:#c9c9c9; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+  .cf-card.active { border-color:var(--accent); background:#fdf3f3; box-shadow:0 0 0 1px var(--accent) inset; }
+  .cf-ic { font-size:1.25rem; line-height:1; }
+  .cf-num { font-family:'Noto Serif KR',serif; font-weight:900; font-size:1.7rem; line-height:1; margin:7px 0 1px; }
+  .cf-num small { font-size:0.5em; font-weight:700; color:var(--muted); margin-left:2px; }
+  .cf-lbl { font-size:0.86rem; font-weight:800; }
+  .cf-why { font-size:0.72rem; color:var(--muted); margin-top:3px; line-height:1.35; }
+
+  /* 종목부자 랭킹 */
+  .rich-list { display:grid; grid-template-columns:1fr 1fr; gap:4px 22px; }
+  @media (max-width:640px){ .rich-list{ grid-template-columns:1fr; } }
+  .rich-row { display:grid; grid-template-columns:20px 1fr auto; align-items:center; gap:9px; padding:5px 6px; border-radius:6px; cursor:pointer; }
+  .rich-row:hover { background:#f4f4f4; }
+  .rich-i { font-size:0.78rem; color:var(--muted); font-weight:800; text-align:center; }
+  .rich-name { font-weight:700; font-size:0.9rem; }
+  .rich-name .rich-meta { font-size:0.74rem; color:var(--muted); font-weight:600; margin-left:6px; }
+  .rich-cnt { font-weight:900; font-size:0.92rem; }
+  .rich-cnt small { font-size:0.66em; font-weight:700; color:var(--muted); }
+
+  /* 당선/전체 토글 */
+  .seg { display:inline-flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; }
+  .seg button { font-family:inherit; font-size:0.82rem; font-weight:700; padding:7px 14px; border:none; background:#fff; color:var(--muted); cursor:pointer; }
+  .seg button.on { background:var(--accent); color:#fff; }
+  .sc-won { display:inline-block; font-size:0.68rem; font-weight:900; color:#fff; background:var(--accent); border-radius:4px; padding:1px 6px; margin-left:2px; letter-spacing:0.02em; }
+  .sc-lost { display:inline-block; font-size:0.68rem; font-weight:800; color:var(--muted); background:#f0f0f0; border-radius:4px; padding:1px 6px; margin-left:2px; }
+  .sc-card.lost { opacity:0.62; }
+  .sc-chip.cf { background:#fbe9d8; border-color:#f0cba0; color:#8a4b12; }
 
   /* 종목 랭킹 */
   .rank-list { display:grid; grid-template-columns:1fr 1fr; gap:5px 22px; }
@@ -97,36 +130,52 @@
       <a href="/live/">투개표 기록</a>
       <a href="/result/">당선 결과</a>
       <a href="/sim/">결과 예측 시뮬레이션</a>
-      <a href="/stocks/" class="ev-nav-active">후보 주식보유</a>
+      <a href="/stocks/" class="ev-nav-active">주식·이해충돌</a>
     </nav>
   </div>
 </header>
 <main>
-  <h1 class="page-title">후보 주식보유 현황</h1>
-  <p class="page-sub">시도지사·기초단체장·교육감 후보가 중앙선거관리위원회에 신고한 재산신고서 상 <b>보유 주식</b>.</p>
+  <h1 class="page-title">당선 의원 주식·이해충돌 감시</h1>
+  <p class="page-sub">6·3 지방선거 <b>당선자</b>가 중앙선거관리위원회에 신고한 재산신고서 상 <b>보유 주식</b>을 정책영역별로 들여다봅니다. 임기 내내 감시하기 위한 기록.</p>
 
   <div class="warn">
-    ⚠️ <b>자동 추출 참고자료입니다.</b> 스캔된 재산신고서를 OCR로 읽어 종목·수량을 자동 추출했습니다.
-    칸 겹침·소수점 분할주 등으로 <b>오차가 있을 수 있습니다.</b> 정확한 값은 각 후보의
-    <b>중앙선관위 재산신고서 원문</b>을 대조하세요(카드의 ‘선관위 원문’ 링크). <span style="color:#a15c00;font-weight:800;">검토필요</span> 표시는 OCR 오류 가능성이 특히 높은 건입니다.
+    ⚠️ <b>자동 추출 참고자료입니다.</b> 스캔된 재산신고서를 OCR로 읽어 종목·수량을 자동 추출했고,
+    <b>이해충돌 카테고리는 종목명 키워드로 자동 분류</b>했습니다. 칸 겹침·동명이종목 등으로 <b>오차가 있을 수 있습니다.</b>
+    보유 종목 칩으로 원종목을 확인하세요. <span style="color:#a15c00;font-weight:800;">검토필요</span> 표시는 OCR 오류 가능성이 특히 높은 건입니다.
   </div>
 
   <div class="hero">
-    <div class="hero-card"><div class="hero-num" id="h-clean">—</div><div class="hero-lbl">주식 보유 후보(확정 추출)</div></div>
-    <div class="hero-card"><div class="hero-num" id="h-review">—</div><div class="hero-lbl">검토필요(원문 대조)</div></div>
-    <div class="hero-card"><div class="hero-num" id="h-top">—</div><div class="hero-lbl" id="h-top-lbl">최다 보유 종목</div></div>
+    <div class="hero-card"><div class="hero-num" id="h-holders">—</div><div class="hero-lbl">주식 보유 당선자</div></div>
+    <div class="hero-card"><div class="hero-num txt" id="h-cf">—</div><div class="hero-lbl" id="h-cf-lbl">최다 이해충돌 영역</div></div>
+    <div class="hero-card"><div class="hero-num txt" id="h-rich">—</div><div class="hero-lbl" id="h-rich-lbl">종목부자 1위</div></div>
   </div>
 
   <section class="block">
-    <h2>종목별 보유 후보 수 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(클릭하면 해당 종목 보유 후보만)</span></h2>
-    <p class="block-sub">보유 후보가 많은 종목 순. 막대=후보 수.</p>
+    <h2>이해충돌 감시 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(클릭하면 해당 영역 보유 당선자만)</span></h2>
+    <p class="block-sub">정책영역과 이해관계가 걸릴 수 있는 종목을 보유한 <b>당선자</b> 수. 카테고리는 종목명 자동 분류입니다.</p>
+    <div id="conflict-grid" class="conflict-grid"></div>
+  </section>
+
+  <section class="block">
+    <h2>종목부자 랭킹 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(당선자 · 보유 종목 수)</span></h2>
+    <p class="block-sub">신고서에서 추출된 보유 종목 가짓수 기준. 클릭하면 해당 인물만.</p>
+    <div id="rich-list" class="rich-list"></div>
+  </section>
+
+  <section class="block">
+    <h2>종목별 보유자 수 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(클릭하면 해당 종목 보유자만)</span></h2>
+    <p class="block-sub">보유자가 많은 종목 순. 막대=인원.</p>
     <div id="rank-list" class="rank-list"></div>
   </section>
 
   <section class="block">
-    <h2>후보별 보유 종목</h2>
+    <h2>인물별 보유 종목</h2>
     <div class="filters">
-      <input id="f-q" type="search" placeholder="후보명·종목 검색 (예: 삼성전자, 홍길동)" autocomplete="off">
+      <span class="seg" id="seg-won">
+        <button data-won="1" class="on">당선자만</button>
+        <button data-won="0">전체 후보</button>
+      </span>
+      <input id="f-q" type="search" placeholder="이름·종목 검색 (예: 삼성전자, 홍길동)" autocomplete="off">
       <select id="f-party"><option value="">전체 정당</option></select>
       <select id="f-sido"><option value="">전체 지역</option></select>
       <select id="f-office"><option value="">전체 선거</option></select>
@@ -134,13 +183,13 @@
       <span class="filt-count" id="f-count"></span>
     </div>
     <div id="cand-grid" class="cand-grid"></div>
-    <div id="empty" class="empty" hidden>조건에 맞는 후보가 없습니다.</div>
+    <div id="empty" class="empty" hidden>조건에 맞는 인물이 없습니다.</div>
   </section>
 </main>
 <footer>
   자료: 중앙선거관리위원회 후보자 재산신고서(스캔 PDF) OCR 자동추출 · 제9회 전국동시지방선거(2026-06-03) ·
   <b>참고용</b>, 기사화 전 원문 대조 필수 · 뉴탐사 데이터
 </footer>
-<script src="stocks.js?v=202606051150"></script>
+<script src="stocks.js?v=202606052000"></script>
 </body>
 </html>
