@@ -1,9 +1,24 @@
 {
-  "updated_at": "2026-06-05T12:59:17+09:00",
+  "updated_at": "2026-06-05T18:55:15+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 343,
+  "count": 344,
   "articles": [
+    {
+      "date": "2026-06-05",
+      "title": "신청만 하고 출석은 없었다… 장세일 측 언론중재 슬그머니 취하",
+      "url": "https://newtamsa.org/news/zOhG_q",
+      "category": "아카이브",
+      "tags": [
+        "영광군",
+        "장세일",
+        "어바웃영광",
+        "언론중재",
+        "불출석",
+        "취하"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-06-05",
       "title": "광역 12대4 '압승'은 착시…민주당 전체 의석은 54.9% '신승'",
