@@ -202,11 +202,17 @@ function renderHero(cur, chiefs, edu, repoll, bh, council) {
   const rt = tallyByLeader(repoll);        // 국회의원 재보궐
   const c5 = council?.offices?.['5'] ? _partyTally(council.offices['5'].party) : { dem: 0, con: 0, etc: 0, total: 0 };
   const c6 = council?.offices?.['6'] ? _partyTally(council.offices['6'].party) : { dem: 0, con: 0, etc: 0, total: 0 };
+  const c8 = council?.offices?.['8'] ? _partyTally(council.offices['8'].party) : { dem: 0, con: 0, etc: 0, total: 0 };
+  const c9 = council?.offices?.['9'] ? _partyTally(council.offices['9'].party) : { dem: 0, con: 0, etc: 0, total: 0 };
+  // 광역의원·기초의원 = 지역구 + 비례 합산(진짜 총의석)
+  const sum2 = (a, b) => ({ dem: a.dem + b.dem, con: a.con + b.con, etc: a.etc + b.etc, total: a.total + b.total });
+  const cMetro = sum2(c5, c8);   // 광역의원(지역구+비례)
+  const cBasic = sum2(c6, c9);   // 기초의원(지역구+비례)
   // 헤드라인 = 전체 선출직 당선자 합산(교육감은 비정당이라 제외). 국민의 총선택.
   const grand = {
-    dem: ct.dem + bt.dem + rt.dem + c5.dem + c6.dem,
-    con: ct.con + bt.con + rt.con + c5.con + c6.con,
-    etc: ct.etc + bt.etc + rt.etc + c5.etc + c6.etc,
+    dem: ct.dem + bt.dem + rt.dem + cMetro.dem + cBasic.dem,
+    con: ct.con + bt.con + rt.con + cMetro.con + cBasic.con,
+    etc: ct.etc + bt.etc + rt.etc + cMetro.etc + cBasic.etc,
   };
   grand.total = grand.dem + grand.con + grand.etc;
   const tot = grand.total || 1;
@@ -226,7 +232,7 @@ function renderHero(cur, chiefs, edu, repoll, bh, council) {
     `<span><i style="background:var(--dem)"></i>민주 ${intComma(grand.dem)} (${pc(grand.dem)}%)</span>` +
     `<span><i style="background:#6b6b78"></i>그외 ${intComma(grand.etc)} (${pc(grand.etc)}%)</span>` +
     `<span><i style="background:var(--con)"></i>국힘 ${intComma(grand.con)} (${pc(grand.con)}%)</span>` +
-    `<span style="margin-left:auto">시도지사·단체장·지방의원·재보궐 합산 · 교육감(비정당) 제외</span>`;
+    `<span style="margin-left:auto">시도지사·단체장·지방의원(지역구+비례)·재보궐 합산 · 교육감(비정당) 제외</span>`;
 
   const tile = (name, t, sub) => {
     const tt = t.total || 1;
@@ -240,9 +246,9 @@ function renderHero(cur, chiefs, edu, repoll, bh, council) {
   const eduFig = `<span class="d">진보 ${eduProg}</span> · <span class="c">보수 ${eduCons}</span>${eduEtc ? ` · <span class="e">그외 ${eduEtc}</span>` : ''}`;
   document.getElementById('office-tiles').innerHTML =
     tile('광역단체장', ct, `${ct.total}곳`) +
-    tile('광역의원', c5, `${c5.total}석`) +
+    tile('광역의원', cMetro, `${cMetro.total}석 = 지역구 ${c5.total}+비례 ${c8.total}`) +
     tile('기초단체장', bt, `${bt.total}곳`) +
-    tile('기초의원', c6, `${c6.total}석`) +
+    tile('기초의원', cBasic, `${cBasic.total}석 = 지역구 ${c6.total}+비례 ${c9.total}`) +
     tile('국회의원 재보궐', rt, `${rt.total}곳`) +
     `<div class="ot"><div class="ot-name">교육감</div><div class="ot-fig">${eduFig}</div><div class="ot-sub">${edu.length}곳 · 비정당(진보/보수)</div></div>`;
 }
@@ -435,11 +441,14 @@ function renderCouncil(council) {
   renderCouncilOffice('council-sido', council.offices['5']);
   renderCouncilOffice('council-basic', council.offices['6']);
   const o5 = council.offices['5'], o6 = council.offices['6'];
-  if (o5) document.getElementById('cnt-council-sido').textContent = `${o5.total_seats}석`;
-  if (o6) document.getElementById('cnt-council-basic').textContent = `${o6.total_seats}석`;
+  const o8 = council.offices['8'], o9 = council.offices['9'];
+  if (o5) document.getElementById('cnt-council-sido').textContent =
+    `${o5.total_seats + (o8?.total_seats || 0)}석` + (o8 ? ` (지역구 ${o5.total_seats}+비례 ${o8.total_seats})` : '');
+  if (o6) document.getElementById('cnt-council-basic').textContent =
+    `${o6.total_seats + (o9?.total_seats || 0)}석` + (o9 ? ` (지역구 ${o6.total_seats}+비례 ${o9.total_seats})` : '');
   const when = (council.generated_at || '').replace('T', ' ').slice(0, 16);
   const fm = document.getElementById('council-foot');
-  if (fm) fm.textContent = `지역구 한정(비례 제외) · 경합은 개표 상위 당선, 무투표는 등록후보 당선 · 중앙선관위 · 집계 ${when}`;
+  if (fm) fm.textContent = `아래 상세는 지역구 기준 · 비례대표(광역 ${o8?.total_seats || 0}·기초 ${o9?.total_seats || 0}석, 헤어식 배분)는 상단 '전체 당선자'에 합산 · 경합=개표 상위, 무투표=등록후보 · 중앙선관위 · 집계 ${when}`;
 }
 
 // ── 당선자 검색 (전 직책: 시도지사·단체장·광역/기초의원·교육감·재보궐) ──
