@@ -517,13 +517,27 @@ async function ensureAddressIndex() {
 async function ensureCriminalOcr() {
   if (state.criminalOcr) return state.criminalOcr;
   if (!criminalOcrPromise) {
-    criminalOcrPromise = loadCriminalOcr().then(payload => {
+    criminalOcrPromise = Promise.all([
+      loadCriminalOcr(),
+      safeJson('data/winner_huboids.json?v=20260605', null),  // 당선자 huboid(낙선자 익명화 기준)
+    ]).then(([payload, winners]) => {
       state.criminalOcr = payload || { records: [], categories: [], meta: {} };
       state.criminalOcrMap = buildCriminalOcrMap(state.criminalOcr);
+      state.winnerHuboids = new Set((winners?.huboids || []).map(String));
       return state.criminalOcr;
     });
   }
   return criminalOcrPromise;
+}
+
+// 전과 공개 익명화: 당선자(공인)는 실명, 낙선자는 성만 남기고 이름 마스킹("홍길동"→"홍○○").
+function isWinnerHuboid(huboid) {
+  return state.winnerHuboids ? state.winnerHuboids.has(String(huboid || '')) : false;
+}
+function crimDisplayName(huboid, name) {
+  const nm = String(name || '').trim();
+  if (!nm || isWinnerHuboid(huboid)) return nm;
+  return nm.slice(0, 1) + '○'.repeat(Math.max(1, [...nm].length - 1));
 }
 
 async function ensureHistoryCounting() {
@@ -976,12 +990,13 @@ const STATUS_BADGE = {
   '사망':    { cls: 'deceased',  label: '사망', tip: '후보자 사망 (자동 등록무효)' },
 };
 
-function candidateRow(c) {
+function candidateRow(c, nameOverride) {
   const confirmed = isConfirmed(c);
   const articles = state.articleMap?.[c.huboid] || [];
   const hasArt = articles.length > 0;
   const aid = hasArt ? `art-${c.huboid}` : '';
-  const tipTitle = `${c.name} 후보 관련 제보 — 뉴탐사`;
+  const dispName = nameOverride != null ? nameOverride : (c.name || '');  // 전과 등 익명화 컨텍스트용
+  const tipTitle = `${dispName} 후보 관련 제보 — 뉴탐사`;
   const statusInfo = STATUS_BADGE[c.status];
   const statusBadge = statusInfo
     ? `<span class="status-badge status-${statusInfo.cls}" title="${statusInfo.tip}" data-tip="${statusInfo.tip}">${statusInfo.label}</span>`
@@ -992,7 +1007,7 @@ function candidateRow(c) {
   return `
     <div class="candidate${confirmed ? ' confirmed' : ''}${statusInfo ? ' candidate-inactive' : ''}">
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
-      <button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${c.name} 상세 정보">${c.name}${uncontestedBadge}${statusBadge}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>
+      <button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${dispName} 상세 정보">${dispName}${uncontestedBadge}${statusBadge}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>
       <div class="candidate-party">${c.jdName}</div>
       <span class="candidate-actions">
         ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
@@ -3208,10 +3223,13 @@ function candidateRankList(items, type, includeRegion = true) {
               ? moneyDisclosure(r.taxArrears5y)
               : `${r.criminal.toLocaleString()}건`;
         const context = candidateRankContext(c, includeRegion);
+        // 전과 랭킹(type=criminal)은 낙선자 이름 익명화
+        const isCrim = !['asset', 'taxCurrent', 'tax5y'].includes(type);
+        const dispName = isCrim ? crimDisplayName(c.huboid, c.name) : (c.name || '');
         return `
           <li class="candidate-rank-item">
             <span class="candidate-rank-no">${i + 1}</span>
-            <button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(c.name)} 상세 정보">${escapeHtml(c.name)}</button>
+            <button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(dispName)} 상세 정보">${escapeHtml(dispName)}</button>
             <span class="candidate-rank-party" style="border-color:${partyColor(c.jdName)}">${escapeHtml(c.jdName || '무소속')}</span>
             <span class="candidate-rank-context">${escapeHtml(context)}</span>
             <strong class="candidate-rank-value">${value}</strong>
@@ -3895,7 +3913,7 @@ function disclosureFocusPageConfig(kind, ds) {
       key: 'criminal',
       title: '전과 집중 보기',
       stats: [`전과 ${formatPct(ds.criminal.rate)}`, `${ds.criminal.holders.toLocaleString()}명`, `총 ${ds.criminal.cases.toLocaleString()}건`],
-      intro: '전과 보유율과 전과 PDF 죄명 영역 분류를 한 화면에서 봅니다. 직책과 범죄 유형을 함께 확인해야 합니다.',
+      intro: '전과 보유율과 전과 PDF 죄명 영역 분류를 한 화면에서 봅니다. 직책과 범죄 유형을 함께 확인해야 합니다. 당선자는 공인이므로 실명, 낙선 후보는 사생활 보호를 위해 성만 표기(예: 홍○○)합니다.',
       body: criminalFocusHtml(ds),
     },
     tax: {
@@ -4249,7 +4267,7 @@ function criminalFallbackCandidateRow(record) {
   return `
     <div class="candidate">
       <div class="candidate-color" style="background:var(--ink-sub)"></div>
-      <span class="candidate-name">${escapeHtml(record.name || record.huboid || '후보')}</span>
+      <span class="candidate-name">${escapeHtml(crimDisplayName(record.huboid, record.name) || record.huboid || '후보')}</span>
       <div class="candidate-party">${escapeHtml(record.party || '정당 미상')}</div>
       <span class="candidate-actions"></span>
     </div>`;
@@ -4269,7 +4287,7 @@ function criminalCandidateEntry(item, category) {
     : '죄명 영역 기준 분류';
   return `
     <div class="crime-candidate-entry">
-      ${candidate ? candidateRow(candidate) : criminalFallbackCandidateRow(record)}
+      ${candidate ? candidateRow(candidate, crimDisplayName(candidate.huboid, candidate.name)) : criminalFallbackCandidateRow(record)}
       <div class="crime-row-detail">
         ${officeLine ? `<span class="crime-row-office">${escapeHtml(officeLine)}</span>` : ''}
         <span>${termText}</span>
