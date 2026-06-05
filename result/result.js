@@ -618,7 +618,7 @@ function runWinnerSearch() {
     return;
   }
   const hits = SEARCH_IDX.filter(e => {
-    if (f.q && !(e.name.includes(f.q) || e.sgg.includes(f.q) || e.sd.includes(f.q))) return false;
+    if (f.q && !(e.name.includes(f.q) || e.sgg.includes(f.q) || e.sd.includes(f.q) || (e.jd && e.jd.includes(f.q)))) return false;
     if (f.t && e.t !== f.t) return false;
     if (f.sd && e.sd !== f.sd) return false;
     if (f.party && e.jd !== f.party) return false;

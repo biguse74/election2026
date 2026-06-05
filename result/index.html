@@ -310,16 +310,10 @@
       <div class="office-tiles" id="office-tiles"></div>
     </section>
 
-    <section class="rs-block" id="sec-minor" style="display:none">
-      <h2 class="rs-h2">소수정당·무소속 <span class="rs-count" id="cnt-minor"></span></h2>
-      <p class="rs-desc">거대 양당(민주·국힘)에 가려진 소수정당과 무소속의 성적표. 특히 <b>비례대표</b> 덕에 조국혁신당·진보당·정의당이 의석을 얻었습니다. 광역단체장·기초단체장·광역의원·기초의원·재보궐 합산.</p>
-      <div class="minor-grid" id="minor-grid"></div>
-    </section>
-
     <section class="winner-search" id="sec-search" aria-label="당선자 검색">
       <h2 class="ws-h2">🔎 당선자 검색</h2>
-      <p class="ws-sub">이름·지역 검색 또는 <b>분류 검색</b>(선거 종류·시·도·정당·당락) — 시도지사·광역의원·기초단체장·기초의원·교육감·재보궐, 당선·낙선 모두</p>
-      <input id="ws-input" class="ws-input" type="search" placeholder="당선자 이름 또는 지역 (예: 오세훈, 강남구, 손혜원, 전남)" autocomplete="off" aria-label="당선자 이름 또는 지역 검색">
+      <p class="ws-sub">이름·지역·<b>정당</b> 검색 또는 <b>분류 검색</b>(선거 종류·시·도·정당·당락) — 시도지사·광역의원·기초단체장·기초의원·교육감·재보궐, 당선·낙선 모두</p>
+      <input id="ws-input" class="ws-input" type="search" placeholder="이름·지역·정당 (예: 오세훈, 강남구, 조국혁신당)" autocomplete="off" aria-label="당선자 이름·지역·정당 검색">
       <div class="ws-detail">
         <span class="ws-detail-label">분류 검색</span>
         <select id="ws-type" class="ws-sel" aria-label="선거 종류"><option value="">선거 종류</option></select>
@@ -329,6 +323,12 @@
         <button id="ws-reset" class="ws-reset" type="button">초기화</button>
       </div>
       <div id="ws-results" class="ws-results"></div>
+    </section>
+
+    <section class="rs-block" id="sec-minor" style="display:none">
+      <h2 class="rs-h2">소수정당·무소속 <span class="rs-count" id="cnt-minor"></span></h2>
+      <p class="rs-desc">거대 양당(민주·국힘)에 가려진 소수정당과 무소속의 성적표. 특히 <b>비례대표</b> 덕에 조국혁신당·진보당·정의당이 의석을 얻었습니다. 광역단체장·기초단체장·광역의원·기초의원·재보궐 합산.</p>
+      <div class="minor-grid" id="minor-grid"></div>
     </section>
 
     <section class="rs-block" id="sec-covered" style="display:none">
@@ -393,6 +393,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260606green2"></script>
+  <script src="./result.js?v=20260606layout"></script>
 </body>
 </html>
