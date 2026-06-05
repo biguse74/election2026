@@ -6,8 +6,8 @@ const SIDO_ORDER = ['서울특별시','부산광역시','대구광역시','인�
 const CAT_LABEL = {};   // key→{label,icon,why}
 
 let DATA = null;
-// 감시용 — 당선자만 수록. cat: 이해충돌 카테고리 키
-const state = { q:'', party:'', sido:'', office:'', stock:'', cat:'' };
+// 감시용 — 당선자만 수록. cat: 이해충돌 카테고리 키 · person: 특정 huboid(동명이인 구분)
+const state = { q:'', party:'', sido:'', office:'', stock:'', cat:'', person:'' };
 
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
 function pc(p){ return PARTY_COLOR[p] || '#666'; }
@@ -76,7 +76,7 @@ function initConflict(){
     const card = e.target.closest('.cf-card'); if (!card) return;
     const k = card.getAttribute('data-cat');
     state.cat = (state.cat===k) ? '' : k;     // 토글
-    state.stock=''; state.q=''; document.getElementById('f-q').value='';
+    state.stock=''; state.q=''; state.person=''; document.getElementById('f-q').value='';
     syncConflictActive(); syncRankActive();
     document.getElementById('cand-grid').scrollIntoView({behavior:'smooth', block:'start'});
     render();
@@ -91,7 +91,7 @@ function richRows(id, data, valFn){
   const root = document.getElementById(id);
   if (!root) return;
   root.innerHTML = (data||[]).map((r,i)=>
-    `<div class="rich-row" data-name="${esc(r.name)}">`+
+    `<div class="rich-row" data-name="${esc(r.name)}" data-huboid="${esc(r.huboid)}">`+
     `<span class="rich-i">${i+1}</span>`+
     `<span class="rich-name">${esc(r.name)}<span class="rich-meta">${esc(r.party)} · ${esc(r.office)} ${esc(r.sido||'')}</span></span>`+
     `<span class="rich-cnt">${valFn(r)}</span></div>`).join('');
@@ -101,9 +101,10 @@ function initRich(){
   document.querySelectorAll('#rich-list').forEach(root=>
     root.addEventListener('click', e=>{
       const row = e.target.closest('.rich-row'); if (!row) return;
-      const nm = row.getAttribute('data-name');
-      state.q = (state.q===nm) ? '' : nm;
-      document.getElementById('f-q').value = state.q;
+      const hb = row.getAttribute('data-huboid');
+      // 동명이인 구분 — 이름이 아니라 huboid로 그 1명만
+      state.person = (state.person===hb) ? '' : hb;
+      state.q=''; document.getElementById('f-q').value='';
       state.cat=''; state.stock=''; syncConflictActive(); syncRankActive();
       document.getElementById('cand-grid').scrollIntoView({behavior:'smooth', block:'start'});
       render();
@@ -136,7 +137,7 @@ function renderRanking(){
       const row = e.target.closest('.rank-row'); if (!row) return;
       const s = row.getAttribute('data-stock');
       state.stock = (state.stock===s) ? '' : s;
-      state.q=''; state.cat=''; document.getElementById('f-q').value=''; syncConflictActive();
+      state.q=''; state.cat=''; state.person=''; document.getElementById('f-q').value=''; syncConflictActive();
       syncRankActive(); render();
     });
   }
@@ -155,12 +156,12 @@ function initFilters(){
     arr.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; el.appendChild(o); }); };
   fill('f-party', parties); fill('f-sido', sidos); fill('f-office', offices);
   document.getElementById('f-q').addEventListener('input', e=>{ state.q=e.target.value.trim();
-    if (state.q){ state.stock=''; state.cat=''; syncRankActive(); syncConflictActive(); } render(); });
+    state.person=''; if (state.q){ state.stock=''; state.cat=''; syncRankActive(); syncConflictActive(); } render(); });
   document.getElementById('f-party').addEventListener('change', e=>{ state.party=e.target.value; render(); });
   document.getElementById('f-sido').addEventListener('change', e=>{ state.sido=e.target.value; render(); });
   document.getElementById('f-office').addEventListener('change', e=>{ state.office=e.target.value; render(); });
   document.getElementById('f-clear').addEventListener('click', ()=>{
-    state.q=state.party=state.sido=state.office=state.stock=state.cat='';
+    state.q=state.party=state.sido=state.office=state.stock=state.cat=state.person='';
     document.getElementById('f-q').value=''; document.getElementById('f-party').value='';
     document.getElementById('f-sido').value=''; document.getElementById('f-office').value='';
     syncRankActive(); syncConflictActive(); render();
@@ -168,6 +169,7 @@ function initFilters(){
 }
 
 function matches(p){
+  if (state.person && String(p.huboid)!==state.person) return false;
   if (state.cat && !(p.cats||[]).includes(state.cat)) return false;
   if (state.party && p.party!==state.party) return false;
   if (state.sido && p.sido!==state.sido) return false;

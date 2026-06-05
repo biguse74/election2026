@@ -12,6 +12,7 @@ stocks/stock_holdings.json(공개 슬림본) + data/winner_huboids.json을 결�
 사용: python scripts/build_stock_watch.py
 """
 import json, re, sys
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -86,6 +87,38 @@ def fix_name(name):
     return n
 
 
+# 실재 종목 보호(자동 퍼지 교정 금지) — 고빈도 종목과 1글자 차이지만 실제 상장사인 것.
+WHITELIST_REAL = {
+    "삼지전자", "삼화전자", "삼영전자",   # 삼성전자(407)와 1자 차이지만 실재 코스닥
+    "현대건설", "현대重공업",            # 현대차 등과 혼동 방지(부분)
+    "에이프로",                          # 에코프로와 혼동되나 실재(에이프로 APR 아님 주의) → 보호
+}
+
+
+def _lev1(a, b):
+    """길이 같고 정확히 1글자만 다르면 True (편집거리=치환 1)."""
+    if len(a) != len(b):
+        return False
+    diff = sum(1 for x, y in zip(a, b) if x != y)
+    return diff == 1
+
+
+def fuzzy_typo_map(people):
+    """저빈도 종목이 초고빈도 종목과 1글자 차이면 OCR 오타로 보고 교정 맵 생성.
+    실재 종목(WHITELIST_REAL)은 제외. 보수적으로 저빈도≤3 · 고빈도≥20 · 20배 이상만."""
+    freq = Counter(h["종목"] for p in people for h in p["holdings"])
+    normal = {s: c for s, c in freq.items() if c >= 20 and len(s) >= 3}
+    tmap = {}
+    for s, c in freq.items():
+        if c > 3 or len(s) < 3 or s in normal or s in WHITELIST_REAL:
+            continue
+        for nm, nc in sorted(normal.items(), key=lambda kv: -kv[1]):
+            if nc >= c * 20 and _lev1(s, nm):
+                tmap[s] = nm
+                break
+    return tmap
+
+
 def norm(s):
     return re.sub(r"\s+", "", str(s or ""))
 
@@ -110,6 +143,16 @@ def main():
     data["people"] = [p for p in data["people"] if str(p["huboid"]) in winners]
     print(f"낙선자 제외: {before} → {len(data['people'])}명(당선자만)", file=sys.stderr)
 
+    # 종목명 교정 2단계: ① STOCK_FIX(수동) ② 퍼지 오타(저빈도→초고빈도 1글자, 실재종목 보호)
+    for p in data["people"]:
+        for h in p["holdings"]:
+            h["종목"] = fix_name(h["종목"])
+    typo = fuzzy_typo_map(data["people"])
+    for p in data["people"]:
+        for h in p["holdings"]:
+            h["종목"] = typo.get(h["종목"], h["종목"])
+    print(f"퍼지 오타 교정: {len(typo)}종 → 정상 통일", file=sys.stderr)
+
     cat_people = {c["key"]: [] for c in CATS}     # 당선자만
     party_count = {}                               # 보유 당선자 정당 분포
     office_count = {}                              # 보유 당선자 직책 분포
@@ -119,9 +162,6 @@ def main():
     for p in data["people"]:
         p.pop("nec_url", None)   # 선거 후 404·미사용 선관위 링크 제거(방침)
         p["won"] = True
-        # OCR 종목명 교정
-        for h in p["holdings"]:
-            h["종목"] = fix_name(h["종목"])
         # 보유종목별 카테고리 태깅 — 10주 미만 명목 보유는 이해충돌에서 제외
         pcats = set()
         for h in p["holdings"]:
