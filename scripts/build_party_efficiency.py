@@ -23,7 +23,8 @@ WH = ROOT / "data" / "winner_huboids.json"
 OUT = ROOT / "data" / "party_efficiency.json"
 
 QUAD = [("3", "gov", "광역장", "시도지사"), ("4", "head", "기초장", "구시군장"),
-        ("5", "metro", "광역의원", "시도의원 지역구"), ("6", "basic", "기초의원", "구시군의원 지역구")]
+        ("5", "metro", "광역의원", "시도의원 지역구"), ("6", "basic", "기초의원", "구시군의원 지역구"),
+        ("2", "byelect", "국회 재보궐", "국회의원 재·보궐")]
 QMAP = {t: (key, label, sub) for t, key, label, sub in QUAD}
 # 표시 정당(고정 순서). 나머지는 '기타'로 합산.
 SHOW = ["더불어민주당", "국민의힘", "무소속", "조국혁신당", "진보당", "정의당", "개혁신당", "녹색당"]
@@ -43,7 +44,7 @@ def main():
                 sgg2sd[(t, x["sggName"])] = x["sdName"]
 
     def magnitude(t, sd, sgg):
-        return 1 if t in ("3", "4") else mag.get((t, sd, sgg), 0)
+        return 1 if t in ("2", "3", "4") else mag.get((t, sd, sgg), 0)
 
     # 선거구별 후보 그룹(무투표 판정용)
     races = defaultdict(list)
@@ -82,8 +83,8 @@ def main():
                           "total_run": tot_run, "total_win": tot_win, "parties": parties})
 
     OUT.write_text(json.dumps({
-        "note": "정당별 공천 효율. 출마=등록후보, 당선=winner_huboids, 무투표=후보수≤정수. "
-                "경합만(C)은 무투표 선거구 제외. 비례·교육감·재보궐 제외(지역구 단독선출+의원).",
+        "note": "정당별 당선율. 출마=등록후보, 당선=winner_huboids, 무투표=후보수≤정수. "
+                "경합만(C)은 무투표 선거구 제외. 비례·교육감 제외(지역구 단독선출+의원+국회재보궐).",
         "quadrants": quadrants,
     }, ensure_ascii=False, indent=1), encoding="utf-8")
     for q in quadrants:
