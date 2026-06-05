@@ -118,6 +118,7 @@
   .sc-top { display:flex; align-items:baseline; gap:7px; flex-wrap:wrap; }
   .sc-name { font-weight:800; font-size:1rem; }
   .sc-party { font-size:0.76rem; font-weight:700; }
+  .sc-size { margin-left:auto; font-size:0.74rem; font-weight:800; color:#444; background:#f1f3f5; border-radius:5px; padding:2px 8px; white-space:nowrap; }
   .sc-meta { font-size:0.76rem; color:var(--muted); margin:1px 0 7px; }
   .sc-chips { display:flex; flex-wrap:wrap; gap:5px; }
   .sc-chip { font-size:0.76rem; font-weight:700; background:#eef2f8; border:1px solid #dbe5f0; border-radius:999px; padding:2px 9px; white-space:nowrap; }
@@ -160,7 +161,7 @@
 
   <section class="block">
     <h2>이해충돌 감시 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(클릭하면 해당 영역 보유 당선자만)</span></h2>
-    <p class="block-sub">같은 주식이라도 <b>직책 권한과의 거리에 따라 이해충돌의 무게가 다릅니다.</b> 단체장은 인허가·개발권, 지방의원은 도시계획 심의·예산권을 가집니다. 카드의 <b>단체장·지방의원·교육감</b> 숫자로 누가 보유했는지 구분됩니다.</p>
+    <p class="block-sub">같은 주식이라도 <b>직책 권한과의 거리에 따라 이해충돌의 무게가 다릅니다.</b> 단체장은 인허가·개발권, 지방의원은 도시계획 심의·예산권을 가집니다. 카드의 <b>단체장·지방의원·교육감</b> 숫자로 누가 보유했는지 구분됩니다.<br><span style="color:var(--muted)">집계는 <b>보유 사실</b> 기준이라 <b>1주 등 소량(약 9%)</b>도 포함됩니다 — 명목적 보유일 수 있으니 카드의 <b>종목수·총주식수</b>로 규모를 함께 보세요.</span></p>
     <div class="baseline-note">
       🕒 <b>이 목록은 ‘기준선’입니다.</b> 신고 시점은 <b>후보 등록(2026-05)</b>이라, 당선 후 <b>매각·백지신탁</b>으로 이미 해소됐을 수 있습니다.
       공직자윤리법상 직무관련 주식(본인·가족 합산 3,000만원 초과)은 취임 1개월 내 <b>매각 또는 백지신탁 의무</b>가 있습니다.
@@ -200,6 +201,6 @@
   종목·수량은 스캔 OCR 자동추출, <b>이해충돌 카테고리는 종목명 키워드 자동 분류</b>라 오차가 있을 수 있습니다.
   보유 종목 칩으로 원종목을 확인하세요. <b>기사화 전 원문 대조 필수.</b> <b>당선자만</b> 수록(감시 목적).
 </footer>
-<script src="stocks.js?v=202606061200"></script>
+<script src="stocks.js?v=202606061500"></script>
 </body>
 </html>

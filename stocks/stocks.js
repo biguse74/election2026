@@ -181,7 +181,11 @@ const RENDER_CAP = 300;   // 1,500+명 전체를 한 번에 그리면 무거움 
 function render(){
   if (!DATA) return;
   let list = DATA.people.filter(matches);
-  list.sort((a,b)=> (b.holdings.length>0)-(a.holdings.length>0) || b.holdings.length-a.holdings.length || (a.name||'').localeCompare(b.name||'','ko'));
+  // 보유 있음 우선 → 검토필요(OCR 칸뭉침으로 종목수 폭발)는 뒤로 → 종목 많은 순 → 이름
+  list.sort((a,b)=> (b.holdings.length>0)-(a.holdings.length>0)
+    || ((a.needs_review?1:0)-(b.needs_review?1:0))
+    || b.holdings.length-a.holdings.length
+    || (a.name||'').localeCompare(b.name||'','ko'));
   const grid = document.getElementById('cand-grid');
   const empty = document.getElementById('empty');
   const catTxt = state.cat ? ` · ${CAT_LABEL[state.cat]?.icon||''} ${CAT_LABEL[state.cat]?.label||''}` : '';
@@ -205,9 +209,14 @@ function render(){
           return `<span class="${cls}">${esc(h.종목)} <b>${intc(h.수량주)}</b>주</span>`;
         }).join('')
       : `<span class="sc-chip" style="background:#fdf0d5;border-color:#f0d6a8;color:#7a5a1e;">원문 확인 필요(추출 실패)</span>`;
+    const nStocks = p.holdings.length;
+    const totShares = p.holdings.reduce((s,h)=> s + (Number(h.수량주)||0), 0);
+    const sizeTxt = nStocks
+      ? `<span class="sc-size">${nStocks}종목${totShares ? ` · 총 ${intc(totShares)}주` : ''}</span>`
+      : '';
     return `<div class="sc-card">${photo}<div class="sc-body">`+
       `<div class="sc-top"><span class="sc-name">${esc(p.name)}</span>`+
-        `<span class="sc-party" style="color:${pc(p.party)}">${esc(p.party)}</span></div>`+
+        `<span class="sc-party" style="color:${pc(p.party)}">${esc(p.party)}</span>${sizeTxt}</div>`+
       `<div class="sc-meta">${esc(p.office)} · ${esc(region)}</div>`+
       `<div class="sc-chips">${chips}</div>`+
       `</div></div>`;
