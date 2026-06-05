@@ -6,8 +6,8 @@ const SIDO_ORDER = ['서울특별시','부산광역시','대구광역시','인�
 const CAT_LABEL = {};   // key→{label,icon,why}
 
 let DATA = null;
-// won: '1'(당선자만, 기본) | '0'(전체) · cat: 이해충돌 카테고리 키
-const state = { q:'', party:'', sido:'', office:'', stock:'', won:'1', cat:'' };
+// 감시용 — 당선자만 수록. cat: 이해충돌 카테고리 키
+const state = { q:'', party:'', sido:'', office:'', stock:'', cat:'' };
 
 function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
 function pc(p){ return PARTY_COLOR[p] || '#666'; }
@@ -75,7 +75,6 @@ function initConflict(){
     const card = e.target.closest('.cf-card'); if (!card) return;
     const k = card.getAttribute('data-cat');
     state.cat = (state.cat===k) ? '' : k;     // 토글
-    if (state.cat){ state.won='1'; syncWonSeg(); renderRanking(); }   // 이해충돌은 당선자 기준
     state.stock=''; state.q=''; document.getElementById('f-q').value='';
     syncConflictActive(); syncRankActive();
     document.getElementById('cand-grid').scrollIntoView({behavior:'smooth', block:'start'});
@@ -107,10 +106,9 @@ function initRich(){
 }
 
 function stockRanking(){
-  // 종목별 '보유자 수' — 현재 당선/전체 토글을 반영(1인이 같은 종목 여러건이어도 1)
+  // 종목별 '보유자 수'(1인이 같은 종목 여러건이어도 1). 당선자만 수록된 데이터.
   const m = new Map();
   for (const p of DATA.people){
-    if (state.won==='1' && !p.won) continue;
     const seen = new Set();
     for (const h of p.holdings){ if (!seen.has(h.종목)){ seen.add(h.종목); m.set(h.종목, (m.get(h.종목)||0)+1); } }
   }
@@ -156,12 +154,6 @@ function initFilters(){
   document.getElementById('f-party').addEventListener('change', e=>{ state.party=e.target.value; render(); });
   document.getElementById('f-sido').addEventListener('change', e=>{ state.sido=e.target.value; render(); });
   document.getElementById('f-office').addEventListener('change', e=>{ state.office=e.target.value; render(); });
-  document.getElementById('seg-won').addEventListener('click', e=>{
-    const b = e.target.closest('button'); if (!b) return;
-    state.won = b.getAttribute('data-won');
-    if (state.won==='0') { state.cat=''; syncConflictActive(); }   // 전체 보기엔 이해충돌(당선기준) 필터 해제
-    syncWonSeg(); renderRanking(); render();
-  });
   document.getElementById('f-clear').addEventListener('click', ()=>{
     state.q=state.party=state.sido=state.office=state.stock=state.cat='';
     document.getElementById('f-q').value=''; document.getElementById('f-party').value='';
@@ -169,13 +161,8 @@ function initFilters(){
     syncRankActive(); syncConflictActive(); render();
   });
 }
-function syncWonSeg(){
-  document.querySelectorAll('#seg-won button').forEach(b=>
-    b.classList.toggle('on', b.getAttribute('data-won')===state.won));
-}
 
 function matches(p){
-  if (state.won==='1' && !p.won) return false;
   if (state.cat && !(p.cats||[]).includes(state.cat)) return false;
   if (state.party && p.party!==state.party) return false;
   if (state.sido && p.sido!==state.sido) return false;
@@ -213,11 +200,9 @@ function render(){
           return `<span class="${cls}">${esc(h.종목)} <b>${intc(h.수량주)}</b>주</span>`;
         }).join('')
       : `<span class="sc-chip" style="background:#fdf0d5;border-color:#f0d6a8;color:#7a5a1e;">원문 확인 필요(추출 실패)</span>`;
-    const review = p.needs_review ? `<span class="sc-review">검토필요</span>` : '';
-    const badge = p.won ? `<span class="sc-won">당선</span>` : `<span class="sc-lost">낙선</span>`;
-    return `<div class="sc-card${p.won?'':' lost'}">${photo}<div class="sc-body">`+
-      `<div class="sc-top"><span class="sc-name">${esc(p.name)}</span>${badge}`+
-        `<span class="sc-party" style="color:${pc(p.party)}">${esc(p.party)}</span>${review}</div>`+
+    return `<div class="sc-card">${photo}<div class="sc-body">`+
+      `<div class="sc-top"><span class="sc-name">${esc(p.name)}</span>`+
+        `<span class="sc-party" style="color:${pc(p.party)}">${esc(p.party)}</span></div>`+
       `<div class="sc-meta">${esc(p.office)} · ${esc(region)}</div>`+
       `<div class="sc-chips">${chips}</div>`+
       `</div></div>`;

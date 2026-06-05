@@ -11,7 +11,7 @@ stocks/stock_holdings.json(공개 슬림본) + data/winner_huboids.json을 결�
    오분류 가능성이 있다 → UI에서 '자동 분류'임을 명시하고, 칩으로 원종목을 보이게 한다.
 사용: python scripts/build_stock_watch.py
 """
-import json, re
+import json, re, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -67,6 +67,20 @@ TIERS = [
 ]
 
 
+# OCR 오인식 종목명 교정(명백한 건만). 가액·수량 합산엔 영향 없음(이름만 통일).
+STOCK_FIX = {
+    "엔비니아": "엔비디아",   # NVIDIA OCR 오인식 — '엔비니아'는 존재하지 않는 종목
+}
+
+
+def fix_name(name):
+    n = str(name or "")
+    for bad, good in STOCK_FIX.items():
+        if bad in n:
+            n = n.replace(bad, good)
+    return n
+
+
 def norm(s):
     return re.sub(r"\s+", "", str(s or ""))
 
@@ -86,6 +100,11 @@ def main():
     data = json.loads(SH.read_text(encoding="utf-8"))
     winners = set(json.loads(WH.read_text(encoding="utf-8"))["huboids"])
 
+    # 감시용 → 낙선자는 아예 제외(당선자만 보존). raw 원본은 data/stock_holdings.json에 남음.
+    before = len(data["people"])
+    data["people"] = [p for p in data["people"] if str(p["huboid"]) in winners]
+    print(f"낙선자 제외: {before} → {len(data['people'])}명(당선자만)", file=sys.stderr)
+
     cat_people = {c["key"]: [] for c in CATS}     # 당선자만
     party_count = {}                               # 보유 당선자 정당 분포
     office_count = {}                              # 보유 당선자 직책 분포
@@ -94,8 +113,10 @@ def main():
 
     for p in data["people"]:
         p.pop("nec_url", None)   # 선거 후 404·미사용 선관위 링크 제거(방침)
-        won = str(p["huboid"]) in winners
-        p["won"] = won
+        p["won"] = True
+        # OCR 종목명 교정
+        for h in p["holdings"]:
+            h["종목"] = fix_name(h["종목"])
         # 보유종목별 카테고리 태깅
         pcats = set()
         for h in p["holdings"]:
@@ -103,7 +124,7 @@ def main():
             h["cats"] = hc
             pcats.update(hc)
         p["cats"] = sorted(pcats)
-        if won and p["holdings"]:
+        if p["holdings"]:
             n_winner_holders += 1
             party_count[p["party"]] = party_count.get(p["party"], 0) + 1
             office_count[p["office"]] = office_count.get(p["office"], 0) + 1
