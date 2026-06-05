@@ -69,8 +69,13 @@
   .cf-by .cf-head { color:#c41e3a; } .cf-by .cf-edu { color:var(--muted); }
   .cf-why { font-size:0.72rem; color:var(--muted); margin-top:4px; line-height:1.35; }
 
-  /* 종목부자 랭킹 */
+  /* 최다 보유 랭킹 */
+  .rich-cols { display:grid; grid-template-columns:1fr 1fr; gap:10px 26px; }
+  @media (max-width:680px){ .rich-cols{ grid-template-columns:1fr; } }
+  .rich-h3 { font-size:0.92rem; font-weight:900; margin:0 0 6px; }
+  .rich-h3 small { font-size:0.72rem; font-weight:600; color:var(--muted); margin-left:4px; }
   .rich-list { display:grid; grid-template-columns:1fr 1fr; gap:4px 22px; }
+  .rich-list.one { grid-template-columns:1fr; }
   @media (max-width:640px){ .rich-list{ grid-template-columns:1fr; } }
   .rich-row { display:grid; grid-template-columns:20px 1fr auto; align-items:center; gap:9px; padding:5px 6px; border-radius:6px; cursor:pointer; }
   .rich-row:hover { background:#f4f4f4; }
@@ -156,7 +161,7 @@
   <div class="hero">
     <div class="hero-card"><div class="hero-num" id="h-holders">—</div><div class="hero-lbl" id="h-holders-lbl">주식 보유 당선자</div></div>
     <div class="hero-card"><div class="hero-num txt" id="h-cf">—</div><div class="hero-lbl" id="h-cf-lbl">최다 이해충돌 영역</div></div>
-    <div class="hero-card"><div class="hero-num txt" id="h-rich">—</div><div class="hero-lbl" id="h-rich-lbl">종목부자 1위</div></div>
+    <div class="hero-card"><div class="hero-num txt" id="h-rich">—</div><div class="hero-lbl" id="h-rich-lbl">종목 최다 보유</div></div>
   </div>
 
   <section class="block">
@@ -171,9 +176,12 @@
   </section>
 
   <section class="block">
-    <h2>종목부자 랭킹 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(당선자 · 보유 종목 수)</span></h2>
-    <p class="block-sub">신고서에서 추출된 보유 종목 가짓수 기준. 클릭하면 해당 인물만.</p>
-    <div id="rich-list" class="rich-list"></div>
+    <h2>최다 보유 당선자 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(종목 가짓수 / 주식 수량)</span></h2>
+    <p class="block-sub"><b>종목 최다</b>(가짓수)와 <b>수량 최다</b>(총 보유 주식 수)를 구분했습니다. <b style="color:#a15c00">※ 부(富) 순위가 아닙니다</b> — 종목마다 주가가 달라, 수량·가짓수로는 자산 규모를 알 수 없습니다(가액 미추출). 클릭하면 해당 인물만.</p>
+    <div class="rich-cols">
+      <div class="rich-col"><h3 class="rich-h3">📊 종목 최다 <small>가짓수</small></h3><div id="rich-list" class="rich-list one"></div></div>
+      <div class="rich-col"><h3 class="rich-h3">🔢 주식 수량 최다 <small>총 보유 주식 수</small></h3><div id="rich-shares-list" class="rich-list one"></div></div>
+    </div>
   </section>
 
   <section class="block">
@@ -201,6 +209,6 @@
   종목·수량은 스캔 OCR 자동추출, <b>이해충돌 카테고리는 종목명 키워드 자동 분류</b>라 오차가 있을 수 있습니다.
   보유 종목 칩으로 원종목을 확인하세요. <b>기사화 전 원문 대조 필수.</b> <b>당선자만</b> 수록(감시 목적).
 </footer>
-<script src="stocks.js?v=202606061500"></script>
+<script src="stocks.js?v=202606061700"></script>
 </body>
 </html>

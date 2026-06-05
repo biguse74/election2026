@@ -48,7 +48,7 @@ function initHero(){
   const rich = (w.rich||[])[0];
   if (rich){
     document.getElementById('h-rich').innerHTML = `${esc(rich.name)} <small style="font-size:0.55em;color:var(--muted);font-weight:700">${rich.n}종목</small>`;
-    document.getElementById('h-rich-lbl').textContent = `종목부자 1위 · ${rich.party} ${rich.office}`;
+    document.getElementById('h-rich-lbl').textContent = `종목 최다 보유 · ${rich.party} ${rich.office}`;
   }
 }
 
@@ -87,23 +87,29 @@ function syncConflictActive(){
     c.classList.toggle('active', c.getAttribute('data-cat')===state.cat));
 }
 
-function initRich(){
-  const rich = (DATA.watch?.rich)||[];
-  const root = document.getElementById('rich-list');
-  root.innerHTML = rich.map((r,i)=>
+function richRows(id, data, valFn){
+  const root = document.getElementById(id);
+  if (!root) return;
+  root.innerHTML = (data||[]).map((r,i)=>
     `<div class="rich-row" data-name="${esc(r.name)}">`+
     `<span class="rich-i">${i+1}</span>`+
     `<span class="rich-name">${esc(r.name)}<span class="rich-meta">${esc(r.party)} · ${esc(r.office)} ${esc(r.sido||'')}</span></span>`+
-    `<span class="rich-cnt">${r.n}<small>종목</small></span></div>`).join('');
-  root.addEventListener('click', e=>{
-    const row = e.target.closest('.rich-row'); if (!row) return;
-    const nm = row.getAttribute('data-name');
-    state.q = (state.q===nm) ? '' : nm;
-    document.getElementById('f-q').value = state.q;
-    state.cat=''; state.stock=''; syncConflictActive(); syncRankActive();
-    document.getElementById('cand-grid').scrollIntoView({behavior:'smooth', block:'start'});
-    render();
-  });
+    `<span class="rich-cnt">${valFn(r)}</span></div>`).join('');
+}
+function initRich(){
+  richRows('rich-list', DATA.watch?.rich, r=>`${r.n}<small>종목</small>`);
+  richRows('rich-shares-list', DATA.watch?.rich_shares, r=>`${intc(r.shares)}<small>주</small>`);
+  // 두 리스트 공통 클릭 → 이름 검색
+  document.querySelectorAll('#rich-list, #rich-shares-list').forEach(root=>
+    root.addEventListener('click', e=>{
+      const row = e.target.closest('.rich-row'); if (!row) return;
+      const nm = row.getAttribute('data-name');
+      state.q = (state.q===nm) ? '' : nm;
+      document.getElementById('f-q').value = state.q;
+      state.cat=''; state.stock=''; syncConflictActive(); syncRankActive();
+      document.getElementById('cand-grid').scrollIntoView({behavior:'smooth', block:'start'});
+      render();
+    }));
 }
 
 function stockRanking(){
