@@ -115,7 +115,7 @@ function render(){
         }).join('')
       : `<span class="sc-chip" style="background:#fdf0d5;border-color:#f0d6a8;color:#7a5a1e;">원문 확인 필요(추출 실패)</span>`;
     const review = p.needs_review ? `<span class="sc-review">검토필요</span>` : '';
-    const nec = p.nec_url ? `<a href="${esc(p.nec_url)}" target="_blank" rel="noopener">선관위 원문 ↗</a>` : '';
+    const nec = '';  // 선거 후 선관위 후보 상세 페이지(404) — 죽은 링크 제거
     return `<div class="sc-card">${photo}<div class="sc-body">`+
       `<div class="sc-top"><span class="sc-name">${esc(p.name)}</span>`+
         `<span class="sc-party" style="color:${pc(p.party)}">${esc(p.party)}</span>${review}</div>`+

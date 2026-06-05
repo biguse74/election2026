@@ -1135,10 +1135,17 @@ function necDetailUrlForHuboid(huboid) {
   return state.candidateDetails?.[String(huboid || '')]?.nec_detail_url || '';
 }
 
-function criminalDisclosureValue(record, necDetailUrl) {
+// 선거 후 선관위 '후보자 상세 페이지'는 내려가 404(죽은 링크). 전과 원문 PDF(unielec_pdf_file)는
+// 유지되므로 검증 링크를 PDF 원문으로 연결한다.
+function criminalPdfUrlFor(huboid) {
+  const rec = criminalOcrRecordFor(huboid);
+  const urls = rec && Array.isArray(rec.pdf_urls) ? rec.pdf_urls.filter(Boolean) : [];
+  return urls[0] || '';
+}
+function criminalDisclosureValue(record, pdfUrl) {
   const text = String(record || '').trim();
-  if (!text || parseCriminalCount(text) <= 0 || !necDetailUrl) return text;
-  return `<a class="modal-field-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener" title="선관위 후보자 정보공개에서 전과 상세 확인">${escapeHtml(text)} 선관위에서 확인</a>`;
+  if (!text || parseCriminalCount(text) <= 0 || !pdfUrl) return text;
+  return `<a class="modal-field-link" href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener" title="선관위 전과기록 PDF 원문">${escapeHtml(text)} · PDF 원문</a>`;
 }
 
 function buildCriminalOcrMap(payload) {
@@ -1207,10 +1214,10 @@ async function openCandidateModal(huboid) {
         <img src="${photoSrc}" alt="${c.name} 후보자 사진" loading="eager" decoding="async" fetchpriority="high">
       </a>
     </figure>` : '';
-  const necDetailUrl = nec?.nec_detail_url || '';
   const hasCriminalRecord = parseCriminalCount(disclosures.criminal_record) > 0;
   if (hasCriminalRecord) await ensureCriminalOcr();
   const criminalOcrRecord = criminalOcrRecordFor(c.huboid);
+  const criminalPdfUrl = criminalPdfUrlFor(c.huboid);  // 살아있는 전과 PDF 원문(상세페이지는 404)
 
   // 필드 정의: 값이 있는 것만 표시
   const fields = [
@@ -1233,7 +1240,7 @@ async function openCandidateModal(huboid) {
     ['체납',   disclosures.tax_arrears_5y_thousand_krw || disclosures.tax_arrears_current_thousand_krw
       ? `최근 5년 ${moneyDisclosure(disclosures.tax_arrears_5y_thousand_krw) || '0원'} · 현재 ${moneyDisclosure(disclosures.tax_arrears_current_thousand_krw) || '0원'}`
       : ''],
-    ['전과',   criminalDisclosureValue(disclosures.criminal_record, necDetailUrl)],
+    ['전과',   criminalDisclosureValue(disclosures.criminal_record, criminalPdfUrl)],
     ['전과 유형', criminalOcrCategoriesHtml(criminalOcrRecord)],
     ['입후보', disclosures.candidacy_count || ''],
   ].filter(([, v]) => v);
@@ -1247,19 +1254,17 @@ async function openCandidateModal(huboid) {
       <h3 class="modal-section-title">관련 보도 <span class="modal-section-sub">${articles.length}건 · 뉴탐사 공천대란 매칭</span></h3>
       <ul class="modal-articles">${articleListHtml(articles)}</ul>
     </section>` : '';
-  const criminalHtml = hasCriminalRecord && necDetailUrl ? `
+  const criminalHtml = hasCriminalRecord && criminalPdfUrl ? `
     <section class="modal-section">
-      <h3 class="modal-section-title">전과 상세 <span class="modal-section-sub">선관위 후보자 정보공개</span></h3>
-      <p class="trend-meta">PDF 파일을 직접 제공하지 않고 선관위 후보자 상세 페이지로 연결합니다. 원문 열람 여부와 공개 범위는 선관위 페이지 기준입니다.</p>
+      <h3 class="modal-section-title">전과 상세 <span class="modal-section-sub">선관위 전과기록 PDF 원문</span></h3>
+      <p class="trend-meta">선거 종료 후 선관위 후보자 상세 페이지는 닫혔습니다. 전과기록 PDF 원문은 선관위 파일 서버에 남아 있어 직접 연결합니다.</p>
       <ul class="modal-articles">
-        <li><a href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위에서 전과 원문 확인</a></li>
+        <li><a href="${escapeHtml(criminalPdfUrl)}" target="_blank" rel="noopener">전과기록 PDF 원문 열기</a></li>
       </ul>
     </section>` : '';
 
   const tipUrl = tipoffUrl(c);
-  const necLink = necDetailUrl
-    ? `<a class="modal-share modal-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위 상세</a>`
-    : '';
+  const necLink = '';  // 선거 후 선관위 후보 상세 페이지(404) — 죽은 링크 제거
 
   root.innerHTML = `
     <div class="modal-backdrop" data-modal-close></div>
@@ -4259,7 +4264,7 @@ function criminalOcrOverviewHtml() {
         ${crimeAuditLeadersHtml(rows)}
         ${chips}
       </div>
-      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시하고, 일반 교통사고·보험/금융 법규 등은 공직 검증 묶음과 분리했습니다. 정당·직책·지역 구성은 공직 검증 유형 후보 안에서의 비중입니다. 최종 판단은 후보 상세의 선관위 원문으로 확인해야 합니다.${partialText}</p>
+      <p class="trend-meta">선관위 전과 PDF의 죄명 영역을 넓은 범죄 유형으로 묶었습니다. 횡령과 배임, 명예훼손과 모욕처럼 서로 다른 죄명은 따로 표시하고, 일반 교통사고·보험/금융 법규 등은 공직 검증 묶음과 분리했습니다. 정당·직책·지역 구성은 공직 검증 유형 후보 안에서의 비중입니다. 최종 판단은 선관위 전과기록 PDF 원문으로 확인해야 합니다.${partialText}</p>
     </section>`;
 }
 
@@ -4278,9 +4283,9 @@ function criminalCandidateEntry(item, category) {
   const candidate = item.candidate;
   const terms = (record.matched_terms?.[category] || []).filter(Boolean);
   const officeLine = criminalOfficeLine(candidate, record);
-  const necDetailUrl = record.nec_detail_url || necDetailUrlForHuboid(record.huboid);
-  const sourceLink = necDetailUrl
-    ? `<a class="crime-source-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위 상세 확인</a>`
+  const pdfUrl = (Array.isArray(record.pdf_urls) ? record.pdf_urls.filter(Boolean) : [])[0] || '';
+  const sourceLink = pdfUrl
+    ? `<a class="crime-source-link" href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener">전과 PDF 원문</a>`
     : '';
   const termText = terms.length
     ? `분류 근거: ${terms.map(escapeHtml).join(', ')}`
@@ -4348,7 +4353,7 @@ function renderCriminalCategoryFull(category) {
         <span>${groups.length.toLocaleString()}개 시도</span>
       </div>
     </div>
-    <p class="page-intro">전과 PDF의 죄명 영역에서 ${escapeHtml(categoryLabel || '선택한 유형')} 관련 표현이 확인된 후보입니다. 인용·보도 시에는 선관위 후보자 상세 페이지의 원문을 함께 확인해 주세요.</p>
+    <p class="page-intro">전과 PDF의 죄명 영역에서 ${escapeHtml(categoryLabel || '선택한 유형')} 관련 표현이 확인된 후보입니다. 인용·보도 시에는 선관위 전과기록 PDF 원문을 함께 확인해 주세요.</p>
     ${allChips}
     ${auditPanel}
     ${bodyHtml}`;
@@ -4398,10 +4403,7 @@ function taxArrearsCandidateTableHtml(rows, config) {
     const paid = moneyDisclosure(row.taxPaid) || '-';
     const office = electionOfficeTitle(c) || '-';
     const region = formatRegionLabel(c) || '-';
-    const necDetailUrl = necDetailUrlForHuboid(huboid);
-    const sourceLink = necDetailUrl
-      ? `<a class="crime-source-link" href="${escapeHtml(necDetailUrl)}" target="_blank" rel="noopener">선관위</a>`
-      : '';
+    const sourceLink = '';  // 선거 후 선관위 후보 상세(404) — 체납 원문 대체 링크 없음, 제거
     return `
       <tr>
         <td class="tax-rank">${(row.taxRank || index + 1).toLocaleString()}</td>
@@ -5513,7 +5515,7 @@ function uncontestedDisclosureDashboardHtml(ds, uc) {
           <h4 class="metric-title">읽는 법</h4>
           <p>시도·직책 차트는 전과와 체납을 색으로 나눠 보여줍니다. 두 항목에 동시에 걸리는 후보가 있어 막대를 단순 합산하지 않고, 합집합은 텍스트로 따로 표시했습니다.</p>
           <p>정당 비교는 무투표 후보 규모가 큰 더불어민주당과 국민의힘만 나란히 봅니다. 무투표 후보가 1명뿐인 정당은 비율이 과장돼 보일 수 있어 이 차트에서는 제외했습니다.</p>
-          <p>체납은 최근 5년 체납 이력과 현 체납을 구분해야 하며, 전과 세부 죄명은 후보 상세의 선관위 원문 확인이 필요합니다.</p>
+          <p>체납은 최근 5년 체납 이력과 현 체납을 구분해야 하며, 전과 세부 죄명은 선관위 전과기록 PDF 원문 확인이 필요합니다.</p>
         </div>
       </div>
     </section>`;
