@@ -67,6 +67,9 @@ TIERS = [
 ]
 
 
+# 이해충돌 최소 보유 기준 — 10주 미만(1~9주)은 명목 보유로 보고 카테고리에서 제외.
+MIN_SHARES = 10
+
 # OCR 오인식 종목명 교정(명백한 건만). 가액·수량 합산엔 영향 없음(이름만 통일).
 STOCK_FIX = {
     "엔비니아": "엔비디아",   # NVIDIA OCR 오인식 — '엔비니아'는 존재하지 않는 종목
@@ -117,10 +120,10 @@ def main():
         # OCR 종목명 교정
         for h in p["holdings"]:
             h["종목"] = fix_name(h["종목"])
-        # 보유종목별 카테고리 태깅
+        # 보유종목별 카테고리 태깅 — 10주 미만 명목 보유는 이해충돌에서 제외
         pcats = set()
         for h in p["holdings"]:
-            hc = match_cats(h["종목"])
+            hc = match_cats(h["종목"]) if (h.get("수량주") or 0) >= MIN_SHARES else []
             h["cats"] = hc
             pcats.update(hc)
         p["cats"] = sorted(pcats)
