@@ -98,9 +98,7 @@ function richRows(id, data, valFn){
 }
 function initRich(){
   richRows('rich-list', DATA.watch?.rich, r=>`${r.n}<small>종목</small>`);
-  richRows('rich-shares-list', DATA.watch?.rich_shares, r=>`${intc(r.shares)}<small>주</small>`);
-  // 두 리스트 공통 클릭 → 이름 검색
-  document.querySelectorAll('#rich-list, #rich-shares-list').forEach(root=>
+  document.querySelectorAll('#rich-list').forEach(root=>
     root.addEventListener('click', e=>{
       const row = e.target.closest('.rich-row'); if (!row) return;
       const nm = row.getAttribute('data-name');
@@ -216,10 +214,7 @@ function render(){
         }).join('')
       : `<span class="sc-chip" style="background:#fdf0d5;border-color:#f0d6a8;color:#7a5a1e;">원문 확인 필요(추출 실패)</span>`;
     const nStocks = p.holdings.length;
-    const totShares = p.holdings.reduce((s,h)=> s + (Number(h.수량주)||0), 0);
-    const sizeTxt = nStocks
-      ? `<span class="sc-size">${nStocks}종목${totShares ? ` · 총 ${intc(totShares)}주` : ''}</span>`
-      : '';
+    const sizeTxt = nStocks ? `<span class="sc-size">${nStocks}종목</span>` : '';
     return `<div class="sc-card">${photo}<div class="sc-body">`+
       `<div class="sc-top"><span class="sc-name">${esc(p.name)}</span>`+
         `<span class="sc-party" style="color:${pc(p.party)}">${esc(p.party)}</span>${sizeTxt}</div>`+

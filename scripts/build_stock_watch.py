@@ -73,6 +73,8 @@ MIN_SHARES = 10
 # OCR 오인식 종목명 교정(명백한 건만). 가액·수량 합산엔 영향 없음(이름만 통일).
 STOCK_FIX = {
     "엔비니아": "엔비디아",   # NVIDIA OCR 오인식 — '엔비니아'는 존재하지 않는 종목
+    "ilBC": "iMBC",          # iMBC(코스닥) OCR 오인식 — m→l. 'ilBC'는 존재하지 않는 종목
+    "IMBC": "iMBC",          # 표기 통일
 }
 
 
@@ -163,18 +165,12 @@ def main():
     cats_summary = [{"key": c["key"], "label": c["label"], "icon": c["icon"],
                      "tier": c["tier"], "why": c["why"], "count": len(cat_people[c["key"]]),
                      "by_office": office_split(c["key"])} for c in CATS]
-    # 보유 랭킹(당선자) — 검토필요(OCR 칸뭉침으로 수치 폭발) 건은 제외.
-    # 종목 최다(가짓수)와 수량 최다(총 주식 수)를 구분. ※가액 아님(주가는 종목마다 다름).
-    # 수량 합은 개별 수량 OCR 오류(자릿수 폭발)에 취약 → 종목당 1천만주 초과는 오류로 보고 제외.
-    SHARE_CAP = 10_000_000
-    def total_shares(p):
-        return sum(s for h in p["holdings"] if 0 < (s := int(h.get("수량주") or 0)) <= SHARE_CAP)
-    base = [{"huboid": p["huboid"], "name": p["name"], "party": p["party"],
-             "office": p["office"], "sido": p["sido"], "n": len(p["holdings"]),
-             "shares": total_shares(p)}
-            for p in data["people"] if p["won"] and p["holdings"] and not p.get("needs_review")]
-    rich = sorted(base, key=lambda x: -x["n"])[:20]              # 종목 최다
-    rich_shares = sorted(base, key=lambda x: -x["shares"])[:20]  # 수량 최다
+    # 종목 최다 랭킹(가짓수) — 검토필요(OCR 칸뭉침) 건 제외.
+    # ※수량 합계는 OCR이 수량·평가액을 혼입해 신뢰 불가(예: 마이크론 6주→636만주) → 제공하지 않음.
+    rich = sorted([{"huboid": p["huboid"], "name": p["name"], "party": p["party"],
+                    "office": p["office"], "sido": p["sido"], "n": len(p["holdings"])}
+                   for p in data["people"] if p["won"] and p["holdings"] and not p.get("needs_review")],
+                  key=lambda x: -x["n"])[:20]
     most_held = sorted(stock_holders.items(), key=lambda x: -x[1])[:20]
 
     # 직책 그룹별 집계
@@ -196,7 +192,6 @@ def main():
         "cats": cats_summary,
         "cat_people": cat_people,
         "rich": rich,
-        "rich_shares": rich_shares,
         "most_held": [{"종목": k, "n": v} for k, v in most_held],
         "note": "당선자 한정 집계. 카테고리는 종목명 자동(키워드) 분류로 오분류 가능. "
                 "보유 종목 칩으로 원종목 확인 가능. 공개 재산신고 OCR 기반.",
