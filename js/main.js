@@ -478,7 +478,7 @@ let homeTrendBoxRefreshQueued = false;
 async function ensureCandidateDetails() {
   if (state.candidateDetailsMeta) return state.candidateDetailsMeta;
   if (!candidateDetailsPromise) {
-    candidateDetailsPromise = loadCandidateDetails().then(payload => {
+    candidateDetailsPromise = Promise.all([loadCandidateDetails(), ensureWinnerHuboids()]).then(([payload]) => {
       state.candidateDetails = buildCandidateDetailsMap(payload);
       state.candidateDetailsMeta = payload || { details: [] };
       return state.candidateDetailsMeta;
@@ -514,6 +514,19 @@ async function ensureAddressIndex() {
   return addressIndexPromise;
 }
 
+// 당선자 huboid만 가볍게 로드(재산·체납·병역 익명화 기준). 전과 OCR(대용량) 없이.
+let winnerHuboidsPromise = null;
+async function ensureWinnerHuboids() {
+  if (state.winnerHuboids) return state.winnerHuboids;
+  if (!winnerHuboidsPromise) {
+    winnerHuboidsPromise = safeJson('data/winner_huboids.json?v=20260605', null).then(winners => {
+      state.winnerHuboids = new Set((winners?.huboids || []).map(String));
+      return state.winnerHuboids;
+    });
+  }
+  return winnerHuboidsPromise;
+}
+
 async function ensureCriminalOcr() {
   if (state.criminalOcr) return state.criminalOcr;
   if (!criminalOcrPromise) {
@@ -538,6 +551,16 @@ function crimDisplayName(huboid, name) {
   const nm = String(name || '').trim();
   if (!nm || isWinnerHuboid(huboid)) return nm;
   return nm.slice(0, 1) + '○'.repeat(Math.max(1, [...nm].length - 1));
+}
+// 민감 공개정보(전과·재산·체납·병역) 목록의 이름 엘리먼트:
+// 당선자=실명+상세링크, 낙선자=마스킹 이름(비링크 — 모달 실명 노출 차단).
+function discNameEl(huboid, name, cls) {
+  const hid = String(huboid || '');
+  if (isWinnerHuboid(hid)) {
+    const nm = name || '-';
+    return `<button type="button" class="${cls} candidate-detail-trigger" data-huboid="${escapeHtml(hid)}" title="${escapeHtml(nm)} 상세 정보">${escapeHtml(nm)}</button>`;
+  }
+  return `<span class="${cls} cand-anon" title="낙선 후보 — 익명">${escapeHtml(crimDisplayName(hid, name))}</span>`;
 }
 
 async function ensureHistoryCounting() {
@@ -3215,13 +3238,8 @@ function candidateRankList(items, type, includeRegion = true) {
               ? moneyDisclosure(r.taxArrears5y)
               : `${r.criminal.toLocaleString()}건`;
         const context = candidateRankContext(c, includeRegion);
-        // 전과 랭킹(type=criminal)은 낙선자 이름 익명화 + 비링크(클릭→모달 실명 노출 차단)
-        const isCrim = !['asset', 'taxCurrent', 'tax5y'].includes(type);
-        const anon = isCrim && !isWinnerHuboid(c.huboid);
-        const dispName = anon ? crimDisplayName(c.huboid, c.name) : (c.name || '');
-        const nameEl = anon
-          ? `<span class="candidate-rank-name cand-anon" title="낙선 후보 — 익명">${escapeHtml(dispName)}</span>`
-          : `<button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(dispName)} 상세 정보">${escapeHtml(dispName)}</button>`;
+        // 전과·재산·체납 등 민감 랭킹은 낙선자 이름 익명화 + 비링크(클릭→모달 실명 노출 차단)
+        const nameEl = discNameEl(c.huboid, c.name, 'candidate-rank-name');
         return `
           <li class="candidate-rank-item">
             <span class="candidate-rank-no">${i + 1}</span>
@@ -3260,7 +3278,7 @@ function militaryCandidateListHtml(items, options = {}) {
         return `
           <li class="military-candidate-item" title="${escapeHtml(raw)}">
             <div class="military-candidate-main">
-              <button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(c.name)} 상세 정보">${escapeHtml(c.name || '-')}</button>
+              ${discNameEl(c.huboid, c.name, 'candidate-rank-name')}
               <strong class="military-candidate-status">${militaryStatusLabel(r.military)}</strong>
             </div>
             <div class="military-candidate-meta">
@@ -4398,7 +4416,7 @@ function taxArrearsCandidateTableHtml(rows, config) {
       <tr>
         <td class="tax-rank">${(row.taxRank || index + 1).toLocaleString()}</td>
         <td>
-          <button type="button" class="tax-candidate-name candidate-detail-trigger" data-huboid="${escapeHtml(huboid)}" title="${escapeHtml(c.name || '후보')} 상세 정보">${escapeHtml(c.name || '후보')}</button>
+          ${discNameEl(huboid, c.name, 'tax-candidate-name')}
         </td>
         <td><span class="tax-party" style="border-color:${partyColor(c.jdName)}">${escapeHtml(c.jdName || '무소속')}</span></td>
         <td>${escapeHtml(office)}</td>
@@ -4503,7 +4521,7 @@ function renderTaxArrearsFull(mode = 'current') {
       <div class="disclosure-card">
         <span class="disclosure-label">최고액</span>
         <strong>${leader ? moneyDisclosure(leader[config.field]) : '0원'}</strong>
-        <small>${leader ? `${escapeHtml(leader.candidate?.name || '')} · ${escapeHtml(candidateRankContext(leader.candidate, true))}` : '표시할 후보 없음'}</small>
+        <small>${leader ? `${escapeHtml(crimDisplayName(leader.candidate?.huboid, leader.candidate?.name) || '')} · ${escapeHtml(candidateRankContext(leader.candidate, true))}` : '표시할 후보 없음'}</small>
       </div>
     </div>
 

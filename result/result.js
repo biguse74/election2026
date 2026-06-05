@@ -595,6 +595,13 @@ function renderSearchUI() {
   inp.addEventListener('input', onChange);
   inp.addEventListener('focus', kick);
   ['ws-type', 'ws-sido', 'ws-party', 'ws-won'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('change', onChange); });
+  const reset = document.getElementById('ws-reset');
+  if (reset) reset.addEventListener('click', () => {
+    inp.value = '';
+    ['ws-type', 'ws-sido', 'ws-party', 'ws-won'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    inp.focus();
+    runWinnerSearch();
+  });
   runWinnerSearch();
 }
 
