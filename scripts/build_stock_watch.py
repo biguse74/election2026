@@ -19,38 +19,51 @@ SH = ROOT / "stocks" / "stock_holdings.json"
 WH = ROOT / "data" / "winner_huboids.json"
 
 # 정책영역별 이해충돌 카테고리. 종목명 정규화(공백제거) 후 부분일치.
-# label: 화면표시, why: 왜 이해충돌인지, kw: 매칭 키워드(OCR 변형 포함), excl: 제외 키워드
+# tier: 직책 권한과의 직접성 — 이 데이터는 지자체장(시도지사·기초단체장)이 대부분이므로
+#   direct  = 단체장 인허가·개발·발주 권한과 직접 충돌
+#   region  = 지역경제·금고 등 간접 연관
+#   national= 국방·에너지 등 국가정책 영역(지방권한과 거리 멂, '보유 사실 공개'에 의미)
+# label/icon: 화면표시, why: 직책 맥락 설명, kw: 매칭 키워드(OCR 변형 포함), excl: 제외 키워드
 CATS = [
-    {"key": "defense", "label": "방산·조선", "icon": "🛡️",
-     "why": "국방예산·방위사업 정책에 이해관계",
-     "kw": ["한화오션","한화오선","한화에어로","한화시스템","한화엔진","한화비전",
-            "현대로템","현대위아","삼성중공업","현대중공업","조선해양","HJ중공업",
-            "STX엔진","넥스원","풍산","항공우주","우주항공","대한항공"],
-     "excl": ["한화솔루션","한화생명","한화손해","한화갤러리","한화길러리"]},
-    {"key": "nuclear", "label": "원전·전력", "icon": "⚡",
-     "why": "에너지·전력 정책에 이해관계",
-     "kw": ["에너빌","한국전력","한전기술","한전KPS","한전kps","비에이치아이",
-            "센트러스","뉴스케일","컨스털레이션","대한전선","일진파워","두산에너"],
-     "excl": []},
-    {"key": "realestate", "label": "건설·부동산", "icon": "🏗️",
-     "why": "개발·인허가 권한과 이해충돌 소지",
+    {"key": "realestate", "label": "건설·부동산", "icon": "🏗️", "tier": "direct",
+     "why": "단체장의 인허가·재개발·용도변경·관급공사 권한과 직접 충돌",
      "kw": ["건설","이앤씨","산업개발","동국개발","자이에스엔디","리츠","맥쿼리인프라",
             "NICE인프라","nice인프라","대우건설","현대건설","포스코이앤씨"],
      "excl": ["건설팅","컨설팅"]},
-    {"key": "finance", "label": "은행·금융", "icon": "🏦",
-     "why": "금융 규제·예산 운용과 이해관계",
+    {"key": "finance", "label": "은행·금융", "icon": "🏦", "tier": "region",
+     "why": "지자체 금고 지정·지역 금융과 연관 소지",
      "kw": ["은행","금융지주","증권","생명보험","화재","손해보험","캐피탈","카드",
             "iM금융","im금융","카카오뱅크","카카오페이","미래에셋","NH투자","삼성생명",
             "한화생명","동양생명","우리금융","신한금융","하나금융","KB금융","기업은행"],
      "excl": ["생명과학","생명괴","생명공학","진원생명","에이치엘비생명"]},
-    {"key": "overseas", "label": "해외주식", "icon": "🌐",
-     "why": "국내 신고서식 외 해외 직접보유",
+    {"key": "defense", "label": "방산·조선", "icon": "🛡️", "tier": "national",
+     "why": "국방·방위사업(국가정책). 단체장 권한과는 거리, 보유 사실 공개 의미",
+     "kw": ["한화오션","한화오선","한화에어로","한화시스템","한화엔진","한화비전",
+            "현대로템","현대위아","삼성중공업","현대중공업","조선해양","HJ중공업",
+            "STX엔진","넥스원","풍산","항공우주","우주항공","대한항공"],
+     "excl": ["한화솔루션","한화생명","한화손해","한화갤러리","한화길러리"]},
+    {"key": "nuclear", "label": "원전·전력", "icon": "⚡", "tier": "national",
+     "why": "에너지·전력(국가정책). 원전 입지 지자체 외엔 직접 권한 약함",
+     "kw": ["에너빌","한국전력","한전기술","한전KPS","한전kps","비에이치아이",
+            "센트러스","뉴스케일","컨스털레이션","대한전선","일진파워","두산에너"],
+     "excl": []},
+    {"key": "overseas", "label": "해외주식", "icon": "🌐", "tier": "national",
+     "why": "국내 신고서식 외 해외 직접보유. 권한 무관, 보유 규모 공개 의미",
      "kw": ["엔비디아","엔비니아","테슬라","애플","에플","마이크로소프트","브로드컴",
             "팔란티어","아이온큐","넷플릭스","메타플랫폼","메타","알파벳","코카콜라",
             "샌디스크","아처에비에이션","에머슨","디웨이브","플러그파워","센트러스",
             "뉴스케일","컨스털레이션","마이크론","구글","아마존","버크셔","퀄컴",
-            "AMD","TSMC","엔켐"],  # 엔켐=국내지만 표기 혼동 방지 위해 별도검토 → 제거
+            "AMD","TSMC"],
      "excl": ["엔켐"]},
+]
+
+TIERS = [
+    {"key": "direct", "label": "단체장 권한과 직접 충돌",
+     "desc": "인허가·재개발·관급공사 등 단체장이 직접 결정하는 영역"},
+    {"key": "region", "label": "지역경제·예산 연관",
+     "desc": "지자체 금고·지역 금융 등 간접 연관"},
+    {"key": "national", "label": "국가정책 영역(직접 권한 약함)",
+     "desc": "국방·에너지·해외 — 지방권한과 거리. 보유 사실 공개에 의미"},
 ]
 
 
@@ -75,6 +88,7 @@ def main():
 
     cat_people = {c["key"]: [] for c in CATS}     # 당선자만
     party_count = {}                               # 보유 당선자 정당 분포
+    office_count = {}                              # 보유 당선자 직책 분포
     stock_holders = {}                             # 종목 → 보유 당선자 수
     n_winner_holders = 0
 
@@ -92,6 +106,7 @@ def main():
         if won and p["holdings"]:
             n_winner_holders += 1
             party_count[p["party"]] = party_count.get(p["party"], 0) + 1
+            office_count[p["office"]] = office_count.get(p["office"], 0) + 1
             for k in pcats:
                 cat_people[k].append({"huboid": p["huboid"], "name": p["name"],
                                       "party": p["party"], "office": p["office"],
@@ -102,8 +117,16 @@ def main():
                     seen.add(h["종목"])
                     stock_holders[h["종목"]] = stock_holders.get(h["종목"], 0) + 1
 
+    # 카테고리별 직책 분포(직접성 강조용): 건설·부동산을 단체장이 몇 명 보유했나 등
+    def office_split(key):
+        oc = {}
+        for x in cat_people[key]:
+            grp = "교육감" if x["office"] == "교육감" else "단체장"
+            oc[grp] = oc.get(grp, 0) + 1
+        return oc
     cats_summary = [{"key": c["key"], "label": c["label"], "icon": c["icon"],
-                     "why": c["why"], "count": len(cat_people[c["key"]])} for c in CATS]
+                     "tier": c["tier"], "why": c["why"], "count": len(cat_people[c["key"]]),
+                     "by_office": office_split(c["key"])} for c in CATS]
     # 종목부자 랭킹(당선자, 종목 수 기준)
     rich = sorted([{"huboid": p["huboid"], "name": p["name"], "party": p["party"],
                     "office": p["office"], "sido": p["sido"], "n": len(p["holdings"])}
@@ -111,9 +134,18 @@ def main():
                   key=lambda x: -x["n"])[:20]
     most_held = sorted(stock_holders.items(), key=lambda x: -x[1])[:20]
 
+    # 직책 그룹: 단체장(시도지사+기초단체장) vs 교육감
+    office_grp = {"단체장": 0, "교육감": 0}
+    for o, n in office_count.items():
+        office_grp["교육감" if o == "교육감" else "단체장"] += n
+
     data["watch"] = {
         "winner_holders": n_winner_holders,
         "parties": sorted(party_count.items(), key=lambda x: -x[1]),
+        "offices": sorted(office_count.items(), key=lambda x: -x[1]),
+        "office_groups": office_grp,
+        "scope": "시도지사·기초단체장·교육감 당선자 (지방의원·국회의원은 재산신고서 OCR 미추출)",
+        "tiers": TIERS,
         "cats": cats_summary,
         "cat_people": cat_people,
         "rich": rich,

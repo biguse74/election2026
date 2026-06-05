@@ -22,12 +22,27 @@ async function load(){
   initHero(); initConflict(); initRich(); initRanking(); initFilters(); render();
 }
 
+function officeSplit(by){
+  if (!by) return '';
+  const parts = [];
+  if (by['단체장']) parts.push(`<span class="cf-head">단체장 ${by['단체장']}</span>`);
+  if (by['교육감']) parts.push(`<span class="cf-edu">교육감 ${by['교육감']}</span>`);
+  return parts.join(' · ');
+}
+
 function initHero(){
   const w = DATA.watch || {};
+  if (w.scope) document.getElementById('scope-txt').textContent = w.scope.split(' (')[0];
+  const og = w.office_groups || {};
   document.getElementById('h-holders').textContent = (w.winner_holders||0) + '명';
-  const topCat = (w.cats||[]).slice().sort((a,b)=>b.count-a.count)[0];
-  if (topCat){
-    document.getElementById('h-cf').innerHTML = `${topCat.icon} ${esc(topCat.label)} <small style="font-size:0.55em;color:var(--muted);font-weight:700">${topCat.count}명</small>`;
+  const lbl = document.getElementById('h-holders-lbl');
+  if (og['단체장']||og['교육감']) lbl.innerHTML = `주식 보유 당선자 <span style="color:var(--ink)">(단체장 ${og['단체장']||0}·교육감 ${og['교육감']||0})</span>`;
+  // 가장 직접적인 이해충돌(direct tier)을 헤드라인으로
+  const direct = (w.cats||[]).find(c=>c.tier==='direct');
+  if (direct){
+    const head = direct.by_office?.['단체장']||0;
+    document.getElementById('h-cf').innerHTML = `${direct.icon} ${esc(direct.label)} <small style="font-size:0.55em;color:var(--muted);font-weight:700">${head}명</small>`;
+    document.getElementById('h-cf-lbl').textContent = `인허가권자(단체장)의 직접 이해충돌`;
   }
   const rich = (w.rich||[])[0];
   if (rich){
@@ -38,13 +53,24 @@ function initHero(){
 
 function initConflict(){
   const cats = (DATA.watch?.cats)||[];
+  const tiers = (DATA.watch?.tiers)||[];
   const root = document.getElementById('conflict-grid');
-  root.innerHTML = cats.map(c=>
-    `<button class="cf-card" data-cat="${esc(c.key)}">`+
+  const cardHtml = c =>
+    `<button class="cf-card ${c.tier}" data-cat="${esc(c.key)}">`+
     `<div class="cf-ic">${c.icon}</div>`+
     `<div class="cf-num">${c.count}<small>명</small></div>`+
     `<div class="cf-lbl">${esc(c.label)}</div>`+
-    `<div class="cf-why">${esc(c.why)}</div></button>`).join('');
+    `<div class="cf-by">${officeSplit(c.by_office)}</div>`+
+    `<div class="cf-why">${esc(c.why)}</div></button>`;
+  root.innerHTML = tiers.map(t=>{
+    const inTier = cats.filter(c=>c.tier===t.key);
+    if (!inTier.length) return '';
+    return `<div class="tier-grp">`+
+      `<div class="tier-head"><span class="tier-dot ${t.key}"></span>`+
+      `<span class="tier-name ${t.key}">${esc(t.label)}</span>`+
+      `<span class="tier-desc">${esc(t.desc)}</span></div>`+
+      `<div class="conflict-grid">${inTier.map(cardHtml).join('')}</div></div>`;
+  }).join('');
   root.addEventListener('click', e=>{
     const card = e.target.closest('.cf-card'); if (!card) return;
     const k = card.getAttribute('data-cat');
