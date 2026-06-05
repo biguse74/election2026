@@ -460,7 +460,7 @@ const safeJson = async (url, fallback) => {
 const loadParties = () => safeJson('data/parties.json', {});
 const loadNominations = () => safeJson('data/nominations.json', null);
 const loadArticles = () => safeJson('data/articles.json', null);
-const loadCandidateDetails = () => safeJson('data/candidate_details.json', null);
+const loadCandidateDetails = () => safeJson('data/candidate_details.json?v=20260604restore', null);
 const loadConstituencies = () => safeJson('data/constituencies.json', null);
 const loadAddressIndex = () => safeJson('data/address_index.json?v=202605161245', []);
 const loadChangelog = () => safeJson('data/changelog.json', null);

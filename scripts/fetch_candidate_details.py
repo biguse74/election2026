@@ -297,8 +297,23 @@ def main() -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     out_file = OUT_DIR / f"snapshot_{today}.json"
     text = json.dumps(payload, ensure_ascii=False, indent=2)
+    # 날짜 스냅샷은 항상 기록(실패도 추적용).
     out_file.write_text(text, encoding="utf-8")
-    LATEST_OUT.write_text(text, encoding="utf-8")
+    # ── 축소 방지 가드 ──────────────────────────────────────────────
+    # 선거 종료 후 NEC 상세 페이지가 내려가(404) 전부 실패하면 후보 상세가 0건이 된다.
+    # 후보 상세는 사후 불변 아카이브이므로, 새 수집이 0건이거나 기존의 80% 미만이면
+    # 기존 정상본(candidate_details.json)을 덮어쓰지 않고 보존한다.
+    prev_count = 0
+    if LATEST_OUT.exists():
+        try:
+            prev_count = int(json.loads(LATEST_OUT.read_text(encoding="utf-8")).get("count", 0) or 0)
+        except Exception:
+            prev_count = 0
+    if prev_count > 0 and len(details) < max(1, int(prev_count * 0.8)):
+        print(f"[보존] 새 수집 {len(details):,}건 < 기존 {prev_count:,}건의 80% "
+              f"(실패 {len(errors):,}건, 선거 후 404 추정) — candidate_details.json 덮어쓰기 생략")
+    else:
+        LATEST_OUT.write_text(text, encoding="utf-8")
 
     elapsed = (now_kst() - started_at).total_seconds()
     print("=" * 60)
