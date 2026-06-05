@@ -48,14 +48,13 @@ def fetch_roster(sg_type, sd_name):
 
 
 def winners_by_roster(roster, seats_by_party):
-    """정당별 배분 의석만큼 명부 num(순번) 상위를 당선자 huboid로."""
+    """정당별 배분 의석만큼 명부 num(순번) 상위 = 당선자. 후보 dict 리스트 반환."""
     byparty = defaultdict(list)
     for c in sorted(roster, key=lambda x: int(x.get("num") or 0)):
         byparty[c.get("jdName") or "무소속"].append(c)
     out = []
     for p, n in seats_by_party.items():
-        for c in byparty.get(p, [])[:n]:
-            out.append(str(c.get("huboid")))
+        out += byparty.get(p, [])[:n]
     return out
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -175,7 +174,8 @@ def collect_metro():
         "expected_seats": sum(s for _, s in mag.values()),
         "party": dict(sorted(party.items(), key=lambda kv: -kv[1])),
         "by_sido": by_sido,
-        "winner_huboids": sorted(set(winner_h)),
+        "winner_huboids": sorted({str(c.get("huboid")) for c in winner_h}),
+        "_winner_recs": winner_h,
         "note": "헤어식 배분(5% 봉쇄·2/3 상한). 광주+전남은 통합특별시로 합산(정수12). "
                 "당선자=정당 배분의석만큼 명부 순번(num) 상위.",
     }
@@ -262,7 +262,7 @@ def collect_basic():
                 party[p] += 1
                 by_sido[sd][p] += 1
                 seats_total += 1
-                winner_h.append(str(c.get("huboid")))
+                winner_h.append(c)
 
     return {
         "label": "기초의원(비례대표)",
@@ -275,7 +275,8 @@ def collect_basic():
         "missing_districts": n_missing,
         "party": dict(sorted(party.items(), key=lambda kv: -kv[1])),
         "by_sido": {sd: dict(sorted(d.items(), key=lambda kv: -kv[1])) for sd, d in by_sido.items()},
-        "winner_huboids": sorted(set(winner_h)),
+        "winner_huboids": sorted({str(c.get("huboid")) for c in winner_h}),
+        "_winner_recs": winner_h,
         "note": "경합=VCCP 헤어식 배분(5%봉쇄·2/3상한), 무투표=등록 정당명부 전원 당선. "
                 "당선자=정당 배분의석만큼 명부 순번(num) 상위.",
     }
@@ -291,6 +292,24 @@ def main():
     b = collect_basic()
     print(f"  → {b['total_seats']}/{b['expected_seats']}석 (경합 {b['contested']}·무투표 {b['uncontested']}·누락 {b['missing_districts']}) · " +
           " ".join(f"{p}:{n}" for p, n in list(b["party"].items())[:5]), file=sys.stderr)
+    # 비례 당선자 검색 명단(council_candidates 호환 압축키) → pr_winners.json
+    pr_cands = []
+    for off, rec in (("8", m), ("9", b)):
+        for c in rec.get("_winner_recs", []):
+            pr_cands.append({"n": c.get("name"), "j": c.get("jdName") or "무소속",
+                             "sd": c.get("sdName"), "sg": "비례대표", "t": off,
+                             "w": 1, "num": int(c.get("num") or 0), "hb": str(c.get("huboid"))})
+    PR_OUT = ROOT / "data" / "live_counting" / "pr_winners.json"
+    PR_OUT.write_text(json.dumps({
+        "generated_at": data.get("generated_at"),
+        "source": "비례대표 당선자(광역8·기초9). 정당 배분의석만큼 명부 순번(num) 상위.",
+        "keys": "n=이름 j=정당 sd=시도 sg=비례대표 t=종류(8/9) w=당선 num=명부순번",
+        "count": len(pr_cands), "cands": pr_cands,
+    }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"저장: {PR_OUT} (비례 당선자 {len(pr_cands)}명)", file=sys.stderr)
+
+    m.pop("_winner_recs", None)
+    b.pop("_winner_recs", None)
     data["offices"]["8"] = m
     data["offices"]["9"] = b
     data["source"] = data.get("source", "") + " · 비례(8·9)는 VCCP 정당득표 헤어식 배분(5%봉쇄·2/3상한)."

@@ -10,6 +10,7 @@ const PATHS = {
   covered:   '../data/newtamsa_covered.json',
   council:   '../data/live_counting/council_seats.json',
   councilCands: '../data/live_counting/council_candidates.json',
+  prWinners: '../data/live_counting/pr_winners.json',
 };
 let EDU_ORIENT = {};
 let COVERED = null;
@@ -548,18 +549,26 @@ function buildSearchIndex(cur) {
 }
 // 광역·기초의원 전 후보(당락 포함)를 검색 인덱스에 합침 — 검색창 첫 사용 시 1회 지연 로드.
 let _councilLoading = null, _councilReady = false;
-const _OFFICE_BY_T = { '5': '시도의원', '6': '기초의원' };
+const _OFFICE_BY_T = { '5': '시도의원', '6': '기초의원', '8': '광역의원(비례)', '9': '기초의원(비례)' };
 function ensureCouncilLoaded() {
   if (_councilLoading) return _councilLoading;
-  _councilLoading = loadJSON(PATHS.councilCands).then(data => {
+  _councilLoading = Promise.all([loadJSON(PATHS.councilCands), loadJSON(PATHS.prWinners)]).then(([data, prData]) => {
     const list = (data && data.cands) || [];
-    COUNCIL_IDX = list.map(c => ({
+    const districtIdx = list.map(c => ({
       name: c.n, jd: c.j, sd: c.sd, sgg: c.sg, office: _OFFICE_BY_T[c.t] || '지방의원', t: c.t,
       hb: candHuboid({ sg_type_code: c.t, sd_name: c.sd, sgg_name: c.sg }, { name: c.n }),
       r: { sg_type_code: c.t, sd_name: c.sd, sgg_name: c.sg },
       votes: c.v, share: c.s, rank: c.r, won: !!c.w,
       mode: (c.v == null && c.w) ? '무투표' : null, seats: c.m, opp: null,
     }));
+    // 비례 당선자(8·9) — 정당명부 순번(num) 당선. 모두 당선자.
+    const prIdx = ((prData && prData.cands) || []).map(c => ({
+      name: c.n, jd: c.j, sd: c.sd, sgg: '비례대표', office: _OFFICE_BY_T[c.t] || '비례대표', t: c.t,
+      hb: c.hb || null,
+      r: { sg_type_code: c.t, sd_name: c.sd, sgg_name: '비례대표' },
+      votes: null, share: null, rank: c.num, won: true, mode: '비례', seats: null, opp: null,
+    }));
+    COUNCIL_IDX = districtIdx.concat(prIdx);
     SEARCH_IDX = SINGLE_IDX.concat(COUNCIL_IDX);
     _councilReady = true;
     return true;
@@ -630,8 +639,8 @@ function runWinnerSearch() {
   box.innerHTML = `<div class="ws-count">${intComma(total)}명${total > _WS_CAP ? ` · 상위 ${_WS_CAP}명 표시(조건을 좁혀 보세요)` : ''}${!_councilReady ? ' · 의원 명단 불러오는 중…' : ''}</div>` +
     shown.map(_wsRow).join('');
 }
-const _WS_TYPES = [['3', '시도지사'], ['5', '광역의원'], ['4', '기초단체장'], ['6', '기초의원'], ['11', '교육감'], ['2', '국회의원 재보궐']];
-const _WS_PARTIES = ['더불어민주당', '국민의힘', '조국혁신당', '진보당', '정의당', '개혁신당', '무소속'];
+const _WS_TYPES = [['3', '시도지사'], ['5', '광역의원'], ['8', '광역의원 비례'], ['4', '기초단체장'], ['6', '기초의원'], ['9', '기초의원 비례'], ['11', '교육감'], ['2', '국회의원 재보궐']];
+const _WS_PARTIES = ['더불어민주당', '국민의힘', '조국혁신당', '진보당', '정의당', '개혁신당', '녹색당', '무소속'];
 function populateDetailFilters() {
   const typeSel = document.getElementById('ws-type'), sidoSel = document.getElementById('ws-sido'), partySel = document.getElementById('ws-party');
   if (!typeSel || typeSel.dataset.filled) return;
