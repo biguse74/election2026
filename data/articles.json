@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-06-05T00:20:42+09:00",
+  "updated_at": "2026-06-05T12:59:17+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 342,
+  "count": 343,
   "articles": [
+    {
+      "date": "2026-06-05",
+      "title": "광역 12대4 '압승'은 착시…민주당 전체 의석은 54.9% '신승'",
+      "url": "https://newtamsa.org/news/H7d4am",
+      "category": "특별기획",
+      "tags": [
+        "지방선거",
+        "서울",
+        "부산북구갑",
+        "오세훈",
+        "한동훈",
+        "유의동",
+        "김관영",
+        "이원택",
+        "전북",
+        "평택을"
+      ],
+      "author": "박대용, 강진구"
+    },
     {
       "date": "2026-06-03",
       "title": "민주 압승론에 경고등...서울이 경남보다 위태",
