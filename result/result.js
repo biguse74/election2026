@@ -11,6 +11,7 @@ const PATHS = {
   council:   '../data/live_counting/council_seats.json',
   councilCands: '../data/live_counting/council_candidates.json',
   prWinners: '../data/live_counting/pr_winners.json',
+  partyEff: '../data/party_efficiency.json',
 };
 let EDU_ORIENT = {};
 let COVERED = null;
@@ -507,6 +508,41 @@ function renderMinorParties(chiefs, bh, repoll, council) {
   }).join('');
 }
 
+// ── 정당별 공천 효율(출마 대비 당선율) · 무투표 포함/경합만 토글 ──
+let _peData = null, _peContested = false, _peWired = false;
+async function renderPartyEfficiency() {
+  const sec = document.getElementById('sec-party-eff');
+  if (!sec) return;
+  if (_peData === null) _peData = await loadJSON(PATHS.partyEff) || false;
+  if (!_peData || !_peData.quadrants) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  const C = _peContested;
+  const grid = document.getElementById('pe-grid');
+  grid.innerHTML = _peData.quadrants.map(q => {
+    const rows = q.parties.map(p => {
+      const run = C ? p.runC : p.run, win = C ? p.winC : p.win;
+      if (!run) return '';
+      const rate = win / run * 100, col = partyColor(p.p);
+      return `<div class="pe-row"><span class="pe-party" style="color:${col}">${esc(p.p)}</span>` +
+        `<span class="pe-bar"><i style="width:${rate.toFixed(1)}%;background:${col}"></i></span>` +
+        `<span class="pe-val">${win}/${run}<b>${rate.toFixed(0)}%</b></span></div>`;
+    }).join('');
+    const tot = C ? null : `${q.total_win}/${q.total_run}`;
+    return `<div class="pe-card"><div class="pe-head"><b>${esc(q.label)}</b><span>${esc(q.sub)}${tot ? ` · 당선 ${tot}` : ''}</span></div>${rows}</div>`;
+  }).join('');
+  // 토글 버튼 활성 표시
+  document.querySelectorAll('#pe-toggle button').forEach(b =>
+    b.classList.toggle('on', (b.getAttribute('data-c') === '1') === C));
+  if (!_peWired) {
+    _peWired = true;
+    document.getElementById('pe-toggle').addEventListener('click', e => {
+      const b = e.target.closest('button'); if (!b) return;
+      _peContested = b.getAttribute('data-c') === '1';
+      renderPartyEfficiency();
+    });
+  }
+}
+
 // ── 당선자 검색 (전 직책: 시도지사·단체장·광역/기초의원·교육감·재보궐) ──
 // SINGLE_IDX(단독선출, 60초마다 재생성) + COUNCIL_IDX(의원, 1회 지연 로드) → SEARCH_IDX
 let SEARCH_IDX = [], SINGLE_IDX = [], COUNCIL_IDX = [];
@@ -704,6 +740,7 @@ async function render() {
   renderBH(bh);
   renderCouncil(council);
   renderMinorParties(chiefs, bh, repoll, council);
+  renderPartyEfficiency();
 
   document.getElementById('cnt-chief').textContent = `${chiefs.length}곳`;
   document.getElementById('cnt-edu').textContent = `${edu.length}곳`;
