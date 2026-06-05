@@ -234,7 +234,10 @@ function render(){
           const hit = (state.stock && h.종목===state.stock) || (q && h.종목.toLowerCase().includes(q));
           const inCat = state.cat && (h.cats||[]).includes(state.cat);
           const cls = inCat ? 'sc-chip cf' : (hit ? 'sc-chip hit' : 'sc-chip');
-          return `<span class="${cls}">${esc(h.종목)} <b>${intc(h.수량주)}</b>주</span>`;
+          // 1천만주 초과는 OCR 평가액 혼입(예: 가액이 수량칸에 붙음) 의심 → 수량 대신 경고
+          const qn = Number(h.수량주)||0;
+          const qtxt = (qn>0 && qn<=10000000) ? `<b>${intc(qn)}</b>주` : `<i style="font-style:normal;color:#a15c00">수량 확인필요</i>`;
+          return `<span class="${cls}">${esc(h.종목)} ${qtxt}</span>`;
         }).join('')
       : `<span class="sc-chip" style="background:#fdf0d5;border-color:#f0d6a8;color:#7a5a1e;">원문 확인 필요(추출 실패)</span>`;
     const nStocks = p.holdings.length;

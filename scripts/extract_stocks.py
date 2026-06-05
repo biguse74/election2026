@@ -58,6 +58,10 @@ def valid_name(name):
     return True
 
 def parse_stocks(text):
+    # 평가액 혼입 제거: 재산서식 '수량 평가액(원) 주' 칸이 OCR에서 붙는 경우
+    # (예: '마이크론테크놀로지 6 361,015 주' → 수량 6주 + 평가액 361,015원).
+    # '작은수 공백 콤마형(천단위) 큰수 주' 패턴의 뒤 큰수(평가액)를 떼어낸다.
+    text = re.sub(r"(\d+)\s+\d{1,3}(?:,\d{3})+\s*주", r"\1주", text)
     comp = re.sub(r"\s+", "", text)
     accepted, raw_matches, rejected = [], 0, 0
     for m in STOCK_RE.finditer(comp):
