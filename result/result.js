@@ -460,6 +460,54 @@ function renderCouncil(council) {
   if (fm) fm.textContent = `아래 상세는 지역구 기준 · 비례대표(광역 ${o8?.total_seats || 0}·기초 ${o9?.total_seats || 0}석, 헤어식 배분)는 상단 '전체 당선자'에 합산 · 경합=개표 상위, 무투표=등록후보 · 중앙선관위 · 집계 ${when}`;
 }
 
+// ── 소수정당·무소속 (양당 외 정당의 직책별 의석) ──
+const _MINOR_OFFICES = ['광역단체장', '기초단체장', '광역의원', '기초의원', '국회재보궐'];
+function _rawPartyByOffice(chiefs, bh, repoll, council) {
+  const byParty = {};
+  const add = (party, office, n = 1) => {
+    if (!party || !n) return;
+    (byParty[party] = byParty[party] || {})[office] = (byParty[party][office] || 0) + n;
+  };
+  for (const r of chiefs) if ((r.candidates || [])[0]) add(r.candidates[0].jd_name, '광역단체장');
+  for (const r of bh) if ((r.candidates || [])[0]) add(r.candidates[0].jd_name, '기초단체장');
+  for (const r of repoll) if ((r.candidates || [])[0]) add(r.candidates[0].jd_name, '국회재보궐');
+  const mergeOffice = (a, b, label) => {
+    const m = _mergeParty(a?.party, b?.party);
+    for (const [p, n] of Object.entries(m)) add(p, label, n);
+  };
+  mergeOffice(council?.offices?.['5'], council?.offices?.['8'], '광역의원');
+  mergeOffice(council?.offices?.['6'], council?.offices?.['9'], '기초의원');
+  return byParty;
+}
+function renderMinorParties(chiefs, bh, repoll, council) {
+  const sec = document.getElementById('sec-minor');
+  if (!sec) return;
+  const byParty = _rawPartyByOffice(chiefs, bh, repoll, council);
+  const minors = Object.entries(byParty)
+    .filter(([p]) => p !== DEM && p !== CON && p)
+    .map(([p, off]) => ({ p, off, total: Object.values(off).reduce((a, b) => a + b, 0) }))
+    .filter(m => m.total > 0)
+    .sort((a, b) => b.total - a.total || (a.p === '무소속' ? 1 : 0) - (b.p === '무소속' ? 1 : 0));
+  if (!minors.length) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  const maxTotal = minors[0].total || 1;
+  document.getElementById('cnt-minor').textContent =
+    `${minors.length}개 · ${minors.reduce((s, m) => s + m.total, 0).toLocaleString()}석`;
+  document.getElementById('minor-grid').innerHTML = minors.map(m => {
+    const col = partyColor(m.p);
+    const rows = _MINOR_OFFICES.filter(o => m.off[o]).map(o => {
+      const n = m.off[o];
+      return `<div class="mp-row"><span class="mp-off">${esc(o)}</span>` +
+        `<span class="mp-bar"><i style="width:${(n / maxTotal * 100).toFixed(1)}%;background:${col}"></i></span>` +
+        `<span class="mp-n">${n}</span></div>`;
+    }).join('');
+    return `<div class="mp-card" style="border-left-color:${col}">` +
+      `<div class="mp-top"><span class="mp-name" style="color:${col}">${esc(m.p)}</span>` +
+      `<span class="mp-total">${m.total}<small>석</small></span></div>` +
+      `<div class="mp-break">${rows}</div></div>`;
+  }).join('');
+}
+
 // ── 당선자 검색 (전 직책: 시도지사·단체장·광역/기초의원·교육감·재보궐) ──
 // SINGLE_IDX(단독선출, 60초마다 재생성) + COUNCIL_IDX(의원, 1회 지연 로드) → SEARCH_IDX
 let SEARCH_IDX = [], SINGLE_IDX = [], COUNCIL_IDX = [];
@@ -648,6 +696,7 @@ async function render() {
   renderGrid('grid-repoll', repoll, {});
   renderBH(bh);
   renderCouncil(council);
+  renderMinorParties(chiefs, bh, repoll, council);
 
   document.getElementById('cnt-chief').textContent = `${chiefs.length}곳`;
   document.getElementById('cnt-edu').textContent = `${edu.length}곳`;

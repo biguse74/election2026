@@ -79,6 +79,18 @@
   /* 직책별 요약 칩 */
   /* 2열 고정 — 광역단체장·광역의원 / 기초단체장·기초의원 / 재보궐·교육감이 같은 행에 짝지어지도록 */
   .office-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+  .minor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; margin-top: 6px; }
+  .mp-card { border: 1px solid var(--line); border-left: 5px solid #888; border-radius: 10px; padding: 13px 15px; background: #fff; }
+  .mp-top { display: flex; align-items: baseline; gap: 8px; }
+  .mp-name { font-weight: 900; font-size: 1.02rem; }
+  .mp-total { margin-left: auto; font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 1.5rem; line-height: 1; }
+  .mp-total small { font-size: 0.5em; font-weight: 700; color: var(--muted); margin-left: 1px; }
+  .mp-break { margin-top: 9px; display: flex; flex-direction: column; gap: 4px; }
+  .mp-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+  .mp-row .mp-off { color: var(--muted); flex: 1; }
+  .mp-row .mp-n { font-weight: 800; }
+  .mp-bar { height: 6px; border-radius: 3px; background: #eee; overflow: hidden; flex: 0 0 64px; }
+  .mp-bar i { display: block; height: 100%; }
   .ot { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 14px; }
   .ot-name { font-size: 0.8rem; color: rgba(255,255,255,0.65); font-weight: 700; }
   .ot-fig { margin-top: 4px; font-weight: 800; font-size: 1rem; }
@@ -299,6 +311,12 @@
       <div class="office-tiles" id="office-tiles"></div>
     </section>
 
+    <section class="rs-block" id="sec-minor" style="display:none">
+      <h2 class="rs-h2">소수정당·무소속 <span class="rs-count" id="cnt-minor"></span></h2>
+      <p class="rs-desc">거대 양당(민주·국힘)에 가려진 소수정당과 무소속의 성적표. 특히 <b>비례대표</b> 덕에 조국혁신당·진보당·정의당이 의석을 얻었습니다. 광역단체장·기초단체장·광역의원·기초의원·재보궐 합산.</p>
+      <div class="minor-grid" id="minor-grid"></div>
+    </section>
+
     <section class="winner-search" id="sec-search" aria-label="당선자 검색">
       <h2 class="ws-h2">🔎 당선자 검색</h2>
       <p class="ws-sub">이름·지역 검색 또는 <b>분류 검색</b>(선거 종류·시·도·정당·당락) — 시도지사·광역의원·기초단체장·기초의원·교육감·재보궐, 당선·낙선 모두</p>
@@ -376,6 +394,6 @@
     </div>
   </main>
 
-  <script src="./result.js?v=20260606pr3"></script>
+  <script src="./result.js?v=20260606minor"></script>
 </body>
 </html>
