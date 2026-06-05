@@ -42,6 +42,8 @@
   section.block { margin:30px 0 0; }
   section.block h2 { font-family:'Noto Serif KR',serif; font-size:1.15rem; font-weight:900; margin:0 0 4px; }
   .block-sub { color:var(--muted); font-size:0.84rem; margin:0 0 14px; }
+  .baseline-note { background:#f3f6fb; border:1px solid #dde6f2; border-left:4px solid var(--dem); border-radius:8px; padding:11px 14px; font-size:0.8rem; color:#33414f; line-height:1.5; margin:0 0 16px; }
+  .baseline-note b { color:#1a2b3c; }
 
   /* 이해충돌 감시 패널 — 직접성(tier) 그룹 */
   .tier-grp { margin:0 0 16px; }
@@ -158,7 +160,12 @@
 
   <section class="block">
     <h2>이해충돌 감시 <span style="font-size:0.7em;color:var(--muted);font-weight:600;">(클릭하면 해당 영역 보유 당선자만)</span></h2>
-    <p class="block-sub">이 데이터는 <b>지자체장이 대부분</b>입니다. 단체장은 인허가·개발권이 있어, 같은 주식이라도 <b>직책 권한과의 거리에 따라 이해충돌의 무게가 다릅니다.</b> 카드의 <b>단체장/교육감</b> 숫자로 누가 보유했는지 구분됩니다.</p>
+    <p class="block-sub">같은 주식이라도 <b>직책 권한과의 거리에 따라 이해충돌의 무게가 다릅니다.</b> 단체장은 인허가·개발권, 지방의원은 도시계획 심의·예산권을 가집니다. 카드의 <b>단체장·지방의원·교육감</b> 숫자로 누가 보유했는지 구분됩니다.</p>
+    <div class="baseline-note">
+      🕒 <b>이 목록은 ‘기준선’입니다.</b> 신고 시점은 <b>후보 등록(2026-05)</b>이라, 당선 후 <b>매각·백지신탁</b>으로 이미 해소됐을 수 있습니다.
+      공직자윤리법상 직무관련 주식(본인·가족 합산 3,000만원 초과)은 취임 1개월 내 <b>매각 또는 백지신탁 의무</b>가 있습니다.
+      따라서 ‘보유=위법’이 아니라, <b>임기 중 처분 이행을 감시하는 출발점</b>으로 보시면 됩니다(2027년 3월 재산변동공개·백지신탁 심사결과와 대조 예정).
+    </div>
     <div id="conflict-grid"></div>
   </section>
 
@@ -193,6 +200,6 @@
   종목·수량은 스캔 OCR 자동추출, <b>이해충돌 카테고리는 종목명 키워드 자동 분류</b>라 오차가 있을 수 있습니다.
   보유 종목 칩으로 원종목을 확인하세요. <b>기사화 전 원문 대조 필수.</b> <b>당선자만</b> 수록(감시 목적).
 </footer>
-<script src="stocks.js?v=202606052230"></script>
+<script src="stocks.js?v=202606061200"></script>
 </body>
 </html>

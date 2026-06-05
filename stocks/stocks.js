@@ -22,12 +22,13 @@ async function load(){
   initHero(); initConflict(); initRich(); initRanking(); initFilters(); render();
 }
 
+const OFFICE_GRP_ORDER = ['단체장','지방의원','국회의원','교육감','기타'];
 function officeSplit(by){
   if (!by) return '';
-  const parts = [];
-  if (by['단체장']) parts.push(`<span class="cf-head">단체장 ${by['단체장']}</span>`);
-  if (by['교육감']) parts.push(`<span class="cf-edu">교육감 ${by['교육감']}</span>`);
-  return parts.join(' · ');
+  return OFFICE_GRP_ORDER.filter(g=>by[g]).map(g=>{
+    const cls = (g==='단체장'||g==='지방의원') ? 'cf-head' : 'cf-edu';
+    return `<span class="${cls}">${g} ${by[g]}</span>`;
+  }).join(' · ');
 }
 
 function initHero(){
@@ -36,13 +37,13 @@ function initHero(){
   const og = w.office_groups || {};
   document.getElementById('h-holders').textContent = (w.winner_holders||0) + '명';
   const lbl = document.getElementById('h-holders-lbl');
-  if (og['단체장']||og['교육감']) lbl.innerHTML = `주식 보유 당선자 <span style="color:var(--ink)">(단체장 ${og['단체장']||0}·교육감 ${og['교육감']||0})</span>`;
+  const grpTxt = OFFICE_GRP_ORDER.filter(g=>og[g]).map(g=>`${g} ${og[g]}`).join('·');
+  if (grpTxt) lbl.innerHTML = `주식 보유 당선자 <span style="color:var(--ink)">(${grpTxt})</span>`;
   // 가장 직접적인 이해충돌(direct tier)을 헤드라인으로
   const direct = (w.cats||[]).find(c=>c.tier==='direct');
   if (direct){
-    const head = direct.by_office?.['단체장']||0;
-    document.getElementById('h-cf').innerHTML = `${direct.icon} ${esc(direct.label)} <small style="font-size:0.55em;color:var(--muted);font-weight:700">${head}명</small>`;
-    document.getElementById('h-cf-lbl').textContent = `인허가권자(단체장)의 직접 이해충돌`;
+    document.getElementById('h-cf').innerHTML = `${direct.icon} ${esc(direct.label)} <small style="font-size:0.55em;color:var(--muted);font-weight:700">${direct.count}명</small>`;
+    document.getElementById('h-cf-lbl').textContent = `지방권력과 직접 충돌하는 보유`;
   }
   const rich = (w.rich||[])[0];
   if (rich){
@@ -176,6 +177,7 @@ function matches(p){
   return true;
 }
 
+const RENDER_CAP = 300;   // 1,500+명 전체를 한 번에 그리면 무거움 → 상위 N만(검색·필터로 좁힘)
 function render(){
   if (!DATA) return;
   let list = DATA.people.filter(matches);
@@ -183,9 +185,12 @@ function render(){
   const grid = document.getElementById('cand-grid');
   const empty = document.getElementById('empty');
   const catTxt = state.cat ? ` · ${CAT_LABEL[state.cat]?.icon||''} ${CAT_LABEL[state.cat]?.label||''}` : '';
-  document.getElementById('f-count').textContent = `${list.length}명${catTxt}`;
+  const capped = list.length > RENDER_CAP;
+  const capTxt = capped ? ` · 종목 많은 순 상위 ${RENDER_CAP} 표시(검색·필터로 좁혀보세요)` : '';
+  document.getElementById('f-count').textContent = `${list.length}명${catTxt}${capTxt}`;
   if (!list.length){ grid.innerHTML=''; empty.hidden=false; return; }
   empty.hidden = true;
+  if (capped) list = list.slice(0, RENDER_CAP);
   const q = state.q.toLowerCase();
   grid.innerHTML = list.map(p=>{
     const photo = p.photo

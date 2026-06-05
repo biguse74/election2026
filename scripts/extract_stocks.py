@@ -83,13 +83,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--offices", default="3,4,2", help="선거종류코드 CSV 또는 all")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--winners", action="store_true", help="당선자(data/winner_huboids.json)만 대상")
     args = ap.parse_args()
 
     main_snap = json.load(open(sorted(glob.glob(os.path.join(RID, "data/candidates/20260603/snapshot_*.json")))[-1], encoding="utf-8"))["candidates"]
     want = None if args.offices == "all" else set(args.offices.split(","))
     cands = [c for c in main_snap if str(c.get("status")) == "등록" and (want is None or str(c.get("sgTypecode")) in want)]
+    if args.winners:
+        wh = set(json.load(open(os.path.join(RID, "data/winner_huboids.json"), encoding="utf-8"))["huboids"])
+        cands = [c for c in cands if str(c.get("huboid")) in wh]
     if args.limit: cands = cands[:args.limit]
-    print(f"대상 {len(cands)}명 (offices={args.offices})", flush=True)
+    print(f"대상 {len(cands)}명 (offices={args.offices}, winners={args.winners})", flush=True)
 
     out = []
     review_only = 0

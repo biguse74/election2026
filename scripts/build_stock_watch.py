@@ -26,7 +26,7 @@ WH = ROOT / "data" / "winner_huboids.json"
 # label/icon: 화면표시, why: 직책 맥락 설명, kw: 매칭 키워드(OCR 변형 포함), excl: 제외 키워드
 CATS = [
     {"key": "realestate", "label": "건설·부동산", "icon": "🏗️", "tier": "direct",
-     "why": "단체장의 인허가·재개발·용도변경·관급공사 권한과 직접 충돌",
+     "why": "단체장 인허가·관급공사, 지방의원 도시계획 심의·조례 권한과 직접 충돌",
      "kw": ["건설","이앤씨","산업개발","동국개발","자이에스엔디","리츠","맥쿼리인프라",
             "NICE인프라","nice인프라","대우건설","현대건설","포스코이앤씨"],
      "excl": ["건설팅","컨설팅"]},
@@ -58,10 +58,10 @@ CATS = [
 ]
 
 TIERS = [
-    {"key": "direct", "label": "단체장 권한과 직접 충돌",
-     "desc": "인허가·재개발·관급공사 등 단체장이 직접 결정하는 영역"},
+    {"key": "direct", "label": "지방권력과 직접 충돌",
+     "desc": "인허가·재개발·관급공사(단체장)·도시계획 심의·조례(지방의원)"},
     {"key": "region", "label": "지역경제·예산 연관",
-     "desc": "지자체 금고·지역 금융 등 간접 연관"},
+     "desc": "지자체 금고·지역 금융, 예산 심의 등 간접 연관"},
     {"key": "national", "label": "국가정책 영역(직접 권한 약함)",
      "desc": "국방·에너지·해외 — 지방권한과 거리. 보유 사실 공개에 의미"},
 ]
@@ -138,34 +138,50 @@ def main():
                     seen.add(h["종목"])
                     stock_holders[h["종목"]] = stock_holders.get(h["종목"], 0) + 1
 
-    # 카테고리별 직책 분포(직접성 강조용): 건설·부동산을 단체장이 몇 명 보유했나 등
+    # 직책 → 그룹(권한 성격별)
+    def office_group(office):
+        if office in ("시도지사", "기초단체장"):
+            return "단체장"
+        if office in ("시도의원", "구시군의회의원", "구시군의원"):
+            return "지방의원"
+        if office == "국회의원":
+            return "국회의원"
+        if office == "교육감":
+            return "교육감"
+        return "기타"
+
+    # 카테고리별 직책 분포(직접성 강조용): 건설·부동산을 단체장/지방의원이 몇 명 보유했나
     def office_split(key):
         oc = {}
         for x in cat_people[key]:
-            grp = "교육감" if x["office"] == "교육감" else "단체장"
+            grp = office_group(x["office"])
             oc[grp] = oc.get(grp, 0) + 1
         return oc
     cats_summary = [{"key": c["key"], "label": c["label"], "icon": c["icon"],
                      "tier": c["tier"], "why": c["why"], "count": len(cat_people[c["key"]]),
                      "by_office": office_split(c["key"])} for c in CATS]
-    # 종목부자 랭킹(당선자, 종목 수 기준)
+    # 종목부자 랭킹(당선자, 종목 수 기준) — 검토필요(OCR 칸뭉침으로 종목수 폭발) 건은 제외
     rich = sorted([{"huboid": p["huboid"], "name": p["name"], "party": p["party"],
                     "office": p["office"], "sido": p["sido"], "n": len(p["holdings"])}
-                   for p in data["people"] if p["won"] and p["holdings"]],
+                   for p in data["people"] if p["won"] and p["holdings"] and not p.get("needs_review")],
                   key=lambda x: -x["n"])[:20]
     most_held = sorted(stock_holders.items(), key=lambda x: -x[1])[:20]
 
-    # 직책 그룹: 단체장(시도지사+기초단체장) vs 교육감
-    office_grp = {"단체장": 0, "교육감": 0}
+    # 직책 그룹별 집계
+    office_grp = {}
     for o, n in office_count.items():
-        office_grp["교육감" if o == "교육감" else "단체장"] += n
+        g = office_group(o)
+        office_grp[g] = office_grp.get(g, 0) + n
+    # scope: 실제 포함된 직책으로 자동 생성
+    present = [g for g in ("단체장", "지방의원", "국회의원", "교육감") if office_grp.get(g)]
+    scope = "·".join(present) + " 당선자" if present else "당선자"
 
     data["watch"] = {
         "winner_holders": n_winner_holders,
         "parties": sorted(party_count.items(), key=lambda x: -x[1]),
         "offices": sorted(office_count.items(), key=lambda x: -x[1]),
         "office_groups": office_grp,
-        "scope": "시도지사·기초단체장·교육감 당선자 (지방의원·국회의원은 재산신고서 OCR 미추출)",
+        "scope": scope,
         "tiers": TIERS,
         "cats": cats_summary,
         "cat_people": cat_people,
