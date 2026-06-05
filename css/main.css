@@ -327,6 +327,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 2rem 4rem; }
 .candidate-name:hover { color: var(--accent); text-decoration: underline; }
 .candidate-name:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
 .candidate-name > * { flex-shrink: 0; }
+/* 익명(낙선자) 이름: 비링크 — 클릭/호버 효과 없음, 일반 텍스트 */
+.cand-anon { cursor: default; color: var(--ink-sub, #555); }
+.cand-anon:hover { color: var(--ink-sub, #555); text-decoration: none; }
 .candidate-party {
   font-size: 0.78rem; color: var(--ink-sub);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;

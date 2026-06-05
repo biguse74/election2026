@@ -990,12 +990,13 @@ const STATUS_BADGE = {
   '사망':    { cls: 'deceased',  label: '사망', tip: '후보자 사망 (자동 등록무효)' },
 };
 
-function candidateRow(c, nameOverride) {
+function candidateRow(c, nameOverride, opts = {}) {
   const confirmed = isConfirmed(c);
   const articles = state.articleMap?.[c.huboid] || [];
   const hasArt = articles.length > 0;
   const aid = hasArt ? `art-${c.huboid}` : '';
   const dispName = nameOverride != null ? nameOverride : (c.name || '');  // 전과 등 익명화 컨텍스트용
+  const noLink = !!opts.noLink;  // 익명(낙선자): 비링크 — 클릭 시 모달 실명 노출 차단
   const tipTitle = `${dispName} 후보 관련 제보 — 뉴탐사`;
   const statusInfo = STATUS_BADGE[c.status];
   const statusBadge = statusInfo
@@ -1007,7 +1008,9 @@ function candidateRow(c, nameOverride) {
   return `
     <div class="candidate${confirmed ? ' confirmed' : ''}${statusInfo ? ' candidate-inactive' : ''}">
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
-      <button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${dispName} 상세 정보">${dispName}${uncontestedBadge}${statusBadge}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>
+      ${noLink
+        ? `<span class="candidate-name cand-anon" title="낙선 후보 — 익명">${dispName}${uncontestedBadge}${statusBadge}</span>`
+        : `<button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${dispName} 상세 정보">${dispName}${uncontestedBadge}${statusBadge}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>`}
       <div class="candidate-party">${c.jdName}</div>
       <span class="candidate-actions">
         ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
@@ -3212,13 +3215,17 @@ function candidateRankList(items, type, includeRegion = true) {
               ? moneyDisclosure(r.taxArrears5y)
               : `${r.criminal.toLocaleString()}건`;
         const context = candidateRankContext(c, includeRegion);
-        // 전과 랭킹(type=criminal)은 낙선자 이름 익명화
+        // 전과 랭킹(type=criminal)은 낙선자 이름 익명화 + 비링크(클릭→모달 실명 노출 차단)
         const isCrim = !['asset', 'taxCurrent', 'tax5y'].includes(type);
-        const dispName = isCrim ? crimDisplayName(c.huboid, c.name) : (c.name || '');
+        const anon = isCrim && !isWinnerHuboid(c.huboid);
+        const dispName = anon ? crimDisplayName(c.huboid, c.name) : (c.name || '');
+        const nameEl = anon
+          ? `<span class="candidate-rank-name cand-anon" title="낙선 후보 — 익명">${escapeHtml(dispName)}</span>`
+          : `<button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(dispName)} 상세 정보">${escapeHtml(dispName)}</button>`;
         return `
           <li class="candidate-rank-item">
             <span class="candidate-rank-no">${i + 1}</span>
-            <button type="button" class="candidate-rank-name candidate-detail-trigger" data-huboid="${escapeHtml(c.huboid)}" title="${escapeHtml(dispName)} 상세 정보">${escapeHtml(dispName)}</button>
+            ${nameEl}
             <span class="candidate-rank-party" style="border-color:${partyColor(c.jdName)}">${escapeHtml(c.jdName || '무소속')}</span>
             <span class="candidate-rank-context">${escapeHtml(context)}</span>
             <strong class="candidate-rank-value">${value}</strong>
@@ -4273,7 +4280,9 @@ function criminalCandidateEntry(item, category) {
     : '죄명 영역 기준 분류';
   return `
     <div class="crime-candidate-entry">
-      ${candidate ? candidateRow(candidate, crimDisplayName(candidate.huboid, candidate.name)) : criminalFallbackCandidateRow(record)}
+      ${candidate
+        ? candidateRow(candidate, crimDisplayName(candidate.huboid, candidate.name), { noLink: !isWinnerHuboid(candidate.huboid) })
+        : criminalFallbackCandidateRow(record)}
       <div class="crime-row-detail">
         ${officeLine ? `<span class="crime-row-office">${escapeHtml(officeLine)}</span>` : ''}
         <span>${termText}</span>
