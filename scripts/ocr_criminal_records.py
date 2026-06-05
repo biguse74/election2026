@@ -532,6 +532,11 @@ def write_output(
         "records": records,
         "failures": failures,
     }
+    # 법적 리스크: 전과 PDF 원문 URL과 선관위 상세 URL은 공개 산출물에 넣지 않는다(첨부 금지).
+    # PDF 원문은 로컬 아카이브에만 보관. (재실행 시 자동 재노출 방지)
+    for _r in output.get("records", []):
+        _r.pop("pdf_urls", None)
+        _r.pop("nec_detail_url", None)
     out_file.parent.mkdir(parents=True, exist_ok=True)
     out_file.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
 
