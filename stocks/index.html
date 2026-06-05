@@ -112,6 +112,13 @@
   .filters input { flex:1 1 200px; min-width:140px; }
   .filt-clear { font-size:0.8rem; color:var(--accent); cursor:pointer; font-weight:700; white-space:nowrap; }
   .filt-count { font-size:0.82rem; color:var(--muted); margin-left:auto; }
+  /* 종목 검색 요약 배너 */
+  #holder-summary { background:#fdf3f3; border:1px solid #f3c5c5; border-left:4px solid var(--accent); border-radius:9px; padding:11px 15px; margin:0 0 12px; }
+  .hs-title { font-size:0.95rem; font-weight:900; }
+  .hs-title b { color:var(--accent); }
+  .hs-parties { margin-top:7px; display:flex; flex-wrap:wrap; gap:5px 7px; }
+  .hs-pchip { font-size:0.76rem; font-weight:800; border:1px solid var(--line); border-radius:999px; padding:2px 10px; }
+  .hs-pchip i { display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:5px; vertical-align:middle; }
 
   /* 후보 카드 */
   .cand-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
@@ -188,15 +195,17 @@
   </section>
 
   <section class="block">
-    <h2>당선자별 보유 종목</h2>
+    <h2>검색 — 종목으로도, 이름으로도</h2>
+    <p class="block-sub"><b>종목명을 입력하면</b> 그 종목을 보유한 당선자가 모두 나옵니다(예: 삼성전자·한화오션). 이름·지역 검색도 됩니다.</p>
     <div class="filters">
-      <input id="f-q" type="search" placeholder="이름·종목 검색 (예: 삼성전자, 홍길동)" autocomplete="off">
+      <input id="f-q" type="search" placeholder="종목 또는 이름 (예: 한화오션 → 보유 당선자, 홍길동)" autocomplete="off">
       <select id="f-party"><option value="">전체 정당</option></select>
       <select id="f-sido"><option value="">전체 지역</option></select>
       <select id="f-office"><option value="">전체 선거</option></select>
       <span class="filt-clear" id="f-clear">초기화</span>
       <span class="filt-count" id="f-count"></span>
     </div>
+    <div id="holder-summary" hidden></div>
     <div id="cand-grid" class="cand-grid"></div>
     <div id="empty" class="empty" hidden>조건에 맞는 인물이 없습니다.</div>
   </section>
@@ -209,6 +218,6 @@
   종목·수량은 스캔 OCR 자동추출, <b>이해충돌 카테고리는 종목명 키워드 자동 분류</b>라 오차가 있을 수 있습니다.
   보유 종목 칩으로 원종목을 확인하세요. <b>기사화 전 원문 대조 필수.</b> <b>당선자만</b> 수록(감시 목적).
 </footer>
-<script src="stocks.js?v=202606061900"></script>
+<script src="stocks.js?v=202606062100"></script>
 </body>
 </html>

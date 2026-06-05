@@ -181,6 +181,27 @@ function matches(p){
   return true;
 }
 
+// 종목 검색 시 "OO 보유 당선자 N명 + 정당별 분포" 배너. (이름 검색이면 숨김)
+function renderHolderSummary(list){
+  const hs = document.getElementById('holder-summary');
+  if (!hs) return;
+  let stock = state.stock;
+  if (!stock && state.q){
+    const ql = state.q.toLowerCase();
+    const nameHit = list.some(p=>(p.name||'').toLowerCase().includes(ql));
+    if (!nameHit){
+      for (const p of list){ const h=(p.holdings||[]).find(h=>h.종목.toLowerCase().includes(ql)); if (h){ stock=h.종목; break; } }
+    }
+  }
+  if (!stock || !list.length){ hs.hidden = true; hs.innerHTML=''; return; }
+  const byParty = {};
+  list.forEach(p=>{ byParty[p.party]=(byParty[p.party]||0)+1; });
+  const chips = Object.entries(byParty).sort((a,b)=>b[1]-a[1]).map(([p,n])=>
+    `<span class="hs-pchip"><i style="background:${pc(p)}"></i>${esc(p)} ${n}</span>`).join('');
+  hs.innerHTML = `<div class="hs-title">📈 <b>${esc(stock)}</b> 보유 당선자 <b>${list.length}명</b></div><div class="hs-parties">${chips}</div>`;
+  hs.hidden = false;
+}
+
 const RENDER_CAP = 300;   // 1,500+명 전체를 한 번에 그리면 무거움 → 상위 N만(검색·필터로 좁힘)
 function render(){
   if (!DATA) return;
@@ -196,6 +217,7 @@ function render(){
   const capped = list.length > RENDER_CAP;
   const capTxt = capped ? ` · 종목 많은 순 상위 ${RENDER_CAP} 표시(검색·필터로 좁혀보세요)` : '';
   document.getElementById('f-count').textContent = `${list.length}명${catTxt}${capTxt}`;
+  renderHolderSummary(list);   // 종목 검색이면 "OO 보유 당선자 N명 · 정당별" 배너
   if (!list.length){ grid.innerHTML=''; empty.hidden=false; return; }
   empty.hidden = true;
   if (capped) list = list.slice(0, RENDER_CAP);
