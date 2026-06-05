@@ -1,16 +1,15 @@
 {
   "source": "candidates",
-  "today_date": "20260604",
-  "previous_date": "20260603",
+  "today_date": "20260605",
+  "previous_date": "20260604",
   "summary": {
-    "new": 0,
-    "gone": 1247,
+    "new": 1247,
+    "gone": 0,
     "party": 0,
     "status": 0
   },
   "samples": {
-    "new": [],
-    "gone": [
+    "new": [
       {
         "name": "신용한",
         "jdName": "더불어민주당",
@@ -152,12 +151,12 @@
         "sgTypecode": "5"
       }
     ],
+    "gone": [],
     "party": [],
     "status": []
   },
   "full": {
-    "new": [],
-    "gone": [
+    "new": [
       {
         "name": "신용한",
         "jdName": "더불어민주당",
@@ -8888,8 +8887,9 @@
         "sgTypecode": "6"
       }
     ],
+    "gone": [],
     "party": [],
     "status": []
   },
-  "generated_at": "2026-06-04T06:52:58+09:00"
+  "generated_at": "2026-06-05T05:32:44+09:00"
 }
