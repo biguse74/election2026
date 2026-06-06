@@ -57,6 +57,8 @@ if not _HELPER.exists():
 STOCK_KW = re.compile(r"주식|상장|비상장|출자지분|출자좌|수익증권|펀드|회사채|국공채|코스닥|코스피")
 NUM = re.compile(r"^\d{1,3}(?:,\d{3})+$|^\d{4,}$")  # 콤마형 또는 4자리+ (천원 가액)
 
+DPI = 200  # 렌더 해상도(2차 검수에서 다른 값으로 재추출해 1차와 대조)
+
 
 def ocr_coords_multi(png_paths):
     """여러 PNG를 한 PowerShell 호출로 OCR(프로세스 오버헤드 절감). {png: [words]}."""
@@ -115,7 +117,7 @@ def person_value(huboid, name):
         doc = fitz.open(pdf)
         for pno in range(len(doc)):
             png = os.path.join(tmpdir, f"{pi}_{pno}.png")
-            doc[pno].get_pixmap(dpi=200).save(png)
+            doc[pno].get_pixmap(dpi=DPI).save(png)
             pngs.append(png)
     coords = ocr_coords_multi(pngs)
     total, hits = 0, []
@@ -139,11 +141,16 @@ OUT = ROOT / "data" / "asset_value.json"
 
 
 def main():
+    global DPI, OUT
     ap = argparse.ArgumentParser()
     ap.add_argument("--names", default="")
     ap.add_argument("--limit", type=int, default=10)
     ap.add_argument("--all", action="store_true", help="전체 보유자 풀런(결과 저장·재개)")
+    ap.add_argument("--dpi", type=int, default=200, help="렌더 해상도(2차 검수: 다른 값으로 대조)")
+    ap.add_argument("--out", default=str(OUT), help="결과 저장 경로(2차는 별도 파일)")
     args = ap.parse_args()
+    DPI = args.dpi
+    OUT = Path(args.out)
     d = json.loads(SLIM.read_text(encoding="utf-8"))
     people = [p for p in d["people"] if p["holdings"]]
 

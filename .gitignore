@@ -43,3 +43,12 @@ data/verify_data.json
 
 # 주식 평가액 좌표OCR 임시
 data/.asset_value_cache/
+
+# 평가액 자동 검수(2차 OCR·리포트) — 로컬 전용, 비공개
+data/asset_value.json
+data/asset_value_150.json
+data/stock_audit.json
+data/stock_audit_suspects.csv
+data/.asset_value_run.log
+data/.asset_2nd_run.log
+data/.stock_ocr_run.log
