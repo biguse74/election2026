@@ -88,6 +88,21 @@ def fix_name(name):
     return n
 
 
+def load_auto_corrections():
+    """auto_correct_names.py가 만든 안전 자동교정표(종목→정정종목, 전역 적용)."""
+    import csv as _csv
+    path = ROOT / "data" / "auto_name_corrections.csv"
+    m = {}
+    if not path.exists():
+        return m
+    for row in _csv.DictReader(path.open(encoding="utf-8-sig")):
+        src = (row.get("종목") or "").strip()
+        dst = (row.get("정정종목") or "").strip()
+        if src and dst and not src.startswith("#"):
+            m[src] = dst
+    return m
+
+
 def load_corrections():
     """기자 수동 교정표 data/stock_corrections.csv 로드.
     컬럼: huboid, 종목(현재 표시명), 정정종목, 정정수량, 삭제(Y), 메모.
@@ -175,6 +190,16 @@ def main():
         for h in p["holdings"]:
             h["종목"] = typo.get(h["종목"], h["종목"])
     print(f"퍼지 오타 교정: {len(typo)}종 → 정상 통일", file=sys.stderr)
+
+    # ②-b 안전 자동교정(법인접두사·끝잡음 제거, 실재명 5명+ 정확일치만) — 전역 적용
+    auto = load_auto_corrections()
+    if auto:
+        nauto = 0
+        for p in data["people"]:
+            for h in p["holdings"]:
+                if h["종목"] in auto:
+                    h["종목"] = auto[h["종목"]]; nauto += 1
+        print(f"안전 자동교정: {len(auto)}종 규칙 · {nauto}건 적용(auto_name_corrections.csv)", file=sys.stderr)
 
     # ③ 기자 수동 교정(data/stock_corrections.csv) — 원본 대조 후 확정값. 최우선 적용.
     corr = load_corrections()
