@@ -221,13 +221,18 @@ def main():
             p["holdings"] = new
         print(f"기자 수동 교정: {nfix}건 적용(stock_corrections.csv)", file=sys.stderr)
 
-    # 주식 평가액(천원) 병합 — 좌표 OCR 자동 추출값(미검증). 값 없으면 None.
-    asset = {}
-    if AV.exists():
-        av = json.loads(AV.read_text(encoding="utf-8"))
-        asset = {str(hb): (v.get("value_thousand") if isinstance(v, dict) else None)
-                 for hb, v in av.items()}
-        print(f"평가액 병합: {sum(1 for x in asset.values() if x)}명 추출값 로드", file=sys.stderr)
+    # 주식 평가액(천원) 병합 — 3해상도 합의값(consensus) 우선, 없으면 단일 1차.
+    CONS = ROOT / "data" / "asset_value_consensus.json"
+    asset, asset_conf = {}, {}
+    src = CONS if CONS.exists() else AV
+    if src.exists():
+        av = json.loads(src.read_text(encoding="utf-8"))
+        for hb, v in av.items():
+            if isinstance(v, dict):
+                asset[str(hb)] = v.get("value_thousand")
+                asset_conf[str(hb)] = v.get("confidence")     # high/mid/low (consensus만)
+        tag = "합의값" if src is CONS else "단일 1차"
+        print(f"평가액 병합({tag}): {sum(1 for x in asset.values() if x)}명 로드", file=sys.stderr)
 
     cat_people = {c["key"]: [] for c in CATS}     # 당선자만
     party_count = {}                               # 보유 당선자 정당 분포
@@ -239,6 +244,7 @@ def main():
         p.pop("nec_url", None)   # 선거 후 404·미사용 선관위 링크 제거(방침)
         p["won"] = True
         p["asset_thousand"] = asset.get(str(p["huboid"]))   # 주식 평가액(천원) · 미추출=None
+        p["asset_conf"] = asset_conf.get(str(p["huboid"]))   # 합의 신뢰도 high/mid/low
         # 보유종목별 카테고리 태깅 — 10주 미만 명목 보유는 이해충돌에서 제외
         pcats = set()
         for h in p["holdings"]:
@@ -294,7 +300,8 @@ def main():
     asset_rank = sorted(
         [{"huboid": p["huboid"], "name": p["name"], "party": p["party"],
           "office": p["office"], "sido": p["sido"], "sgg": p.get("sgg"),
-          "value_thousand": p["asset_thousand"], "n": len(p["holdings"])}
+          "value_thousand": p["asset_thousand"], "conf": p.get("asset_conf"),
+          "n": len(p["holdings"])}
          for p in data["people"] if p["won"] and p["holdings"] and p.get("asset_thousand")],
         key=lambda x: -(x["value_thousand"] or 0))
     n_asset = len(asset_rank)
