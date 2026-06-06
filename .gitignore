@@ -38,3 +38,5 @@ exports/뉴탐사_시뮬레이션_정확도_데이터패키지.md
 # 기자 내부 검증 시트·임시 OCR(원본 대조용, 비공개)
 data/stock_verify.csv
 data/.tmp_ocr/
+verify.html
+data/verify_data.json
