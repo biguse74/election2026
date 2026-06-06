@@ -40,3 +40,6 @@ data/stock_verify.csv
 data/.tmp_ocr/
 verify.html
 data/verify_data.json
+
+# 주식 평가액 좌표OCR 임시
+data/.asset_value_cache/
