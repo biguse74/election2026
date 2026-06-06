@@ -21,7 +21,7 @@ def main():
     pdf_by_hb = {}
     for folder in glob.glob(str(ROOT / "data/disclosure_archive/*/재산")):
         hb = os.path.basename(os.path.dirname(folder)).split("_")[0]
-        pdfs = sorted(glob.glob(os.path.join(folder, "*.PDF")) + glob.glob(os.path.join(folder, "*.pdf")))
+        pdfs = sorted(set(glob.glob(os.path.join(folder, "*.PDF")) + glob.glob(os.path.join(folder, "*.pdf"))))
         pdf_by_hb[hb] = [os.path.relpath(p, ROOT).replace("\\", "/") for p in pdfs]
 
     people = []
