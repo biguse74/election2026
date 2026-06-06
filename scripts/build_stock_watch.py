@@ -87,6 +87,28 @@ def fix_name(name):
     return n
 
 
+def load_corrections():
+    """기자 수동 교정표 data/stock_corrections.csv 로드.
+    컬럼: huboid, 종목(현재 표시명), 정정종목, 정정수량, 삭제(Y), 메모.
+    (huboid, 현재 종목명) 키로 매칭해 종목명/수량 교체 또는 행 삭제."""
+    import csv as _csv
+    path = ROOT / "data" / "stock_corrections.csv"
+    corr = {}
+    if not path.exists():
+        return corr
+    for row in _csv.DictReader(path.open(encoding="utf-8-sig")):
+        hb = (row.get("huboid") or "").strip()
+        stk = (row.get("종목") or "").strip()
+        if not hb or not stk or hb.startswith("#"):
+            continue
+        corr[(hb, stk)] = {
+            "종목": (row.get("정정종목") or "").strip(),
+            "수량": (row.get("정정수량") or "").strip(),
+            "삭제": (row.get("삭제") or "").strip().upper() == "Y",
+        }
+    return corr
+
+
 # 실재 종목 보호(자동 퍼지 교정 금지) — 고빈도 종목과 1글자 차이지만 실제 상장사인 것.
 WHITELIST_REAL = {
     "삼지전자", "삼화전자", "삼영전자",   # 삼성전자(407)와 1자 차이지만 실재 코스닥
@@ -152,6 +174,26 @@ def main():
         for h in p["holdings"]:
             h["종목"] = typo.get(h["종목"], h["종목"])
     print(f"퍼지 오타 교정: {len(typo)}종 → 정상 통일", file=sys.stderr)
+
+    # ③ 기자 수동 교정(data/stock_corrections.csv) — 원본 대조 후 확정값. 최우선 적용.
+    corr = load_corrections()
+    if corr:
+        nfix = 0
+        for p in data["people"]:
+            new = []
+            for h in p["holdings"]:
+                c = corr.get((str(p["huboid"]), h["종목"]))
+                if c:
+                    nfix += 1
+                    if c["삭제"]:
+                        continue
+                    if c["종목"]:
+                        h["종목"] = c["종목"]
+                    if c["수량"].isdigit():
+                        h["수량주"] = int(c["수량"])
+                new.append(h)
+            p["holdings"] = new
+        print(f"기자 수동 교정: {nfix}건 적용(stock_corrections.csv)", file=sys.stderr)
 
     cat_people = {c["key"]: [] for c in CATS}     # 당선자만
     party_count = {}                               # 보유 당선자 정당 분포
