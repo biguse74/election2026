@@ -611,7 +611,7 @@ function ensureCouncilLoaded() {
 }
 function _wsColor(e) { return e.t === '11' ? _eduColor(e.jd) : partyColor(e.jd); }
 // 검색 결과 한 줄(자유검색·분류검색 공용)
-function _wsRow(e) {
+function _wsRow(e, i) {
   const color = _wsColor(e);
   const region = [e.sd, (e.sgg && e.sgg !== e.sd) ? e.sgg : ''].filter(Boolean).join(' ');
   const nm = e.hb
@@ -638,8 +638,37 @@ function _wsRow(e) {
   return `<div class="ws-row">${photo}<div class="ws-main">
     <div class="ws-l1">${badge}<span class="ws-dot" style="background:${color}"></span>${nm}<span class="ws-office">${esc(e.office)}</span>${party}</div>
     <div class="ws-l2">${l2}</div>
-  </div></div>`;
+  </div><button class="ws-big" data-bv="${i}" title="크게 보기 (방송용)" aria-label="크게 보기">📺</button></div>`;
 }
+
+// 방송용 크게 보기 — 큰 사진 + 큰 득표율·득표수
+let _wsShown = [];
+function openBigView(e) {
+  if (!e) return;
+  const color = _wsColor(e);
+  const region = [e.sd, (e.sgg && e.sgg !== e.sd) ? e.sgg : ''].filter(Boolean).join(' ');
+  const photo = candPhotoImg(e.r, { name: e.name }, 'bv-photo');
+  const badge = e.won
+    ? `<span class="bv-badge" style="background:${color}">당선</span>`
+    : `<span class="bv-badge" style="background:#888">낙선${e.rank ? ` ${e.rank}위` : ''}</span>`;
+  let share = '', votes = '';
+  if (e.mode === '무투표') { share = '무투표'; votes = '경쟁 없이 당선'; }
+  else if (e.votes != null) { share = `${fmt1(e.share)}<small>%</small>`; votes = `${intComma(e.votes)}표`; }
+  let opp = '';
+  const op = e.opp;
+  if (op && op.name) {
+    const oc = e.t === '11' ? _eduColor(op.jd) : partyColor(op.jd);
+    const lbl = e.won ? '2위' : '당선';
+    opp = `<div class="bv-opp">${lbl} <b>${esc(op.name)}</b>${op.jd ? ` <span style="color:${oc};font-weight:700">${esc(op.jd)}</span>` : ''}${op.share != null ? ` · ${fmt1(op.share)}%` : ''}${op.votes != null ? ` (${intComma(op.votes)}표)` : ''}</div>`;
+  }
+  document.getElementById('bv-card').innerHTML =
+    `<button class="bv-close" aria-label="닫기">✕</button>${photo}<div class="bv-info">${badge}` +
+    `<div class="bv-name">${esc(e.name)}<span class="bv-party" style="color:${color}">${esc(e.jd || '')}</span></div>` +
+    `<div class="bv-office">${esc(e.office)} · ${esc(region)}</div>` +
+    `<div class="bv-share" style="color:${color}">${share}</div><div class="bv-votes">${votes}</div>${opp}</div>`;
+  document.getElementById('bigview').hidden = false;
+}
+function closeBigView() { const b = document.getElementById('bigview'); if (b) b.hidden = true; }
 function _wsFilters() {
   const v = id => { const el = document.getElementById(id); return el ? el.value : ''; };
   return { q: ((document.getElementById('ws-input') || {}).value || '').trim(), t: v('ws-type'), sd: v('ws-sido'), party: v('ws-party'), won: v('ws-won') };
@@ -666,12 +695,13 @@ function runWinnerSearch() {
   hits.sort((a, b) => (_WS_ORANK[a.office] - _WS_ORANK[b.office]) || (sidoIdx(a.sd) - sidoIdx(b.sd))
     || (a.sgg || '').localeCompare(b.sgg || '', 'ko') || ((a.won ? 0 : 1) - (b.won ? 0 : 1)) || ((a.rank || 99) - (b.rank || 99)));
   const total = hits.length, shown = hits.slice(0, _WS_CAP);
+  _wsShown = shown;
   if (!total) {
     if (!_councilReady) { box.innerHTML = `<div class="ws-hint">의원 후보 명단 불러오는 중…</div>`; ensureCouncilLoaded().then(runWinnerSearch); return; }
     box.innerHTML = `<div class="ws-hint">조건에 맞는 후보가 없습니다. 검색어나 분류를 바꿔 보세요.</div>`; return;
   }
   box.innerHTML = `<div class="ws-count">${intComma(total)}명${total > _WS_CAP ? ` · 상위 ${_WS_CAP}명 표시(조건을 좁혀 보세요)` : ''}${!_councilReady ? ' · 의원 명단 불러오는 중…' : ''}</div>` +
-    shown.map(_wsRow).join('');
+    shown.map((e, i) => _wsRow(e, i)).join('');
 }
 const _WS_TYPES = [['3', '시도지사'], ['5', '광역의원'], ['8', '광역의원 비례'], ['4', '기초단체장'], ['6', '기초의원'], ['9', '기초의원 비례'], ['11', '교육감'], ['2', '국회의원 재보궐']];
 const _WS_PARTIES = ['더불어민주당', '국민의힘', '조국혁신당', '진보당', '정의당', '개혁신당', '녹색당', '무소속'];
@@ -702,6 +732,17 @@ function renderSearchUI() {
     inp.focus();
     runWinnerSearch();
   });
+  // 크게 보기(방송용) — 결과 행의 📺 클릭 → 큰 모달, 배경/✕/ESC로 닫기
+  const box = document.getElementById('ws-results');
+  if (box) box.addEventListener('click', ev => {
+    const b = ev.target.closest('.ws-big');
+    if (b) openBigView(_wsShown[+b.getAttribute('data-bv')]);
+  });
+  const bv = document.getElementById('bigview');
+  if (bv) bv.addEventListener('click', ev => {
+    if (ev.target.id === 'bigview' || ev.target.closest('.bv-close')) closeBigView();
+  });
+  document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closeBigView(); });
   runWinnerSearch();
 }
 

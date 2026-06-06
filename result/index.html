@@ -103,6 +103,26 @@
   .pe-row { display: grid; grid-template-columns: 84px 1fr 78px; align-items: center; gap: 8px; padding: 3px 0; }
   .pe-party { font-size: 0.82rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .pe-bar { height: 9px; background: #f0f0f0; border-radius: 5px; overflow: hidden; }
+  /* 크게 보기(방송용) */
+  .ws-big { flex-shrink: 0; font-size: 1.05rem; line-height: 1; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: #fff; cursor: pointer; align-self: center; }
+  .ws-big:hover { border-color: var(--accent); background: #fdf3f3; }
+  .bv-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.84); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 24px; }
+  .bv-overlay[hidden] { display: none; }
+  .bv-card { background: #fff; border-radius: 20px; max-width: 940px; width: 100%; padding: 40px 44px; display: flex; gap: 40px; align-items: center; position: relative; box-shadow: 0 24px 70px rgba(0,0,0,.45); }
+  .bv-close { position: absolute; top: 14px; right: 20px; font-size: 1.5rem; border: none; background: none; cursor: pointer; color: #999; }
+  img.bv-photo { width: 300px; height: 375px; flex-shrink: 0; border-radius: 14px; object-fit: cover; background: #eee; border: 1px solid var(--line); }
+  span.bv-photo { width: 300px; height: 375px; flex-shrink: 0; border-radius: 14px; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 7rem; font-weight: 900; color: #bbb; }
+  .bv-info { flex: 1; min-width: 0; }
+  .bv-badge { display: inline-block; font-size: 1.05rem; font-weight: 900; color: #fff; border-radius: 7px; padding: 4px 14px; margin-bottom: 12px; }
+  .bv-name { font-family: 'Noto Serif KR', serif; font-size: 3rem; font-weight: 900; line-height: 1.08; }
+  .bv-party { font-size: 1.4rem; font-weight: 800; margin-left: 12px; white-space: nowrap; display: inline-block; }
+  .bv-office { font-size: 1.35rem; color: var(--muted); margin: 10px 0 26px; font-weight: 700; }
+  .bv-share { font-family: 'Noto Serif KR', serif; font-size: 6rem; font-weight: 900; line-height: 1; letter-spacing: -0.02em; }
+  .bv-share small { font-size: 0.32em; font-weight: 800; color: var(--muted); margin-left: 6px; }
+  .bv-votes { font-size: 1.9rem; font-weight: 800; margin-top: 6px; }
+  .bv-opp { font-size: 1.2rem; color: var(--muted); margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .bv-opp b { color: var(--ink); }
+  @media (max-width: 700px) { .bv-card { flex-direction: column; padding: 26px; gap: 22px; text-align: center; } img.bv-photo, span.bv-photo { width: 210px; height: 263px; } .bv-name { font-size: 2.1rem; } .bv-share { font-size: 4.2rem; } }
   .pe-bar i { display: block; height: 100%; border-radius: 5px; }
   .pe-val { font-size: 0.76rem; color: var(--muted); text-align: right; white-space: nowrap; }
   .pe-val b { color: var(--ink); font-weight: 900; margin-left: 4px; }
@@ -426,6 +446,8 @@
     자료: 중앙선거관리위원회 개표결과·당선인·후보자 공개정보 · 비례대표 의석은 정당 득표 헤어식 배분(추정) · 선관위 공개 자료를 뉴탐사가 시도·정당·선거구 기준으로 재분류했습니다.
   </footer>
 
-  <script src="./result.js?v=20260606peff"></script>
+  <div id="bigview" class="bv-overlay" hidden><div class="bv-card" id="bv-card"></div></div>
+
+  <script src="./result.js?v=20260606bigview"></script>
 </body>
 </html>
