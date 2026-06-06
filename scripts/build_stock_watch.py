@@ -18,6 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SH = ROOT / "stocks" / "stock_holdings.json"
 WH = ROOT / "data" / "winner_huboids.json"
+AV = ROOT / "data" / "asset_value.json"   # 좌표 OCR로 추출한 인물별 주식 평가액(천원)
 
 # 정책영역별 이해충돌 카테고리. 종목명 정규화(공백제거) 후 부분일치.
 # tier: 직책 권한과의 직접성 — 이 데이터는 지자체장(시도지사·기초단체장)이 대부분이므로
@@ -195,6 +196,14 @@ def main():
             p["holdings"] = new
         print(f"기자 수동 교정: {nfix}건 적용(stock_corrections.csv)", file=sys.stderr)
 
+    # 주식 평가액(천원) 병합 — 좌표 OCR 자동 추출값(미검증). 값 없으면 None.
+    asset = {}
+    if AV.exists():
+        av = json.loads(AV.read_text(encoding="utf-8"))
+        asset = {str(hb): (v.get("value_thousand") if isinstance(v, dict) else None)
+                 for hb, v in av.items()}
+        print(f"평가액 병합: {sum(1 for x in asset.values() if x)}명 추출값 로드", file=sys.stderr)
+
     cat_people = {c["key"]: [] for c in CATS}     # 당선자만
     party_count = {}                               # 보유 당선자 정당 분포
     office_count = {}                              # 보유 당선자 직책 분포
@@ -204,6 +213,7 @@ def main():
     for p in data["people"]:
         p.pop("nec_url", None)   # 선거 후 404·미사용 선관위 링크 제거(방침)
         p["won"] = True
+        p["asset_thousand"] = asset.get(str(p["huboid"]))   # 주식 평가액(천원) · 미추출=None
         # 보유종목별 카테고리 태깅 — 10주 미만 명목 보유는 이해충돌에서 제외
         pcats = set()
         for h in p["holdings"]:
@@ -255,6 +265,16 @@ def main():
                   key=lambda x: -x["n"])[:20]
     most_held = sorted(stock_holders.items(), key=lambda x: -x[1])[:20]
 
+    # 주식 평가액(富) 순위 — 자동 추출값 있는 당선 보유자 전원, 내림차순.
+    asset_rank = sorted(
+        [{"huboid": p["huboid"], "name": p["name"], "party": p["party"],
+          "office": p["office"], "sido": p["sido"], "sgg": p.get("sgg"),
+          "value_thousand": p["asset_thousand"], "n": len(p["holdings"])}
+         for p in data["people"] if p["won"] and p["holdings"] and p.get("asset_thousand")],
+        key=lambda x: -(x["value_thousand"] or 0))
+    n_asset = len(asset_rank)
+    n_no_asset = sum(1 for p in data["people"] if p["won"] and p["holdings"] and not p.get("asset_thousand"))
+
     # 직책 그룹별 집계
     office_grp = {}
     for o, n in office_count.items():
@@ -275,6 +295,11 @@ def main():
         "cat_people": cat_people,
         "rich": rich,
         "most_held": [{"종목": k, "n": v} for k, v in most_held],
+        "asset_rank": asset_rank,
+        "asset_meta": {"with_value": n_asset, "no_value": n_no_asset},
+        "asset_note": "주식 평가액은 재산신고서 '가액(천원)' 칸을 좌표 OCR로 자동 추출한 값입니다. "
+                      "수기 검증을 거치지 않아 일부 OCR 오류가 있을 수 있으며, 신고 시점(후보등록 2026-05) "
+                      "기준입니다. 정확한 금액은 관보·정부공직자윤리위 재산공개를 확인하세요.",
         "note": "당선자 한정 집계. 카테고리는 종목명 자동(키워드) 분류로 오분류 가능. "
                 "보유 종목 칩으로 원종목 확인 가능. 공개 재산신고 OCR 기반.",
     }
@@ -283,7 +308,9 @@ def main():
     for c in cats_summary:
         print(f"  {c['icon']} {c['label']}: {c['count']}명")
     print("정당:", data["watch"]["parties"])
-    print("부자 TOP5:", [(r["name"], r["n"]) for r in rich[:5]])
+    print("종목최다 TOP5:", [(r["name"], r["n"]) for r in rich[:5]])
+    print(f"평가액 보유 {n_asset}명 · 미추출 {n_no_asset}명")
+    print("평가액 TOP5:", [(r["name"], f"{(r['value_thousand'] or 0)/100000:.1f}억") for r in asset_rank[:5]])
 
 
 if __name__ == "__main__":

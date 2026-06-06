@@ -19,7 +19,7 @@ async function load(){
     DATA = await r.json();
   } catch(e){ document.getElementById('cand-grid').innerHTML = '<div class="empty">데이터를 불러오지 못했습니다.</div>'; return; }
   (DATA.watch?.cats||[]).forEach(c=>{ CAT_LABEL[c.key]={label:c.label,icon:c.icon,why:c.why}; });
-  initHero(); initConflict(); initRich(); initRanking(); initFilters(); render();
+  initHero(); initConflict(); initRich(); initAsset(); initRanking(); initFilters(); render();
 }
 
 const OFFICE_GRP_ORDER = ['단체장','지방의원','국회의원','교육감','기타'];
@@ -95,6 +95,38 @@ function richRows(id, data, valFn){
     `<span class="rich-i">${i+1}</span>`+
     `<span class="rich-name">${esc(r.name)}<span class="rich-meta">${esc(r.party)} · ${esc(r.office)} ${esc(r.sido||'')}</span></span>`+
     `<span class="rich-cnt">${valFn(r)}</span></div>`).join('');
+}
+// 주식 평가액(천원) → 사람이 읽는 금액
+function fmtEok(v){
+  if (!v) return '—';
+  const eok = v/100000;
+  if (eok >= 1) return `${eok.toFixed(1)}<small>억</small>`;
+  return `${Math.round(v/10).toLocaleString()}<small>만원</small>`;
+}
+let _assetExpanded = false;
+function initAsset(){
+  const all = DATA.watch?.asset_rank || [];
+  const warn = document.getElementById('asset-warn');
+  const meta = DATA.watch?.asset_meta || {};
+  if (warn) warn.innerHTML = `⚠ ${esc(DATA.watch?.asset_note||'')} <b>(추출 ${meta.with_value||all.length}명 · 미추출 ${meta.no_value||0}명 — 스캔 품질로 일부 미산출)</b>`;
+  const more = document.getElementById('asset-more');
+  const renderN = ()=>{
+    const list = _assetExpanded ? all : all.slice(0,30);
+    richRows('asset-list', list, r=>`${fmtEok(r.value_thousand)} <span class="won">${r.n}종목</span>`);
+    if (more) more.hidden = (all.length<=30 || _assetExpanded);
+  };
+  renderN();
+  if (more) more.addEventListener('click', ()=>{ _assetExpanded=true; renderN(); });
+  const root = document.getElementById('asset-list');
+  if (root) root.addEventListener('click', e=>{
+    const row = e.target.closest('.rich-row'); if (!row) return;
+    const hb = row.getAttribute('data-huboid');
+    state.person = (state.person===hb) ? '' : hb;
+    state.q=''; document.getElementById('f-q').value='';
+    state.cat=''; state.stock=''; syncConflictActive(); syncRankActive();
+    document.getElementById('cand-grid').scrollIntoView({behavior:'smooth', block:'start'});
+    render();
+  });
 }
 function initRich(){
   richRows('rich-list', DATA.watch?.rich, r=>`${r.n}<small>종목</small>`);
@@ -242,9 +274,11 @@ function render(){
       : `<span class="sc-chip" style="background:#fdf0d5;border-color:#f0d6a8;color:#7a5a1e;">원문 확인 필요(추출 실패)</span>`;
     const nStocks = p.holdings.length;
     const sizeTxt = nStocks ? `<span class="sc-size">${nStocks}종목</span>` : '';
+    const assetTxt = p.asset_thousand
+      ? `<span class="sc-asset" title="신고서 가액(천원) 좌표 OCR 자동추출 · 미검증">평가액 ${fmtEok(p.asset_thousand)}</span>` : '';
     return `<div class="sc-card">${photo}<div class="sc-body">`+
       `<div class="sc-top"><span class="sc-name">${esc(p.name)}</span>`+
-        `<span class="sc-party" style="color:${pc(p.party)}">${esc(p.party)}</span>${sizeTxt}</div>`+
+        `<span class="sc-party" style="color:${pc(p.party)}">${esc(p.party)}</span>${sizeTxt}${assetTxt}</div>`+
       `<div class="sc-meta">${esc(p.office)} · ${esc(region)}</div>`+
       `<div class="sc-chips">${chips}</div>`+
       `</div></div>`;
