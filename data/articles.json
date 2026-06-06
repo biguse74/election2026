@@ -1,9 +1,44 @@
 {
-  "updated_at": "2026-06-06T12:41:23+09:00",
+  "updated_at": "2026-06-06T17:36:00+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 344,
+  "count": 346,
   "articles": [
+    {
+      "date": "2026-06-06",
+      "title": "서울 패배 정원오 캠프, 너무 안일했다",
+      "url": "https://newtamsa.org/news/0botnE",
+      "category": "정치뉴탐사",
+      "tags": [
+        "지방선거",
+        "서울시",
+        "오세훈",
+        "정원오",
+        "김민주",
+        "서재헌",
+        "합당",
+        "조국혁신당"
+      ],
+      "author": "허재현"
+    },
+    {
+      "date": "2026-06-06",
+      "title": "후보 검증했더니 ‘가짜뉴스’ 낙인… 뉴탐사 법적 대응",
+      "url": "https://newtamsa.org/news/L5xjOU",
+      "category": "팩트체크",
+      "tags": [
+        "무안군",
+        "김산",
+        "신안군",
+        "박우량",
+        "평화나무",
+        "이에스더",
+        "김용민",
+        "열린공감",
+        "정천수"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-06-05",
       "title": "신청만 하고 출석은 없었다… 장세일 측 언론중재 슬그머니 취하",
