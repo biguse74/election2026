@@ -176,13 +176,14 @@ function resultCard(race, opts = {}) {
 
 // ── 당선 집계 ──
 function tallyByLeader(races) {
-  let dem = 0, con = 0, etc = 0;
+  let dem = 0, con = 0, etc = 0, cho = 0, ind = 0;
   for (const r of races) {
     if (!(r.candidates || []).length) continue;
     const p = r.candidates[0].jd_name;
-    if (p === DEM) dem++; else if (p === CON) con++; else etc++;
+    if (p === DEM) dem++; else if (p === CON) con++;
+    else { etc++; if (p === '조국혁신당') cho++; else if (p === '무소속') ind++; }
   }
-  return { dem, con, etc, total: dem + con + etc };
+  return { dem, con, etc, cho, ind, total: dem + con + etc };
 }
 
 function renderHero(cur, chiefs, edu, repoll, bh, council) {
@@ -398,8 +399,14 @@ function renderBH(bh) {
         ${nameLink(r, c1, 'wc-name')}${fix}
         <span class="wc-share">${fmt1(c1.share_pct)}%</span></div>`;
     }).join('');
+    const choClr = partyColor('조국혁신당'), indClr = '#888';
+    const rest = t.etc - t.cho - t.ind;
+    const tallyTxt = `민주 ${t.dem} · 국힘 ${t.con}`
+      + (t.cho ? ` · <b style="color:${choClr}">조국 ${t.cho}</b>` : '')
+      + (t.ind ? ` · <b style="color:${indClr}">무소속 ${t.ind}</b>` : '')
+      + (rest ? ` · 그외 ${rest}` : '');
     return `<div class="bh-sido"><div class="bh-sido-h">${esc(sd)}
-      <span class="bh-sido-tally">민주 ${t.dem} · 국힘 ${t.con}${t.etc ? ` · 그외 ${t.etc}` : ''}</span></div>
+      <span class="bh-sido-tally">${tallyTxt}</span></div>
       <div class="chip-grid">${chips}</div></div>`;
   }).join('');
 }
