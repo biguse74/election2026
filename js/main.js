@@ -1327,7 +1327,7 @@ function candidateCard(label, list, opts = {}) {
         <div class="cc-name">${label}</div>
         <div class="cc-count">${countHtml}</div>
       </div>
-      ${list.length === 0 ? '<div class="cc-empty">등록된 후보가 없습니다.</div>' : list.map(candidateRow).join('')}
+      ${list.length === 0 ? '<div class="cc-empty">등록된 후보가 없습니다.</div>' : list.map(c => candidateRow(c)).join('')}
     </div>`;
 }
 
@@ -1827,7 +1827,7 @@ function renderDetailSection(section, sidoName) {
               <span class="ed-name" title="${escapeHtml(k)}">${escapeHtml(k)}</span>
               <span class="ed-count">${districtCompetitionLabel(groups[k], seatStats)}</span>
             </summary>
-            <div class="ed-body">${groups[k].map(candidateRow).join('')}</div>
+            <div class="ed-body">${groups[k].map(c => candidateRow(c)).join('')}</div>
           </details>`).join('')}
       </div>`;
   }
