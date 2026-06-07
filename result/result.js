@@ -575,7 +575,7 @@ function buildSearchIndex(cur) {
       if (!o || !o.name || o.name === c.name) return null;
       let ojd = o.jd_name || '';
       if (t === '11') ojd = EDU_ORIENT[o.name] || '';
-      return { name: o.name, jd: ojd, share: o.share_pct };
+      return { name: o.name, jd: ojd, share: o.share_pct, votes: o.votes };
     };
     cs.forEach((c, i) => {
       if (!c.name) return;
@@ -661,12 +661,18 @@ function _wsRow(e, i) {
   if (e.mode === '무투표') vt = `<b class="ws-vt">무투표 당선</b>`;
   else if (e.votes != null) vt = `<b class="ws-vt">${intComma(e.votes)}표</b> (${fmt1(e.share)}%)`;
   else vt = '';
-  let oppTxt = '';
+  let oppTxt = '', marginTxt = '';
   const op = e.opp;
   if (op && op.name) {  // 상대후보(단독선출=2위, 중선거구=선거구 최다 득표자)
     const oc = e.t === '11' ? _eduColor(op.jd) : partyColor(op.jd);
     const lbl = op.label || (e.won ? '2위' : '당선');
-    oppTxt = `${lbl} ${esc(op.name)}${op.jd ? `<i style="color:${oc};font-style:normal;font-weight:700"> ${esc(op.jd)}</i>` : ''}${op.share != null ? ` ${fmt1(op.share)}%` : ''}`;
+    const ovt = op.votes != null ? ` ${intComma(op.votes)}표` : '';
+    const osh = op.share != null ? ` (${fmt1(op.share)}%)` : '';
+    oppTxt = `${lbl} ${esc(op.name)}${op.jd ? `<i style="color:${oc};font-style:normal;font-weight:700"> ${esc(op.jd)}</i>` : ''}${ovt}${osh}`;
+    if (op.votes != null && e.votes != null) {
+      const diff = Math.abs(e.votes - op.votes);
+      marginTxt = `표차 <b>${intComma(diff)}</b>`;
+    }
   }
   // 중선거구(정수 2+) 당선자는 선거구 내 본인 순위를 표시(최다 득표자 한눈에).
   const multi = (e.seats || 1) > 1;
@@ -674,7 +680,7 @@ function _wsRow(e, i) {
     ? (e.drank === 1 ? '선거구 최다 득표' : `선거구 ${e.drank}위 당선`)
     : '';
   const seatTxt = (e.seats && e.seats > 1) ? `정수 ${e.seats}명` : '';  // 중선거구
-  const l2 = [esc(region), vt, rankTxt, oppTxt, seatTxt].filter(Boolean).join('  ·  ');
+  const l2 = [esc(region), vt, rankTxt, oppTxt, marginTxt, seatTxt].filter(Boolean).join('  ·  ');
   return `<div class="ws-row">${photo}<div class="ws-main">
     <div class="ws-l1">${badge}<span class="ws-dot" style="background:${color}"></span>${nm}<span class="ws-office">${esc(e.office)}</span>${party}</div>
     <div class="ws-l2">${l2}</div>
@@ -699,7 +705,9 @@ function openBigView(e) {
   if (op && op.name) {
     const oc = e.t === '11' ? _eduColor(op.jd) : partyColor(op.jd);
     const lbl = op.label === '최다' ? '선거구 최다' : (op.label || (e.won ? '2위' : '당선'));
-    opp = `<div class="bv-opp">${lbl} <b>${esc(op.name)}</b>${op.jd ? ` <span style="color:${oc};font-weight:700">${esc(op.jd)}</span>` : ''}${op.share != null ? ` · ${fmt1(op.share)}%` : ''}${op.votes != null ? ` (${intComma(op.votes)}표)` : ''}</div>`;
+    const mg = (op.votes != null && e.votes != null)
+      ? ` <span style="color:var(--muted,#888)">· 표차 ${intComma(Math.abs(e.votes - op.votes))}</span>` : '';
+    opp = `<div class="bv-opp">${lbl} <b>${esc(op.name)}</b>${op.jd ? ` <span style="color:${oc};font-weight:700">${esc(op.jd)}</span>` : ''}${op.share != null ? ` · ${fmt1(op.share)}%` : ''}${op.votes != null ? ` (${intComma(op.votes)}표)` : ''}${mg}</div>`;
   }
   // 중선거구 당선자: 선거구 내 본인 순위 표시
   const _multi = (e.seats || 1) > 1;
