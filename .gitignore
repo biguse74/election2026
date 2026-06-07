@@ -65,3 +65,8 @@ data/.asset_3rd_run.log
 data/live_counting/turnout_party_pres25.json
 data/.dup_huboids.txt
 data/.rel_finish.log
+
+# 기자 검증용 원문 렌더(로컬 전용·비공개)
+최기영_*.png
+*_재산원문_*.png
+*_가액칸*.png

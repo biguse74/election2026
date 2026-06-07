@@ -247,6 +247,9 @@ def main():
                         h["관계"] = r["관계"]; nrel += 1
         print(f"관계 병합: {nrel}건(본인/배우자 등)", file=sys.stderr)
 
+    AM = ROOT / "data" / "asset_value_manual.json"
+    ASSET_MANUAL = json.loads(AM.read_text(encoding="utf-8")) if AM.exists() else {}
+
     cat_people = {c["key"]: [] for c in CATS}     # 당선자만
     party_count = {}                               # 보유 당선자 정당 분포
     office_count = {}                              # 보유 당선자 직책 분포
@@ -258,6 +261,9 @@ def main():
         p["won"] = True
         p["asset_thousand"] = asset.get(str(p["huboid"]))   # 주식 평가액(천원) · 미추출=None
         p["asset_conf"] = asset_conf.get(str(p["huboid"]))   # 합의 신뢰도 high/mid/low
+        mv = ASSET_MANUAL.get(str(p["huboid"]))              # 기자 원본대조 수동 정정(최우선)
+        if mv and mv.get("value_thousand"):
+            p["asset_thousand"] = mv["value_thousand"]; p["asset_conf"] = "manual"
         # 보유종목별 카테고리 태깅 — 10주 미만 명목 보유는 이해충돌에서 제외
         pcats = set()
         for h in p["holdings"]:
