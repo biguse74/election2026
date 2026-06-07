@@ -688,7 +688,8 @@ function _corrScatter(pts, xk, yk, xl) {
   for (const p of pts) {
     g.push(`<circle cx="${px(p[xk]).toFixed(1)}" cy="${py(p[yk]).toFixed(1)}" r="2.7" fill="${_winColor(p.win)}" fill-opacity="0.72"><title>${esc(p.sd)} ${esc(p.sgg)} · ${xk} ${p[xk]}% · ${yk} ${p[yk]}%</title></circle>`);
   }
-  g.push(`<text x="${((padL + W - padR) / 2).toFixed(0)}" y="${H - 3}" font-size="9" fill="#888" text-anchor="middle">${xl}  (${yk === 'con' ? '국힘' : yk === 'dem' ? '민주' : '당일'}% ↑)</text>`);
+  const _yl = { con: '국힘', dem: '민주', etc: '무소속·기타', day: '당일' }[yk] || yk;
+  g.push(`<text x="${((padL + W - padR) / 2).toFixed(0)}" y="${H - 3}" font-size="9" fill="#888" text-anchor="middle">${xl}  (${_yl}% ↑)</text>`);
   return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${g.join('')}</svg>`;
 }
 
@@ -742,6 +743,7 @@ const _MULTI_REL = [
   { xk: 'day', yk: 'con', xl: '당일투표율 →', label: '당일투표 ↔ 보수', note: '본투표 강한 시군구일수록 보수 강세. 4개 선거 모두 우상향 점구름 → 구조적.' },
   { xk: 'early', yk: 'con', xl: '사전투표율 →', label: '사전투표 ↔ 보수', note: '사전 강한 곳일수록 보수 약세. 4개 선거 모두 우하향 → 구조적.' },
   { xk: 'early', yk: 'dem', xl: '사전투표율 →', label: '사전투표 ↔ 진보', note: '대선만 뚜렷한 우상향, 지방선거는 평평 → "사전=진보"는 대선에서만 성립.' },
+  { xk: 'early', yk: 'etc', xl: '사전투표율 →', label: '사전투표 ↔ 무소속·기타', note: '지선은 우상향(사전↑=무소속↑), 대선은 우하향 — 보수가 빠진 자리를 지선은 무소속이, 대선은 진보가 채웁니다.' },
 ];
 let _multiRel = 0;
 const _msBadge = r => {
@@ -766,7 +768,7 @@ function renderMultiCompare() {
     const els = d.elections || [];
     if (els.length < 2) { block.hidden = true; return; }
     block.hidden = false;
-    els.forEach(e => { if (!e._pts) e._pts = (e.points || []).map(p => ({ early: p.e, day: p.d, dem: p.m, con: p.c, win: p.w })); });
+    els.forEach(e => { if (!e._pts) e._pts = (e.points || []).map(p => ({ early: p.e, day: p.d, dem: p.m, con: p.c, etc: Math.max(0, Math.round((100 - p.m - p.c) * 10) / 10), win: p.w })); });
     const tg = document.getElementById('multi-toggle');
     tg.innerHTML = _MULTI_REL.map((rl, i) => `<button data-i="${i}" class="${i === _multiRel ? 'on' : ''}">${esc(rl.label)}</button>`).join('');
     if (!tg._wired) { tg._wired = true; tg.addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b) return; _multiRel = +b.dataset.i; _drawMultiScatter(els); }); }
