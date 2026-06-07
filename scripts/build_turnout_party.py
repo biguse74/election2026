@@ -31,17 +31,31 @@ def pearson(xs, ys):
 def main():
     c = json.loads(CUR.read_text(encoding="utf-8"))
     bysgg = c["turnout"]["by_sigungu"]
-    turn = {}
+    # 원시 투표수 보관(행정구 합산용). 대도시 시장 선거구는 '고양시덕양구' 등 행정구로만 존재.
+    raw = {}
     for sd, obj in bysgg.items():
         for s in obj.get("sigungu", []):
             ev = s.get("eligible_voters") or 0
-            if ev <= 0 or s.get("turnout_pct") is None:
+            if ev <= 0:
                 continue
-            turn[(sd, s["name"])] = {
-                "early": round((s.get("early_voters_so_far") or 0) / ev * 100, 1),
-                "day": round((s.get("day_voters_so_far") or 0) / ev * 100, 1),
-                "total": s.get("turnout_pct"),
+            raw[(sd, s["name"])] = {
+                "ev": ev, "voters": s.get("voters_so_far") or 0,
+                "early": s.get("early_voters_so_far") or 0, "day": s.get("day_voters_so_far") or 0,
             }
+
+    def rates(sd, sgg):
+        # 직접 매칭, 없으면 행정구(이름이 sgg로 시작하는 더 긴 항목) 합산
+        cells = []
+        if (sd, sgg) in raw:
+            cells = [raw[(sd, sgg)]]
+        else:
+            cells = [v for (s, n), v in raw.items() if s == sd and n.startswith(sgg) and n != sgg]
+        ev = sum(x["ev"] for x in cells)
+        if not cells or ev <= 0:
+            return None
+        return {"early": round(sum(x["early"] for x in cells) / ev * 100, 1),
+                "day": round(sum(x["day"] for x in cells) / ev * 100, 1),
+                "total": round(sum(x["voters"] for x in cells) / ev * 100, 1)}
 
     pts = []
     for r in c["races"]:
@@ -51,7 +65,7 @@ def main():
         tot = sum(x.get("votes") or 0 for x in cs)
         if tot <= 0:
             continue
-        t = turn.get((r.get("sd_name"), r.get("sgg_name")))
+        t = rates(r.get("sd_name"), r.get("sgg_name"))
         if not t:
             continue
         dem = next((x for x in cs if x.get("jd_name") == "더불어민주당"), None)
