@@ -234,6 +234,19 @@ def main():
         tag = "합의값" if src is CONS else "단일 1차"
         print(f"평가액 병합({tag}): {sum(1 for x in asset.values() if x)}명 로드", file=sys.stderr)
 
+    # 관계(본인/배우자) 병합 — stock_relations.json(좌표OCR)을 보유순서 그대로 부착.
+    REL = ROOT / "data" / "stock_relations.json"
+    if REL.exists():
+        rel = json.loads(REL.read_text(encoding="utf-8"))
+        nrel = 0
+        for p in data["people"]:
+            rl = rel.get(str(p["huboid"]))
+            if rl and len(rl) == len(p["holdings"]):
+                for h, r in zip(p["holdings"], rl):
+                    if r.get("관계"):
+                        h["관계"] = r["관계"]; nrel += 1
+        print(f"관계 병합: {nrel}건(본인/배우자 등)", file=sys.stderr)
+
     cat_people = {c["key"]: [] for c in CATS}     # 당선자만
     party_count = {}                               # 보유 당선자 정당 분포
     office_count = {}                              # 보유 당선자 직책 분포

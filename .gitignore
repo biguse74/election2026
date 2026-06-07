@@ -63,3 +63,5 @@ data/.disagree_huboids.txt
 data/.asset_finish.log
 data/.asset_3rd_run.log
 data/live_counting/turnout_party_pres25.json
+data/.dup_huboids.txt
+data/.rel_finish.log

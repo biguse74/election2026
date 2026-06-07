@@ -261,6 +261,8 @@ function render(){
       ? `<img class="sc-photo" src="${esc(p.photo)}" alt="${esc(p.name)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'">`
       : `<span class="sc-noimg">${esc((p.name||' ').slice(0,1))}</span>`;
     const region = [p.sido, p.sgg].filter(Boolean).join(' ');
+    // 같은 종목 2건+ = 본인·배우자 등 각자 보유 → 관계 라벨로 "중복 아님" 명시
+    const dupNames = (()=>{ const seen=new Set(), dup=new Set(); for(const h of p.holdings){ if(seen.has(h.종목)) dup.add(h.종목); else seen.add(h.종목); } return dup; })();
     const chips = p.holdings.length
       ? p.holdings.map(h=>{
           const hit = (state.stock && h.종목===state.stock) || (q && h.종목.toLowerCase().includes(q));
@@ -269,7 +271,8 @@ function render(){
           // 1천만주 초과는 OCR 평가액 혼입(예: 가액이 수량칸에 붙음) 의심 → 수량 대신 경고
           const qn = Number(h.수량주)||0;
           const qtxt = (qn>0 && qn<=10000000) ? `<b>${intc(qn)}</b>주` : `<i style="font-style:normal;color:#a15c00">수량 확인필요</i>`;
-          return `<span class="${cls}">${esc(h.종목)} ${qtxt}</span>`;
+          const rel = (dupNames.has(h.종목) && h.관계) ? ` <small class="sc-rel">(${esc(h.관계)})</small>` : '';
+          return `<span class="${cls}">${esc(h.종목)} ${qtxt}${rel}</span>`;
         }).join('')
       : `<span class="sc-chip" style="background:#fdf0d5;border-color:#f0d6a8;color:#7a5a1e;">원문 확인 필요(추출 실패)</span>`;
     const nStocks = p.holdings.length;
