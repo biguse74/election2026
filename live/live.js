@@ -737,6 +737,28 @@ const _rColor = r => r == null ? 'transparent'
   : (r >= 0 ? `rgba(214,52,52,${Math.min(0.85, 0.12 + Math.abs(r) * 0.8)})`
             : `rgba(30,74,138,${Math.min(0.85, 0.12 + Math.abs(r) * 0.8)})`);
 
+// 산점도용 관계(토글)
+const _MULTI_REL = [
+  { xk: 'day', yk: 'con', xl: '당일투표율 →', label: '당일투표 ↔ 보수', note: '본투표 강한 시군구일수록 보수 강세. 4개 선거 모두 우상향 점구름 → 구조적.' },
+  { xk: 'early', yk: 'con', xl: '사전투표율 →', label: '사전투표 ↔ 보수', note: '사전 강한 곳일수록 보수 약세. 4개 선거 모두 우하향 → 구조적.' },
+  { xk: 'early', yk: 'dem', xl: '사전투표율 →', label: '사전투표 ↔ 진보', note: '대선만 뚜렷한 우상향, 지방선거는 평평 → "사전=진보"는 대선에서만 성립.' },
+];
+let _multiRel = 0;
+const _msBadge = r => {
+  const c = Math.abs(r) < 0.2 ? '#999' : (r > 0 ? '#c0392b' : '#1e4a8a');
+  return `<span class="ms-r" style="background:${c}">r=${r >= 0 ? '+' : ''}${r.toFixed(2)}</span>`;
+};
+function _drawMultiScatter(els) {
+  const rel = _MULTI_REL[_multiRel];
+  const rn = document.getElementById('multi-rel-note');
+  if (rn) rn.innerHTML = `<b>${esc(rel.label)}</b> — ${esc(rel.note)}`;
+  document.getElementById('multi-scatter').innerHTML = els.map(e => {
+    const st = pearson(e._pts.map(p => p[rel.xk]), e._pts.map(p => p[rel.yk]));
+    return `<div class="ms-card"><div class="ms-hd"><span class="ms-t">${esc(e.key)}</span>${_msBadge(st ? st.r : 0)}</div>${_corrScatter(e._pts, rel.xk, rel.yk, rel.xl)}</div>`;
+  }).join('');
+  document.querySelectorAll('#multi-toggle button').forEach(b => b.classList.toggle('on', +b.dataset.i === _multiRel));
+}
+
 function renderMultiCompare() {
   const block = document.getElementById('multi-block');
   if (!block) return;
@@ -744,6 +766,11 @@ function renderMultiCompare() {
     const els = d.elections || [];
     if (els.length < 2) { block.hidden = true; return; }
     block.hidden = false;
+    els.forEach(e => { if (!e._pts) e._pts = (e.points || []).map(p => ({ early: p.e, day: p.d, dem: p.m, con: p.c, win: p.w })); });
+    const tg = document.getElementById('multi-toggle');
+    tg.innerHTML = _MULTI_REL.map((rl, i) => `<button data-i="${i}" class="${i === _multiRel ? 'on' : ''}">${esc(rl.label)}</button>`).join('');
+    if (!tg._wired) { tg._wired = true; tg.addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b) return; _multiRel = +b.dataset.i; _drawMultiScatter(els); }); }
+    _drawMultiScatter(els);
     const W = 640, H = 320, padL = 46, padR = 14, padT = 16, padB = 46;
     const n = els.length;
     const px = i => padL + (n === 1 ? 0.5 : i / (n - 1)) * (W - padL - padR);

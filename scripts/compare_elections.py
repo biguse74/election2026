@@ -156,12 +156,14 @@ def main():
     for r in res:
         dw = [p for p in r["points"] if p["dem"] > p["con"]]
         cw = [p for p in r["points"] if p["con"] > p["dem"]]
-        web.append({"key": r["key"], "label": r["label"], "n": r["n"], "corr": r["corr"],
+        # 산점도용 점은 가볍게(소수점 좌표·필요필드만)
+        pts = [{"e": p["early"], "d": p["day"], "m": p["dem"], "c": p["con"], "w": p["win"]} for p in r["points"]]
+        web.append({"key": r["key"], "label": r["label"], "n": r["n"], "corr": r["corr"], "points": pts,
                     "dem_win": {"n": len(dw), "early": round(_st.mean(p["early"] for p in dw), 1) if dw else None,
                                 "day": round(_st.mean(p["day"] for p in dw), 1) if dw else None},
                     "con_win": {"n": len(cw), "early": round(_st.mean(p["early"] for p in cw), 1) if cw else None,
                                 "day": round(_st.mean(p["day"] for p in cw), 1) if cw else None}})
-    out.write_text(json.dumps({"elections": web}, ensure_ascii=False, indent=1), encoding="utf-8")
+    out.write_text(json.dumps({"elections": web}, ensure_ascii=False), encoding="utf-8")
     print(f"\n→ {out.name}\n")
     hdr = f"{'선거':22} {'n':>4} {'사전↔민주':>9} {'사전↔국힘':>9} {'당일↔민주':>9} {'당일↔국힘':>9} {'사전↔당일':>9}"
     print(hdr); print("-" * len(hdr))
