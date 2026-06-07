@@ -327,6 +327,24 @@
   .corr-note { font-size: 0.84rem; color: var(--muted); line-height: 1.6; margin-top: 10px; }
   .corr-note b { color: var(--ink); }
   .corr-warn { color: #b7791f; }
+  /* 4분할 상관 카드 */
+  .corr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 680px){ .corr-grid { grid-template-columns: 1fr; } }
+  .corr-card { border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; background: #fff; }
+  .corr-card.hl { border-color: #d8a; box-shadow: 0 0 0 2px #fae8f0 inset; }
+  .corr-card .corr-hd { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .corr-card h3 { font-size: 0.95rem; margin: 0 0 2px; font-weight: 800; }
+  .corr-card .corr-r { font-size: 0.74rem; font-weight: 800; padding: 1px 7px; border-radius: 999px; color: #fff; white-space:nowrap; }
+  .corr-r.s3 { background:#c0392b } .corr-r.s2 { background:#d8842a } .corr-r.s1 { background:#888 } .corr-r.s0 { background:#aaa }
+  .corr-card svg { width: 100%; height: auto; display: block; margin: 6px 0 4px; }
+  .corr-card .corr-take { font-size: 0.82rem; color: var(--ink); line-height: 1.45; }
+  .corr-summary { display:flex; gap:14px; flex-wrap:wrap; margin: 14px 0 4px; }
+  .corr-sum-card { flex:1; min-width:200px; border:1px solid var(--line); border-radius:10px; padding:11px 14px; }
+  .corr-sum-card .t { font-weight:800; font-size:0.9rem; margin-bottom:5px; }
+  .corr-sum-card .row { display:flex; justify-content:space-between; font-size:0.84rem; padding:2px 0; }
+  .corr-sum-card .row b { font-variant-numeric: tabular-nums; }
+  .corr-legend { font-size:0.76rem; color:var(--muted); margin:6px 0 0; }
+  .corr-legend i { display:inline-block; width:9px; height:9px; border-radius:50%; margin:0 3px 0 9px; vertical-align:middle; }
 
   /* 선거구 상세 펼침 */
   table.other tr.race-sum { cursor: pointer; }
@@ -469,12 +487,13 @@
     <div id="histcmp-note" class="corr-note"></div>
   </section>
   <section class="block" id="corr-block" hidden>
-    <h2>투표율과 표심</h2>
-    <p class="block-sub">시도별 <b>투표율</b>과 <b>시도지사 민주−국힘 격차</b>의 관계. 점=시도, 빨간 점선=추세선. 마감(18시) 후 표시.</p>
-    <div class="corr-wrap">
-      <svg id="corr-svg" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg>
-      <div id="corr-note" class="corr-note"></div>
-    </div>
+    <h2>투표율과 표심 — 어느 당에 유리할까?</h2>
+    <p class="block-sub">전국 <b id="corr-n">—</b>개 시군구(기초단체장)에서 <b>사전·당일·전체 투표율</b>과 <b>정당 득표율</b>의 관계.
+      점 하나 = 시군구, 색 = 당선 정당, 점선 = 추세선. r = 상관계수(+1~−1).</p>
+    <div class="corr-legend"><i style="background:var(--dem)"></i>민주 당선<i style="background:var(--con)"></i>국힘 당선<i style="background:#8a8a96"></i>그 외</div>
+    <div id="corr-grid" class="corr-grid"></div>
+    <div id="corr-summary" class="corr-summary"></div>
+    <div id="corr-note" class="corr-note"></div>
   </section>
   <section class="block" id="search-block">
     <h2>개표 검색 — 전체 선거구</h2>
@@ -572,6 +591,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260604i"></script>
+<script src="live.js?v=20260607corr"></script>
 </body>
 </html>

@@ -19,6 +19,7 @@ const PATHS = {
   histHourly:  '../data/history_turnout_hourly.json',
   exitPoll:    '../data/live_counting/exit_poll.json',
   exitCompare: '../data/live_counting/exit_poll_compare.json',
+  turnoutParty: '../data/live_counting/turnout_party.json',
   photos:      './candidate_photos.json',
 };
 
@@ -645,74 +646,83 @@ function renderEarlyVsDay(cur, earlyVoting) {
 
 // ── 투표율과 표심 (상관 산점도) ────────────────────────────────────
 // 시도별 투표율(X) vs 시도지사 민주−국힘 격차(Y). 점=시도, 점선=추세, 피어슨 r.
-function renderTurnoutCorr(cur) {
-  const block = document.getElementById('corr-block');
-  const svg = document.getElementById('corr-svg');
-  const note = document.getElementById('corr-note');
-  if (!block || !svg || !note) return;
+// 투표율↔정당 상관 — 시군구(기초단체장) 단위 4분할 산점도 + 해설.
+let _tpData = null;
+const _winColor = w => w === DEM ? 'var(--dem)' : (w === CON ? 'var(--con)' : '#8a8a96');
+const _CORR_STR = ['거의 없음', '약함', '뚜렷', '매우 강함'];
+const _rStrength = r => { const a = Math.abs(r); return a >= 0.7 ? 3 : a >= 0.4 ? 2 : a >= 0.2 ? 1 : 0; };
+const _CORR_CHARTS = [
+  { xk: 'day', yk: 'con', xl: '당일투표율 →', hl: true,
+    title: '본투표 ↔ 보수',
+    take: rr => `당일(본)투표가 높은 시군구일수록 <b>국힘 득표율이 높습니다</b> (r=${rr}). 보수 지지층이 당일투표에 더 몰린 패턴.` },
+  { xk: 'early', yk: 'day', xl: '사전투표율 →',
+    title: '사전 ↔ 당일',
+    take: rr => `사전투표가 높은 곳은 <b>당일투표가 오히려 낮습니다</b> (r=${rr}). 사전이 본투표에 더해지는 게 아니라 <b>일부 대체</b>합니다.` },
+  { xk: 'early', yk: 'dem', xl: '사전투표율 →',
+    title: '사전 ↔ 민주',
+    take: rr => `'사전투표=진보 유리' 통념과 달리, 시군구 단위에선 <b>거의 무관</b>합니다 (r=${rr}).` },
+  { xk: 'total', yk: 'dem', xl: '전체투표율 →',
+    title: '전체투표율 ↔ 민주',
+    take: rr => `전체투표율이 높다고 민주가 유리하진 않습니다 (r=${rr}). 농촌 소규모 군이 투표율↑·보수/무소속↑인 영향이 큽니다.` },
+];
 
-  // 개표 초반에는 시도지사 격차가 순전히 개표소 순서 노이즈 → 표심 상관은 무의미.
-  // 시도지사 개표율(선거인 가중)이 충분히 쌓였을 때만 표시한다.
-  const CORR_MIN_PROGRESS = 50;
-  let _pw = 0, _pe = 0;
-  for (const r of (cur?.races || [])) {
-    if (String(r.sg_type_code) !== '3') continue;
-    const e = r.eligible_voters || 0; _pw += (r.progress_pct || 0) * e; _pe += e;
-  }
-  const govProgress = _pe ? _pw / _pe : 0;
-  if (govProgress < CORR_MIN_PROGRESS) { block.hidden = true; return; }
-
-  const tmap = {};
-  for (const s of (cur?.turnout?.by_sido || [])) tmap[s.sd_name] = s.turnout_pct;
-  const pts = [];
-  for (const r of (cur?.races || [])) {
-    if (String(r.sg_type_code) !== '3') continue;
-    const dem = partyShare(r, DEM), con = partyShare(r, CON);
-    const tn = tmap[r.sd_name];
-    if (dem && con && tn != null) pts.push({ sd: r.sd_name, x: tn, y: dem.share - con.share });
-  }
-  if (pts.length < 3) { block.hidden = true; return; }
-  block.hidden = false;
-
-  const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
-  const stat = pearson(xs, ys);
-  const xlo = Math.floor(Math.min(...xs) - 2), xhi = Math.ceil(Math.max(...xs) + 2);
-  const ymax = Math.max(10, Math.ceil(Math.max(...ys.map(Math.abs)) / 5) * 5 + 5);
-  const W = 640, H = 340, padL = 52, padR = 16, padT = 16, padB = 42;
+function _corrScatter(pts, xk, yk, xl) {
+  const W = 300, H = 188, padL = 30, padR = 8, padT = 8, padB = 28;
+  const xs = pts.map(p => p[xk]), ys = pts.map(p => p[yk]);
+  const xlo = Math.floor(Math.min(...xs) - 1), xhi = Math.ceil(Math.max(...xs) + 1);
+  const ylo = Math.floor(Math.min(...ys) - 1), yhi = Math.ceil(Math.max(...ys) + 1);
   const px = x => padL + (x - xlo) / (xhi - xlo) * (W - padL - padR);
-  const py = y => padT + (1 - (y + ymax) / (2 * ymax)) * (H - padT - padB);
-  const clampY = y => Math.max(-ymax, Math.min(ymax, y));
-
+  const py = y => padT + (1 - (y - ylo) / (yhi - ylo)) * (H - padT - padB);
+  const stat = pearson(xs, ys);
   const g = [];
-  g.push(`<line x1="${padL}" x2="${W - padR}" y1="${py(0).toFixed(1)}" y2="${py(0).toFixed(1)}" stroke="#bbb" stroke-width="1"/>`);
-  [ymax, ymax / 2, -ymax / 2, -ymax].forEach(yv => {
-    g.push(`<text x="${padL - 7}" y="${(py(yv) + 4).toFixed(1)}" font-size="10" fill="#999" text-anchor="end">${yv > 0 ? '민주+' + yv : '국힘+' + (-yv)}</text>`);
-  });
-  g.push(`<text x="${padL - 7}" y="${(py(0) + 4).toFixed(1)}" font-size="10" fill="#999" text-anchor="end">0</text>`);
-  const step = Math.max(2, Math.round((xhi - xlo) / 6));
-  for (let xv = xlo; xv <= xhi; xv += step) {
-    g.push(`<line x1="${px(xv).toFixed(1)}" x2="${px(xv).toFixed(1)}" y1="${padT}" y2="${H - padB}" stroke="#f2f2f2"/>`);
-    g.push(`<text x="${px(xv).toFixed(1)}" y="${H - padB + 15}" font-size="10" fill="#999" text-anchor="middle">${xv}%</text>`);
-  }
-  g.push(`<text x="${((padL + W - padR) / 2).toFixed(0)}" y="${H - 7}" font-size="10.5" fill="#777" text-anchor="middle">시도 투표율 →</text>`);
-
+  g.push(`<line x1="${padL}" y1="${H - padB}" x2="${W - padR}" y2="${H - padB}" stroke="#ddd"/>`);
+  g.push(`<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H - padB}" stroke="#ddd"/>`);
+  [xlo, xhi].forEach((xv, i) => g.push(`<text x="${px(xv).toFixed(0)}" y="${H - padB + 13}" font-size="9" fill="#aaa" text-anchor="${i ? 'end' : 'start'}">${xv}</text>`));
+  [ylo, yhi].forEach((yv, i) => g.push(`<text x="${padL - 4}" y="${(py(yv) + (i ? 8 : 3)).toFixed(0)}" font-size="9" fill="#aaa" text-anchor="end">${yv}</text>`));
   if (stat) {
+    const cy = v => Math.max(ylo, Math.min(yhi, v));
     const y1 = stat.slope * xlo + stat.intercept, y2 = stat.slope * xhi + stat.intercept;
-    g.push(`<line x1="${px(xlo).toFixed(1)}" y1="${py(clampY(y1)).toFixed(1)}" x2="${px(xhi).toFixed(1)}" y2="${py(clampY(y2)).toFixed(1)}" stroke="#c41e3a" stroke-width="1.6" stroke-dasharray="5 4"/>`);
+    g.push(`<line x1="${px(xlo).toFixed(1)}" y1="${py(cy(y1)).toFixed(1)}" x2="${px(xhi).toFixed(1)}" y2="${py(cy(y2)).toFixed(1)}" stroke="#c41e3a" stroke-width="1.4" stroke-dasharray="5 4"/>`);
   }
   for (const p of pts) {
-    const color = p.y >= 0 ? 'var(--dem)' : 'var(--con)';
-    g.push(`<circle cx="${px(p.x).toFixed(1)}" cy="${py(clampY(p.y)).toFixed(1)}" r="4.5" fill="${color}"><title>${p.sd} 투표율 ${fmt1(p.x)}% · ${marginText(p.y)}</title></circle>`);
-    g.push(`<text x="${px(p.x).toFixed(1)}" y="${(py(clampY(p.y)) - 8).toFixed(1)}" font-size="9.5" fill="#555" text-anchor="middle">${SIDO_SHORT[p.sd] || p.sd}</text>`);
+    g.push(`<circle cx="${px(p[xk]).toFixed(1)}" cy="${py(p[yk]).toFixed(1)}" r="2.7" fill="${_winColor(p.win)}" fill-opacity="0.72"><title>${esc(p.sd)} ${esc(p.sgg)} · ${xk} ${p[xk]}% · ${yk} ${p[yk]}%</title></circle>`);
   }
-  svg.innerHTML = g.join('');
+  g.push(`<text x="${((padL + W - padR) / 2).toFixed(0)}" y="${H - 3}" font-size="9" fill="#888" text-anchor="middle">${xl}  (${yk === 'con' ? '국힘' : yk === 'dem' ? '민주' : '당일'}% ↑)</text>`);
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">${g.join('')}</svg>`;
+}
 
-  let interp;
-  if (!stat) interp = '상관 계산 불가';
-  else if (stat.r > 0.3) interp = `투표율이 높은 시도일수록 <b>민주 우세</b> 경향 (상관 r=${stat.r.toFixed(2)}, n=${stat.n})`;
-  else if (stat.r < -0.3) interp = `투표율이 높은 시도일수록 <b>국힘 우세</b> 경향 (상관 r=${stat.r.toFixed(2)}, n=${stat.n})`;
-  else interp = `투표율과 우세 정당 사이 <b>뚜렷한 상관 없음</b> (r=${stat.r.toFixed(2)}, n=${stat.n})`;
-  note.innerHTML = `${interp}.<br><span class="corr-warn">⚠️ 지역 고유 성향(호남↑민주·영남↑국힘)이 섞여 있어 '투표율→표심' 인과로 단정할 수 없습니다.</span> 같은 지역의 예측 대비 초과분 분석은 별도.`;
+function _drawCorr(d) {
+  const block = document.getElementById('corr-block');
+  block.hidden = false;
+  const nEl = document.getElementById('corr-n'); if (nEl) nEl.textContent = d.summary.n;
+  document.getElementById('corr-grid').innerHTML = _CORR_CHARTS.map(c => {
+    const st = pearson(d.points.map(p => p[c.xk]), d.points.map(p => p[c.yk]));
+    const r = st ? st.r : 0, s = _rStrength(r), rr = (r >= 0 ? '+' : '') + r.toFixed(2);
+    return `<div class="corr-card${c.hl ? ' hl' : ''}">
+      <div class="corr-hd"><h3>${c.title}</h3><span class="corr-r s${s}">r=${rr} · ${_CORR_STR[s]}</span></div>
+      ${_corrScatter(d.points, c.xk, c.yk, c.xl)}
+      <div class="corr-take">${c.take(rr)}</div></div>`;
+  }).join('');
+  const sm = d.summary;
+  const sc = (t, o, col) => `<div class="corr-sum-card"><div class="t" style="color:${col}">${t} 승리 ${o.n}곳 · 평균 투표율</div>
+    <div class="row"><span>사전투표</span><b>${o.early}%</b></div>
+    <div class="row"><span>당일(본)투표</span><b>${o.day}%</b></div>
+    <div class="row"><span>전체</span><b>${o.total}%</b></div></div>`;
+  document.getElementById('corr-summary').innerHTML = sc('민주', sm.dem_win, 'var(--dem)') + sc('국힘', sm.con_win, 'var(--con)');
+  document.getElementById('corr-note').innerHTML =
+    `<b>한눈에:</b> 보수는 <b>당일투표</b>에서, 진보는 사전투표 비중이 큰 곳에서 강했고, 사전·당일은 <b>서로 대체</b> 관계였습니다. ` +
+    `<span class="corr-warn">⚠️ 이건 지역(시군구) 단위 상관일 뿐 인과가 아닙니다.</span> ` +
+    `농촌/도시·지역색(호남↑민주·영남↑국힘)이 섞여 있어 '투표율→표심'으로 단정할 수 없습니다. 기준: ${esc(d.unit)} ${sm.n}곳.`;
+}
+
+function renderTurnoutCorr() {
+  const block = document.getElementById('corr-block');
+  if (!block) return;
+  if (_tpData) { _drawCorr(_tpData); return; }
+  loadJSON(PATHS.turnoutParty).then(d => {
+    if (!d || !d.points || d.points.length < 5) { block.hidden = true; return; }
+    _tpData = d; _drawCorr(d);
+  });
 }
 
 // ── 주목 후보 워치리스트 ────────────────────────────────────────────
