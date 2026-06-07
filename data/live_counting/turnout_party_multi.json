@@ -1,0 +1,96 @@
+{
+ "elections": [
+  {
+   "key": "2022지선",
+   "label": "2022 지방선거(기초단체장)",
+   "n": 241,
+   "corr": {
+    "early_dem": -0.166,
+    "early_con": -0.521,
+    "day_dem": -0.307,
+    "day_con": 0.353,
+    "early_day": 0.099,
+    "total_dem": -0.261
+   },
+   "dem_win": {
+    "n": 74,
+    "early": 28.7,
+    "day": 29.0
+   },
+   "con_win": {
+    "n": 164,
+    "early": 23.5,
+    "day": 31.4
+   }
+  },
+  {
+   "key": "2024총선",
+   "label": "2024 총선(지역구)",
+   "n": 253,
+   "corr": {
+    "early_dem": 0.32,
+    "early_con": -0.415,
+    "day_dem": -0.398,
+    "day_con": 0.502,
+    "early_day": -0.816,
+    "total_dem": 0.068
+   },
+   "dem_win": {
+    "n": 136,
+    "early": 34.5,
+    "day": 33.3
+   },
+   "con_win": {
+    "n": 117,
+    "early": 33.3,
+    "day": 34.8
+   }
+  },
+  {
+   "key": "2025대선",
+   "label": "2025 대선",
+   "n": 253,
+   "corr": {
+    "early_dem": 0.782,
+    "early_con": -0.719,
+    "day_dem": -0.758,
+    "day_con": 0.69,
+    "early_day": -0.968,
+    "total_dem": 0.507
+   },
+   "dem_win": {
+    "n": 140,
+    "early": 41.0,
+    "day": 39.1
+   },
+   "con_win": {
+    "n": 113,
+    "early": 34.7,
+    "day": 44.1
+   }
+  },
+  {
+   "key": "2026지선",
+   "label": "2026 지방선거(기초단체장)",
+   "n": 224,
+   "corr": {
+    "early_dem": 0.062,
+    "early_con": -0.628,
+    "day_dem": -0.484,
+    "day_con": 0.817,
+    "early_day": -0.706,
+    "total_dem": -0.326
+   },
+   "dem_win": {
+    "n": 124,
+    "early": 30.5,
+    "day": 33.7
+   },
+   "con_win": {
+    "n": 100,
+    "early": 26.8,
+    "day": 39.3
+   }
+  }
+ ]
+}

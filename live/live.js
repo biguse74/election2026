@@ -20,6 +20,7 @@ const PATHS = {
   exitPoll:    '../data/live_counting/exit_poll.json',
   exitCompare: '../data/live_counting/exit_poll_compare.json',
   turnoutParty: '../data/live_counting/turnout_party.json',
+  turnoutMulti: '../data/live_counting/turnout_party_multi.json',
   photos:      './candidate_photos.json',
 };
 
@@ -723,6 +724,68 @@ function renderTurnoutCorr() {
     if (!d || !d.points || d.points.length < 5) { block.hidden = true; return; }
     _tpData = d; _drawCorr(d);
   });
+}
+
+// 4개 선거 비교 — 같은 지표가 매번 같은 쪽이면 구조적.
+let _multiData = null;
+const _MULTI_SERIES = [
+  { k: 'day_con', label: '당일투표 ↔ 보수(국힘)', color: '#d8842a' },
+  { k: 'early_con', label: '사전투표 ↔ 보수(국힘)', color: '#1e7d8a' },
+  { k: 'early_dem', label: '사전투표 ↔ 진보(민주)', color: '#152484' },
+];
+const _rColor = r => r == null ? 'transparent'
+  : (r >= 0 ? `rgba(214,52,52,${Math.min(0.85, 0.12 + Math.abs(r) * 0.8)})`
+            : `rgba(30,74,138,${Math.min(0.85, 0.12 + Math.abs(r) * 0.8)})`);
+
+function renderMultiCompare() {
+  const block = document.getElementById('multi-block');
+  if (!block) return;
+  const draw = d => {
+    const els = d.elections || [];
+    if (els.length < 2) { block.hidden = true; return; }
+    block.hidden = false;
+    const W = 640, H = 320, padL = 46, padR = 14, padT = 16, padB = 46;
+    const n = els.length;
+    const px = i => padL + (n === 1 ? 0.5 : i / (n - 1)) * (W - padL - padR);
+    const py = r => padT + (1 - (r + 1) / 2) * (H - padT - padB);
+    const g = [];
+    // 가로 기준선(0)
+    g.push(`<line x1="${padL}" x2="${W - padR}" y1="${py(0).toFixed(1)}" y2="${py(0).toFixed(1)}" stroke="#bbb"/>`);
+    [1, 0.5, -0.5, -1].forEach(rv => {
+      g.push(`<line x1="${padL}" x2="${W - padR}" y1="${py(rv).toFixed(1)}" y2="${py(rv).toFixed(1)}" stroke="#f2f2f2"/>`);
+      g.push(`<text x="${padL - 6}" y="${(py(rv) + 4).toFixed(1)}" font-size="10" fill="#999" text-anchor="end">${rv > 0 ? '+' : ''}${rv}</text>`);
+    });
+    g.push(`<text x="${padL - 6}" y="${(py(0) + 4).toFixed(1)}" font-size="10" fill="#999" text-anchor="end">0</text>`);
+    els.forEach((e, i) => g.push(`<text x="${px(i).toFixed(1)}" y="${H - padB + 16}" font-size="10.5" fill="#555" text-anchor="middle">${esc(e.key)}</text>`));
+    g.push(`<text x="${padL}" y="${H - 8}" font-size="10" fill="#888">▲ 위쪽=보수와 +상관 · ▼ 아래=음의 상관</text>`);
+    // 점선 영역 라벨
+    for (const s of _MULTI_SERIES) {
+      const pts = els.map((e, i) => `${px(i).toFixed(1)},${py(e.corr[s.k] == null ? 0 : e.corr[s.k]).toFixed(1)}`);
+      g.push(`<polyline points="${pts.join(' ')}" fill="none" stroke="${s.color}" stroke-width="2.4"/>`);
+      els.forEach((e, i) => {
+        const r = e.corr[s.k]; if (r == null) return;
+        g.push(`<circle cx="${px(i).toFixed(1)}" cy="${py(r).toFixed(1)}" r="4" fill="${s.color}"><title>${e.label} · ${s.label} r=${r}</title></circle>`);
+      });
+    }
+    document.getElementById('multi-svg').innerHTML = g.join('');
+    document.getElementById('multi-legend').innerHTML = _MULTI_SERIES.map(s =>
+      `<i class="line" style="background:${s.color}"></i>${esc(s.label)}`).join('');
+    // 표
+    const cols = [['early_dem', '사전↔민주'], ['early_con', '사전↔국힘'], ['day_con', '당일↔국힘'], ['early_day', '사전↔당일']];
+    const head = `<tr><th>선거</th><th>n</th>${cols.map(c => `<th>${c[1]}</th>`).join('')}</tr>`;
+    const body = els.map(e => `<tr><td>${esc(e.label)}</td><td>${e.n}</td>${cols.map(c => {
+      const r = e.corr[c[0]];
+      return `<td><span class="rcell" style="background:${_rColor(r)};padding:2px 7px">${r == null ? '–' : (r >= 0 ? '+' : '') + r.toFixed(2)}</span></td>`;
+    }).join('')}</tr>`).join('');
+    document.getElementById('multi-table').innerHTML = `<table class="multi-table">${head}${body}</table>`;
+    document.getElementById('multi-note').innerHTML =
+      `<b>구조적(4개 선거 내내 일관):</b> <b style="color:#d8842a">당일↔보수는 항상 +</b>, <b style="color:#1e7d8a">사전↔보수는 항상 −</b>. ` +
+      `보수는 당일, 진보·중도는 사전에 더 몰리는 경향이 2022~2026 반복됩니다. ` +
+      `<b style="color:#152484">사전↔진보</b>는 <b>대선에서만 강하고</b>(전국 진영전) 지방선거에선 약해 — 통념은 선거 성격을 탑니다. ` +
+      `<span class="corr-warn">⚠️ 지역 단위 상관(인과 아님).</span> 지선은 기초단체장, 총선은 지역구, 대선은 대통령 기준.`;
+  };
+  if (_multiData) { draw(_multiData); return; }
+  loadJSON(PATHS.turnoutMulti).then(d => { if (!d) { block.hidden = true; return; } _multiData = d; draw(d); });
 }
 
 // ── 주목 후보 워치리스트 ────────────────────────────────────────────
@@ -1483,6 +1546,7 @@ async function render() {
       renderSigunguAll(cur);
       renderHistoryCompare(cur, histHourly);
       renderTurnoutCorr(cur);
+      renderMultiCompare();
       const wb = document.getElementById('watch-block'); if (wb) wb.hidden = true;
       const gb = document.getElementById('groups-block'); if (gb) gb.hidden = true;
       const w = '투표 진행 중 — 개표는 18시 투표 마감 후 시작됩니다.';
@@ -1520,6 +1584,7 @@ async function render() {
   renderSigunguAll(cur);
   renderHistoryCompare(cur, histHourly);
   renderTurnoutCorr(cur);
+  renderMultiCompare();
   renderWatchlist(watchlist);   // watch-block 숨김 처리만
   // 개표(counting) 아카이브 — 전체 선거구 검색
   populateFilters(LATEST_RACES);

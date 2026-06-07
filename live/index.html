@@ -345,6 +345,13 @@
   .corr-sum-card .row b { font-variant-numeric: tabular-nums; }
   .corr-legend { font-size:0.76rem; color:var(--muted); margin:6px 0 0; }
   .corr-legend i { display:inline-block; width:9px; height:9px; border-radius:50%; margin:0 3px 0 9px; vertical-align:middle; }
+  .corr-legend i.line { width:16px; height:3px; border-radius:2px; }
+  /* 4개 선거 비교표 */
+  .multi-table { width:100%; border-collapse:collapse; margin-top:14px; font-size:0.84rem; }
+  .multi-table th, .multi-table td { padding:7px 8px; text-align:center; border-bottom:1px solid var(--line); }
+  .multi-table th { font-size:0.78rem; color:var(--muted); font-weight:700; }
+  .multi-table td:first-child, .multi-table th:first-child { text-align:left; font-weight:700; }
+  .multi-table .rcell { font-weight:800; font-variant-numeric:tabular-nums; border-radius:5px; }
 
   /* 선거구 상세 펼침 */
   table.other tr.race-sum { cursor: pointer; }
@@ -495,6 +502,17 @@
     <div id="corr-summary" class="corr-summary"></div>
     <div id="corr-note" class="corr-note"></div>
   </section>
+  <section class="block" id="multi-block" hidden>
+    <h2>일시적일까, 구조적일까? — 4개 선거 비교</h2>
+    <p class="block-sub">2022 지선·2024 총선·2025 대선·2026 지선을 <b>같은 방식</b>(시군구 단위, 민주 vs 국힘)으로 비교.
+      선이 4개 선거 내내 같은 쪽에 머물면 <b>구조적</b>, 출렁이면 선거 성격을 타는 것입니다. r=상관계수.</p>
+    <div class="corr-wrap">
+      <svg id="multi-svg" viewBox="0 0 640 320" preserveAspectRatio="xMidYMid meet"></svg>
+      <div id="multi-legend" class="corr-legend"></div>
+    </div>
+    <div id="multi-table"></div>
+    <div id="multi-note" class="corr-note"></div>
+  </section>
   <section class="block" id="search-block">
     <h2>개표 검색 — 전체 선거구</h2>
     <p class="block-sub">선거 종류·시도·정당으로 좁히거나, 후보명·지역으로 검색해 원하는 선거구의 개표 실황을 봅니다. (시도지사·기초단체장·교육감 + 6/3엔 시도의원·기초의원까지)</p>
@@ -591,6 +609,6 @@
     <a href="https://member.newtamsa.org" target="_blank" rel="noopener">후원</a>
   </p>
 </footer>
-<script src="live.js?v=20260607corr"></script>
+<script src="live.js?v=20260607multi"></script>
 </body>
 </html>
