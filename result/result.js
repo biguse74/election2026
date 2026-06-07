@@ -605,6 +605,31 @@ function ensureCouncilLoaded() {
       votes: c.v, share: c.s, rank: c.r, won: !!c.w,
       mode: (c.v == null && c.w) ? '무투표' : null, seats: c.m, opp: null,
     }));
+    // 선거구별로 묶어 '최다 득표자(1위)'·'차점자'를 각 후보에 부착.
+    // 중선거구(기초의원·정수 2+)는 "다수"만 보여 누가 1위인지 모르므로, 검색 결과에 바로 표시.
+    const _byDist = {};
+    for (const e of districtIdx) {
+      const k = `${e.t}|${e.sd}|${e.sgg}`;
+      (_byDist[k] = _byDist[k] || []).push(e);
+    }
+    for (const arr of Object.values(_byDist)) {
+      arr.sort((a, b) => (a.rank || 99) - (b.rank || 99) || (b.votes || 0) - (a.votes || 0));
+      const top = arr[0], second = arr[1];
+      const pack = o => o ? { name: o.name, jd: o.jd, share: o.share, votes: o.votes } : null;
+      for (const e of arr) {
+        const multi = (e.seats || 1) > 1;
+        e.drank = e.rank;                          // 선거구 내 본인 순위
+        if (multi) {
+          // 본인이 1위면 차점자(2위)를, 아니면 선거구 최다 득표자(1위)를 보여줌
+          e.opp = (e === top) ? (pack(second) && { ...pack(second), label: '2위' })
+                              : (pack(top) && { ...pack(top), label: '최다' });
+        } else {
+          // 단일 선출(시도의원): 단독 1인 선출처럼 당선↔2위
+          e.opp = e.won ? (pack(second) && { ...pack(second), label: '2위' })
+                        : (pack(top) && { ...pack(top), label: '당선' });
+        }
+      }
+    }
     // 비례 당선자(8·9) — 정당명부 순번(num) 당선. 모두 당선자.
     const prIdx = ((prData && prData.cands) || []).map(c => ({
       name: c.n, jd: c.j, sd: c.sd, sgg: '비례대표', office: _OFFICE_BY_T[c.t] || '비례대표', t: c.t,
@@ -638,13 +663,18 @@ function _wsRow(e, i) {
   else vt = '';
   let oppTxt = '';
   const op = e.opp;
-  if (op && op.name) {  // 단독 1인 선출(시도지사·단체장·교육감·재보궐)만 상대후보 표시
+  if (op && op.name) {  // 상대후보(단독선출=2위, 중선거구=선거구 최다 득표자)
     const oc = e.t === '11' ? _eduColor(op.jd) : partyColor(op.jd);
-    const lbl = e.won ? '2위' : '당선';
+    const lbl = op.label || (e.won ? '2위' : '당선');
     oppTxt = `${lbl} ${esc(op.name)}${op.jd ? `<i style="color:${oc};font-style:normal;font-weight:700"> ${esc(op.jd)}</i>` : ''}${op.share != null ? ` ${fmt1(op.share)}%` : ''}`;
   }
-  const seatTxt = (e.seats && e.seats > 1) ? `정수 ${e.seats}명 선출` : '';  // 중선거구
-  const l2 = [esc(region), vt, oppTxt, seatTxt].filter(Boolean).join('  ·  ');
+  // 중선거구(정수 2+) 당선자는 선거구 내 본인 순위를 표시(최다 득표자 한눈에).
+  const multi = (e.seats || 1) > 1;
+  const rankTxt = (multi && e.won && e.drank)
+    ? (e.drank === 1 ? '선거구 최다 득표' : `선거구 ${e.drank}위 당선`)
+    : '';
+  const seatTxt = (e.seats && e.seats > 1) ? `정수 ${e.seats}명` : '';  // 중선거구
+  const l2 = [esc(region), vt, rankTxt, oppTxt, seatTxt].filter(Boolean).join('  ·  ');
   return `<div class="ws-row">${photo}<div class="ws-main">
     <div class="ws-l1">${badge}<span class="ws-dot" style="background:${color}"></span>${nm}<span class="ws-office">${esc(e.office)}</span>${party}</div>
     <div class="ws-l2">${l2}</div>
@@ -668,8 +698,14 @@ function openBigView(e) {
   const op = e.opp;
   if (op && op.name) {
     const oc = e.t === '11' ? _eduColor(op.jd) : partyColor(op.jd);
-    const lbl = e.won ? '2위' : '당선';
+    const lbl = op.label === '최다' ? '선거구 최다' : (op.label || (e.won ? '2위' : '당선'));
     opp = `<div class="bv-opp">${lbl} <b>${esc(op.name)}</b>${op.jd ? ` <span style="color:${oc};font-weight:700">${esc(op.jd)}</span>` : ''}${op.share != null ? ` · ${fmt1(op.share)}%` : ''}${op.votes != null ? ` (${intComma(op.votes)}표)` : ''}</div>`;
+  }
+  // 중선거구 당선자: 선거구 내 본인 순위 표시
+  const _multi = (e.seats || 1) > 1;
+  if (_multi && e.won && e.drank) {
+    const rt = e.drank === 1 ? '선거구 최다 득표 당선' : `선거구 ${e.drank}위 당선`;
+    opp = `<div class="bv-rank" style="font-weight:700;color:${color};margin-bottom:4px">${rt}</div>` + opp;
   }
   document.getElementById('bv-card').innerHTML =
     `<button class="bv-close" aria-label="닫기">✕</button>${photo}<div class="bv-info">${badge}` +
