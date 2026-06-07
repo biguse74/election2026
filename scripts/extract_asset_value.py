@@ -148,11 +148,17 @@ def main():
     ap.add_argument("--all", action="store_true", help="전체 보유자 풀런(결과 저장·재개)")
     ap.add_argument("--dpi", type=int, default=200, help="렌더 해상도(2차 검수: 다른 값으로 대조)")
     ap.add_argument("--out", default=str(OUT), help="결과 저장 경로(2차는 별도 파일)")
+    ap.add_argument("--huboids-file", default="", help="이 파일(줄당 huboid)의 인물만 처리(저장·재개)")
     args = ap.parse_args()
     DPI = args.dpi
     OUT = Path(args.out)
     d = json.loads(SLIM.read_text(encoding="utf-8"))
     people = [p for p in d["people"] if p["holdings"]]
+
+    if args.huboids_file:
+        want = {ln.strip() for ln in Path(args.huboids_file).read_text(encoding="utf-8").splitlines() if ln.strip()}
+        people = [p for p in people if str(p["huboid"]) in want]
+        args.all = True   # 저장·재개 경로 사용
 
     if args.names:
         want = set(args.names.split(","))
