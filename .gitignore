@@ -56,3 +56,10 @@ data/.asset_2nd_run.log
 data/.asset_3rd_run.log
 data/.stock_ocr_run.log
 data/.autocorr_dryrun.txt
+
+# 평가액 3차·합의 임시
+data/asset_value_300.json
+data/.disagree_huboids.txt
+data/.asset_finish.log
+data/.asset_3rd_run.log
+data/live_counting/turnout_party_pres25.json
