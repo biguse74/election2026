@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-06-07T22:57:44+09:00",
+  "updated_at": "2026-06-08T13:13:39+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 347,
+  "count": 348,
   "articles": [
+    {
+      "date": "2026-06-08",
+      "title": "노관규 꺾은 손훈모 \"이건 순천 시민의 승리\"",
+      "url": "https://newtamsa.org/news/cq79xX",
+      "category": "호남뉴탐사",
+      "tags": [
+        "전남",
+        "순천",
+        "노관규",
+        "손훈모",
+        "손혜원",
+        "3일의기적",
+        "목포"
+      ],
+      "author": "강진구, 허경혜, 박대용"
+    },
     {
       "date": "2026-06-07",
       "title": "송영길 \"사무총장부터 싹 교체, 중립 집행부로 경선해야\"",
