@@ -244,13 +244,13 @@ function renderHero(cur, earlyVoting) {
   //   '실시간/진행 중' 문구를 '기록(아카이브)'으로 전환한다. 역사 보존용 페이지.
   const ended = races.length > 0 && avg >= 99.5;
   if (ended) {
-    badge.hidden = true;
+    if (badge) badge.hidden = true;
     const _tt = document.getElementById('page-title-text');
     const _ts = document.getElementById('page-sub');
     if (_tt) _tt.textContent = '투표·개표 기록';
     if (_ts) _ts.textContent = '2026-06-03(수) 제9회 지방선거 · 개표 완료 · 투표율과 개표 과정 기록(아카이브)';
   } else if (cur?.phase === 'live') {
-    badge.hidden = false;
+    if (badge) badge.hidden = false;
   }
 
   document.getElementById('updated-at').textContent = fmtKST(cur?.polled_at) + ' (KST)';
@@ -1487,7 +1487,7 @@ function bindFilters() {
 
 // 개표일 이전엔 보관용/테스트 데이터가 실제 결과처럼 보이지 않도록 대기 화면.
 function showWaiting(msg) {
-  document.getElementById('live-badge').hidden = true;
+  const _b = document.getElementById('live-badge'); if (_b) _b.hidden = true;
   document.getElementById('hero-turnout').innerHTML = `대기<span class="pct"></span>`;
   document.getElementById('hero-turnout-meta').textContent = msg;
   document.getElementById('hero-progress').innerHTML = `—<span class="pct"></span>`;
