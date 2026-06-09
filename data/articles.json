@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-06-09T00:57:12+09:00",
+  "updated_at": "2026-06-09T12:42:09+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 348,
+  "count": 349,
   "articles": [
+    {
+      "date": "2026-06-09",
+      "title": "이재명 \"오만의 경고\"… 회견 칼끝은 정청래",
+      "url": "https://newtamsa.org/news/mCmrfi",
+      "category": "심층분석",
+      "tags": [
+        "이재명",
+        "대통령",
+        "기자회견",
+        "지방선거",
+        "정청래",
+        "김민석",
+        "오만",
+        "패배",
+        "이언주",
+        "사퇴",
+        "대체불가"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-06-08",
       "title": "노관규 꺾은 손훈모 \"이건 순천 시민의 승리\"",
