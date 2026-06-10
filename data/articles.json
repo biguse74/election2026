@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-06-10T12:56:37+09:00",
+  "updated_at": "2026-06-10T19:05:44+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 351,
+  "count": 352,
   "articles": [
+    {
+      "date": "2026-06-10",
+      "title": "여론조사꽃, 개표결과와 대조하니 6곳 승자 빗나갔다",
+      "url": "https://newtamsa.org/news/6PWLoq",
+      "category": "데이터",
+      "tags": [
+        "여론조사꽃",
+        "하우스이펙트",
+        "서울",
+        "오세훈",
+        "정원오",
+        "경남",
+        "김경수",
+        "박완수",
+        "박종희",
+        "서울대"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-06-10",
       "title": "\"극우 보도 내려라\" 졌던 정준길, 소송비용만 다투다 항고도 각하",
