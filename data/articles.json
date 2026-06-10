@@ -1,9 +1,41 @@
 {
-  "updated_at": "2026-06-09T23:56:20+09:00",
+  "updated_at": "2026-06-10T12:56:37+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 349,
+  "count": 351,
   "articles": [
+    {
+      "date": "2026-06-10",
+      "title": "\"극우 보도 내려라\" 졌던 정준길, 소송비용만 다투다 항고도 각하",
+      "url": "https://newtamsa.org/news/KDvsJc",
+      "category": "단독보도",
+      "tags": [
+        "정준길",
+        "극우",
+        "성파",
+        "조계종",
+        "소송비용",
+        "항고",
+        "각하",
+        "자문변호사"
+      ],
+      "author": "뉴탐사"
+    },
+    {
+      "date": "2026-06-10",
+      "title": "정청래, 대통령 경고 하루 만에 호남 줄세우기…순방 출국장엔 초청 못 받아",
+      "url": "https://newtamsa.org/news/Cc2O7o",
+      "category": "심층분석",
+      "tags": [
+        "정청래",
+        "이재명",
+        "지방선거",
+        "전북",
+        "이원택",
+        "줄세우기"
+      ],
+      "author": "강진구, 김은도"
+    },
     {
       "date": "2026-06-09",
       "title": "이재명 \"오만의 경고\"… 회견 칼끝은 정청래",
