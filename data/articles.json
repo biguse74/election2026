@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-06-11T13:10:12+09:00",
+  "updated_at": "2026-06-11T19:40:09+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 353,
+  "count": 354,
   "articles": [
+    {
+      "date": "2026-06-11",
+      "title": "길어지는 고환율, 윤석열 때와 다른 이유",
+      "url": "https://newtamsa.org/news/7aawKP",
+      "category": "데이터",
+      "tags": [
+        "환율",
+        "유가",
+        "고환율",
+        "흑자",
+        "달러",
+        "원화",
+        "약세"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-06-11",
       "title": "김상욱 울산시장 당선인 \"이번 선거, 민주당이 이겼다 할 수 없다\"",
