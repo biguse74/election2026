@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-06-11T00:40:16+09:00",
+  "updated_at": "2026-06-11T13:10:12+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 352,
+  "count": 353,
   "articles": [
+    {
+      "date": "2026-06-11",
+      "title": "김상욱 울산시장 당선인 \"이번 선거, 민주당이 이겼다 할 수 없다\"",
+      "url": "https://newtamsa.org/news/eSAgOf",
+      "category": "특별기획",
+      "tags": [
+        "울산",
+        "김상욱",
+        "당선인",
+        "인터뷰",
+        "지방선거",
+        "노무현",
+        "오페라하우스",
+        "시내버스",
+        "여소야대"
+      ],
+      "author": "강진구, 김은도"
+    },
     {
       "date": "2026-06-10",
       "title": "여론조사꽃, 개표결과와 대조하니 6곳 승자 빗나갔다",
