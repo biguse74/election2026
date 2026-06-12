@@ -1,9 +1,42 @@
 {
-  "updated_at": "2026-06-12T01:06:15+09:00",
+  "updated_at": "2026-06-12T13:12:05+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 354,
+  "count": 356,
   "articles": [
+    {
+      "date": "2026-06-12",
+      "title": "정천수, 직원 9명 부당해고 다투다 법정서 아들 채용 사실 인정",
+      "url": "https://newtamsa.org/news/t3CkRC",
+      "category": "심층분석",
+      "tags": [
+        "정천수",
+        "정상윤",
+        "열린공감TV",
+        "부당해고",
+        "스튜디오더탐사",
+        "사유화",
+        "피해자코스프레"
+      ],
+      "author": "뉴탐사"
+    },
+    {
+      "date": "2026-06-12",
+      "title": "친일파 송병준 99칸 별장터, 온누리교회로 넘어갔다",
+      "url": "https://newtamsa.org/news/85vGnz",
+      "category": "역사탐사",
+      "tags": [
+        "친일파",
+        "송병준",
+        "온누리교회",
+        "캠프마켓",
+        "별정터",
+        "궁집",
+        "송종헌",
+        "구연수"
+      ],
+      "author": "배기성, 김은도, 김시몬, 강진구"
+    },
     {
       "date": "2026-06-11",
       "title": "길어지는 고환율, 윤석열 때와 다른 이유",
