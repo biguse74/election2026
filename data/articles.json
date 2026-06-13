@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-06-13T00:19:59+09:00",
+  "updated_at": "2026-06-13T12:59:26+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 356,
+  "count": 357,
   "articles": [
+    {
+      "date": "2026-06-13",
+      "title": "이재명 \"여당은 그릇 돼야\"…정청래 향한 우회 경고",
+      "url": "https://newtamsa.org/news/yduLhd",
+      "category": "정치뉴탐사",
+      "tags": [
+        "민주당",
+        "정청래",
+        "이재명",
+        "조국",
+        "김종훈",
+        "울산",
+        "선운사",
+        "김민석",
+        "당대표",
+        "홍성규",
+        "진보당"
+      ],
+      "author": "허재현"
+    },
     {
       "date": "2026-06-12",
       "title": "정천수, 직원 9명 부당해고 다투다 법정서 아들 채용 사실 인정",
