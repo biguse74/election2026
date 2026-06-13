@@ -1,16 +1,15 @@
 {
   "source": "candidates",
-  "today_date": "20260613",
-  "previous_date": "20260612",
+  "today_date": "20260614",
+  "previous_date": "20260613",
   "summary": {
-    "new": 0,
-    "gone": 250,
+    "new": 250,
+    "gone": 0,
     "party": 0,
     "status": 0
   },
   "samples": {
-    "new": [],
-    "gone": [
+    "new": [
       {
         "name": "윤기서",
         "jdName": "더불어민주당",
@@ -152,12 +151,12 @@
         "sgTypecode": "6"
       }
     ],
+    "gone": [],
     "party": [],
     "status": []
   },
   "full": {
-    "new": [],
-    "gone": [
+    "new": [
       {
         "name": "윤기서",
         "jdName": "더불어민주당",
@@ -1909,8 +1908,9 @@
         "sgTypecode": "6"
       }
     ],
+    "gone": [],
     "party": [],
     "status": []
   },
-  "generated_at": "2026-06-13T05:35:51+09:00"
+  "generated_at": "2026-06-14T05:02:49+09:00"
 }
