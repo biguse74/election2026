@@ -1,9 +1,42 @@
 {
-  "updated_at": "2026-06-13T23:04:00+09:00",
+  "updated_at": "2026-06-14T13:18:26+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 357,
+  "count": 359,
   "articles": [
+    {
+      "date": "2026-06-14",
+      "title": "김관영 \"정청래 사당화 심판, 42%가 발판\"",
+      "url": "https://newtamsa.org/news/sGgtnD",
+      "category": "호남뉴탐사",
+      "tags": [
+        "전북지사",
+        "김관영",
+        "정청래",
+        "이원택",
+        "송영길",
+        "호남",
+        "인터뷰",
+        "조승래"
+      ],
+      "author": "강진구, 박대용"
+    },
+    {
+      "date": "2026-06-14",
+      "title": "정청래, 면전 \"당권은 짧다\"에 하늘만 봤다",
+      "url": "https://newtamsa.org/news/q48R9S",
+      "category": "단독보도",
+      "tags": [
+        "정청래",
+        "광주",
+        "김대중컨센션센터",
+        "5.18묘지",
+        "최고위",
+        "황명선",
+        "강득구"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-06-13",
       "title": "이재명 \"여당은 그릇 돼야\"…정청래 향한 우회 경고",
