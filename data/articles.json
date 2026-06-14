@@ -1,9 +1,23 @@
 {
-  "updated_at": "2026-06-14T18:38:23+09:00",
+  "updated_at": "2026-06-14T23:07:57+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 359,
+  "count": 360,
   "articles": [
+    {
+      "date": "2026-06-14",
+      "title": "조승래 '72% 당선 역대급' 팩트체크…2018년 당선율은 83%였다",
+      "url": "https://newtamsa.org/news/Ag5CVO",
+      "category": "팩트체크",
+      "tags": [
+        "민주당",
+        "조승래",
+        "당선율",
+        "득표율",
+        "국민의힘"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-06-14",
       "title": "김관영 \"정청래 사당화 심판, 42%가 발판\"",
