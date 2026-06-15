@@ -1,9 +1,33 @@
 {
-  "updated_at": "2026-06-15T13:41:32+09:00",
+  "updated_at": "2026-06-15T21:20:06+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 362,
+  "count": 363,
   "articles": [
+    {
+      "date": "2026-06-15",
+      "title": "두 법원 \"두진서 발언 허위사실 적시 명예훼손\"… 총 1300만원 손배",
+      "url": "https://newtamsa.org/news/-yvYVN",
+      "category": "단독보도",
+      "tags": [
+        "안양지원",
+        "손해배상",
+        "강진구",
+        "두진서",
+        "고양지원",
+        "1300만원",
+        "비방목적",
+        "허위조작정보",
+        "절도",
+        "횡령",
+        "김용민",
+        "김두일",
+        "최진숙",
+        "서정필",
+        "정천수"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-06-15",
       "title": "심덕섭 고창군, 맞춤형 조례로 군재산 특혜 매각 의혹",
