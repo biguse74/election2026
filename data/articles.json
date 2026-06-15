@@ -1,9 +1,41 @@
 {
-  "updated_at": "2026-06-14T23:07:57+09:00",
+  "updated_at": "2026-06-15T13:41:32+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 360,
+  "count": 362,
   "articles": [
+    {
+      "date": "2026-06-15",
+      "title": "심덕섭 고창군, 맞춤형 조례로 군재산 특혜 매각 의혹",
+      "url": "https://newtamsa.org/news/GpuT7s",
+      "category": "호남뉴탐사",
+      "tags": [
+        "전북",
+        "고창군",
+        "심덕섭",
+        "고추종합유통센터",
+        "수의계약",
+        "전북매일신문",
+        "신익희",
+        "에스비푸드"
+      ],
+      "author": "허경혜, 강진구"
+    },
+    {
+      "date": "2026-06-15",
+      "title": "248표로 민주당 심판한 사순문 장흥군수 당선인 인터뷰",
+      "url": "https://newtamsa.org/news/kfEGyw",
+      "category": "호남뉴탐사",
+      "tags": [
+        "전남",
+        "장흥군",
+        "사순문",
+        "조국혁신당",
+        "정청래",
+        "김성"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-06-14",
       "title": "조승래 '72% 당선 역대급' 팩트체크…2018년 당선율은 83%였다",
