@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-06-16T13:25:26+09:00",
+  "updated_at": "2026-06-16T20:14:46+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 364,
+  "count": 365,
   "articles": [
+    {
+      "date": "2026-06-16",
+      "title": "국회 입법 공백, 강제노동 관세 12.5% 빌미 됐다",
+      "url": "https://newtamsa.org/news/r6IGS-",
+      "category": "데이터",
+      "tags": [
+        "미국",
+        "강제노동",
+        "관세",
+        "신안",
+        "소금",
+        "국회",
+        "반도체"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-06-16",
       "title": "정청래 연임 승부수, 김어준 방송이 깔았다",
