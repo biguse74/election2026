@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-06-17T01:58:16+09:00",
+  "updated_at": "2026-06-17T13:19:27+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 365,
+  "count": 366,
   "articles": [
+    {
+      "date": "2026-06-17",
+      "title": "윤석열 규제완화 뒤 검증 안 된 니코틴 300년치 쌓였다",
+      "url": "https://newtamsa.org/news/cWUdp6",
+      "category": "단독보도",
+      "tags": [
+        "윤석열",
+        "규제폐지",
+        "전자담배",
+        "유해물질",
+        "탈루액",
+        "국회",
+        "사재기",
+        "니코틴",
+        "담배"
+      ],
+      "author": "김시몬, 김은도, 강진구"
+    },
     {
       "date": "2026-06-16",
       "title": "국회 입법 공백, 강제노동 관세 12.5% 빌미 됐다",
