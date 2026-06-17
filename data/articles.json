@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-06-17T13:19:27+09:00",
+  "updated_at": "2026-06-17T20:00:44+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 366,
+  "count": 367,
   "articles": [
+    {
+      "date": "2026-06-17",
+      "title": "전쟁은 멈추지만, 핵과 통행료는 60일 뒤로",
+      "url": "https://newtamsa.org/news/-dR_ME",
+      "category": "데이터",
+      "tags": [
+        "전쟁",
+        "미국",
+        "이란",
+        "트럼프",
+        "핵",
+        "통행료",
+        "호르무즈",
+        "60일",
+        "IAEA"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-06-17",
       "title": "윤석열 규제완화 뒤 검증 안 된 니코틴 300년치 쌓였다",
