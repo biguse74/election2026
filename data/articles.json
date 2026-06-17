@@ -1,9 +1,23 @@
 {
-  "updated_at": "2026-06-17T20:00:44+09:00",
+  "updated_at": "2026-06-18T00:37:49+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 367,
+  "count": 368,
   "articles": [
+    {
+      "date": "2026-05-31",
+      "title": "뇌물 준 업체 밀어주고 경쟁사 말려 죽인 진도군수",
+      "url": "https://newtamsa.org/news/z9qCMs",
+      "category": "현장라이브",
+      "tags": [
+        "전남",
+        "김희수",
+        "해당행위",
+        "박지원",
+        "진도군"
+      ],
+      "author": "강진구, 정선호"
+    },
     {
       "date": "2026-06-17",
       "title": "전쟁은 멈추지만, 핵과 통행료는 60일 뒤로",
