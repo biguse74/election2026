@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-06-18T00:37:49+09:00",
+  "updated_at": "2026-06-18T13:11:46+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 368,
+  "count": 369,
   "articles": [
+    {
+      "date": "2026-06-18",
+      "title": "김두겸 울산시, 간판뿐인 업체에 수의계약 14억",
+      "url": "https://newtamsa.org/news/f8-vru",
+      "category": "단독보도",
+      "tags": [
+        "울산시",
+        "김두겸",
+        "수의계약",
+        "김상욱",
+        "S엔터테인먼트",
+        "브이컴퍼니",
+        "출입증"
+      ],
+      "author": "김은도, 강진구"
+    },
     {
       "date": "2026-05-31",
       "title": "뇌물 준 업체 밀어주고 경쟁사 말려 죽인 진도군수",
