@@ -1,7 +1,7 @@
 {
   "source": "candidates",
-  "today_date": "20260621",
-  "previous_date": "20260620",
+  "today_date": "20260622",
+  "previous_date": "20260621",
   "summary": {
     "new": 0,
     "gone": 0,
@@ -20,5 +20,5 @@
     "party": [],
     "status": []
   },
-  "generated_at": "2026-06-21T05:03:51+09:00"
+  "generated_at": "2026-06-22T05:11:37+09:00"
 }
