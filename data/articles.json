@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-06-21T23:15:52+09:00",
+  "updated_at": "2026-06-22T13:27:48+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 373,
+  "count": 374,
   "articles": [
+    {
+      "date": "2026-06-22",
+      "title": "후보 검증보도 지역언론에 압수수색·줄소송…정동영도 반복 고소",
+      "url": "https://newtamsa.org/news/IXUW5L",
+      "category": "호남뉴탐사",
+      "tags": [
+        "정청래",
+        "당대표",
+        "호남",
+        "이충현",
+        "매일전북일보",
+        "열린순창",
+        "최육상",
+        "최영일",
+        "이미선",
+        "임종명"
+      ],
+      "author": "허경혜, 강진구"
+    },
     {
       "date": "2026-06-21",
       "title": "정청래 연임에 싸늘한 호남…전북 \"이원택 찍었어도 당대표는 아니다\"",
