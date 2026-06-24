@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-06-23T23:53:41+09:00",
+  "updated_at": "2026-06-24T12:48:00+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 375,
+  "count": 376,
   "articles": [
+    {
+      "date": "2026-06-24",
+      "title": "청담동 술자리 사건 증거 만든 서초서, 첼리스트 안 부르고 무고 불송치",
+      "url": "https://newtamsa.org/news/TFV4kR",
+      "category": "단독보도",
+      "tags": [
+        "서초경찰서",
+        "청담동",
+        "술자리",
+        "방배경찰서",
+        "첼리스트",
+        "불송치",
+        "한동훈",
+        "당선",
+        "은폐"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-06-23",
       "title": "[2028 총선 시뮬레이션] 민주당 이대로면 수도권 22곳 위태, 3곳은 재보궐 방어",
