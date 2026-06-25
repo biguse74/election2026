@@ -1,9 +1,31 @@
 {
-  "updated_at": "2026-06-24T23:35:41+09:00",
+  "updated_at": "2026-06-25T12:47:12+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 376,
+  "count": 377,
   "articles": [
+    {
+      "date": "2026-06-25",
+      "title": "박수종 22명 검사 통화내역…주진우·심우정·이원석 9년째 무응답",
+      "url": "https://newtamsa.org/news/7B3ssV",
+      "category": "특별기획",
+      "tags": [
+        "박수종",
+        "주진우",
+        "심우정",
+        "이원석",
+        "검사",
+        "스폰서",
+        "박재벌",
+        "뉴스타파",
+        "브로커",
+        "김희석",
+        "보완수사권",
+        "검찰",
+        "검찰개혁"
+      ],
+      "author": "권지연, 강진구"
+    },
     {
       "date": "2026-06-24",
       "title": "청담동 술자리 사건 증거 만든 서초서, 첼리스트 안 부르고 무고 불송치",
