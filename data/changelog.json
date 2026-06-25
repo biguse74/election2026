@@ -1,24 +1,320 @@
 {
   "source": "candidates",
-  "today_date": "20260625",
-  "previous_date": "20260624",
+  "today_date": "20260626",
+  "previous_date": "20260625",
   "summary": {
     "new": 0,
-    "gone": 0,
+    "gone": 22,
     "party": 0,
     "status": 0
   },
   "samples": {
     "new": [],
-    "gone": [],
+    "gone": [
+      {
+        "name": "마정연",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "허지훈",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김예영",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김규리",
+        "jdName": "기본소득당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "양유혁",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "공승희",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "손명숙",
+        "jdName": "국민연합",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김미림",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "진태영",
+        "jdName": "정의당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "이창실",
+        "jdName": "공화당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "윤광남",
+        "jdName": "공화당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "박해윤",
+        "jdName": "진보당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김성기",
+        "jdName": "진보당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "정성임",
+        "jdName": "개혁신당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김봉환",
+        "jdName": "개혁신당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김현",
+        "jdName": "친미연합",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "정숙경",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "정용채",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "장은주",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "성기수",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      }
+    ],
     "party": [],
     "status": []
   },
   "full": {
     "new": [],
-    "gone": [],
+    "gone": [
+      {
+        "name": "마정연",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "허지훈",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김예영",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김규리",
+        "jdName": "기본소득당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "양유혁",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "공승희",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "손명숙",
+        "jdName": "국민연합",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김미림",
+        "jdName": "국민의힘",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "진태영",
+        "jdName": "정의당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "이창실",
+        "jdName": "공화당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "윤광남",
+        "jdName": "공화당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "박해윤",
+        "jdName": "진보당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김성기",
+        "jdName": "진보당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "정성임",
+        "jdName": "개혁신당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김봉환",
+        "jdName": "개혁신당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김현",
+        "jdName": "친미연합",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "정숙경",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "정용채",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "장은주",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "성기수",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김두래",
+        "jdName": "더불어민주당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      },
+      {
+        "name": "김아랑",
+        "jdName": "국민대통합당",
+        "sdName": "경상북도",
+        "sggName": "경상북도",
+        "sgTypecode": "8"
+      }
+    ],
     "party": [],
     "status": []
   },
-  "generated_at": "2026-06-25T05:18:39+09:00"
+  "generated_at": "2026-06-26T05:30:41+09:00"
 }
