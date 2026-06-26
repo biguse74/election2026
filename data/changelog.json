@@ -1,16 +1,15 @@
 {
   "source": "candidates",
-  "today_date": "20260626",
-  "previous_date": "20260625",
+  "today_date": "20260627",
+  "previous_date": "20260626",
   "summary": {
-    "new": 0,
-    "gone": 22,
+    "new": 22,
+    "gone": 0,
     "party": 0,
     "status": 0
   },
   "samples": {
-    "new": [],
-    "gone": [
+    "new": [
       {
         "name": "마정연",
         "jdName": "국민의힘",
@@ -152,12 +151,12 @@
         "sgTypecode": "8"
       }
     ],
+    "gone": [],
     "party": [],
     "status": []
   },
   "full": {
-    "new": [],
-    "gone": [
+    "new": [
       {
         "name": "마정연",
         "jdName": "국민의힘",
@@ -313,8 +312,9 @@
         "sgTypecode": "8"
       }
     ],
+    "gone": [],
     "party": [],
     "status": []
   },
-  "generated_at": "2026-06-26T05:30:41+09:00"
+  "generated_at": "2026-06-27T05:18:32+09:00"
 }
