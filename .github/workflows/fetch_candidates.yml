@@ -4,8 +4,8 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 on:
-  schedule:
-    - cron: '15 18 * * *'   # 매일 KST 03:15 (예비와 15분 시차)
+  # schedule:   # 선거(6/3) 종료로 일일 스냅샷 비활성화 — 2026-06-28. 필요시 복구.
+  #   - cron: '15 18 * * *'   # 매일 KST 03:15 (예비와 15분 시차)
   workflow_dispatch:
 
 jobs:

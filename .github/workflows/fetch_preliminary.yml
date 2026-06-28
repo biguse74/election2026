@@ -1,8 +1,8 @@
 name: 예비후보자 일일 스냅샷
 
 on:
-  schedule:
-    - cron: '0 18 * * *'
+  # schedule:   # 예비후보 단계 종료로 비활성화 — 2026-06-28. 필요시 복구.
+  #   - cron: '0 18 * * *'
   workflow_dispatch:
 
 jobs:

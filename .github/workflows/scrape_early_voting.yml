@@ -10,9 +10,9 @@ name: 사전투표율 스크래핑 (info.nec.go.kr)
 #   한 dispatch = 단발 실행(스크랩 1회). 스크래퍼 자체가 07시~현재 전 시각을
 #   한 번에 자가치유 수집하므로 단발로도 누락분을 메운다. 외부 cron 5분 주기가 재시도 담당.
 on:
-  workflow_dispatch:        # 주 트리거 — 외부 cron이 5분마다 호출
-  schedule:
-    - cron: '7,17,27,37,47,57 * * * *'   # 백업, 정각/혼잡 회피 (10분 간격)
+  workflow_dispatch:        # 수동 실행만 유지
+  # schedule:   # 사전투표(5/29~30) 종료로 비활성화 — 2026-06-28. 필요시 복구.
+  #   - cron: '7,17,27,37,47,57 * * * *'   # 백업, 정각/혼잡 회피 (10분 간격)
 
 concurrency:
   group: early-voting-scrape
