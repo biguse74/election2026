@@ -1,9 +1,24 @@
 {
-  "updated_at": "2026-06-28T22:51:04+09:00",
+  "updated_at": "2026-06-29T13:08:42+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 380,
+  "count": 381,
   "articles": [
+    {
+      "date": "2026-06-29",
+      "title": "김산 무안군수, 세계유산 갯벌 완충구역에 400MW 태양광 허가",
+      "url": "https://newtamsa.org/news/_qiB-M",
+      "category": "호남뉴탐사",
+      "tags": [
+        "무안군수",
+        "김산",
+        "태양광",
+        "갯벌",
+        "무안타임스",
+        "정영호"
+      ],
+      "author": "허경혜, 강진구"
+    },
     {
       "date": "2026-06-28",
       "title": "민주당, 호남 지방의회 의장단·상임위원장 독식",
