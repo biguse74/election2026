@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-06-30T23:23:46+09:00",
+  "updated_at": "2026-07-01T13:05:40+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 382,
+  "count": 383,
   "articles": [
+    {
+      "date": "2026-07-01",
+      "title": "국힘 의원 땅, 영남에 271필지 149억…호남의 3배",
+      "url": "https://newtamsa.org/news/zDrQIW",
+      "category": "심층분석",
+      "tags": [
+        "호남",
+        "반도체",
+        "투자",
+        "토지",
+        "국회의원",
+        "영남",
+        "국민의힘",
+        "민주당"
+      ],
+      "author": "박대용, 강진구"
+    },
     {
       "date": "2026-06-30",
       "title": "유시민 역풍 속 정청래 고립…당권 키 쥔 '양정철'",
