@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-01T23:40:59+09:00",
+  "updated_at": "2026-07-02T12:47:00+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 383,
+  "count": 384,
   "articles": [
+    {
+      "date": "2026-07-02",
+      "title": "박수종 봐주기 불기소, \"문재인 정부 검찰도 22명 검사 덮었다\"",
+      "url": "https://newtamsa.org/news/SxiFSv",
+      "category": "탐사보도",
+      "tags": [
+        "박수종",
+        "주진우",
+        "검찰개혁",
+        "김희석",
+        "유준원",
+        "검사",
+        "저축은행",
+        "이원석",
+        "상상인"
+      ],
+      "author": "권지연, 강진구"
+    },
     {
       "date": "2026-07-01",
       "title": "국힘 의원 땅, 영남에 271필지 149억…호남의 3배",
