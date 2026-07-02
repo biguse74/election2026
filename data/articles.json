@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-07-02T12:47:00+09:00",
+  "updated_at": "2026-07-02T18:16:00+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 384,
+  "count": 385,
   "articles": [
+    {
+      "date": "2026-07-02",
+      "title": "정청래 여론조사 앞서도 결선 가면 불리, 3위 표가 승부 가른다",
+      "url": "https://newtamsa.org/news/MB1Jvh",
+      "category": "데이터",
+      "tags": [
+        "정청래",
+        "김민석",
+        "이재명",
+        "당대표",
+        "연임",
+        "전당대회",
+        "시뮬레이션"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-07-02",
       "title": "박수종 봐주기 불기소, \"문재인 정부 검찰도 22명 검사 덮었다\"",
