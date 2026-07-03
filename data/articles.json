@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-02T23:05:51+09:00",
+  "updated_at": "2026-07-03T12:28:00+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 385,
+  "count": 386,
   "articles": [
+    {
+      "date": "2026-07-03",
+      "title": "조계원 \"정청래 승리방정식, 이번엔 안 통한다\"",
+      "url": "https://newtamsa.org/news/vmfEb5",
+      "category": "뉴탐사 인사이트",
+      "tags": [
+        "민주당",
+        "조계원",
+        "여수을",
+        "정청래",
+        "승리방정식",
+        "1인1표",
+        "김어준",
+        "친명",
+        "반명"
+      ],
+      "author": "강진구, 김은도"
+    },
     {
       "date": "2026-07-02",
       "title": "정청래 여론조사 앞서도 결선 가면 불리, 3위 표가 승부 가른다",
