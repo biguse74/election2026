@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-07-07T00:37:30+09:00",
+  "updated_at": "2026-07-07T12:36:04+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 387,
+  "count": 388,
   "articles": [
+    {
+      "date": "2026-07-07",
+      "title": "김민석, 유령당원 우려 투표율 제고로 정면돌파…김어준 '정청래 편들기' 아전인수",
+      "url": "https://newtamsa.org/news/wijgfc",
+      "category": "심층분석",
+      "tags": [
+        "민주당",
+        "당대표",
+        "전당대회",
+        "김민석",
+        "유령당원",
+        "투표율",
+        "김어준",
+        "정청래",
+        "여론조사",
+        "왜곡",
+        "송영길"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-07-05",
       "title": "36세 평당원 김보미, 민주당 당대표 첫 출마 선언 \"가짜 1인1표 심판하겠다\"",
