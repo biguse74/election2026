@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-07T23:39:37+09:00",
+  "updated_at": "2026-07-08T11:51:15+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 388,
+  "count": 389,
   "articles": [
+    {
+      "date": "2026-07-08",
+      "title": "헌인마을 8500억 부실대출 폭탄, 오세훈·전성수 인허가가 불씨",
+      "url": "https://newtamsa.org/news/t-Z2TL",
+      "category": "단독보도",
+      "tags": [
+        "헌인마을",
+        "오세훈",
+        "전성수",
+        "부실대출",
+        "분양",
+        "헌인타운",
+        "도시개발사업",
+        "원주민",
+        "재산세"
+      ],
+      "author": "강진구, 김은도"
+    },
     {
       "date": "2026-07-07",
       "title": "김민석, 유령당원 우려 투표율 제고로 정면돌파…김어준 '정청래 편들기' 아전인수",
