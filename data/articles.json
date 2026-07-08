@@ -1,9 +1,24 @@
 {
-  "updated_at": "2026-07-08T17:32:07+09:00",
+  "updated_at": "2026-07-08T23:14:53+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 389,
+  "count": 390,
   "articles": [
+    {
+      "date": "2026-07-08",
+      "title": "정천수 '폭행 유죄' 허위영상 항고 기각…서울고법 \"무죄 당일 게시\" 명시",
+      "url": "https://newtamsa.org/news/Lvhbxu",
+      "category": "아카이브",
+      "tags": [
+        "정천수",
+        "열린공감",
+        "폭행",
+        "가처분",
+        "서울고법",
+        "이제일"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-07-08",
       "title": "헌인마을 8500억 부실대출 폭탄, 오세훈·전성수 인허가가 불씨",
