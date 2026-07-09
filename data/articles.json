@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-07-09T12:29:03+09:00",
+  "updated_at": "2026-07-09T18:47:36+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 391,
+  "count": 392,
   "articles": [
+    {
+      "date": "2026-07-09",
+      "title": "SK하이닉스, 국내 소각분보다 많은 1779만주 미국서 발행",
+      "url": "https://newtamsa.org/news/duv94K",
+      "category": "데이터",
+      "tags": [
+        "SK하이닉스",
+        "미국",
+        "ADR",
+        "코스피",
+        "상법",
+        "자사주",
+        "소각"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-07-09",
       "title": "한동수 감찰부장 시절, 김영일 견책·검사 22명 무혐의",
