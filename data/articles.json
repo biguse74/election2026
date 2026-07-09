@@ -1,9 +1,32 @@
 {
-  "updated_at": "2026-07-08T23:14:53+09:00",
+  "updated_at": "2026-07-09T12:29:03+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 390,
+  "count": 391,
   "articles": [
+    {
+      "date": "2026-07-09",
+      "title": "한동수 감찰부장 시절, 김영일 견책·검사 22명 무혐의",
+      "url": "https://newtamsa.org/news/tOPLya",
+      "category": "단독보도",
+      "tags": [
+        "보완수사권",
+        "이성윤",
+        "한동수",
+        "검찰",
+        "박수종",
+        "상상인",
+        "문재인",
+        "이원석",
+        "박주민",
+        "심우정",
+        "주진우",
+        "김영일",
+        "한동훈",
+        "신자용"
+      ],
+      "author": "권지연, 강진구"
+    },
     {
       "date": "2026-07-08",
       "title": "정천수 '폭행 유죄' 허위영상 항고 기각…서울고법 \"무죄 당일 게시\" 명시",
