@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-07-10T00:14:07+09:00",
+  "updated_at": "2026-07-10T12:31:42+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 392,
+  "count": 393,
   "articles": [
+    {
+      "date": "2026-07-10",
+      "title": "정청래식 공천 기록한 '불의 고리' 출간 … 뉴탐사 6·3 호남 백서",
+      "url": "https://newtamsa.org/news/ZfvuuL",
+      "category": "호남뉴탐사",
+      "tags": [
+        "호남백서",
+        "뉴탐사",
+        "출판",
+        "불의고리",
+        "지방선거",
+        "민주당",
+        "정청래",
+        "김어준",
+        "장인재",
+        "양정철"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-07-09",
       "title": "SK하이닉스, 국내 소각분보다 많은 1779만주 미국서 발행",
