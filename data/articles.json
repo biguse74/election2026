@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-07-11T22:23:19+09:00",
+  "updated_at": "2026-07-12T11:55:46+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 394,
+  "count": 395,
   "articles": [
+    {
+      "date": "2026-07-12",
+      "title": "정청래 연임 도전 첫 특강, 신천지 유착 의혹 호남일보가 주최",
+      "url": "https://newtamsa.org/news/4p9H85",
+      "category": "호남뉴탐사",
+      "tags": [
+        "정청래",
+        "호남일보",
+        "김덕천",
+        "신천지",
+        "이만희",
+        "지재섭",
+        "베드로지파",
+        "광주"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-07-10",
       "title": "정천수, 해고 직원 임금 채권에 막혀 추심 실패",
