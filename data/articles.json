@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-07-12T22:23:43+09:00",
+  "updated_at": "2026-07-13T11:57:24+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 395,
+  "count": 396,
   "articles": [
+    {
+      "date": "2026-07-13",
+      "title": "김용 \"이재명 정부 성공 확신 주는 사람이 당대표 돼야\"",
+      "url": "https://newtamsa.org/news/lwgbxh",
+      "category": "호남뉴탐사",
+      "tags": [
+        "김용",
+        "최고위원",
+        "민주당",
+        "인터뷰",
+        "전당대회",
+        "전남",
+        "장흥군",
+        "여자정청래",
+        "윤명희",
+        "후보매수",
+        "도의원",
+        "무투표"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-07-12",
       "title": "정청래 연임 도전 첫 특강, 신천지 유착 의혹 호남일보가 주최",
