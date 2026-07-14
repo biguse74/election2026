@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-07-13T23:38:21+09:00",
+  "updated_at": "2026-07-14T11:38:33+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 396,
+  "count": 397,
   "articles": [
+    {
+      "date": "2026-07-14",
+      "title": "정청래 강연 호남일보, 신천지 유착 의혹 짙어졌다",
+      "url": "https://newtamsa.org/news/jbwWmc",
+      "category": "단독보도",
+      "tags": [
+        "호남일보",
+        "정청래",
+        "신천지",
+        "구독자",
+        "광고",
+        "민주당",
+        "당대표"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-07-13",
       "title": "김용 \"이재명 정부 성공 확신 주는 사람이 당대표 돼야\"",
