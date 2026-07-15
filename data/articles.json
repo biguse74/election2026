@@ -1,9 +1,24 @@
 {
-  "updated_at": "2026-07-14T22:48:00+09:00",
+  "updated_at": "2026-07-15T11:36:24+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 397,
+  "count": 398,
   "articles": [
+    {
+      "date": "2026-07-15",
+      "title": "호남일보, 정청래만 콕 찍어 초청… 신천지 의혹 사주가 판 깔았다",
+      "url": "https://newtamsa.org/news/F0KnhE",
+      "category": "단독보도",
+      "tags": [
+        "신천지",
+        "정청래",
+        "호남일보",
+        "김덕천",
+        "편집국장",
+        "베드로지파"
+      ],
+      "author": "강진구, 김은도"
+    },
     {
       "date": "2026-07-14",
       "title": "정청래 강연 호남일보, 신천지 유착 의혹 짙어졌다",
