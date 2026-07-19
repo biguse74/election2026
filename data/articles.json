@@ -1,9 +1,31 @@
 {
-  "updated_at": "2026-07-18T22:19:20+09:00",
+  "updated_at": "2026-07-19T11:53:11+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 403,
+  "count": 404,
   "articles": [
+    {
+      "date": "2026-07-19",
+      "title": "민주당 공천 없이 이긴 당선자들 \"받았으면 오히려 떨어졌다\"",
+      "url": "https://newtamsa.org/news/9GATS4",
+      "category": "호남뉴탐사",
+      "tags": [
+        "불의고리",
+        "출판기념회",
+        "민주당",
+        "공천",
+        "손혜원",
+        "김태성",
+        "신안군",
+        "사순문",
+        "장흥군",
+        "김신",
+        "완도군",
+        "공천재난",
+        "호남백서"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-07-15",
       "title": "손솔 의원, 법사위에 형사소송법 개정 방향 검토의견서 제출",
