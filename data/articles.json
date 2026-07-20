@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-19T22:20:49+09:00",
+  "updated_at": "2026-07-20T12:21:55+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 404,
+  "count": 405,
   "articles": [
+    {
+      "date": "2026-07-20",
+      "title": "정청래 특강 깔아준 김덕천 “신천지냐” 묻자 손 젓고 떠났다",
+      "url": "https://newtamsa.org/news/iX-RvZ",
+      "category": "호남뉴탐사",
+      "tags": [
+        "호남일보",
+        "김덕천",
+        "김병우",
+        "조기철",
+        "명촉",
+        "신천지",
+        "정청래",
+        "이희자",
+        "전당대회"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-07-19",
       "title": "민주당 공천 없이 이긴 당선자들 \"받았으면 오히려 떨어졌다\"",
