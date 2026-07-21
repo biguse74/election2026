@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-20T23:09:27+09:00",
+  "updated_at": "2026-07-21T11:49:44+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 405,
+  "count": 406,
   "articles": [
+    {
+      "date": "2026-07-21",
+      "title": "정청래 승부처 호남 권리당원 51만…신천지 잠식 우려 커진다",
+      "url": "https://newtamsa.org/news/Le-GoJ",
+      "category": "특별기획",
+      "tags": [
+        "신천지",
+        "정청래",
+        "1인1표",
+        "호남",
+        "광주",
+        "김덕천",
+        "정준호",
+        "모략포교",
+        "이희자"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-07-20",
       "title": "정청래 특강 깔아준 김덕천 “신천지냐” 묻자 손 젓고 떠났다",
