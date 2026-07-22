@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-21T22:55:04+09:00",
+  "updated_at": "2026-07-22T11:47:38+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 406,
+  "count": 407,
   "articles": [
+    {
+      "date": "2026-07-22",
+      "title": "송영길 \"신천지 11만명 입당이 윤석열 만들었다\"…홍준표 증언 공개",
+      "url": "https://newtamsa.org/news/1iz9mp",
+      "category": "특별기획",
+      "tags": [
+        "정청래",
+        "신천지",
+        "송영길",
+        "이만희",
+        "홍준표",
+        "국민의힘",
+        "윤석열",
+        "소나무당",
+        "이재명"
+      ],
+      "author": "강진구, 박대용, 배기성"
+    },
     {
       "date": "2026-07-21",
       "title": "정청래 승부처 호남 권리당원 51만…신천지 잠식 우려 커진다",
