@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-23T11:53:29+09:00",
+  "updated_at": "2026-07-23T17:33:07+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 409,
+  "count": 410,
   "articles": [
+    {
+      "date": "2026-07-23",
+      "title": "정청래 여론조사 1위, 결선이든 선호투표든 2순위에서 막힌다",
+      "url": "https://newtamsa.org/news/Y_zrl4",
+      "category": "데이터",
+      "tags": [
+        "정청래",
+        "여론조사",
+        "결선투표",
+        "선호투표",
+        "권리당원",
+        "당심",
+        "호남",
+        "김민석",
+        "송영길"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-07-23",
       "title": "IDS홀딩스 은닉자금 4년 방치···보완수사권 없애도 남는 검찰 암장",
