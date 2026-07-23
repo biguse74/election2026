@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-07-23T17:33:07+09:00",
+  "updated_at": "2026-07-23T23:04:27+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 410,
+  "count": 411,
   "articles": [
+    {
+      "date": "2026-07-23",
+      "title": "김건희 첫 결혼식 반주자, 법정서 '쥴리 녹취' 인정",
+      "url": "https://newtamsa.org/news/N5KOVc",
+      "category": "현장라이브",
+      "tags": [
+        "김건희",
+        "쥴리",
+        "결혼식",
+        "반주자",
+        "예명",
+        "증인",
+        "안해욱",
+        "정대택",
+        "최은순",
+        "조남욱",
+        "양재택"
+      ],
+      "author": "강진구"
+    },
     {
       "date": "2026-07-23",
       "title": "정청래 여론조사 1위, 결선이든 선호투표든 2순위에서 막힌다",
