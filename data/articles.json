@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-22T22:59:50+09:00",
+  "updated_at": "2026-07-23T11:53:29+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 408,
+  "count": 409,
   "articles": [
+    {
+      "date": "2026-07-23",
+      "title": "IDS홀딩스 은닉자금 4년 방치···보완수사권 없애도 남는 검찰 암장",
+      "url": "https://newtamsa.org/news/d38y_u",
+      "category": "단독보도",
+      "tags": [
+        "주진우",
+        "김성훈",
+        "검찰",
+        "검사",
+        "김희석",
+        "박수종",
+        "신천지",
+        "정청래",
+        "암장"
+      ],
+      "author": "권지연, 강진구"
+    },
     {
       "date": "2026-07-22",
       "title": "천공 불륜 의혹 보도 강진구 기자, 항소심도 무죄",
