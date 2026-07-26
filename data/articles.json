@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-07-25T22:37:31+09:00",
+  "updated_at": "2026-07-26T11:56:11+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 413,
+  "count": 414,
   "articles": [
+    {
+      "date": "2026-07-26",
+      "title": "정청래 초청한 호남일보 김덕천 회장, 마약 투약 유죄",
+      "url": "https://newtamsa.org/news/GW2_EG",
+      "category": "호남뉴탐사",
+      "tags": [
+        "호남일보",
+        "김덕천",
+        "마약",
+        "유죄",
+        "필로폰",
+        "대마",
+        "정청래",
+        "윤상현",
+        "서정식",
+        "호남향우회"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-07-25",
       "title": "두진서 패소 뒤 시작된 '호남열공'…두진서도 박우량도 변호인은 이제일",
