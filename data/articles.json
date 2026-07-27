@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-26T22:25:50+09:00",
+  "updated_at": "2026-07-27T12:21:13+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 414,
+  "count": 415,
   "articles": [
+    {
+      "date": "2026-07-27",
+      "title": "5·18 마지막 시민군 나명관 \"5·18 단체, 신천지에 점령당했다\"",
+      "url": "https://newtamsa.org/news/JLYZ75",
+      "category": "호남뉴탐사",
+      "tags": [
+        "신천지",
+        "광주",
+        "5·18",
+        "나명관",
+        "양희승",
+        "문흥식",
+        "조규연",
+        "이정호",
+        "황일봉"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-07-26",
       "title": "정청래 초청한 호남일보 김덕천 회장, 마약 투약 유죄",
