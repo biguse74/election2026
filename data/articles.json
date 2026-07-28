@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-07-28T17:36:29+09:00",
+  "updated_at": "2026-07-28T23:10:28+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 416,
+  "count": 417,
   "articles": [
+    {
+      "date": "2026-07-28",
+      "title": "\"우리가 신천지냐\" 정청래 지지자들, 뉴탐사 취재진 폭행",
+      "url": "https://newtamsa.org/news/XxTM5l",
+      "category": "긴급보도",
+      "tags": [
+        "정청래",
+        "전주",
+        "폭행",
+        "취재방해",
+        "강진구",
+        "시사타파",
+        "이종원",
+        "이진련",
+        "이낙연"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-07-28",
       "title": "신천지 전 총회 간부 \"2021년 경선 때 이낙연 지지 지령 내려왔다\"",
