@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-07-27T23:38:58+09:00",
+  "updated_at": "2026-07-28T11:40:07+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 415,
+  "count": 416,
   "articles": [
+    {
+      "date": "2026-07-28",
+      "title": "신천지 전 총회 간부 \"2021년 경선 때 이낙연 지지 지령 내려왔다\"",
+      "url": "https://newtamsa.org/news/TuSGyt",
+      "category": "단독보도",
+      "tags": [
+        "신천지",
+        "이만희",
+        "근우회",
+        "이희자",
+        "정청래",
+        "노사모",
+        "노무현",
+        "평화의전도사",
+        "김대중",
+        "고동안",
+        "합수본",
+        "이낙연"
+      ],
+      "author": "허재현, 강진구"
+    },
     {
       "date": "2026-07-27",
       "title": "5·18 마지막 시민군 나명관 \"5·18 단체, 신천지에 점령당했다\"",
