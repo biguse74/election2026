@@ -1,9 +1,69 @@
 {
-  "updated_at": "2026-07-29T11:46:52+09:00",
+  "updated_at": "2026-07-29T17:43:26+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 418,
+  "count": 424,
   "articles": [
+    {
+      "date": "2026-07-29",
+      "title": "정청래·김민석 선호투표, 집계 대상 바꾸니 승자 역전",
+      "url": "https://newtamsa.org/news/yWkBZO",
+      "category": "데이터",
+      "tags": [
+        "정청래",
+        "김민석",
+        "여론조사",
+        "조원씨앤아이",
+        "여론조사꽃",
+        "민주당",
+        "국민의힘",
+        "선호투표제",
+        "송영길",
+        "순회경선",
+        "권리당원"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-07-22",
+      "title": "정혜경 의원, 공공운수노조 든든한 콜센터지부 조합원 간담회 열어",
+      "url": "https://newtamsa.org/news/KMJ3vU",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-07-21",
+      "title": "조계원 의원, 「문화예술진흥법」 31년 만에 전면개편안 대표발의",
+      "url": "https://newtamsa.org/news/v3GbTK",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-07-20",
+      "title": "조계원 의원 , 체육단체 깜깜이 선거 막는 ‘ 정몽규식 독점 · 사유화 방지법 ’ 발의",
+      "url": "https://newtamsa.org/news/2XcLZZ",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-07-16",
+      "title": "“ 현직 경찰이 아들 범죄 증거 없애도 처벌 못한다 ?”  이해민 의원 , ‘ 사법방해 면죄부 방지법 ’ 대표 발의",
+      "url": "https://newtamsa.org/news/KhG9xL",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-07-13",
+      "title": "민주당 과방위원들 “국민의힘 국회 복귀해야”… “과방위 멈추면 AI도 미래도 늦어진다”",
+      "url": "https://newtamsa.org/news/z3Z8ye",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
     {
       "date": "2026-07-29",
       "title": "정청래 강연 총괄에 '찢' 발언 이진련…신천지 해명도 흔들",
