@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-07-29T23:13:11+09:00",
+  "updated_at": "2026-07-30T11:31:49+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 424,
+  "count": 425,
   "articles": [
+    {
+      "date": "2026-07-30",
+      "title": "정청래 지지자들 기자 집단폭행, 최민희는 미소 정청래는 방관",
+      "url": "https://newtamsa.org/news/zXlNY3",
+      "category": "심층분석",
+      "tags": [
+        "정청래",
+        "최민희",
+        "집단폭행",
+        "시사타파",
+        "이종원",
+        "이희자",
+        "근우회",
+        "노벨재단",
+        "문정복",
+        "이성윤",
+        "유동균"
+      ],
+      "author": "강진구, 권지연"
+    },
     {
       "date": "2026-07-29",
       "title": "정청래·김민석 선호투표, 집계 대상 바꾸니 승자 역전",
