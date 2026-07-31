@@ -1,9 +1,43 @@
 {
-  "updated_at": "2026-07-30T23:06:30+09:00",
+  "updated_at": "2026-07-31T11:56:57+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 425,
+  "count": 427,
   "articles": [
+    {
+      "date": "2026-07-31",
+      "title": "정청래 핵심 지지층에 윤석열 지지선언 문파 다수",
+      "url": "https://newtamsa.org/news/1lBV2i",
+      "category": "단독보도",
+      "tags": [
+        "정청래",
+        "이낙연",
+        "윤석열",
+        "한동훈",
+        "문파",
+        "코어지지층",
+        "문재인",
+        "이진련"
+      ],
+      "author": "강진구, 김은도"
+    },
+    {
+      "date": "2026-07-31",
+      "title": "민주당 첫 TV토론 채팅 6만건 분석…응원 1위 정청래, 인기 댓글엔 지지 없었다",
+      "url": "https://newtamsa.org/news/626Ham",
+      "category": "데이터",
+      "tags": [
+        "송영길",
+        "정청래",
+        "김민석",
+        "TV토론",
+        "유튜브",
+        "실시간채팅",
+        "댓글",
+        "좋아요"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-07-30",
       "title": "정청래 지지자들 기자 집단폭행, 최민희는 미소 정청래는 방관",
