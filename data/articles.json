@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-07-31T23:10:45+09:00",
+  "updated_at": "2026-08-01T11:56:20+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 427,
+  "count": 428,
   "articles": [
+    {
+      "date": "2026-07-31",
+      "title": "코스피 18% 폭등 이유, 160억달러 매물 공포가 걷혔다",
+      "url": "https://newtamsa.org/news/ph2o8s",
+      "category": "경제뉴탐사",
+      "tags": [
+        "코스피",
+        "폭등",
+        "헤지펀드",
+        "SK하이닉스",
+        "삼성전자",
+        "외국인",
+        "한국거래서",
+        "EDGAR",
+        "악재",
+        "레버리지"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-07-31",
       "title": "정청래 핵심 지지층에 윤석열 지지선언 문파 다수",
