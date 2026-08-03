@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-08-02T22:24:48+09:00",
+  "updated_at": "2026-08-03T11:56:45+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 429,
+  "count": 430,
   "articles": [
+    {
+      "date": "2026-08-03",
+      "title": "민주당 전당대회 1라운드, 2순위 넣으면 김민석 52% 정청래 48%",
+      "url": "https://newtamsa.org/news/I2voNY",
+      "category": "호남뉴탐사",
+      "tags": [
+        "김민석",
+        "정청래",
+        "송영길",
+        "선호투표제",
+        "부울경",
+        "충청",
+        "김범태",
+        "5·18",
+        "비선실세",
+        "이종호",
+        "황일봉",
+        "조규연"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-08-02",
       "title": "정청래 광주 조직특보단장, 통일교 단체 간부 확인",
