@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-08-03T23:42:03+09:00",
+  "updated_at": "2026-08-04T11:41:20+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 430,
+  "count": 431,
   "articles": [
+    {
+      "date": "2026-08-04",
+      "title": "신천지 전 사무총장 국용호 \"정청래 참석 마포 행사, 신천지가 동원했다\"",
+      "url": "https://newtamsa.org/news/HAL7up",
+      "category": "단독보도",
+      "tags": [
+        "신천지",
+        "국용호",
+        "정청래",
+        "이희자",
+        "노벨재단",
+        "이만희",
+        "시몬지파",
+        "바돌로매지파",
+        "마포구"
+      ],
+      "author": "허재현, 강진구"
+    },
     {
       "date": "2026-08-03",
       "title": "민주당 전당대회 1라운드, 2순위 넣으면 김민석 52% 정청래 48%",
