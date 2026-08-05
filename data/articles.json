@@ -1,9 +1,40 @@
 {
-  "updated_at": "2026-08-05T17:38:14+09:00",
+  "updated_at": "2026-08-05T23:12:04+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 431,
+  "count": 433,
   "articles": [
+    {
+      "date": "2026-08-05",
+      "title": "정청래 측근 유동균 마포구청장, 신천지 유착 정황",
+      "url": "https://newtamsa.org/news/BPVuep",
+      "category": "단독보도",
+      "tags": [
+        "정청래",
+        "유동균",
+        "마포구청장",
+        "신천지",
+        "국용호",
+        "천지일보",
+        "한국기자연합회",
+        "이만희"
+      ],
+      "author": "권지연, 강진구"
+    },
+    {
+      "date": "2026-08-05",
+      "title": "국힘 지지층이 정청래 고른 이유, 합당 파동과 \"정권은 짧다\"",
+      "url": "https://newtamsa.org/news/1jpPIJ",
+      "category": "데이터",
+      "tags": [
+        "정청래",
+        "국민의힘",
+        "합당",
+        "정권은짧다",
+        "김민석"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-08-04",
       "title": "신천지 전 사무총장 국용호 \"정청래 참석 마포 행사, 신천지가 동원했다\"",
