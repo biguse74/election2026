@@ -1,9 +1,40 @@
 {
-  "updated_at": "2026-08-06T17:38:42+09:00",
+  "updated_at": "2026-08-06T23:13:31+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 433,
+  "count": 435,
   "articles": [
+    {
+      "date": "2026-08-06",
+      "title": "민주당 1·2차 TV토론 채팅글 12만건 교차분석…정청래 페북 문구, 채팅창에 그대로 등장",
+      "url": "https://newtamsa.org/news/Hp5G_l",
+      "category": "데이터",
+      "tags": [
+        "정청래",
+        "김민석",
+        "송영길",
+        "댓글",
+        "채팅글",
+        "페이스북",
+        "댓글부대",
+        "네거티브"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-08-06",
+      "title": "김민석 당심 첫 과반…정청래 호남 출사표, 실제 주최는 캠프였다",
+      "url": "https://newtamsa.org/news/Yo5FpF",
+      "category": "단독보도",
+      "tags": [
+        "김민석",
+        "정청래",
+        "신천지",
+        "호남일보",
+        "여론조사"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-08-05",
       "title": "정청래 측근 유동균 마포구청장, 신천지 유착 정황",
