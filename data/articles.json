@@ -1,9 +1,24 @@
 {
-  "updated_at": "2026-08-06T23:13:31+09:00",
+  "updated_at": "2026-08-07T11:44:36+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 435,
+  "count": 436,
   "articles": [
+    {
+      "date": "2026-08-07",
+      "title": "신천지 베드로지파 \"구역원 전원 민주당 가입\" 증언 나왔다",
+      "url": "https://newtamsa.org/news/LYOg8q",
+      "category": "긴급보도",
+      "tags": [
+        "신천지",
+        "베드로지파",
+        "민주당",
+        "제이컴퍼니",
+        "권리당원",
+        "호남"
+      ],
+      "author": "강진구, 김은도"
+    },
     {
       "date": "2026-08-06",
       "title": "민주당 1·2차 TV토론 채팅글 12만건 교차분석…정청래 페북 문구, 채팅창에 그대로 등장",
