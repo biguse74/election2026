@@ -1,9 +1,24 @@
 {
-  "updated_at": "2026-08-11T16:10:22+09:00",
+  "updated_at": "2026-08-11T22:08:50+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 442,
+  "count": 443,
   "articles": [
+    {
+      "date": "2026-08-11",
+      "title": "정청래 지지층이 믿는 여론조사꽃, 8가지 돌려도 김민석",
+      "url": "https://newtamsa.org/news/nWUDdn",
+      "category": "데이터",
+      "tags": [
+        "정청래",
+        "호남",
+        "김민석",
+        "여론조사꽃",
+        "선호투표제",
+        "무응답"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-08-11",
       "title": "윤석열 정권 'RTV 퇴출' 2심도 정당화…조작 의혹 끝내 외면",
