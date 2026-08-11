@@ -1,9 +1,41 @@
 {
-  "updated_at": "2026-08-10T22:12:02+09:00",
+  "updated_at": "2026-08-11T10:51:23+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 440,
+  "count": 442,
   "articles": [
+    {
+      "date": "2026-08-11",
+      "title": "윤석열 정권 'RTV 퇴출' 2심도 정당화…조작 의혹 끝내 외면",
+      "url": "https://newtamsa.org/news/wX5eAe",
+      "category": "아카이브",
+      "tags": [
+        "시민방송",
+        "RTV",
+        "스카이라이프",
+        "윤석열",
+        "퇴출",
+        "항소",
+        "기각",
+        "시청자참여",
+        "퍼블릭액세스"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-08-11",
+      "title": "이성윤 의원실 2년새 보좌진 30여명 이탈…갑질 의혹",
+      "url": "https://newtamsa.org/news/PjG-yv",
+      "category": "단독보도",
+      "tags": [
+        "이성윤",
+        "갑질",
+        "보좌진",
+        "공천권",
+        "애칭"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-08-10",
       "title": "김민석 강원 과반·TK 승리…정청래 '호남 어머니' 읍소",
