@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-08-11T22:08:50+09:00",
+  "updated_at": "2026-08-12T11:03:58+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 443,
+  "count": 444,
   "articles": [
+    {
+      "date": "2026-08-12",
+      "title": "정청래 선거조직 총괄에 이낙연 당비대납 구속자",
+      "url": "https://newtamsa.org/news/1MJApF",
+      "category": "단독보도",
+      "tags": [
+        "정청래",
+        "이낙연",
+        "박시중",
+        "최병희",
+        "순천",
+        "이관행",
+        "유행열",
+        "전해철",
+        "당원주권시대",
+        "김민석",
+        "호남"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-08-11",
       "title": "정청래 지지층이 믿는 여론조사꽃, 8가지 돌려도 김민석",
