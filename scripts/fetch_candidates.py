@@ -207,6 +207,22 @@ def main() -> None:
         encoding="utf-8",
     )
 
+    # 최신 스냅샷 포인터. 프론트가 이걸 먼저 읽으므로, 수집이 멈춘 뒤에도
+    # 날짜 역탐색 창(30일)이 지나가며 사이트가 죽는 일이 없다.
+    (OUT_DIR / "latest.json").write_text(
+        json.dumps(
+            {
+                "date": today,
+                "file": out_file.name,
+                "fetched_at": snapshot["fetched_at"],
+                "total_candidates": snapshot["total_candidates"],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
     elapsed = (now_kst() - started_at).total_seconds()
 
     print("=" * 60)

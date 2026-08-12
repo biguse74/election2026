@@ -971,6 +971,17 @@ async function loadLatestSnapshot() {
     return r?.ok ? { data: await r.json(), dateStr, source } : null;
   };
 
+  // 0단계: latest.json 포인터. 수집이 멈춘 뒤에도(선거 종료 등) 마지막 스냅샷을
+  // 날짜와 무관하게 가리킨다. 아래 역탐색은 포인터가 없거나 깨졌을 때의 폴백.
+  for (const source of ['candidates', 'preliminary']) {
+    const r = await fetch(`data/${source}/20260603/latest.json`).catch(() => null);
+    if (!r?.ok) continue;
+    const ptr = await r.json().catch(() => null);
+    if (!ptr?.date) continue;
+    const hit = await tryFetch(source, ptr.date);
+    if (hit) return hit;
+  }
+
   // 1단계: 5/14 이후 날짜의 candidates 스냅샷을 최대 30일까지 거꾸로 탐색
   for (let i = 0; i < 30; i++) {
     const d = new Date(today); d.setDate(d.getDate() - i);
