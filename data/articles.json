@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-08-13T11:05:53+09:00",
+  "updated_at": "2026-08-13T16:36:32+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 446,
+  "count": 447,
   "articles": [
+    {
+      "date": "2026-08-13",
+      "title": "뉴탐사 겨눈 '밀정·찢탐사' 명예훼손 고소, 경찰 불송치·법원 기각",
+      "url": "https://newtamsa.org/news/Wdy6s3",
+      "category": "아카이브",
+      "tags": [
+        "이제일",
+        "찢탐사",
+        "서정필",
+        "밀정",
+        "불송치",
+        "두진서",
+        "기각",
+        "최훈민"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-08-13",
       "title": "정청래 대표 취임 뒤 신천지 신도 6~7천명 권리당원 가입 제보",
