@@ -1036,15 +1036,20 @@ function candidateRow(c, nameOverride, opts = {}) {
   const statusBadge = statusInfo
     ? `<span class="status-badge status-${statusInfo.cls}" title="${statusInfo.tip}" data-tip="${statusInfo.tip}">${statusInfo.label}</span>`
     : '';
-  const uncontestedBadge = isUncontestedCandidate(c)
+  const uncontested = isUncontestedCandidate(c);
+  const uncontestedBadge = uncontested
     ? `<span class="uncontested-badge" title="등록 후보 수가 의원정수 이하인 무투표 당선 선거구 후보">무투표 당선</span>`
+    : '';
+  // 무투표 당선 배지가 이미 당선 사실을 담고 있으므로 중복 표시하지 않는다.
+  const winnerBadge = !uncontested && isWinnerHuboid(c.huboid)
+    ? `<span class="winner-badge" title="중앙선관위 공식 당선인">당선</span>`
     : '';
   return `
     <div class="candidate${confirmed ? ' confirmed' : ''}${statusInfo ? ' candidate-inactive' : ''}">
       <div class="candidate-color" style="background:${partyColor(c.jdName)}"></div>
       ${noLink
         ? `<span class="candidate-name cand-anon" title="낙선 후보 — 익명">${dispName}${uncontestedBadge}${statusBadge}</span>`
-        : `<button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${dispName} 상세 정보">${dispName}${uncontestedBadge}${statusBadge}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>`}
+        : `<button type="button" class="candidate-name candidate-detail-trigger" data-huboid="${c.huboid}" title="${dispName} 상세 정보">${dispName}${winnerBadge}${uncontestedBadge}${statusBadge}${confirmed ? '<span class="confirmed-badge">공천</span>' : ''}</button>`}
       <div class="candidate-party">${c.jdName}</div>
       <span class="candidate-actions">
         ${hasArt ? `<button type="button" class="article-toggle" data-target="${aid}" title="뉴탐사 관련 보도 ${articles.length}건">📰 ${articles.length}</button>` : ''}
