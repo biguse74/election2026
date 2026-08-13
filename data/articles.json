@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-08-12T22:12:45+09:00",
+  "updated_at": "2026-08-13T11:05:53+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 445,
+  "count": 446,
   "articles": [
+    {
+      "date": "2026-08-13",
+      "title": "정청래 대표 취임 뒤 신천지 신도 6~7천명 권리당원 가입 제보",
+      "url": "https://newtamsa.org/news/wLdBho",
+      "category": "긴급보도",
+      "tags": [
+        "신천지",
+        "도마지파",
+        "베드로지파",
+        "민주당",
+        "전당대회",
+        "정청래",
+        "투표독려",
+        "김민석"
+      ],
+      "author": "강진구, 김은도"
+    },
     {
       "date": "2026-08-12",
       "title": "이재명 대통령 지지율 빠질수록 정청래 선호 올랐다",
