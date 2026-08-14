@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-08-13T22:14:19+09:00",
+  "updated_at": "2026-08-14T11:04:17+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 447,
+  "count": 448,
   "articles": [
+    {
+      "date": "2026-08-14",
+      "title": "정청래 처남 신천지 신도 확인…20대 대선 이재명 캠프 합류 시도",
+      "url": "https://newtamsa.org/news/waN7lw",
+      "category": "단독보도",
+      "tags": [
+        "정청래",
+        "신천지",
+        "김도삼",
+        "처남",
+        "한국근우회",
+        "근우회",
+        "이희자",
+        "권혁부",
+        "오마이뉴스",
+        "구영식",
+        "민주당",
+        "전당대회"
+      ],
+      "author": "강진구, 권지연"
+    },
     {
       "date": "2026-08-13",
       "title": "뉴탐사 겨눈 '밀정·찢탐사' 명예훼손 고소, 경찰 불송치·법원 기각",
