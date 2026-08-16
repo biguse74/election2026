@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-08-15T21:39:43+09:00",
+  "updated_at": "2026-08-16T10:23:42+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 450,
+  "count": 451,
   "articles": [
+    {
+      "date": "2026-08-16",
+      "title": "호남, 김민석 57.5% 압승…정청래 25%p 참패",
+      "url": "https://newtamsa.org/news/TfuE0D",
+      "category": "호남뉴탐사",
+      "tags": [
+        "민주당",
+        "전당대회",
+        "호남",
+        "김민석",
+        "정청래",
+        "송영길",
+        "박선원",
+        "최민희",
+        "서미화",
+        "한민수",
+        "신천지"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-08-15",
       "title": "여론조사 22건 분석…호남 3만표 벌어지면 정청래 역전 어렵다",
