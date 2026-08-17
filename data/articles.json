@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-08-17T10:20:59+09:00",
+  "updated_at": "2026-08-17T15:58:14+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 453,
+  "count": 454,
   "articles": [
+    {
+      "date": "2026-08-17",
+      "title": "김용, 어떤 여론조사를 넣어도 당선권… 6위는 이성윤이냐 한민수냐",
+      "url": "https://newtamsa.org/news/AIvzbO",
+      "category": "데이터",
+      "tags": [
+        "민주당",
+        "전당대회",
+        "최고위원",
+        "김용",
+        "이성윤",
+        "한민수",
+        "여론조사",
+        "대의원",
+        "여론조사꽃",
+        "자동응답"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-08-17",
       "title": "정청래 서울·경기마저 0.38%p 석패…최고위원은 친명계 55% 득표하고 2석",
