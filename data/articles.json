@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-08-17T21:46:32+09:00",
+  "updated_at": "2026-08-18T10:18:26+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 454,
+  "count": 455,
   "articles": [
+    {
+      "date": "2026-08-18",
+      "title": "김민석 당대표 선출…김용, 당원 표 앞서고도 탈락",
+      "url": "https://newtamsa.org/news/rlakw4",
+      "category": "심층분석",
+      "tags": [
+        "민주당",
+        "전당대회",
+        "김민석",
+        "당대표",
+        "정청래",
+        "김용",
+        "최고위원",
+        "여론조사",
+        "신천지",
+        "이성윤"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-08-17",
       "title": "김용, 어떤 여론조사를 넣어도 당선권… 6위는 이성윤이냐 한민수냐",
