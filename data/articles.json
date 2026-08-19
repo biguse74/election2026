@@ -1,9 +1,47 @@
 {
-  "updated_at": "2026-08-19T10:19:53+09:00",
+  "updated_at": "2026-08-19T21:50:21+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 455,
+  "count": 457,
   "articles": [
+    {
+      "date": "2026-08-19",
+      "title": "최고위원은 통했고 당대표는 안 통했다... 김어준 뉴스공장 920회 전수 분석",
+      "url": "https://newtamsa.org/news/UZJvrY",
+      "category": "데이터",
+      "tags": [
+        "김어준",
+        "뉴스공장",
+        "정청래",
+        "겸손은힘들다",
+        "민주당",
+        "전당대회",
+        "서미화",
+        "김용",
+        "이성윤",
+        "박선원",
+        "최민희",
+        "한민수",
+        "출연빈도"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-08-19",
+      "title": "최민희 \"처가의 슬픈 가족사\"…정청래 신천지 의혹 부인은 없었다",
+      "url": "https://newtamsa.org/news/59IlcJ",
+      "category": "심층분석",
+      "tags": [
+        "김도삼",
+        "신천지",
+        "최민희",
+        "김어준",
+        "정청래",
+        "민주당",
+        "전당대회"
+      ],
+      "author": "강진구, 김은도"
+    },
     {
       "date": "2026-08-18",
       "title": "김민석 당대표 선출…김용, 당원 표 앞서고도 탈락",
