@@ -30,6 +30,7 @@ import csv
 import io
 import json
 import sys
+import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -48,10 +49,22 @@ KST = timezone(timedelta(hours=9))
 
 
 def fetch_csv() -> str:
-    res = requests.get(SHEET_CSV_URL, timeout=30)
-    res.raise_for_status()
-    # 구글 시트는 UTF-8로 응답
-    return res.text
+    # docs.google.com이 간헐적으로 30초 안에 응답하지 않아 워크플로가 실패하는 일이
+    # 있었다(2026-08-19). 순간적 타임아웃은 재시도로 흘려보낸다.
+    last_err: Exception | None = None
+    for attempt in (1, 2, 3):
+        try:
+            res = requests.get(SHEET_CSV_URL, timeout=60)
+            res.raise_for_status()
+            # 구글 시트는 UTF-8로 응답
+            return res.text
+        except requests.RequestException as e:
+            last_err = e
+            if attempt < 3:
+                wait = attempt * 5
+                print(f"시트 수신 실패({e.__class__.__name__}) — {wait}초 후 재시도 ({attempt}/3)", file=sys.stderr)
+                time.sleep(wait)
+    raise SystemExit(f"시트 수신 3회 실패: {last_err}")
 
 
 def parse_rows(text: str) -> list[dict]:
