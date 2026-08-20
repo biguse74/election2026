@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-08-20T10:18:55+09:00",
+  "updated_at": "2026-08-20T15:49:13+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 458,
+  "count": 459,
   "articles": [
+    {
+      "date": "2026-08-20",
+      "title": "대통령과 의리' 강조 정청래, 지지 채널 채팅글 10건 중 9건이 이재명 비난",
+      "url": "https://newtamsa.org/news/Muscdi",
+      "category": "데이터",
+      "tags": [
+        "시사타파",
+        "이종원",
+        "정청래",
+        "이재명",
+        "비난",
+        "조롱",
+        "실시간채팅",
+        "알정찍",
+        "모욕",
+        "이제일"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-08-20",
       "title": "여주양평 지역위원장 직무대행 '여현정 정치생명 끊겠다' 녹취",
