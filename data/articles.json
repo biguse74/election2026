@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-08-22T21:41:06+09:00",
+  "updated_at": "2026-08-23T10:25:31+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 459,
+  "count": 460,
   "articles": [
+    {
+      "date": "2026-08-23",
+      "title": "시사타파 채팅 4일치 13만건, 이재명 언급 87%가 비난글",
+      "url": "https://newtamsa.org/news/YZUfSi",
+      "category": "단독보도",
+      "tags": [
+        "시사타파",
+        "정청래",
+        "전당대회",
+        "선동",
+        "리박스쿨",
+        "제보자",
+        "조작",
+        "이재명",
+        "김민석"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-08-20",
       "title": "대통령과 의리' 강조 정청래, 지지 채널 채팅글 10건 중 9건이 이재명 비난",
