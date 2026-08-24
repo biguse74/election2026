@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-08-24T10:22:32+09:00",
+  "updated_at": "2026-08-24T16:00:48+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 461,
+  "count": 462,
   "articles": [
+    {
+      "date": "2026-08-24",
+      "title": "전문고발꾼 김상민, '신당 창당 자금' 허위 의혹 항소심도 유죄… 벌금 300만원",
+      "url": "https://newtamsa.org/news/DfrEao",
+      "category": "아카이브",
+      "tags": [
+        "김상민",
+        "얼음땡",
+        "한영숙",
+        "이성열",
+        "안원구",
+        "신당창당",
+        "유사수신행위",
+        "판결문",
+        "전문고발꾼",
+        "추정",
+        "열린공감TV",
+        "정천수"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-08-24",
       "title": "시사타파 이종원, 민주당 전당대회 여론조사 지역·나이 허위응답 유도",
