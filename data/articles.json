@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-08-23T21:42:19+09:00",
+  "updated_at": "2026-08-24T10:22:32+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 460,
+  "count": 461,
   "articles": [
+    {
+      "date": "2026-08-24",
+      "title": "시사타파 이종원, 민주당 전당대회 여론조사 지역·나이 허위응답 유도",
+      "url": "https://newtamsa.org/news/HWdqPz",
+      "category": "심층분석",
+      "tags": [
+        "민주당",
+        "전당대회",
+        "국민여론조사",
+        "시사타파",
+        "이종원",
+        "공작",
+        "지역",
+        "연령",
+        "허위응답",
+        "여론조사",
+        "센스",
+        "이성윤"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-08-23",
       "title": "시사타파 채팅 4일치 13만건, 이재명 언급 87%가 비난글",
