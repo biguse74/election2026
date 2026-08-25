@@ -1,9 +1,46 @@
 {
-  "updated_at": "2026-08-24T21:52:38+09:00",
+  "updated_at": "2026-08-25T10:19:58+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 462,
+  "count": 464,
   "articles": [
+    {
+      "date": "2026-08-25",
+      "title": "이종원 여론조사 조작 의혹, 같은 수법 14명 전원 유죄 판례 있다",
+      "url": "https://newtamsa.org/news/kkXJfa",
+      "category": "단독보도",
+      "tags": [
+        "시사타파",
+        "여론조사",
+        "조작",
+        "김민석",
+        "민주당",
+        "정청래",
+        "이종원",
+        "한민수",
+        "이성윤",
+        "전당대회"
+      ],
+      "author": "강진구, 박대용"
+    },
+    {
+      "date": "2026-08-24",
+      "title": "양팔 잡은 장면뿐인데 헤드락… 2심은 \"정확히 촬영 안 됐지만\" 유죄",
+      "url": "https://newtamsa.org/news/VnDns8",
+      "category": "아카이브",
+      "tags": [
+        "정천수",
+        "폭행",
+        "공동폭행",
+        "헤드락",
+        "의정부지법",
+        "박대용",
+        "안선화",
+        "최영민",
+        "양팔"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-08-24",
       "title": "전문고발꾼 김상민, '신당 창당 자금' 허위 의혹 항소심도 유죄… 벌금 300만원",
