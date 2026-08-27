@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-08-26T21:54:36+09:00",
+  "updated_at": "2026-08-27T17:05:52+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 465,
+  "count": 466,
   "articles": [
+    {
+      "date": "2026-08-27",
+      "title": "시사타파TV가 정청래를 공격한다고 지목한 사람들, 마지막이 이재명 대통령이었다",
+      "url": "https://newtamsa.org/news/49Z8x8",
+      "category": "데이터",
+      "tags": [
+        "시사타파",
+        "이종원",
+        "정청래",
+        "김민석",
+        "이재명",
+        "더민혁",
+        "뉴이재명"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-08-26",
       "title": "유시민 \"오만한 권력자\" 발언에 친청계도 선 그어",
