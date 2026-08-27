@@ -1,9 +1,69 @@
 {
-  "updated_at": "2026-08-27T17:05:52+09:00",
+  "updated_at": "2026-08-28T06:55:57+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 466,
+  "count": 469,
   "articles": [
+    {
+      "date": "2026-08-28",
+      "title": "시사타파 이종원 \"내 문자 200통이 대의원 1만6000표\"",
+      "url": "https://newtamsa.org/news/2OL6uK",
+      "category": "심층분석",
+      "tags": [
+        "시사타파",
+        "이종원",
+        "정청래",
+        "김어준",
+        "이재명",
+        "유시민",
+        "여론조사",
+        "조작",
+        "대의원"
+      ],
+      "author": "강진구, 허경혜, 배기성"
+    },
+    {
+      "date": "2026-08-27",
+      "title": "이재명 대통령 지지율, 하락은 지방선거 이긴 직후 시작됐다",
+      "url": "https://newtamsa.org/news/T1Vbfl",
+      "category": "데이터",
+      "tags": [
+        "이재명",
+        "대통령",
+        "지지율",
+        "정청래",
+        "여론조사꽃",
+        "NBS",
+        "보수",
+        "진보",
+        "중도",
+        "코어",
+        "여론조사",
+        "지방선거"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-08-27",
+      "title": "이종원 '황금폰' 인멸 우려… 강진구 기자 전화 수신차단",
+      "url": "https://newtamsa.org/news/blPlA2",
+      "category": "단독보도",
+      "tags": [
+        "여론조사",
+        "조작",
+        "시사타파",
+        "이종원",
+        "황금폰",
+        "증거인멸",
+        "박시영",
+        "정청래",
+        "김선규",
+        "IDS홀딩스",
+        "김성훈",
+        "금융피해자연대"
+      ],
+      "author": "강진구, 권지연"
+    },
     {
       "date": "2026-08-27",
       "title": "시사타파TV가 정청래를 공격한다고 지목한 사람들, 마지막이 이재명 대통령이었다",
