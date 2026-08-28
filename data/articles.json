@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-08-28T06:55:57+09:00",
+  "updated_at": "2026-08-28T19:08:39+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 469,
+  "count": 470,
   "articles": [
+    {
+      "date": "2026-08-28",
+      "title": "법원 \"정천수 방송, 공공의 이익과 무관\" 벌금 2천만원 선고",
+      "url": "https://newtamsa.org/news/1c27ER",
+      "category": "긴급보도",
+      "tags": [
+        "정천수",
+        "열린공감TV",
+        "의정부지법",
+        "항소심",
+        "이낙연",
+        "김한메",
+        "유튜브",
+        "채널",
+        "비번변경",
+        "명예훼손",
+        "공익"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-08-28",
       "title": "시사타파 이종원 \"내 문자 200통이 대의원 1만6000표\"",
