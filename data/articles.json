@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-09-01T20:17:02+09:00",
+  "updated_at": "2026-09-02T01:13:59+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 474,
+  "count": 475,
   "articles": [
+    {
+      "date": "2026-09-02",
+      "title": "민주당TV 첫방송 채팅 4만2천건, 뉴스공장 눌렀다… 동접은 겸공이 4배",
+      "url": "https://newtamsa.org/news/OfOTc2",
+      "category": "데이터",
+      "tags": [
+        "김어준",
+        "뉴스공장",
+        "겸손은힘들다",
+        "겸공",
+        "민주당TV",
+        "민티",
+        "김민석",
+        "실시간채팅"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-09-01",
       "title": "정천수의 거짓말 8가지, 항소심 판결문에 드러나",
