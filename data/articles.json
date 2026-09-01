@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-09-01T13:05:07+09:00",
+  "updated_at": "2026-09-01T20:17:02+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 473,
+  "count": 474,
   "articles": [
+    {
+      "date": "2026-09-01",
+      "title": "정천수의 거짓말 8가지, 항소심 판결문에 드러나",
+      "url": "https://newtamsa.org/news/g0N22P",
+      "category": "팩트체크",
+      "tags": [
+        "정천수",
+        "거짓말",
+        "열린공감TV",
+        "판결문",
+        "비밀번호",
+        "최영민",
+        "이낙연",
+        "김한메",
+        "강진구",
+        "취재",
+        "허위사실"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-09-01",
       "title": "이종원 \"추미애 출마는 정청래·김어준과 짠 정치공작\"",
