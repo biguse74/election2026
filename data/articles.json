@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-08-31T21:59:34+09:00",
+  "updated_at": "2026-09-01T13:05:07+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 472,
+  "count": 473,
   "articles": [
+    {
+      "date": "2026-09-01",
+      "title": "이종원 \"추미애 출마는 정청래·김어준과 짠 정치공작\"",
+      "url": "https://newtamsa.org/news/FKmFMR",
+      "category": "단독보도",
+      "tags": [
+        "시사타파",
+        "이종원",
+        "추미애",
+        "정청래",
+        "김어준",
+        "개국본",
+        "호남개국본",
+        "행동일지"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-08-31",
       "title": "개각서 사라진 친정청래…호남은 유시민에 등 돌렸다",
