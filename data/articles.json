@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-09-02T01:13:59+09:00",
+  "updated_at": "2026-09-02T12:27:02+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 475,
+  "count": 476,
   "articles": [
+    {
+      "date": "2026-09-02",
+      "title": "이종원 시사타파 채팅창 \"이재명 처단\" 31건 방치",
+      "url": "https://newtamsa.org/news/JiSZb0",
+      "category": "단독보도",
+      "tags": [
+        "시사타파",
+        "이종원",
+        "이재명",
+        "처단",
+        "조국",
+        "김어준",
+        "정청래",
+        "김민석",
+        "조국혁신당"
+      ],
+      "author": "박대용, 강진구"
+    },
     {
       "date": "2026-09-02",
       "title": "민주당TV 첫방송 채팅 4만2천건, 뉴스공장 눌렀다… 동접은 겸공이 4배",
