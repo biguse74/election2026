@@ -1,9 +1,45 @@
 {
-  "updated_at": "2026-09-02T12:27:02+09:00",
+  "updated_at": "2026-09-02T19:50:54+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 476,
+  "count": 478,
   "articles": [
+    {
+      "date": "2026-09-02",
+      "title": "판사 징계 46건 확인… 22년간 파면·해임 한 건도 없었다",
+      "url": "https://newtamsa.org/news/8amLF8",
+      "category": "데이터",
+      "tags": [
+        "사법부",
+        "사법개혁",
+        "정보공개",
+        "판사",
+        "인사정보",
+        "법관",
+        "징계",
+        "로펌",
+        "김앤장",
+        "광장",
+        "태평양"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-09-02",
+      "title": "시사타파 이종원, 정천수 제보 그대로 방송해 배상 판결",
+      "url": "https://newtamsa.org/news/iuDEUh",
+      "category": "아카이브",
+      "tags": [
+        "최영민",
+        "이종원",
+        "시사타파",
+        "명예훼손",
+        "손해배상",
+        "정천수",
+        "채팅글"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-09-02",
       "title": "이종원 시사타파 채팅창 \"이재명 처단\" 31건 방치",
