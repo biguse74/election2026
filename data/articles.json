@@ -1,9 +1,25 @@
 {
-  "updated_at": "2026-09-03T12:28:26+09:00",
+  "updated_at": "2026-09-03T19:50:53+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 479,
+  "count": 480,
   "articles": [
+    {
+      "date": "2026-09-03",
+      "title": "개국 이틀 만에 당심 리트머스지 된 민주당TV, \"합당반대\"가 김민석보다 많았다",
+      "url": "https://newtamsa.org/news/ugewDa",
+      "category": "데이터",
+      "tags": [
+        "조국혁신당",
+        "조국",
+        "뉴스공장",
+        "김어준",
+        "민티",
+        "김민석",
+        "합당반대"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-09-03",
       "title": "조국은 민주당에 사과 요구하고 김어준은 연내 합당 재촉",
