@@ -1,9 +1,33 @@
 {
-  "updated_at": "2026-09-03T01:09:16+09:00",
+  "updated_at": "2026-09-03T12:28:26+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 478,
+  "count": 479,
   "articles": [
+    {
+      "date": "2026-09-03",
+      "title": "조국은 민주당에 사과 요구하고 김어준은 연내 합당 재촉",
+      "url": "https://newtamsa.org/news/soSlMF",
+      "category": "심층분석",
+      "tags": [
+        "조국혁신당",
+        "조국",
+        "김어준",
+        "뉴스공장",
+        "지지율",
+        "시니",
+        "개국본",
+        "이종원",
+        "국민의힘",
+        "체크인",
+        "페이스북",
+        "백두",
+        "양평",
+        "교원",
+        "전진선"
+      ],
+      "author": "강진구, 권지연"
+    },
     {
       "date": "2026-09-02",
       "title": "판사 징계 46건 확인… 22년간 파면·해임 한 건도 없었다",
