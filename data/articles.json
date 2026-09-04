@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-09-04T00:58:46+09:00",
+  "updated_at": "2026-09-04T12:26:40+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 480,
+  "count": 481,
   "articles": [
+    {
+      "date": "2026-09-04",
+      "title": "이종원 여론조사 사건 서울경찰청 배당, 200통 문자가 열쇠",
+      "url": "https://newtamsa.org/news/fMNI98",
+      "category": "심층분석",
+      "tags": [
+        "시사타파",
+        "이종원",
+        "민주당",
+        "전당대회",
+        "여론조사",
+        "조작",
+        "서울경찰청",
+        "공공범죄수사대",
+        "이성윤"
+      ],
+      "author": "강진구, 김은도, 배기성"
+    },
     {
       "date": "2026-09-03",
       "title": "개국 이틀 만에 당심 리트머스지 된 민주당TV, \"합당반대\"가 김민석보다 많았다",
