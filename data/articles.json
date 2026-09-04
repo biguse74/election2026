@@ -1,9 +1,47 @@
 {
-  "updated_at": "2026-09-04T12:26:40+09:00",
+  "updated_at": "2026-09-04T19:50:03+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 481,
+  "count": 483,
   "articles": [
+    {
+      "date": "2026-09-04",
+      "title": "김민석 고소한 이종원, 7월 방송선 \"민주당 당원 그리고 권리당원으로서\"",
+      "url": "https://newtamsa.org/news/FnBf3d",
+      "category": "긴급보도",
+      "tags": [
+        "이종원",
+        "민주당",
+        "권리당원",
+        "김민석",
+        "개인정보보호법",
+        "서울경찰청",
+        "공공범죄수사대",
+        "고소",
+        "고발"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-09-04",
+      "title": "이토 히로부미가 이름 지어준 배정자, 김계조 사건까지 이어졌다",
+      "url": "https://newtamsa.org/news/QXU6PD",
+      "category": "역사탐사",
+      "tags": [
+        "친일파",
+        "이토히로부미",
+        "배정자",
+        "사다코",
+        "김계조",
+        "고종",
+        "배구자",
+        "대한제국",
+        "배분남",
+        "명성왕후",
+        "미쓰코시백화점"
+      ],
+      "author": "배기성, 김은도, 강진구"
+    },
     {
       "date": "2026-09-04",
       "title": "이종원 여론조사 사건 서울경찰청 배당, 200통 문자가 열쇠",
