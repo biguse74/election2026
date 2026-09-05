@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-09-05T00:56:01+09:00",
+  "updated_at": "2026-09-05T12:28:34+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 483,
+  "count": 484,
   "articles": [
+    {
+      "date": "2026-09-05",
+      "title": "민주당, 7월 12일 방송 지목…이종원은 해명 없이 공격만",
+      "url": "https://newtamsa.org/news/VIGbmC",
+      "category": "심층분석",
+      "tags": [
+        "시사타파",
+        "이종원",
+        "민주당",
+        "김민석",
+        "권리당원",
+        "당원",
+        "7월12일",
+        "고소장",
+        "이제일"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-09-04",
       "title": "김민석 고소한 이종원, 7월 방송선 \"민주당 당원 그리고 권리당원으로서\"",
