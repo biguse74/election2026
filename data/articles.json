@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-09-06T19:29:06+09:00",
+  "updated_at": "2026-09-07T00:06:11+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 486,
+  "count": 487,
   "articles": [
+    {
+      "date": "2026-09-06",
+      "title": "이종원 당적 발언 20건…방송서 \"당비 빠져나갔습니다\"",
+      "url": "https://newtamsa.org/news/EFBfsL",
+      "category": "데이터",
+      "tags": [
+        "시사타파",
+        "이종원",
+        "민주당",
+        "당원",
+        "권리당원",
+        "김민석",
+        "대표",
+        "당비"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-09-06",
       "title": "정청래 묵살 속 전북 8개 시군 여론조사 조작…경찰 수사 결론 임박",
