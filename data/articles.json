@@ -1,9 +1,45 @@
 {
-  "updated_at": "2026-09-05T23:46:23+09:00",
+  "updated_at": "2026-09-06T12:28:46+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 484,
+  "count": 486,
   "articles": [
+    {
+      "date": "2026-09-06",
+      "title": "정청래 묵살 속 전북 8개 시군 여론조사 조작…경찰 수사 결론 임박",
+      "url": "https://newtamsa.org/news/aCg0Y0",
+      "category": "호남뉴탐사",
+      "tags": [
+        "여론조사",
+        "조작",
+        "지방선거",
+        "안심번호",
+        "전북",
+        "진안군",
+        "정청래",
+        "임실군",
+        "한수용",
+        "전춘성",
+        "민주당"
+      ],
+      "author": "허경혜, 강진구"
+    },
+    {
+      "date": "2026-09-05",
+      "title": "청담동 술자리 첼리스트, 진술 거부로 각하…재고소도 전부 무혐의",
+      "url": "https://newtamsa.org/news/1HYt9n",
+      "category": "심층분석",
+      "tags": [
+        "청담동",
+        "술자리",
+        "첼리스트",
+        "이제일",
+        "변호사",
+        "방배경찰서",
+        "안양동안경찰서"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-09-05",
       "title": "민주당, 7월 12일 방송 지목…이종원은 해명 없이 공격만",
