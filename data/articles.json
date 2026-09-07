@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-09-07T20:52:01+09:00",
+  "updated_at": "2026-09-08T02:28:02+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 488,
+  "count": 489,
   "articles": [
+    {
+      "date": "2026-09-08",
+      "title": "이종원 \"김어준, 이재명 계양 출마는 졸렬한 수라 했다\"",
+      "url": "https://newtamsa.org/news/KX_D_D",
+      "category": "단독보도",
+      "tags": [
+        "김어준",
+        "이종원",
+        "개국본",
+        "호남",
+        "광주",
+        "하성흡",
+        "이재명",
+        "송영길",
+        "이낙연"
+      ],
+      "author": "강진구, 박대용, 배기성"
+    },
     {
       "date": "2026-09-07",
       "title": "전춘성 진안군수 선거법 위반 사건, 최측근 친동생이 수사팀장",
