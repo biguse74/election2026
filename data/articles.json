@@ -1,9 +1,31 @@
 {
-  "updated_at": "2026-09-07T00:06:11+09:00",
+  "updated_at": "2026-09-07T12:28:34+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 487,
+  "count": 488,
   "articles": [
+    {
+      "date": "2026-09-07",
+      "title": "전춘성 진안군수 선거법 위반 사건, 최측근 친동생이 수사팀장",
+      "url": "https://newtamsa.org/news/vSL4IQ",
+      "category": "호남뉴탐사",
+      "tags": [
+        "전북",
+        "진안군",
+        "전춘성",
+        "금품살포",
+        "진안경찰서",
+        "수사팀장",
+        "검찰",
+        "한수용",
+        "전북경찰청",
+        "상품권",
+        "부귀면장",
+        "마령면장",
+        "보완수사권"
+      ],
+      "author": "허경혜, 강진구"
+    },
     {
       "date": "2026-09-06",
       "title": "이종원 당적 발언 20건…방송서 \"당비 빠져나갔습니다\"",
