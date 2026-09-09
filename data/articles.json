@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-09-09T12:39:45+09:00",
+  "updated_at": "2026-09-09T19:55:06+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 490,
+  "count": 491,
   "articles": [
+    {
+      "date": "2026-09-09",
+      "title": "한동훈, 김승원 녹취 순서 뒤집었다… 원본에선 돈 얘기가 뒤",
+      "url": "https://newtamsa.org/news/P26zCB",
+      "category": "데이터",
+      "tags": [
+        "김승원",
+        "한동훈",
+        "녹취록",
+        "왜곡",
+        "짜깁기",
+        "양수진",
+        "강세찬",
+        "제넨셀",
+        "식약처",
+        "법무부장관",
+        "최재성",
+        "민주당"
+      ],
+      "author": "박대용, 강진구"
+    },
     {
       "date": "2026-09-08",
       "title": "이재명 정부 경제 성적표, 역대 정권 첫해 중 1위… 지지율 하락 진짜 원인은",
