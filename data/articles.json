@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-09-09T19:55:06+09:00",
+  "updated_at": "2026-09-10T01:06:37+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 491,
+  "count": 492,
   "articles": [
+    {
+      "date": "2026-09-09",
+      "title": "이종원 육성 공개 \"정청래·어준이 형과 나 셋이서 추미애 등판\"",
+      "url": "https://newtamsa.org/news/8oRUhO",
+      "category": "단독보도",
+      "tags": [
+        "이종원",
+        "정청래",
+        "김어준",
+        "추미애",
+        "조국혁신당",
+        "뉴스공장",
+        "민티",
+        "이재명"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-09-09",
       "title": "한동훈, 김승원 녹취 순서 뒤집었다… 원본에선 돈 얘기가 뒤",
