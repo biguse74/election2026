@@ -1,9 +1,35 @@
 {
-  "updated_at": "2026-09-10T01:06:37+09:00",
+  "updated_at": "2026-09-10T12:36:12+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 492,
+  "count": 493,
   "articles": [
+    {
+      "date": "2026-09-10",
+      "title": "정청래 연임 노린 부산 6인회, 공천기구까지 짰다",
+      "url": "https://newtamsa.org/news/aVRUWC",
+      "category": "단독보도",
+      "tags": [
+        "부산",
+        "6인회",
+        "미키루크",
+        "이상호",
+        "정청래",
+        "친청계",
+        "정상래",
+        "박재범",
+        "문정복",
+        "김두영",
+        "김병수",
+        "차상호",
+        "변성환",
+        "최고위",
+        "민주당",
+        "연임",
+        "부산시당"
+      ],
+      "author": "김은도, 강진구"
+    },
     {
       "date": "2026-09-09",
       "title": "이종원 육성 공개 \"정청래·어준이 형과 나 셋이서 추미애 등판\"",
