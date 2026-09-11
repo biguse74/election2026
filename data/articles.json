@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-09-11T01:00:13+09:00",
+  "updated_at": "2026-09-11T12:34:22+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 493,
+  "count": 494,
   "articles": [
+    {
+      "date": "2026-09-11",
+      "title": "주가조작 183억과 김승원, 연결고리 4개를 공시로 확인해보니",
+      "url": "https://newtamsa.org/news/ahRYPP",
+      "category": "데이터",
+      "tags": [
+        "한동훈",
+        "김승원",
+        "법무부장관",
+        "주가조작",
+        "녹취록",
+        "오빠",
+        "세종메디칼",
+        "제넨셀",
+        "임상시험",
+        "거래정지",
+        "식약처",
+        "장동혁"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-09-10",
       "title": "정청래 연임 노린 부산 6인회, 공천기구까지 짰다",
