@@ -1,9 +1,35 @@
 {
-  "updated_at": "2026-09-16T01:29:55+09:00",
+  "updated_at": "2026-09-16T12:51:11+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 497,
+  "count": 498,
   "articles": [
+    {
+      "date": "2026-09-16",
+      "title": "한동훈 김승원 의혹 125건 역검증, 기록의 '약물·햄스터·유흥주점'이 '독약·쥐·룸살롱'이 됐다",
+      "url": "https://newtamsa.org/news/c2iVX4",
+      "category": "심층분석",
+      "tags": [
+        "한동훈",
+        "김승원",
+        "역검증",
+        "인사청문회",
+        "후보검증",
+        "오빠",
+        "독약",
+        "로비스트",
+        "룸싸롱",
+        "페이스북",
+        "서울서부지법",
+        "햄스터",
+        "쥐",
+        "룸살롱",
+        "제넨셀",
+        "양수진",
+        "식약처"
+      ],
+      "author": "박대용, 강진구"
+    },
     {
       "date": "2026-09-15",
       "title": "검찰, 제넨셀 포렌식 때 ‘이재명·이낙연·김승원’ 검색",
