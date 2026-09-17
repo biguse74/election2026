@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-09-17T01:21:16+09:00",
+  "updated_at": "2026-09-17T12:56:34+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 498,
+  "count": 499,
   "articles": [
+    {
+      "date": "2026-09-17",
+      "title": "부산 공천음모 녹취 터지자 이상호 \"중앙당 조직국은 내 식구\"",
+      "url": "https://newtamsa.org/news/ERnHzz",
+      "category": "단독보도",
+      "tags": [
+        "부산",
+        "민주당",
+        "공천",
+        "정청래",
+        "이상호",
+        "중앙당",
+        "조직국",
+        "서태경",
+        "김병수",
+        "차상호",
+        "미키루크",
+        "사상구"
+      ],
+      "author": "김은도, 강진구"
+    },
     {
       "date": "2026-09-16",
       "title": "한동훈 김승원 의혹 125건 역검증, 기록의 '약물·햄스터·유흥주점'이 '독약·쥐·룸살롱'이 됐다",
