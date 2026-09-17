@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-09-17T12:56:34+09:00",
+  "updated_at": "2026-09-17T20:11:52+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 499,
+  "count": 500,
   "articles": [
+    {
+      "date": "2026-09-17",
+      "title": "추미애 경기도지사 선거비 장부 610쪽 분석... 박시영 회사 몫 38%",
+      "url": "https://newtamsa.org/news/j8MmNi",
+      "category": "데이터",
+      "tags": [
+        "지방선거",
+        "경기도",
+        "추미애",
+        "박시영",
+        "선거비영",
+        "경기도지사",
+        "선관위",
+        "유세차",
+        "정당지원금"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-09-17",
       "title": "부산 공천음모 녹취 터지자 이상호 \"중앙당 조직국은 내 식구\"",
