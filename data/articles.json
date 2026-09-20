@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-09-20T19:51:08+09:00",
+  "updated_at": "2026-09-21T00:38:51+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 501,
+  "count": 502,
   "articles": [
+    {
+      "date": "2026-09-20",
+      "title": "조국·추미애 밀었던 광주 \"대통령 흔들기 멈춰라\"",
+      "url": "https://newtamsa.org/news/AJzeAL",
+      "category": "호남뉴탐사",
+      "tags": [
+        "이재명",
+        "대통령",
+        "기자회견",
+        "호남",
+        "광주",
+        "정해권",
+        "김영광",
+        "조국",
+        "추미애",
+        "개국본",
+        "연임"
+      ],
+      "author": "강진구"
+    },
     {
       "date": "2026-09-18",
       "title": "[역사탐사 친일파 18]  반민특위 4호 김연수, 박정희 정부서 훈장 두 개",
