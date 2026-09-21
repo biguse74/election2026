@@ -1,9 +1,41 @@
 {
-  "updated_at": "2026-09-21T00:38:51+09:00",
+  "updated_at": "2026-09-21T12:53:45+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 502,
+  "count": 504,
   "articles": [
+    {
+      "date": "2026-09-21",
+      "title": "박우량 측근들, 신안 공무원 빈소서 뉴탐사 취재진 막았다",
+      "url": "https://newtamsa.org/news/uG1fjd",
+      "category": "호남뉴탐사",
+      "tags": [
+        "전남",
+        "신안군",
+        "공무원",
+        "박우량",
+        "열린공감TV",
+        "시사타파TV",
+        "이제일",
+        "장용진"
+      ],
+      "author": "강진구, 허경혜"
+    },
+    {
+      "date": "2026-09-21",
+      "title": "박시영 회사, 지방선거에서 당선자 7명 35억 수주",
+      "url": "https://newtamsa.org/news/9-ITiE",
+      "category": "데이터",
+      "tags": [
+        "박시영",
+        "지방선거",
+        "뉴스공장",
+        "선거비용",
+        "추미애",
+        "도지사"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-09-20",
       "title": "조국·추미애 밀었던 광주 \"대통령 흔들기 멈춰라\"",
