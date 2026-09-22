@@ -1,9 +1,47 @@
 {
-  "updated_at": "2026-09-22T12:50:26+09:00",
+  "updated_at": "2026-09-22T20:08:41+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 505,
+  "count": 507,
   "articles": [
+    {
+      "date": "2026-09-22",
+      "title": "박시영 35억 중 13억은 '외상'... 돈 받을 사람이 선거판세 해설",
+      "url": "https://newtamsa.org/news/0RZ9R-",
+      "category": "데이터",
+      "tags": [
+        "박시영",
+        "추미애",
+        "신용한",
+        "선거비용",
+        "김어준",
+        "뉴스공장",
+        "외상",
+        "미지급"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-09-22",
+      "title": "서울중앙지법 판사, 판결문에 '나무위키'를 유죄 근거로 기재",
+      "url": "https://newtamsa.org/news/ArJNiR",
+      "category": "심층분석",
+      "tags": [
+        "법원",
+        "서울중앙지법",
+        "판사",
+        "판결문",
+        "나무위키",
+        "정천수",
+        "경찰",
+        "검사",
+        "보완수사",
+        "노무현",
+        "독대",
+        "음란물유포"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-09-22",
       "title": "박시영TV 선거용역 35억…신용한 충북지사도 6억8천",
