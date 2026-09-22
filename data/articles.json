@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-09-21T21:15:56+09:00",
+  "updated_at": "2026-09-22T12:50:26+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 504,
+  "count": 505,
   "articles": [
+    {
+      "date": "2026-09-22",
+      "title": "박시영TV 선거용역 35억…신용한 충북지사도 6억8천",
+      "url": "https://newtamsa.org/news/KwG1FU",
+      "category": "단독보도",
+      "tags": [
+        "추미애",
+        "박시영",
+        "신용한",
+        "김어준",
+        "뉴스공장",
+        "류삼영",
+        "이병도",
+        "오세현",
+        "여론조사",
+        "선거비용"
+      ],
+      "author": "박대용, 강진구"
+    },
     {
       "date": "2026-09-21",
       "title": "박우량 측근들, 신안 공무원 빈소서 뉴탐사 취재진 막았다",
