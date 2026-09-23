@@ -1,9 +1,45 @@
 {
-  "updated_at": "2026-09-23T12:48:51+09:00",
+  "updated_at": "2026-09-23T19:58:56+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 507,
+  "count": 509,
   "articles": [
+    {
+      "date": "2026-09-23",
+      "title": "유시민이 \"속였다\"며 든 발언, 1년여 전 본인 대담서 나왔다",
+      "url": "https://newtamsa.org/news/zXp_xn",
+      "category": "데이터",
+      "tags": [
+        "검찰개혁",
+        "공소청",
+        "중수청",
+        "유시민",
+        "이재명",
+        "알릴레오",
+        "기자회견",
+        "법무부",
+        "팩트체크"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-09-23",
+      "title": "공소청 검사, 연 199만건 떠안고 사건당 검토 1시간35분",
+      "url": "https://newtamsa.org/news/XGZlNi",
+      "category": "심층분석",
+      "tags": [
+        "공소청",
+        "중수청",
+        "검찰청",
+        "검찰개혁",
+        "추미애",
+        "김용민",
+        "법무부",
+        "박기택",
+        "변호사"
+      ],
+      "author": "강진구, 허경혜, 배기성"
+    },
     {
       "date": "2026-09-22",
       "title": "박시영 35억 중 13억은 '외상'... 돈 받을 사람이 선거판세 해설",
