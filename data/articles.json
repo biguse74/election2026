@@ -1,9 +1,56 @@
 {
-  "updated_at": "2026-09-25T01:42:04+09:00",
+  "updated_at": "2026-09-25T12:57:09+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 509,
+  "count": 511,
   "articles": [
+    {
+      "date": "2026-09-25",
+      "title": "[정천수 거짓말 검증] 정천수 '노무현 독대' 18번→독대 아냐→증거 냈다",
+      "url": "https://newtamsa.org/news/CjxKgK",
+      "category": "팩트체크",
+      "tags": [
+        "정천수",
+        "거짓말",
+        "노무현",
+        "독대",
+        "판결문",
+        "불송치",
+        "일산동부경찰서",
+        "명예훼손",
+        "시민포털",
+        "미국",
+        "시애틀"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-09-25",
+      "title": "민주당 부산 사무처장에 돈 빌려준 후보, 비례1번 받았다",
+      "url": "https://newtamsa.org/news/xhIkvc",
+      "category": "단독보도",
+      "tags": [
+        "정청래",
+        "이상호",
+        "미키루크",
+        "부산6인회",
+        "김병수",
+        "김두영",
+        "김정원",
+        "이정욱",
+        "이재성",
+        "사상구청장",
+        "공천",
+        "컷오프",
+        "서태경",
+        "차상호",
+        "변성완",
+        "정경원",
+        "전재수",
+        "부산"
+      ],
+      "author": "김은도, 강진구"
+    },
     {
       "date": "2026-09-23",
       "title": "유시민이 \"속였다\"며 든 발언, 1년여 전 본인 대담서 나왔다",
