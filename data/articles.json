@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-09-28T22:11:55+09:00",
+  "updated_at": "2026-09-29T13:47:22+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 511,
+  "count": 512,
   "articles": [
+    {
+      "date": "2026-09-29",
+      "title": "김건희 쥴리 재판, 검찰 논고 없이 안해욱 징역 2년 구형",
+      "url": "https://newtamsa.org/news/kG4YD6",
+      "category": "심층분석",
+      "tags": [
+        "김건희",
+        "쥴리",
+        "제니",
+        "안해욱",
+        "김태희",
+        "한성진",
+        "결심공판",
+        "검사"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-09-25",
       "title": "[정천수 거짓말 검증] 정천수 '노무현 독대' 18번→독대 아냐→증거 냈다",
