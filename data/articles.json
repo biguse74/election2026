@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-10-01T21:39:06+09:00",
+  "updated_at": "2026-10-02T13:36:02+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 514,
+  "count": 515,
   "articles": [
+    {
+      "date": "2026-10-02",
+      "title": "청담동 첼리스트 \"진실 말하면 죽는다\"…배득환 첫 증언",
+      "url": "https://newtamsa.org/news/dwv4ZD",
+      "category": "특별기획",
+      "tags": [
+        "청담동",
+        "술자리",
+        "첼리스트",
+        "배득환",
+        "TV조선",
+        "가로세로연구소",
+        "가세연",
+        "김세의",
+        "배이지",
+        "큰오빠",
+        "두진서",
+        "거짓말"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-10-01",
       "title": "유시민, 80년 5월 서울대 농성 해산 때 \"목숨 부지하십시오\"",
