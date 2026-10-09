@@ -1,9 +1,54 @@
 {
-  "updated_at": "2026-10-09T14:06:09+09:00",
+  "updated_at": "2026-10-09T21:46:07+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 522,
+  "count": 526,
   "articles": [
+    {
+      "date": "2026-10-09",
+      "title": "[역사탐사 친일파 18] 방응모 조선일보, '천황 만세' 14년 뒤 '김일성 장군 만세'",
+      "url": "https://newtamsa.org/news/6oaGJq",
+      "category": "역사탐사",
+      "tags": [
+        "역사탐사",
+        "조선일보",
+        "방응모",
+        "천황",
+        "친일파",
+        "조광",
+        "김일성",
+        "전두환",
+        "이미란",
+        "방용훈",
+        "방일영",
+        "김영수"
+      ],
+      "author": "배기성, 김은도, 강진구"
+    },
+    {
+      "date": "2026-09-29",
+      "title": "1.5℃를 넘는 지구…UNEP “얼마나 높이, 얼마나 오래 넘느냐가 관건” 국회 보고서 발간",
+      "url": "https://newtamsa.org/news/tRStXv",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
+    {
+      "date": "2026-09-17",
+      "title": "“근대사의 출발을 1894년 경복궁 점령에서 봐야” 역사 세미나 열려",
+      "url": "https://newtamsa.org/news/sMhKvg",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
+    {
+      "date": "2026-09-16",
+      "title": "“전북 8개 시·군 경선 여론조작 의혹”…국회서 경찰 수사·감찰 촉구",
+      "url": "https://newtamsa.org/news/HyUREV",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
     {
       "date": "2026-10-09",
       "title": "정청래 비자 미발급, 우방국 전례는…파키스탄 보이콧·영국 면제",
