@@ -1,9 +1,49 @@
 {
-  "updated_at": "2026-10-08T21:59:40+09:00",
+  "updated_at": "2026-10-09T14:06:09+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 520,
+  "count": 522,
   "articles": [
+    {
+      "date": "2026-10-09",
+      "title": "정청래 비자 미발급, 우방국 전례는…파키스탄 보이콧·영국 면제",
+      "url": "https://newtamsa.org/news/FmtWn6",
+      "category": "심층분석",
+      "tags": [
+        "정청래",
+        "미국",
+        "입국",
+        "비자",
+        "영국",
+        "파키스탄",
+        "프랑스",
+        "신정훈",
+        "대사관",
+        "점거농성"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-10-09",
+      "title": "한동훈 의원, 국정원 답변 거부에 '사실상 시인'…장관 땐 '추측은 근거 박약'",
+      "url": "https://newtamsa.org/news/-38w8l",
+      "category": "데이터",
+      "tags": [
+        "한동훈",
+        "국정감사",
+        "의원",
+        "장관",
+        "국정원",
+        "미국",
+        "FBI",
+        "조현",
+        "외교부",
+        "국회",
+        "외교통일위원회",
+        "정보위원회"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-10-08",
       "title": "[친청계 부산6인회 공천농단 4] 민주당 조직국, 부산 공천 모의 녹취 덮고 사무처장만 해임",
