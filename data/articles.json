@@ -1,9 +1,17 @@
 {
-  "updated_at": "2026-10-11T13:38:23+09:00",
+  "updated_at": "2026-10-11T21:17:44+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 527,
+  "count": 528,
   "articles": [
+    {
+      "date": "2026-09-29",
+      "title": "AI 시대 원전은 해답인가…같은 날 국회서 맞선 ‘값싼 전기’와 ‘숨은 비용’",
+      "url": "https://newtamsa.org/news/dYL-rr",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
     {
       "date": "2026-10-11",
       "title": "뉴스1 의뢰 전북 여론조사만 응답률 49%…국장은 경찰 조사",
