@@ -1,9 +1,35 @@
 {
-  "updated_at": "2026-10-11T21:17:44+09:00",
+  "updated_at": "2026-10-12T13:53:25+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 528,
+  "count": 530,
   "articles": [
+    {
+      "date": "2026-10-12",
+      "title": "장세일 해남 골프 예약자는 박진구 군의원 '목포 친구'",
+      "url": "https://newtamsa.org/news/SH2WHS",
+      "category": "호남뉴탐사",
+      "tags": [
+        "전남",
+        "영광군",
+        "장세일",
+        "해남",
+        "파인비치",
+        "골프장",
+        "박진구",
+        "그린피",
+        "어바웃영광"
+      ],
+      "author": "강진구, 박대용"
+    },
+    {
+      "date": "2026-10-05",
+      "title": "반도체단지 위해 군공항 두 번 옮기나…광주 조기 이전, ‘분산배치’의 비용을 묻다",
+      "url": "https://newtamsa.org/news/qD9IKA",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
     {
       "date": "2026-09-29",
       "title": "AI 시대 원전은 해답인가…같은 날 국회서 맞선 ‘값싼 전기’와 ‘숨은 비용’",
