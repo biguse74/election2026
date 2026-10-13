@@ -1,9 +1,67 @@
 {
-  "updated_at": "2026-10-13T14:55:34+09:00",
+  "updated_at": "2026-10-13T22:47:49+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 531,
+  "count": 537,
   "articles": [
+    {
+      "date": "2026-10-06",
+      "title": "다이옥신 기준치 22배, 주민 설명은 언제?…삼표 회장 다시 부르는 국감",
+      "url": "https://newtamsa.org/news/K-6kzz",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
+    {
+      "date": "2026-10-13",
+      "title": "짝퉁은 실시간으로 팔리고, 피해 구제는 제자리…지식재산 보호의 빈틈 드러난 국감",
+      "url": "https://newtamsa.org/news/kDVi_E",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
+    {
+      "date": "2026-10-12",
+      "title": "미국 원전 8기 추진, 기업 간 협약은 미서명…국감에서 드러난 발표와 계약의 거리",
+      "url": "https://newtamsa.org/news/liPQGI",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
+    {
+      "date": "2026-10-12",
+      "title": "광주 반도체 전력망, 비용도 일정도 풀리지 않았다…“기업이 80% 부담”",
+      "url": "https://newtamsa.org/news/KsHcCj",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
+    {
+      "date": "2026-10-08",
+      "title": "울주 농지에 묻힌 산업폐기물 4만6000톤…국감 뒤 움직인 행정, 반출은 언제",
+      "url": "https://newtamsa.org/news/X3ZkWP",
+      "category": "국회",
+      "tags": [],
+      "author": "최영민"
+    },
+    {
+      "date": "2026-10-13",
+      "title": "뉴탐사 사법개혁포털 공개, 판결문 검증 이제 시민 손으로",
+      "url": "https://newtamsa.org/news/V7vNJO",
+      "category": "데이터",
+      "tags": [
+        "사법부",
+        "사법개혁",
+        "판결문",
+        "사법개혁포털",
+        "기록",
+        "김한규",
+        "이진수",
+        "법무부",
+        "AI"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-10-13",
       "title": "한동훈 4년 전 인사청문회에서 드러난 11가지 아킬레스건",
