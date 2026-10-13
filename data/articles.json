@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-10-12T23:42:56+09:00",
+  "updated_at": "2026-10-13T14:55:34+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 530,
+  "count": 531,
   "articles": [
+    {
+      "date": "2026-10-13",
+      "title": "한동훈 4년 전 인사청문회에서 드러난 11가지 아킬레스건",
+      "url": "https://newtamsa.org/news/I0PEQ5",
+      "category": "심층분석",
+      "tags": [
+        "한동훈",
+        "법무부장관",
+        "인사청문회",
+        "장녀",
+        "논문대필",
+        "국정감사",
+        "검찰",
+        "김건희",
+        "도이치모터스",
+        "회의록"
+      ],
+      "author": "박대용, 강진구"
+    },
     {
       "date": "2026-10-12",
       "title": "장세일 해남 골프 예약자는 박진구 군의원 '목포 친구'",
