@@ -1,9 +1,49 @@
 {
-  "updated_at": "2026-10-15T01:44:48+09:00",
+  "updated_at": "2026-10-15T12:40:27+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 538,
+  "count": 540,
   "articles": [
+    {
+      "date": "2026-10-15",
+      "title": "김태규, 권익위 부위원장 때도 판결문에 변호사 이름 4건",
+      "url": "https://newtamsa.org/news/WNF9NW",
+      "category": "단독보도",
+      "tags": [
+        "김태규",
+        "국민의힘",
+        "판사",
+        "변호사",
+        "권익위",
+        "부위원장",
+        "원율",
+        "중수청",
+        "김지용"
+      ],
+      "author": "김은도, 강진구"
+    },
+    {
+      "date": "2026-10-15",
+      "title": "정천수, \"거액 배상\" 장담하더니 항소심 판결엔 침묵",
+      "url": "https://newtamsa.org/news/DkIjfR",
+      "category": "심층분석",
+      "tags": [
+        "정천수",
+        "거짓말",
+        "항소심",
+        "열린공감TV",
+        "폭행사건",
+        "위자료",
+        "명예훼손",
+        "최영민",
+        "안선화",
+        "강진구",
+        "박대용",
+        "성지호",
+        "불륜"
+      ],
+      "author": "뉴탐사"
+    },
     {
       "date": "2026-10-14",
       "title": "한동훈 딸, 451시간 영어봉사 기록…본인은 '스케줄 조정만'",
