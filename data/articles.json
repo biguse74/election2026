@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-10-15T20:00:33+09:00",
+  "updated_at": "2026-10-16T01:30:15+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 552,
+  "count": 553,
   "articles": [
+    {
+      "date": "2026-10-15",
+      "title": "김지용 중수청장 청문회, 친윤·반윤 논란 가를 자료 없이 끝났다",
+      "url": "https://newtamsa.org/news/IzmobS",
+      "category": "데이터",
+      "tags": [
+        "중수청",
+        "김지용",
+        "친윤",
+        "반윤",
+        "청와대",
+        "검사",
+        "검찰총장",
+        "윤석열",
+        "인사청문회"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-10-12",
       "title": "이광희 의원 “ 행정 업무에 총경 묶여있어 ... 경찰관 , 수사 · 민생치안 복귀시켜야 ”",
