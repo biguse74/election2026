@@ -1,9 +1,105 @@
 {
-  "updated_at": "2026-10-15T12:40:27+09:00",
+  "updated_at": "2026-10-15T20:00:33+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 540,
+  "count": 552,
   "articles": [
+    {
+      "date": "2026-10-12",
+      "title": "이광희 의원 “ 행정 업무에 총경 묶여있어 ... 경찰관 , 수사 · 민생치안 복귀시켜야 ”",
+      "url": "https://newtamsa.org/news/OCF1ur",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-12",
+      "title": "걷지 못한 과태료만 463 억 원 , “ 불법스팸 과태료 , 5 년째 수납률 한 자릿수 … 체납 장기화 해결 계획 필요해 ”",
+      "url": "https://newtamsa.org/news/bwuSyJ",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-11",
+      "title": "서영교 법사위원장, 법무부 국감서 강압감사·조작기소 의혹 집중 점검…참고인들 특검 촉구",
+      "url": "https://newtamsa.org/news/T7bIXh",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-08",
+      "title": "박상혁 의원, 상법 개정 후 KOSPI200 주주환원 전수 점검... “시장이 비교·점검할 수 있어야”",
+      "url": "https://newtamsa.org/news/iTG6Ap",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-08",
+      "title": "이학영 의원 “ 기상 데이터 주권 확보 시급 … 저궤도 기상위성 조속히 재추진해야 ”",
+      "url": "https://newtamsa.org/news/-4N1UE",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-07",
+      "title": "국회 과방위, 누리호 5차 발사 성공 현장서 관계자 격려",
+      "url": "https://newtamsa.org/news/tZHm3t",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-07",
+      "title": "정당은 보조금 1,047억 챙기고, 공천 후보 선거비용 미반환에는 나 몰라라",
+      "url": "https://newtamsa.org/news/KZka70",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-06",
+      "title": "서왕진 의원 , \" 호남에 전기 쓸 곳 생겼는데 … 12 조 원 송전망은 여전히 ' 수도권행 '\"",
+      "url": "https://newtamsa.org/news/hyk9BA",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-06",
+      "title": "박정 의원 “ 전력망 인프라 조속한 확충을 위한 전기요금 선납제 제도화 필요 ”",
+      "url": "https://newtamsa.org/news/WIleCH",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-05",
+      "title": "성비위 징계 군 간부 10건 중 8건, 군복 안 벗었다",
+      "url": "https://newtamsa.org/news/mRmi8Z",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-04",
+      "title": "김병주 의원 ,  ‘ 꽉 막힌 ’ 남양주 진접 금곡교차로에 ‘ 물꼬 ’ …병목지점 개선 기본계획 반영키로",
+      "url": "https://newtamsa.org/news/vgli1Q",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
+    {
+      "date": "2026-10-11",
+      "title": "부승찬 의원, 국토부 대광위원장과 수지 광역버스 혼잡 현장 점검",
+      "url": "https://newtamsa.org/news/SwkjC8",
+      "category": "국회",
+      "tags": [],
+      "author": "김은도"
+    },
     {
       "date": "2026-10-15",
       "title": "김태규, 권익위 부위원장 때도 판결문에 변호사 이름 4건",
