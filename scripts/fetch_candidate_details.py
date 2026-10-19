@@ -6,9 +6,14 @@ OpenAPI 후보자 정보에는 사진·재산·병역·납세·전과 요약이 
 후보 스냅샷의 huboid를 기준으로 info.nec.go.kr 상세 팝업을 조회한다.
 
 사용:
-    python scripts/fetch_candidate_details.py
+    python scripts/fetch_candidate_details.py                      # 재산·납세·병역·전과 스캔 전부
     python scripts/fetch_candidate_details.py --limit 20
     python scripts/fetch_candidate_details.py --huboid 100163255 --scan-types 5
+    python scripts/fetch_candidate_details.py --scan-types ""      # 요약만, 스캔 생략(가벼움)
+
+주의: 후보자 공개자료는 선거일까지만 공개된다(공직선거법 제49조 제12항).
+      선거일이 지나면 상세 페이지·PDF가 모두 사라지므로, 선거 기간 중에
+      archive_disclosure_pdfs.py까지 돌려 원본을 보존해 둘 것.
 
 산출물:
     data/candidate_details.json
@@ -140,17 +145,60 @@ def get_session() -> requests.Session:
     return session
 
 
+# 이전 산출물에서 "이미 받아 둔 스캔"을 재사용하기 위한 캐시.
+# {huboid: {"done": {"2","5"}, "files": {"재산": [...], "전과": [...]}}}
+PREV_SCANS: dict[str, dict] = {}
+
+
+def load_prev_scans(path: Path) -> dict[str, dict]:
+    """직전 candidate_details.json을 읽어 huboid별 수집 완료 유형과 파일을 돌려준다.
+
+    scan_types_done이 없는 구버전 산출물은, 파일이 남아 있는 유형만 완료로 본다.
+    (받았는데 파일이 0건이었던 경우와 아예 안 받은 경우를 구분할 수 없기 때문)
+    """
+    if not path.exists():
+        return {}
+    try:
+        prev = json.loads(path.read_text(encoding="utf-8")).get("details") or []
+    except (json.JSONDecodeError, OSError):
+        return {}
+    kr_to_code = {v: k for k, v in SCAN_TYPES.items()}
+    out: dict[str, dict] = {}
+    for row in prev:
+        hid = str(row.get("huboid") or "")
+        if not hid:
+            continue
+        files = row.get("scan_files") or {}
+        done = set(row.get("scan_types_done") or [])
+        if not done:
+            done = {kr_to_code[k] for k in files if k in kr_to_code}
+        out[hid] = {"done": done, "files": files}
+    return out
+
+
 def fetch_scan_files(
     hubo_id: str,
     scan_types: list[str],
     disclosures: dict,
     scan_all: bool,
-) -> dict:
+    refresh: bool = False,
+) -> tuple[dict, list[str]]:
     out: dict[str, list[dict]] = {}
+    done: list[str] = []
+    prev = PREV_SCANS.get(hubo_id) or {}
+    prev_done = prev.get("done") or set()
+    prev_files = prev.get("files") or {}
     for scan_type in scan_types:
         if scan_type not in SCAN_TYPES:
             continue
         if not should_fetch_scan(scan_type, disclosures, scan_all):
+            continue
+        kr = SCAN_TYPES[scan_type]
+        # 이미 받아 둔 유형은 요청하지 않고 이전 결과를 그대로 물려받는다.
+        if not refresh and scan_type in prev_done:
+            if prev_files.get(kr):
+                out[kr] = prev_files[kr]
+            done.append(scan_type)
             continue
         session = get_session()
         params = {
@@ -177,14 +225,16 @@ def fetch_scan_files(
                 "display_seq": row.get("DISP_SEQ"),
             })
         if files:
-            out[SCAN_TYPES[scan_type]] = files
-    return out
+            out[kr] = files
+        done.append(scan_type)
+    return out, done
 
 
 def fetch_one(
     candidate: dict,
     scan_types: list[str],
     scan_all: bool,
+    refresh: bool = False,
 ) -> dict:
     hubo_id = str(candidate["huboid"])
     session = get_session()
@@ -195,11 +245,12 @@ def fetch_one(
     )
     res.raise_for_status()
     parsed = parse_detail_html(res.text)
-    scan_files = fetch_scan_files(
+    scan_files, scan_done = fetch_scan_files(
         hubo_id,
         scan_types,
         parsed["disclosures"],
         scan_all,
+        refresh,
     )
 
     row = {
@@ -214,6 +265,9 @@ def fetch_one(
     }
     if scan_files:
         row["scan_files"] = scan_files
+    if scan_done:
+        # 다음 실행에서 재요청을 건너뛰기 위한 표시. 파일이 0건이어도 "받았음"을 남긴다.
+        row["scan_types_done"] = sorted(scan_done)
     return row
 
 
@@ -232,8 +286,13 @@ def main() -> None:
     parser.add_argument("--limit", type=int, default=0, help="앞에서 N명만 수집")
     parser.add_argument("--delay", type=float, default=0.02, help="작업 제출 사이 대기 초")
     parser.add_argument("--workers", type=int, default=8, help="동시 수집 worker 수")
-    parser.add_argument("--scan-types", default="5", help="수집할 스캔파일 유형. 예: 5, 2,3,4,5, all, 빈 문자열")
+    # 2026 지선 때 기본값이 "5"(전과)여서 재산·납세·병역 스캔을 한 장도 받지 못했고,
+    # 선거일이 지나 info.nec.go.kr이 공개를 끊으면서(공직선거법 §49⑫) 원본이 영구 소실됐다.
+    # 기본값을 2(재산)·3(납세)·4(병역)·5(전과)로 바꿔 선거 기간 중에 전부 보존한다.
+    parser.add_argument("--scan-types", default="2,3,4,5", help="수집할 스캔파일 유형. 예: 5, 2,3,4,5, all, 빈 문자열")
     parser.add_argument("--scan-all-candidates", action="store_true", help="전과 없음 후보도 전과 PDF endpoint 조회")
+    parser.add_argument("--refresh-scans", action="store_true",
+                        help="이미 받아 둔 스캔도 다시 조회(기본은 건너뜀)")
     args = parser.parse_args()
 
     snapshot_path = args.snapshot or latest_snapshot_path()
@@ -246,7 +305,13 @@ def main() -> None:
         candidates = candidates[:args.limit]
 
     scan_types = parse_scan_types(args.scan_types)
+    global PREV_SCANS
+    PREV_SCANS = {} if args.refresh_scans else load_prev_scans(LATEST_OUT)
+    cached = sum(1 for v in PREV_SCANS.values() if v["done"])
     print(f"후보 상세 수집: {len(candidates):,}명")
+    if scan_types:
+        print(f"기존 스캔 재사용: {cached:,}명분"
+              + (" (--refresh-scans 로 무시 가능)" if cached else ""))
     print(f"후보 스냅샷: {snapshot_path.relative_to(ROOT_DIR)}")
     print(f"스캔파일 유형: {scan_types or '없음'}")
     print(f"동시 작업: {max(args.workers, 1)}")
@@ -258,7 +323,8 @@ def main() -> None:
     with ThreadPoolExecutor(max_workers=max(args.workers, 1)) as executor:
         futures = {}
         for candidate in candidates:
-            future = executor.submit(fetch_one, candidate, scan_types, args.scan_all_candidates)
+            future = executor.submit(fetch_one, candidate, scan_types,
+                                     args.scan_all_candidates, args.refresh_scans)
             futures[future] = candidate
             if args.delay > 0:
                 time.sleep(args.delay)
