@@ -1,9 +1,32 @@
 {
-  "updated_at": "2026-10-19T21:27:47+09:00",
+  "updated_at": "2026-10-20T12:54:55+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 560,
+  "count": 561,
   "articles": [
+    {
+      "date": "2026-10-20",
+      "title": "한동훈, 2024년 신고한 은행 빚 6·3 보궐선거 땐 누락",
+      "url": "https://newtamsa.org/news/8jNddd",
+      "category": "단독보도",
+      "tags": [
+        "한동훈",
+        "한무남",
+        "허수옥",
+        "진은정",
+        "삼부아파트",
+        "삼풍아파트",
+        "채무",
+        "하나은행",
+        "대출",
+        "재산신고누락",
+        "근저당",
+        "고지거부",
+        "AMK",
+        "노동탄압"
+      ],
+      "author": "권지연, 강진구, 박대용"
+    },
     {
       "date": "2026-10-19",
       "title": "권익현 부안군수 공사 외압 폭로 막으려 3억원…제보자 실물 공개",
