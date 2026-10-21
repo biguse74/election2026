@@ -1,9 +1,54 @@
 {
-  "updated_at": "2026-10-21T01:30:27+09:00",
+  "updated_at": "2026-10-21T12:45:00+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 561,
+  "count": 563,
   "articles": [
+    {
+      "date": "2026-10-21",
+      "title": "서울시 헌인마을 해명 5건 모두 사실과 달랐다…오세훈 약속한 감사는 '조사'로 끝",
+      "url": "https://newtamsa.org/news/_QPdiY",
+      "category": "심층분석",
+      "tags": [
+        "헌인마을",
+        "서울시",
+        "오세훈",
+        "최재란",
+        "서울시의회",
+        "헌인타운개발",
+        "거짓말",
+        "도시개발",
+        "헌인교회",
+        "시정질문",
+        "감사",
+        "조사"
+      ],
+      "author": "강진구, 박대용"
+    },
+    {
+      "date": "2026-10-21",
+      "title": "프랑스서 시리아까지 기름값 시위, 한국 충격 덜한 건 최고가격제",
+      "url": "https://newtamsa.org/news/qDE-Ym",
+      "category": "데이터",
+      "tags": [
+        "프랑스",
+        "시위",
+        "기름값",
+        "유가",
+        "오일쇼크",
+        "이탈리아",
+        "미국",
+        "이스라엘",
+        "호르무즈",
+        "이란",
+        "반도체",
+        "최고가격제",
+        "정유사",
+        "과테말라",
+        "연료비"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-10-20",
       "title": "한동훈, 2024년 신고한 은행 빚 6·3 보궐선거 땐 누락",
