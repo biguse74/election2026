@@ -1,9 +1,46 @@
 {
-  "updated_at": "2026-10-22T01:47:39+09:00",
+  "updated_at": "2026-10-22T12:44:26+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 563,
+  "count": 565,
   "articles": [
+    {
+      "date": "2026-10-22",
+      "title": "[정천수 거짓말 검증] 정천수가 소송비로 팔았다는 5억 집, 소송 7년 전에 팔렸다",
+      "url": "https://newtamsa.org/news/WTtP8A",
+      "category": "팩트체크",
+      "tags": [
+        "정천수",
+        "열린공감TV",
+        "소송비",
+        "후원방송",
+        "아파트",
+        "빌라",
+        "배우자",
+        "의정부",
+        "가능동",
+        "고양시",
+        "식사동",
+        "변호사"
+      ],
+      "author": "뉴탐사"
+    },
+    {
+      "date": "2026-10-22",
+      "title": "안민석 '최재형 안 된다' 청와대 전달…조국은 삼고초려",
+      "url": "https://newtamsa.org/news/2FG06G",
+      "category": "심층분석",
+      "tags": [
+        "유시민",
+        "조국",
+        "최재형",
+        "감사원장",
+        "김재윤",
+        "삼고초려",
+        "안민석"
+      ],
+      "author": "강진구, 김은도"
+    },
     {
       "date": "2026-10-21",
       "title": "서울시 헌인마을 해명 5건 모두 사실과 달랐다…오세훈 약속한 감사는 '조사'로 끝",
