@@ -1,9 +1,32 @@
 {
-  "updated_at": "2026-10-23T01:48:02+09:00",
+  "updated_at": "2026-10-23T12:48:49+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 565,
+  "count": 566,
   "articles": [
+    {
+      "date": "2026-10-23",
+      "title": "한동훈 딸 봉사 의혹 아동센터, 뉴라이트 목사 교회 부설 의혹",
+      "url": "https://newtamsa.org/news/RFlNXT",
+      "category": "단독보도",
+      "tags": [
+        "한동훈",
+        "아동센터",
+        "허위스펙",
+        "뉴라이트",
+        "교회",
+        "안양시",
+        "자원봉사센터",
+        "백석교회",
+        "김삼환",
+        "이동원",
+        "목사",
+        "강득구",
+        "오세훈",
+        "여현정"
+      ],
+      "author": "강진구, 김은도, 배기성"
+    },
     {
       "date": "2026-10-22",
       "title": "[정천수 거짓말 검증] 정천수가 소송비로 팔았다는 5억 집, 소송 7년 전에 팔렸다",
