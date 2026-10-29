@@ -1,9 +1,34 @@
 {
-  "updated_at": "2026-10-28T21:18:28+09:00",
+  "updated_at": "2026-10-29T13:50:17+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 571,
+  "count": 572,
   "articles": [
+    {
+      "date": "2026-10-29",
+      "title": "민주당 당원 명부·신천지 명부 30만명 대조…5만6천명 겹쳤다",
+      "url": "https://newtamsa.org/news/ne6_3x",
+      "category": "단독보도",
+      "tags": [
+        "신천지",
+        "민주당",
+        "정청래",
+        "호남일보",
+        "친청계",
+        "한민수",
+        "김민석",
+        "탈교자",
+        "매불쇼",
+        "전당대회",
+        "명단",
+        "코로나",
+        "박지원",
+        "이재명",
+        "전주",
+        "최욱"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-10-28",
       "title": "한동훈 딸 봉사센터 운영 목사, 진은정 만남 질문에 말 바꿔",
