@@ -1,9 +1,28 @@
 {
-  "updated_at": "2026-10-29T13:50:17+09:00",
+  "updated_at": "2026-10-29T21:28:03+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 572,
+  "count": 573,
   "articles": [
+    {
+      "date": "2026-10-29",
+      "title": "유시민 '진영 해체론' 검증, 정치 유튜브 채팅 두 패로 갈라져",
+      "url": "https://newtamsa.org/news/IaXsql",
+      "category": "데이터",
+      "tags": [
+        "유시민",
+        "박시영",
+        "진영해체론",
+        "뉴스공장",
+        "매불쇼",
+        "이동형",
+        "민티",
+        "민주당",
+        "이재명",
+        "실시간채팅"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-10-29",
       "title": "민주당 당원 명부·신천지 명부 30만명 대조…5만6천명 겹쳤다",
