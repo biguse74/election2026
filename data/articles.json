@@ -1,9 +1,32 @@
 {
-  "updated_at": "2026-11-01T01:57:42+09:00",
+  "updated_at": "2026-11-01T13:55:14+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 574,
+  "count": 575,
   "articles": [
+    {
+      "date": "2026-11-01",
+      "title": "장세일 해남 원정골프 소송, 동반자 진술부터 서로 엇갈려",
+      "url": "https://newtamsa.org/news/OboGUt",
+      "category": "호남뉴탐사",
+      "tags": [
+        "장세일",
+        "골프",
+        "파인비치",
+        "입틀막",
+        "그린피",
+        "정용호",
+        "박진구",
+        "김윤희",
+        "미성굴비",
+        "전남",
+        "영광군",
+        "군의원",
+        "김상훈",
+        "해남"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-10-30",
       "title": "프랑스 시위 뒤 가려진 역사…나치 부역자 파퐁의 알제리인 학살",
