@@ -1,9 +1,30 @@
 {
-  "updated_at": "2026-11-03T14:44:57+09:00",
+  "updated_at": "2026-11-03T22:47:05+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 576,
+  "count": 577,
   "articles": [
+    {
+      "date": "2026-11-03",
+      "title": "후보는 살고 여현정은 정치생명 위기…최재관 진술조서 공개",
+      "url": "https://newtamsa.org/news/wZLaXY",
+      "category": "단독보도",
+      "tags": [
+        "양평군",
+        "여현정",
+        "정치검찰",
+        "민주당",
+        "지역위원장",
+        "최재영",
+        "최재관",
+        "시국강연",
+        "양평고속도로",
+        "기소",
+        "벌금",
+        "선거사무원"
+      ],
+      "author": "권지연, 강진구, 박대용"
+    },
     {
       "date": "2026-11-02",
       "title": "장세일 영광군수 1억 프랑스 출장, EDF가 먼저 제안했다",
