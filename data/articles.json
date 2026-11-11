@@ -1,9 +1,24 @@
 {
-  "updated_at": "2026-11-11T14:09:28+09:00",
+  "updated_at": "2026-11-11T22:44:22+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 583,
+  "count": 584,
   "articles": [
+    {
+      "date": "2026-11-11",
+      "title": "신천지 피해자연대 \"민주당도 산 옮기기 당하죠\"",
+      "url": "https://newtamsa.org/news/cvVcHS",
+      "category": "특별기획",
+      "tags": [
+        "신천지",
+        "민주당",
+        "박형미",
+        "신천지피해자연대",
+        "김민석",
+        "정청래"
+      ],
+      "author": "권지연, 강진구"
+    },
     {
       "date": "2026-11-10",
       "title": "청담동 술자리 경찰 '티케행' 기록, 본문엔 용인 동네 길찾기",
