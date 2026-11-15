@@ -1,9 +1,41 @@
 {
-  "updated_at": "2026-11-14T22:07:37+09:00",
+  "updated_at": "2026-11-15T14:23:25+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 586,
+  "count": 588,
   "articles": [
+    {
+      "date": "2026-11-15",
+      "title": "최민희 비공개 녹취 70분 전체 분석…김민석에 100일 시한",
+      "url": "https://newtamsa.org/news/CLwOAd",
+      "category": "심층분석",
+      "tags": [
+        "최민희",
+        "녹취"
+      ],
+      "author": "강진구, 박대용"
+    },
+    {
+      "date": "2026-11-15",
+      "title": "김철우 보성군수 수석공원 1차분 준공, 허위공문서 작성 의심",
+      "url": "https://newtamsa.org/news/gazN6j",
+      "category": "호남뉴탐사",
+      "tags": [
+        "전남",
+        "보성군",
+        "김철우",
+        "제석산",
+        "벌교",
+        "나루",
+        "조정래",
+        "태백산맥",
+        "공원",
+        "정보공개",
+        "선금",
+        "수석공원"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-11-13",
       "title": "100일의 거짓말 1932년 실화, 김구가 노린 건 리튼 조사단",
