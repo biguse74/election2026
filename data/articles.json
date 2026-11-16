@@ -1,9 +1,26 @@
 {
-  "updated_at": "2026-11-16T14:21:14+09:00",
+  "updated_at": "2026-11-17T00:07:25+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 588,
+  "count": 589,
   "articles": [
+    {
+      "date": "2026-11-16",
+      "title": "진안경찰서 수사관, 고발장 새로 써주며 전춘성 군수 뺐다",
+      "url": "https://newtamsa.org/news/-mBXUD",
+      "category": "호남뉴탐사",
+      "tags": [
+        "전북",
+        "진안군",
+        "전춘성",
+        "진안경찰서",
+        "수사관",
+        "녹취",
+        "고발장",
+        "공무직"
+      ],
+      "author": "강진구, 허경혜"
+    },
     {
       "date": "2026-11-15",
       "title": "최민희 비공개 녹취 70분 전체 분석…김민석에 100일 시한",
