@@ -1,9 +1,31 @@
 {
-  "updated_at": "2026-11-17T00:07:25+09:00",
+  "updated_at": "2026-11-17T15:59:58+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 589,
+  "count": 590,
   "articles": [
+    {
+      "date": "2026-11-17",
+      "title": "최민희 징계, 민주당 의원들 개인 페북 대신 연명으로 입 열었다",
+      "url": "https://newtamsa.org/news/fZLSPg",
+      "category": "심층분석",
+      "tags": [
+        "민주당",
+        "최민희",
+        "김민석",
+        "친청계",
+        "정청래",
+        "이성윤",
+        "한민수",
+        "더민초",
+        "더민주혁신회의",
+        "윤리심판원",
+        "초선",
+        "페이스북",
+        "사퇴"
+      ],
+      "author": "박대용, 강진구"
+    },
     {
       "date": "2026-11-16",
       "title": "진안경찰서 수사관, 고발장 새로 써주며 전춘성 군수 뺐다",
