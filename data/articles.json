@@ -1,9 +1,55 @@
 {
-  "updated_at": "2026-11-18T05:34:28+09:00",
+  "updated_at": "2026-11-18T15:24:19+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 590,
+  "count": 592,
   "articles": [
+    {
+      "date": "2026-11-18",
+      "title": "최민희 징계 성명 불참 초선, 뉴스공장 출연 평균 3.3회",
+      "url": "https://newtamsa.org/news/MXkaQg",
+      "category": "심층분석",
+      "tags": [
+        "더민초",
+        "최민희",
+        "정청래",
+        "김기표",
+        "양부남",
+        "차지호",
+        "노종면",
+        "이성윤",
+        "한민수",
+        "뉴스공장",
+        "김어준",
+        "부승찬",
+        "박지원",
+        "문대림",
+        "박지혜",
+        "정준호",
+        "초선",
+        "홍사훈",
+        "주진우",
+        "공취모"
+      ],
+      "author": "박대용"
+    },
+    {
+      "date": "2026-11-18",
+      "title": "정청래와 친분 황종열, 호남일보 강연장서 김덕천 취재 막아",
+      "url": "https://newtamsa.org/news/7CTm1f",
+      "category": "심층분석",
+      "tags": [
+        "호남일보",
+        "신천지",
+        "황종열",
+        "김덕천",
+        "정청래",
+        "김철수",
+        "구윤철",
+        "대한적십자사"
+      ],
+      "author": "강진구, 허경혜, 배기성"
+    },
     {
       "date": "2026-11-17",
       "title": "최민희 징계, 민주당 의원들 개인 페북 대신 연명으로 입 열었다",
