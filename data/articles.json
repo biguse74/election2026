@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-11-19T05:07:11+09:00",
+  "updated_at": "2026-11-19T15:25:41+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 592,
+  "count": 593,
   "articles": [
+    {
+      "date": "2026-11-19",
+      "title": "정청래 호남일보 강연 실무 조기철 국장, 취재진엔 '손님'이라 둘러대",
+      "url": "https://newtamsa.org/news/RVoD_a",
+      "category": "단독보도",
+      "tags": [
+        "호남일보",
+        "신천지",
+        "정청래",
+        "최민희",
+        "김덕천",
+        "김병우",
+        "조기철",
+        "광주",
+        "조선대"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-11-18",
       "title": "최민희 징계 성명 불참 초선, 뉴스공장 출연 평균 3.3회",
