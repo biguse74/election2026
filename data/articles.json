@@ -1,9 +1,27 @@
 {
-  "updated_at": "2026-11-20T15:11:51+09:00",
+  "updated_at": "2026-11-21T04:42:52+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 594,
+  "count": 595,
   "articles": [
+    {
+      "date": "2026-11-20",
+      "title": "대법원, 김재규 사형시킨 판례 놔둔 채 한덕수엔 새 기준 적용",
+      "url": "https://newtamsa.org/news/qysdRn",
+      "category": "데이터",
+      "tags": [
+        "대법원",
+        "조희대",
+        "한덕수",
+        "김재규",
+        "내란",
+        "판례",
+        "윤석열",
+        "미필적인식",
+        "사법개혁포털"
+      ],
+      "author": "박대용"
+    },
     {
       "date": "2026-11-20",
       "title": "조희대, 한덕수 '정당한 직무' 판결…12·3 대법원 회의 방탄",
