@@ -1,9 +1,31 @@
 {
-  "updated_at": "2026-11-20T05:07:02+09:00",
+  "updated_at": "2026-11-20T15:11:51+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 593,
+  "count": 594,
   "articles": [
+    {
+      "date": "2026-11-20",
+      "title": "조희대, 한덕수 '정당한 직무' 판결…12·3 대법원 회의 방탄",
+      "url": "https://newtamsa.org/news/zuleJZ",
+      "category": "특별기획",
+      "tags": [
+        "조희대",
+        "한덕수",
+        "천대엽",
+        "신숙희",
+        "오경미",
+        "대법관",
+        "대법원",
+        "내란",
+        "계엄",
+        "김민석",
+        "탄핵",
+        "대법원장",
+        "국무회의"
+      ],
+      "author": "강진구, 박대용, 배기성"
+    },
     {
       "date": "2026-11-19",
       "title": "정청래 호남일보 강연 실무 조기철 국장, 취재진엔 '손님'이라 둘러대",
