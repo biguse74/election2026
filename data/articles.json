@@ -1,9 +1,33 @@
 {
-  "updated_at": "2026-11-24T08:31:31+09:00",
+  "updated_at": "2026-11-24T17:54:13+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 597,
+  "count": 598,
   "articles": [
+    {
+      "date": "2026-11-24",
+      "title": "최민희가 닉네임 공개한 녹취 제보자 \"해코지당할까 무섭다\"",
+      "url": "https://newtamsa.org/news/tUJrM6",
+      "category": "단독보도",
+      "tags": [
+        "최민희",
+        "녹취",
+        "남양주",
+        "지역구",
+        "간담회",
+        "아웃팅",
+        "박선원",
+        "신천지",
+        "내부제보자",
+        "하이에나",
+        "제보자",
+        "닉네임",
+        "조추털래유",
+        "김민석",
+        "송영길"
+      ],
+      "author": "강진구, 박대용"
+    },
     {
       "date": "2026-11-23",
       "title": "영광 갯벌 태양광 업체, 반대한 김한균 군의원에 15억 제시",
