@@ -1,9 +1,29 @@
 {
-  "updated_at": "2026-11-25T07:01:08+09:00",
+  "updated_at": "2026-11-25T16:30:29+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 598,
+  "count": 599,
   "articles": [
+    {
+      "date": "2026-11-25",
+      "title": "정청래 호남일보 동행 최은하 마포구의장 \"이만희가 누구냐\"",
+      "url": "https://newtamsa.org/news/urjrkI",
+      "category": "단독보도",
+      "tags": [
+        "정청래",
+        "호남일보",
+        "김덕천",
+        "최은하",
+        "황종열",
+        "이희자",
+        "신천지",
+        "이만희",
+        "신민철",
+        "개혁신당",
+        "최민희"
+      ],
+      "author": "강진구, 허경혜, 배기성"
+    },
     {
       "date": "2026-11-24",
       "title": "최민희가 닉네임 공개한 녹취 제보자 \"해코지당할까 무섭다\"",
