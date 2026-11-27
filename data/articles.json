@@ -1,9 +1,35 @@
 {
-  "updated_at": "2026-11-27T06:03:25+09:00",
+  "updated_at": "2026-11-27T16:15:37+09:00",
   "source_url": "https://newtamsa.org/p/gongcheon",
   "sheet_url": "https://docs.google.com/spreadsheets/d/1r1ph786QUFGC_rHIOEUdOeQ6L-MvRtcHJvbW6yDJOVA/gviz/tq?tqx=out:csv&gid=0",
-  "count": 600,
+  "count": 601,
   "articles": [
+    {
+      "date": "2026-11-27",
+      "title": "김병주 불기소 놓고 갈린 검찰총장 후보들…첫 추가 천거",
+      "url": "https://newtamsa.org/news/HRMTH-",
+      "category": "심층분석",
+      "tags": [
+        "MBK",
+        "검찰총장",
+        "박철우",
+        "이정현",
+        "홈플러스",
+        "김승원",
+        "김앤장",
+        "불기소",
+        "마용주",
+        "외교라인",
+        "임웅순",
+        "홍익표",
+        "한미동맹",
+        "강경화",
+        "강금실",
+        "제주유지사건",
+        "강계돈"
+      ],
+      "author": "강진구, 배기성, 박대용"
+    },
     {
       "date": "2026-11-26",
       "title": "탄핵 반대 첫 판사회의 연 창원지법원장, 대법원서 조희대와 근무",
